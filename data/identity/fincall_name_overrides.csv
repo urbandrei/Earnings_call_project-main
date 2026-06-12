@@ -1,0 +1,78 @@
+alias,ticker,cik,note
+Comerica,CMA,28412,absent from 2026 SEC table (Fifth Third merger)
+Nordstrom,JWN,72333,taken private 2025
+DR,DHI,882184,truncated greeting capture of D.R. Horton
+DR Horton,DHI,882184,dotted-initial brand
+Kellogg,K,55067,renamed Kellanova 2023
+Kelloggs,K,55067,renamed Kellanova 2023
+AMG,AMG,1004434,brand acronym (Affiliated Managers Group)
+Citi,C,831001,brand acronym (Citigroup)
+UPS,UPS,1090727,brand acronym (United Parcel Service)
+ITW,ITW,49826,brand acronym (Illinois Tool Works)
+Sealed Air,SEE,1012100,absent from 2026 SEC table
+ADM,ADM,7084,brand acronym (Archer-Daniels-Midland)
+Campbell Soup,CPB,16732,renamed The Campbell's Company 2024
+Campbells Soup,CPB,16732,renamed The Campbell's Company 2024
+ANSYS,ANSS,1013462,acquired by Synopsys 2025
+Walgreens Boots Alliance,WBA,1618921,taken private 2025 (Sycamore)
+Walgreen Boots Alliance,WBA,1618921,transcription variant
+Alliance Boots,WBA,1618921,greeting variant
+United States Steel,X,1163302,acquired by Nippon Steel 2025
+United Steel,X,1163302,transcription variant
+Interpublic,IPG,51644,acquired by Omnicom 2025
+Boston Properties,BXP,1037540,renamed BXP Inc 2024
+Raytheon Technologies,RTX,101829,renamed RTX Corp 2023
+ADP,ADP,8670,brand acronym (Automatic Data Processing)
+FIS,FIS,1136893,brand acronym (Fidelity National Information Services)
+BD,BDX,10795,brand acronym (Becton Dickinson)
+SCI,SCI,89089,brand acronym (Service Corporation International)
+Otis,OTIS,1781335,short brand (Otis Worldwide)
+National Oilwell Varco,NOV,1021860,renamed NOV Inc 2021
+Wabtec,WAB,943452,brand (Westinghouse Air Brake Technologies)
+JB Hunt,JBHT,728535,EDGAR title is Hunt (J.B.) Transport Services
+Synovus,SNV,18349,absent from 2026 SEC table (Pinnacle merger)
+Synovus Financial,SNV,18349,absent from 2026 SEC table (Pinnacle merger)
+Catalent,CTLT,1596783,acquired by Novo Holdings 2024
+IBM,IBM,51143,brand acronym (International Business Machines)
+ExxonMobil,XOM,34088,one-word brand spelling
+SBA,SBAC,1034054,brand acronym (SBA Communications)
+Hologic,HOLX,859737,absent from 2026 SEC table
+FICO,FICO,814547,brand acronym (Fair Isaac)
+IFF,IFF,51253,brand acronym (International Flavors & Fragrances)
+Penn National Gaming,PENN,921738,renamed PENN Entertainment 2022
+AIG,AIG,5272,brand acronym (American International Group)
+Apache,APA,1841666,reorganized as APA Corp 2021 (new holding-co CIK)
+Royal Caribbean Group,RCL,884887,brand name (EDGAR title Royal Caribbean Cruises)
+PPG,PPG,79879,brand acronym (PPG Industries)
+Molson Coors Brewing,TAP,24545,renamed Molson Coors Beverage 2020
+HCA,HCA,860730,brand acronym (HCA Healthcare)
+Ashland Global,ASH,1674862,renamed Ashland Inc 2023
+DowDuPont,DWDP,1666700,split into Dow/DuPont/Corteva 2019
+Zion Bancorporation,ZION,109380,transcription variant of Zions
+CooperCompanies,COO,711404,one-word brand spelling
+Starbucks Coffee,SBUX,829224,brand long form
+DXC,DXC,1688568,brand acronym (DXC Technology)
+NRG,NRG,1013871,brand acronym (NRG Energy)
+Kohl,KSS,885639,truncated greeting capture of Kohl's
+LabCorp of America,LH,920148,brand form of Laboratory Corp of America
+LabCorp,LH,920148,brand acronym
+MorphoSys,MOR,1340243,delisted 2024 (Novartis acquisition)
+CenturyLink,LUMN,18926,renamed Lumen Technologies 2020
+Lincoln Financial,LNC,59558,brand (EDGAR title Lincoln National)
+Uber,UBER,1543151,short brand below alias length guard
+Macy,M,794367,truncated greeting capture of Macy's
+Macys,M,794367,brand possessive
+Micron Technologies,MU,723125,transcription variant of Micron Technology
+Acuity Brands,AYI,1144215,renamed Acuity Inc 2025
+Coterra Energy,CTRA,858470,absent from 2026 SEC table
+PSEG,PEG,788784,brand acronym (Public Service Enterprise Group)
+ICE,ICE,1571949,brand acronym (Intercontinental Exchange)
+MPS,MPWR,1280452,brand acronym (Monolithic Power Systems)
+J&J,JNJ,200406,brand acronym (Johnson & Johnson)
+Horizon National,FHN,36966,EVENT_HEAD strips First from First Horizon National
+United Continental,UAL,100517,renamed United Airlines Holdings 2019
+MPC,MPC,1510295,brand acronym (Marathon Petroleum)
+Ford,F,37996,short brand below alias length guard
+BNY Mellon,BNY,1390777,brand (ticker BK until 2025 rename)
+Hess,HES,4447,acquired by Chevron 2024
+Southern Company,SO,92122,norms to generic token southern

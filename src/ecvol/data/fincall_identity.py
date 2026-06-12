@@ -43,8 +43,8 @@ GREETING_PATTERNS: list[tuple[re.Pattern, int]] = [
     # "Welcome to/joined the <name> First Quarter 2019 Earnings ..."
     (
         re.compile(
-            r"(?:welcome,? (?:everyone,? )?(?:to )?|you've joined )(?:the )?"
-            r"([A-Z].{2,60}?)(?:'s)?[ ,]+"
+            r"(?:welcome,? (?:everyone,? )?(?:to )?|you've joined |joining us (?:for|on) )(?:the )?"
+            r"([A-Z].{2,60}?)(?:'s)?[ ,.]+"
             r"(?:first|second|third|fourth|[1-4]Q|Q[1-4]|fiscal|full[- ]year"
             r"|\d{4}|earnings|year[- ]end|annual|quarterly)",
             re.I,
@@ -55,7 +55,8 @@ GREETING_PATTERNS: list[tuple[re.Pattern, int]] = [
     # (greedy prefix anchors the capture to just before the event words)
     (
         re.compile(
-            r"welcome to .{0,60}(?:quarter|20\d\d|fiscal \d{4}|year[- ]end)\s+"
+            r"welcome,? (?:everyone,? )?(?:back )?to .{0,60}"
+            r"(?:quarter|20\d\d|'\d\d|fiscal \d{4}|year[- ]end)\s+"
             r"([A-Z].{2,50}?)\s+(?:earnings|results|financial)",
             re.I,
         ),
@@ -81,6 +82,19 @@ GREETING_PATTERNS: list[tuple[re.Pattern, int]] = [
         re.compile(r"(?:earnings|results) call for\s+(?:the )?([A-Z][\w&.,' -]{2,60}?)\s*[.,;]"),
         4,
     ),
+    # "Welcome to the <name>, Inc. Conference Call" — no event word between the
+    # name and "Conference/Earnings Call" (the dedicated alternative to widening
+    # pattern 1, whose non-greedy capture would stop at prose like "today's
+    # conference"). Event-word cleanup trims any quarter/year tail the greedy
+    # capture drags along.
+    (
+        re.compile(
+            r"welcome to (?:the )?([A-Z].{2,60}?)(?:'s)?[ ,.]+"
+            r"(?:conference|earnings|quarterly) call",
+            re.I,
+        ),
+        6,
+    ),
 ]
 LEGAL_SUFFIXES = re.compile(
     r"\b(incorporated|inc|corporation|corp|company|companies|co|limited|ltd|plc|llc|lp|"
@@ -89,7 +103,7 @@ LEGAL_SUFFIXES = re.compile(
 _EVENT_WORDS = (
     rf"(?:first|second|third|fourth|[1-4]Q\d*|Q[1-4]|fiscal|year[- ]?end|full[- ]year|annual|"
     rf"quarter|quarterly|monthly|earnings|results|reports?|investor|overview|review|conference|"
-    rf"call|webcast|business update|update|and|20\d\d|{MONTHS})"
+    rf"call|webcast|business update|update|and|20\d\d|'\d\d|\d+(?:st|nd|rd|th)|{MONTHS})"
 )
 # Leading prose filler the greeting regexes can swallow before the actual name
 # ("you to the Adobe...", "today's Bank of America..."); stripped iteratively.
@@ -160,6 +174,11 @@ def _lookup_name(candidate: str, sec: dict[str, tuple[str, str]]) -> tuple[str, 
     dropped = norm_name(re.sub(r"['’]s\b", "", clean_candidate(candidate)))
     if dropped in sec:
         return sec[dropped]
+    # A lone generic token gets no prefix/fuzzy attempt: "Financial" would
+    # prefix-match "financial institutions", "Southern" -> "southern copper".
+    # (Exact hits above still work — curated overrides may add such keys.)
+    if " " not in key and key in GENERIC_TOKENS:
+        return None
     # Prefix match: "Capital One" -> "capital one financial". The table preserves
     # the SEC file's market-cap order, so when several keys share the prefix
     # (Honeywell International / Honeywell Aerospace) the largest-cap entry wins —
@@ -194,11 +213,16 @@ def clean_candidate(name: str) -> str:
     return EVENT_TAIL.sub("", EVENT_HEAD.sub("", name)).strip(" ,.-|")
 
 
-def load_sec_table(data_root: Path) -> dict[str, tuple[str, str]]:
-    """normalized name -> (ticker, cik). Cached under data/raw/ref/, idempotent.
+def load_sec_table(data_root: Path) -> tuple[dict[str, tuple[str, str]], frozenset[str]]:
+    """(normalized name -> (ticker, cik), keys safe for single-token body counts).
 
-    Share classes collapse to one entry (first = largest-cap ticker per the file's
-    ordering); keys that reduce to a single generic token are dropped entirely.
+    Cached under data/raw/ref/, idempotent. Share classes collapse to one entry
+    (first = largest-cap ticker per the file's ordering); keys that reduce to a
+    single generic token are dropped entirely. The companion set holds genuine
+    single-word company names plus curated override aliases — *not* the derived
+    first/last-token brand aliases, which match prose far too easily in body
+    text ("Turning" -> Turning Point Brands, "Watson" -> Willis Towers Watson)
+    and exist for greeting/PDF lookup only.
     """
     cache = data_root / "raw" / "ref" / "company_tickers.json"
     _download(SEC_TICKERS_URL, cache, headers=SEC_HEADERS)
@@ -212,6 +236,7 @@ def load_sec_table(data_root: Path) -> dict[str, tuple[str, str]]:
             table[key] = (row["ticker"], str(row["cik_str"]))
             if " " in key:
                 first_tokens[key.split()[0]] += 1
+    single_ok = {k for k in table if " " not in k}
     # Brand aliases from multi-word titles, usable by greeting/PDF matching only
     # (body counting requires multi-word keys): the first token ("Verizon
     # Communications" -> "verizon") and, more conservatively, the last token
@@ -235,13 +260,28 @@ def load_sec_table(data_root: Path) -> dict[str, tuple[str, str]]:
             and last not in table
         ):
             table[last] = value
-    return table
+    # Curated override aliases (committed CSV): brand acronyms ("ITW", "Citi")
+    # and companies absent from the current registrant table — delisted/renamed
+    # since the corpus era (Nordstrom, Kellogg, US Steel). CIKs are verified
+    # against EDGAR (notebooks/verify_identity_overrides.py); rows win on key
+    # collisions, and multi-word aliases also join body-mention counting.
+    overrides = data_root / "identity" / "fincall_name_overrides.csv"
+    if overrides.exists():
+        with open(overrides, encoding="utf-8") as f:
+            for row in csv.DictReader(f):
+                key = norm_name(row["alias"])
+                table[key] = (row["ticker"], row["cik"])
+                single_ok.add(key)
+    return table, frozenset(single_ok)
 
 
-def phrase_mentions(text: str, sec: dict[str, tuple[str, str]]) -> Counter:
+def phrase_mentions(
+    text: str, sec: dict[str, tuple[str, str]], single_ok: frozenset[str] = frozenset()
+) -> Counter:
     """Count SEC-table matches (keyed by CIK, so share classes merge) over
     contiguous sub-spans of capitalized runs."""
     counts: Counter = Counter()
+    singles: Counter = Counter()
     for run in CAP_RUN_RE.findall(text):
         tokens = run.split()
         if not 1 <= len(tokens) <= 12:
@@ -253,13 +293,23 @@ def phrase_mentions(text: str, sec: dict[str, tuple[str, str]]) -> Counter:
             longest = None
             for j in range(i + 1, min(i + 7, len(tokens) + 1)):
                 key = norm_name(" ".join(tokens[i:j]))
-                # Body mentions only count for multi-word names: single-token
-                # keys ("On", "Bill", "Target") match ordinary prose far too
-                # often; single-word companies resolve via greeting/PDF evidence.
-                if key in sec and " " in key:
+                if key not in sec:
+                    continue
+                # Single-token keys ("On", "Bill", "Target") match ordinary
+                # prose too easily; only distinctive whole-name keys count,
+                # tallied separately so their contribution is capped below.
+                if " " in key or (
+                    j - i == 1 and key in single_ok and len(key) >= 5 and key not in GENERIC_TOKENS
+                ):
                     longest = key
             if longest:
-                counts[sec[longest][1]] += 1
+                (counts if " " in longest else singles)[sec[longest][1]] += 1
+    # Single-token brand evidence ("Allstate", "Costco") needs recurrence (an
+    # issuer's name repeats; a one-off capitalized word is prose) and is capped
+    # so a third-party brand can't outvote greetings or trip the margin guard.
+    for cik, n in singles.items():
+        if n >= 2:
+            counts[cik] += min(n, 3)
     return counts
 
 
@@ -267,22 +317,25 @@ def resolve_company(
     transcript: str,
     pdf_company: str | None,
     sec: dict[str, tuple[str, str]],
+    single_ok: frozenset[str] = frozenset(),
 ) -> tuple[str, str, int, str, int, list[str]]:
     """Score evidence; return (ticker, cik, score, runner_up, runner_score, flags)."""
     scores: Counter = Counter()  # keyed by CIK so share classes can't self-compete
     flags: list[str] = []
 
-    scores.update(phrase_mentions(transcript, sec))
+    scores.update(phrase_mentions(transcript, sec, single_ok))
 
     sources: list[tuple[str | None, int, str]] = [(pdf_company, 2, "pdf_company")]
-    sources += [(name, weight, "greeting") for name, weight in _greeting_names(transcript)]
-    boosted: set[tuple[str, str]] = set()  # (cik, flag): each evidence kind counts once
+    sources += [(name, weight, f"greeting{i}") for name, weight, i in _greeting_names(transcript)]
+    boosted: set[str] = set()
+    greet: Counter = Counter()  # greeting/PDF evidence alone, for the tie-break
     for source, boost, flag in sources:
-        if source and (hit := _lookup_name(source, sec)):
-            if (hit[1], flag) not in boosted:
-                boosted.add((hit[1], flag))
-                scores[hit[1]] += boost
-                flags.append(f"match:{flag}")
+        # One boost per evidence kind, first lookup hit wins.
+        if flag not in boosted and source and (hit := _lookup_name(source, sec)):
+            boosted.add(flag)
+            scores[hit[1]] += boost
+            greet[hit[1]] += boost
+            flags.append(f"match:{flag}")
 
     cik_to_ticker = {cik: ticker for ticker, cik in reversed(sec.values())}
     if not scores:
@@ -294,22 +347,50 @@ def resolve_company(
     if top_score < 2:
         return "", "", int(top_score), top_t, int(second_score), ["unresolved:weak_evidence"]
     if top_score - second_score < 2:
+        # Greeting dominance: greetings name the host; body mentions name
+        # anyone (GE's call discusses Baker Hughes ten times, VF its own
+        # spinoff). If one company's greeting evidence is strong and entirely
+        # unchallenged by anyone else's, it wins the tie-break.
+        g_ranked = greet.most_common(2)
+        if (
+            g_ranked
+            and g_ranked[0][1] >= 6
+            and g_ranked[0][1] - (g_ranked[1][1] if len(g_ranked) > 1 else 0) >= 6
+        ):
+            g_top = g_ranked[0][0]
+            g_runner = next((c for c, _ in scores.most_common() if c != g_top), "")
+            return (
+                cik_to_ticker[g_top],
+                g_top,
+                int(scores[g_top]),
+                cik_to_ticker.get(g_runner, ""),
+                int(scores[g_runner]) if g_runner else 0,
+                flags + ["greeting_dominant"],
+            )
         return "", "", int(top_score), top_t, int(second_score), ["unresolved:ambiguous"]
     return top_t, top, int(top_score), second_t, int(second_score), flags
 
 
-def _greeting_names(transcript: str) -> list[tuple[str, int]]:
+def _greeting_names(transcript: str) -> list[tuple[str, int, int]]:
+    """First surviving (name, weight, pattern_index) capture per pattern.
+
+    Junk captures (a generic operator line cleans down to nothing) are skipped
+    so they can't shadow the host's real greeting later in the head — but the
+    first capture that *looks* like a company consumes the pattern's slot even
+    if the SEC lookup then misses: scanning on until something matches the
+    table would let a later junk capture hijack a renamed/delisted issuer.
+    """
     head = transcript[:4000]
-    names: list[tuple[str, int]] = []
-    for pattern, weight in GREETING_PATTERNS:
-        if not (m := pattern.search(head)):
-            continue
-        name = clean_candidate(m.group(1).strip())
-        # The re.I patterns make their [A-Z] anchor case-blind; after cleanup,
-        # require a proper-noun shape (second-char rule keeps eBay-style brands)
-        # so prose fragments ("ladies", "virtual") don't reach the lookup.
-        if len(name) >= 2 and (name[0].isupper() or name[1].isupper()):
-            names.append((name, weight))
+    names: list[tuple[str, int, int]] = []
+    for idx, (pattern, weight) in enumerate(GREETING_PATTERNS):
+        for m in pattern.finditer(head):
+            name = clean_candidate(m.group(1).strip())
+            # The re.I patterns make their [A-Z] anchor case-blind; after
+            # cleanup, require a proper-noun shape (second-char rule keeps
+            # eBay-style brands) so prose fragments don't reach the lookup.
+            if len(name) >= 2 and (name[0].isupper() or name[1].isupper()):
+                names.append((name, weight, idx))
+                break
     return names
 
 
@@ -377,7 +458,7 @@ def _pdf_signals_cached(pdf_path: Path, cache: dict, cache_key: str):
 def build_identity(data_root: Path) -> tuple[Path, dict[str, int]]:
     """Resolve every FinCall call; write the committed identity CSV + return stats."""
     raw = data_root / "raw" / "fincall"
-    sec = load_sec_table(data_root)
+    sec, single_ok = load_sec_table(data_root)
     cache_path = data_root / "raw" / "ref" / "fincall_pdf_signals.json"
     cache = json.loads(cache_path.read_text(encoding="utf-8")) if cache_path.exists() else {}
     rows: list[IdentityRow] = []
@@ -389,7 +470,7 @@ def build_identity(data_root: Path) -> tuple[Path, dict[str, int]]:
                 raw / f"ppt_{year}" / f"{ppt_id}.pdf", cache, f"{year}/{ppt_id}"
             )
             ticker, cik, score, runner, runner_score, flags = resolve_company(
-                rec["input"], company_meta, sec
+                rec["input"], company_meta, sec, single_ok
             )
             date, date_source, date_flags = extract_date(page1, created)
             rows.append(

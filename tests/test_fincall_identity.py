@@ -60,6 +60,19 @@ def test_resolve_company_dominant_match():
     assert score >= 3
 
 
+def test_resolve_company_greeting_dominance_breaks_body_ties():
+    # Body text mentions a related company more often than the issuer (GE's
+    # call discussing Baker Hughes), but only the issuer has greeting evidence.
+    text = (
+        "Operator: Welcome to the International Paper First Quarter 2020 Earnings Call. "
+        + "Vulcan Materials results. " * 14
+    )
+    ticker, _, _, runner, _, flags = resolve_company(text, None, SEC)
+    assert ticker == "IP"
+    assert runner == "VMC"
+    assert "greeting_dominant" in flags
+
+
 def test_resolve_company_ambiguous_is_unresolved():
     text = (
         "International Paper and Vulcan Materials announced a venture. International Paper said. "
@@ -144,6 +157,16 @@ def test_norm_name_joins_dotted_initials_consistently():
     assert norm_name("J M SMUCKER Co") == "jm smucker"
 
 
+def test_lookup_name_generic_token_gets_no_prefix_or_fuzzy():
+    from ecvol.data.fincall_identity import _lookup_name
+
+    sec = {"financial institutions": ("FISI", "862831"), "southern copper": ("SCCO", "1001838")}
+    assert _lookup_name("Financial", sec) is None  # would prefix-match FISI
+    assert _lookup_name("Southern Company", sec) is None  # would prefix-match SCCO
+    # An exact (override-provided) key still wins for the same token.
+    assert _lookup_name("Southern Company", {**sec, "southern": ("SO", "92122")}) == ("SO", "92122")
+
+
 def test_lookup_name_fuzzy_survives_closer_wrong_candidate():
     from ecvol.data.fincall_identity import _lookup_name
 
@@ -162,6 +185,35 @@ def test_clean_candidate_strips_filler_head_and_event_words():
     assert clean_candidate("Royal Caribbean Group's Business Update") == "Royal Caribbean Group's"
 
 
+def test_load_sec_table_merges_overrides(tmp_path):
+    import json
+
+    from ecvol.data.fincall_identity import load_sec_table
+
+    # Pre-seed the cache so _download skips the network.
+    ref = tmp_path / "raw" / "ref"
+    ref.mkdir(parents=True)
+    (ref / "company_tickers.json").write_text(
+        json.dumps({"0": {"ticker": "ITW", "title": "ILLINOIS TOOL WORKS INC", "cik_str": 49826}})
+    )
+    ident = tmp_path / "identity"
+    ident.mkdir()
+    (ident / "fincall_name_overrides.csv").write_text(
+        "alias,ticker,cik,note\nITW,ITW,49826,acronym\nNordstrom,JWN,72333,delisted\n"
+    )
+    table, single_ok = load_sec_table(tmp_path)
+    assert table["itw"] == ("ITW", "49826")  # acronym alias for a live company
+    assert table["nordstrom"] == ("JWN", "72333")  # absent from the live table
+    assert table["illinois tool works"] == ("ITW", "49826")
+    # Derived brand aliases must NOT be body-countable; override aliases are.
+    assert "illinois" not in single_ok
+    assert {"itw", "nordstrom"} <= single_ok
+
+
+def test_clean_candidate_strips_ordinal_event_tail():
+    assert clean_candidate("FMC's 91st") == "FMC's"
+
+
 def test_greeting_names_require_proper_noun_shape():
     from ecvol.data.fincall_identity import _greeting_names
 
@@ -169,4 +221,25 @@ def test_greeting_names_require_proper_noun_shape():
     junk = "Hello, and welcome to the ladies first quarter 2020 earnings call."
     assert _greeting_names(junk) == []
     kept = "Welcome to the eBay Q1 2020 Earnings Conference Call."
-    assert ("eBay", 6) in _greeting_names(kept)
+    assert ("eBay", 6, 0) in _greeting_names(kept)
+
+
+def test_greeting_names_yield_all_matches_per_pattern():
+    from ecvol.data.fincall_identity import _greeting_names
+
+    # A generic operator line must not shadow the host's real greeting later on.
+    text = (
+        "Operator: Welcome to the Second Quarter 2020 Earnings Call. I will now "
+        "turn the call over. Executives: Welcome to Ameriprise Financial's "
+        "Second Quarter Earnings Call."
+    )
+    assert ("Ameriprise Financial", 6, 0) in _greeting_names(text)
+
+
+def test_phrase_mentions_counts_recurring_distinctive_single_tokens():
+    sec = {"allstate": ("ALL", "899051"), **SEC}
+    ok = frozenset({"allstate"})
+    text = "Allstate announced results. Allstate said growth was strong. Allstate Allstate."
+    assert phrase_mentions(text, sec, ok)["899051"] == 3  # capped at 3 despite 4 mentions
+    assert phrase_mentions("Allstate announced results.", sec, ok)["899051"] == 0  # no recurrence
+    assert phrase_mentions(text, sec)["899051"] == 0  # not in single_ok -> never counted
