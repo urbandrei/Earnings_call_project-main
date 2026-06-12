@@ -1,0 +1,32 @@
+# Data payloads — tracked via committed manifests (data/manifests/), never in git
+data/
+!data/manifests/
+
+# Run outputs
+artifacts/
+
+# Legacy bulk binaries (see DECISIONS.md 2026-06-12): third-party literature PDFs
+# and slides are not redistributable; notebooks/README/Paper.pdf ARE tracked.
+legacy/papers/
+legacy/PowerPoint.pptx
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+build/
+dist/
+
+# Tooling caches
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.ipynb_checkpoints/
+
+# Secrets
+.env
+
+# OS noise
+Thumbs.db
+.DS_Store
