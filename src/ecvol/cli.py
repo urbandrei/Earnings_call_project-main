@@ -44,6 +44,19 @@ def fetch(
 
 
 @data_app.command()
+def identity(
+    root: Path = typer.Option(Path("data"), help="Data root directory."),  # noqa: B008
+) -> None:
+    """Reconstruct FinCall call identity (ticker/company/date/type) → committed CSV (T1.4)."""
+    from ecvol.data.fincall_identity import build_identity
+
+    out, stats = build_identity(root)
+    typer.echo(f"identity table written: {out}")
+    for key, value in stats.items():
+        typer.echo(f"  {key}: {value}")
+
+
+@data_app.command()
 def spotcheck(
     root: Path = typer.Option(Path("data/raw"), help="Tree to sample audio from."),  # noqa: B008
     n: int = typer.Option(50, help="Number of audio files to decode."),

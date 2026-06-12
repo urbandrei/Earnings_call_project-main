@@ -3,6 +3,7 @@
 # git cannot re-include below an excluded directory.
 /data/*
 !/data/manifests/
+!/data/identity/
 
 # Run outputs
 /artifacts/

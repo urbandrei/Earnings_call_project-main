@@ -1,0 +1,110 @@
+"""Identity reconstruction logic: name matching, scoring, dates, call types (T1.4).
+
+No network and no real PDFs: load_sec_table/_pdf_signals are exercised against
+fixtures; the corpus-scale run is validated by the audited identity CSV.
+"""
+
+from ecvol.data.fincall_identity import (
+    classify_call,
+    clean_candidate,
+    extract_date,
+    norm_name,
+    phrase_mentions,
+    resolve_company,
+)
+
+SEC = {
+    "stanley black decker": ("SWK", "93556"),
+    "international paper": ("IP", "51434"),
+    "citigroup": ("C", "831001"),
+    "target": ("TGT", "27419"),
+    "vulcan materials": ("VMC", "1396009"),
+}
+
+
+def test_norm_name_strips_legal_suffixes_and_possessives():
+    assert norm_name("Stanley Black & Decker, Inc.") == "stanley black decker"
+    assert norm_name("Citigroup's") == "citigroup"
+    assert norm_name("The Vulcan Materials Company") == "vulcan materials"
+
+
+def test_clean_candidate_drops_event_tail():
+    assert clean_candidate("Vulcan Materials Company First Quarter Earnings") == (
+        "Vulcan Materials Company"
+    )
+
+
+def test_phrase_mentions_finds_multiword_names():
+    text = (
+        "Operator: Welcome to the Stanley Black & Decker Fourth Quarter Call. "
+        "Stanley Black & Decker issued a press release. Thanks for joining "
+        "Stanley Black & Decker's call."
+    )
+    counts = phrase_mentions(text, SEC)
+    assert counts["SWK"] >= 2
+
+
+def test_phrase_mentions_discounts_generic_single_words():
+    # One mention of a short generic name ("Target") must not count as full evidence.
+    counts = phrase_mentions("Our Target audience grew.", SEC)
+    assert counts["TGT"] < 1
+
+
+def test_resolve_company_dominant_match():
+    text = (
+        "Operator: Welcome to the International Paper First Quarter 2020 Earnings Call. "
+        "International Paper reported results. International Paper's CEO spoke."
+    )
+    ticker, cik, score, _, _, flags = resolve_company(text, None, SEC)
+    assert (ticker, cik) == ("IP", "51434")
+    assert score >= 3
+
+
+def test_resolve_company_ambiguous_is_unresolved():
+    text = (
+        "International Paper and Vulcan Materials announced a venture. International Paper said. "
+        "Vulcan Materials said. International Paper. Vulcan Materials."
+    )
+    ticker, _, _, _, _, flags = resolve_company(text, None, SEC)
+    assert ticker == ""
+    assert any(f.startswith("unresolved") for f in flags)
+
+
+def test_resolve_company_pdf_metadata_boost():
+    ticker, _, score, _, _, flags = resolve_company(
+        "Welcome to the call. International Paper. ", "International Paper Co", SEC
+    )
+    assert ticker == "IP"
+    assert "match:pdf_company" in flags
+
+
+def test_resolve_company_no_candidates():
+    ticker, _, _, _, _, flags = resolve_company("hello world, nothing here.", None, SEC)
+    assert ticker == ""
+    assert flags == ["unresolved:no_candidates"]
+
+
+def test_extract_date_prefers_page1_and_flags_disagreement():
+    date, source, flags = extract_date("Results Review  January 16, 2019", "2019-01-15")
+    assert (date, source, flags) == ("2019-01-16", "pdf_page1", [])
+    _, _, flags = extract_date("January 16, 2019", "2018-10-01")
+    assert "date_disagreement" in flags
+
+
+def test_extract_date_fallbacks():
+    assert extract_date(None, "2020-02-12") == (
+        "2020-02-12",
+        "pdf_created",
+        ["date_from_creation_stamp"],
+    )
+    assert extract_date(None, None) == ("", "", ["no_date"])
+
+
+def test_classify_call_types():
+    assert classify_call("Welcome to the Q4 2018 Earnings Conference Call", None) == "earnings"
+    assert classify_call("Welcome to the Ford Monthly Sales Conference Call", None) == "sales"
+    assert classify_call("call to discuss the combination of A and B", None) == "ma"
+    assert classify_call("I cover hardware at JPMorgan, welcome to our Tech Forum", None) == (
+        "conference"
+    )
+    assert classify_call("Good morning operator.", None) == "unknown"
