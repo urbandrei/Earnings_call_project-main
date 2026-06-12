@@ -52,7 +52,7 @@
 
 ## Phase 1 — Data foundation (~1–2 weeks) — *highest-risk-first*
 
-### T1.1 Dataset acquisition & mirroring — `[ ]` *(do first — retires link-rot risk)*
+### T1.1 Dataset acquisition & mirroring — `[~]` *(do first — retires link-rot risk)*
 - **Goal:** local, checksummed mirrors of FinCall-Surprise and MAEC.
 - **End result:** `data/` mirrors + committed manifests; download scripts in-repo.
 - **Acceptance test:** manifest verify passes; counts match published sizes (FinCall-Surprise ≈ 2,688 calls; MAEC ≈ 3,443) or the gap is documented; audio files spot-decoded (random 50) without error.
