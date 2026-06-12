@@ -50,3 +50,7 @@ Keep entries factual and compact. Decisions that change the design belong in [DE
 - **Found:** (1) T0.1 latent bug: the unanchored `data/` gitignore pattern also matched `src/ecvol/data/`, so the package's data subdir was never committed — and `!data/manifests/` could never re-include below an excluded dir. Fixed with root-anchored `/data/*` + `!/data/manifests/`. (2) Parquet bit-identity holds across separate interpreter processes with pyarrow defaults (compression="none"; footer has no timestamp) — verified manually, asserted in-process in tests. (3) `env_fingerprint()` on this machine: RTX 5060 Ti, driver 591.86. The acceptance's "rerun a CPU-only config" is covered at writer level (deterministic bytes for identical rows); the end-to-end form becomes testable when `ecvol evaluate` lands (T2.2).
 - **Sources:** none beyond project docs.
 - **Next:** Phase 1 — T1.1 dataset acquisition & mirroring (FinCall-Surprise + MAEC fetchers, manifests now ready for them). Push and confirm CI green (user verifies Actions).
+
+### 2026-06-12 — T0.3 closed
+- **Done:** CI green on GitHub for the T0.3 push (user-verified in the Actions tab). T0.3 acceptance fully met; Phase 0 (scaffolding) complete.
+- **Next:** T1.1 dataset acquisition & mirroring.

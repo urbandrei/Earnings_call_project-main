@@ -46,7 +46,7 @@
   - [x] `manifests.py` (path, source URL, retrieved_at, SHA-256, license)
   - [x] Run-ID scheme + `artifacts/runs/<id>/` writer
   - [x] Env fingerprint capture (lockfile hash, CUDA/driver versions)
-- **Notes:** done 2026-06-12. `src/ecvol/data/manifests.py` (+ `ecvol data verify`, exit 1 on mismatch/missing) and `src/ecvol/tracking.py` (run ID `<UTC ts>-<confighash8>`, `write_run` → config.yaml/run.json/metrics.parquet, deterministic parquet verified bit-identical across interpreter processes). Acceptance covered by `tests/test_manifests.py` + `tests/test_tracking.py` (real-pipeline rerun re-asserted once `ecvol evaluate` exists, T2.2). Bonus fix: T0.1's unanchored `data/` gitignore pattern had silently untracked `src/ecvol/data/`. Journal: 2026-06-12 T0.3 entry.
+- **Notes:** done 2026-06-12. `src/ecvol/data/manifests.py` (+ `ecvol data verify`, exit 1 on mismatch/missing) and `src/ecvol/tracking.py` (run ID `<UTC ts>-<confighash8>`, `write_run` → config.yaml/run.json/metrics.parquet, deterministic parquet verified bit-identical across interpreter processes). Acceptance covered by `tests/test_manifests.py` + `tests/test_tracking.py` (real-pipeline rerun re-asserted once `ecvol evaluate` exists, T2.2). Bonus fix: T0.1's unanchored `data/` gitignore pattern had silently untracked `src/ecvol/data/`. CI green on push (user-verified). Journal: 2026-06-12 T0.3 entry.
 
 ---
 
