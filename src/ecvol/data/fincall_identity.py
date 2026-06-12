@@ -43,10 +43,11 @@ GREETING_PATTERNS: list[tuple[re.Pattern, int]] = [
     # "Welcome to/joined the <name> First Quarter 2019 Earnings ..."
     (
         re.compile(
-            r"(?:welcome,? (?:everyone,? )?(?:to )?|you've joined |joining us (?:for|on) )(?:the )?"
+            r"(?:welcome,? (?:everyone,? )?(?:to )?|you've joined "
+            r"|join(?:ing)? us (?:today )?(?:for|on) )(?:the )?"
             r"([A-Z].{2,60}?)(?:'s)?[ ,.]+"
             r"(?:first|second|third|fourth|[1-4]Q|Q[1-4]|fiscal|full[- ]year"
-            r"|\d{4}|earnings|year[- ]end|annual|quarterly)",
+            r"|\d{4}|earnings|year[- ]end|annual|quarterly|special)",
             re.I,
         ),
         6,
@@ -80,6 +81,17 @@ GREETING_PATTERNS: list[tuple[re.Pattern, int]] = [
     # "... Earnings Call for <name>."
     (
         re.compile(r"(?:earnings|results) call for\s+(?:the )?([A-Z][\w&.,' -]{2,60}?)\s*[.,;]"),
+        4,
+    ),
+    # "<name>'s Vice President of Investor Relations" — reversed IR form. The
+    # possessive is mandatory and commas can't be crossed: the appositive person
+    # form ("Zach Moxcey, Senior Vice President of ...") must fail here rather
+    # than consume the slot with a person's name or a bare "Senior".
+    (
+        re.compile(
+            r"([A-Z][\w&.' -]{2,60}?)'s (?:Senior |Executive )?"
+            r"Vice President of Investor Relations"
+        ),
         4,
     ),
     # "Welcome to the <name>, Inc. Conference Call" — no event word between the
@@ -127,6 +139,19 @@ EARNINGS_RE = re.compile(
 )
 MA_RE = re.compile(r"\b(merger|acquisition|acquire|combination|transaction|tender offer)\b", re.I)
 CONFERENCE_RE = re.compile(r"\b(forum|fireside|analyst at|tech conference|hosted by)\b", re.I)
+# Markers strong enough to outrank earnings keywords: sell-side conference
+# sessions quote quarters/earnings constantly, but a fireside chat or "our
+# next company" introduction is never the issuer's own earnings call.
+# ("investor conference call" is ordinary earnings-call phrasing — excluded.)
+STRONG_CONF_RE = re.compile(
+    # "fireside chat at <venue>" is housekeeping on real earnings calls
+    # ("Adrian will be participating in a fireside chat at Cowen's...").
+    r"fireside(?! chat at\b)|introduce our next company|analyst at |"
+    r"my name is .{3,80}?analyst|"
+    r"(?:healthcare|tech(?:nology)?|growth|industrial) conference|investor conference(?! call)",
+    re.I,
+)
+MEETING_RE = re.compile(r"(?:annual|special) meeting of (?:the )?(?:share|stock)holders", re.I)
 SALES_RE = re.compile(r"\bmonthly sales\b", re.I)
 
 
@@ -142,7 +167,7 @@ class IdentityRow:
     runner_up_score: int
     date: str  # ISO yyyy-mm-dd, "" when unknown
     date_source: str  # pdf_page1 | pdf_created | ""
-    call_type: str  # earnings | ma | conference | sales | unknown
+    call_type: str  # earnings | ma | conference | sales | meeting | unknown
     flags: str  # ;-separated quality flags
 
 
@@ -420,6 +445,10 @@ def classify_call(transcript_head: str, page1_text: str | None) -> str:
     blob = f"{transcript_head[:1500]} {page1_text or ''}"
     if SALES_RE.search(blob):
         return "sales"
+    if MEETING_RE.search(blob):
+        return "meeting"
+    if STRONG_CONF_RE.search(blob):
+        return "conference"
     if EARNINGS_RE.search(blob):
         return "earnings"
     if MA_RE.search(blob):

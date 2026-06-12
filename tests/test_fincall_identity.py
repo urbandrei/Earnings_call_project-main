@@ -121,6 +121,28 @@ def test_classify_call_types():
         "conference"
     )
     assert classify_call("Good morning operator.", None) == "unknown"
+    # Strong conference markers outrank earnings keywords: a fireside chat
+    # quoting "Q4 earnings" is still a conference session.
+    assert classify_call("a fireside chat about Q4 earnings with the CEO", None) == "conference"
+    assert (
+        classify_call(
+            "My name is Cory Kasimov. I'm the senior large-cap biotech analyst, and "
+            "it's my pleasure to introduce our next company. Q4 earnings were strong.",
+            None,
+        )
+        == "conference"
+    )
+    assert classify_call("Welcome to the Annual Meeting of Shareholders", None) == "meeting"
+    # ...but ordinary earnings-call phrasing must not trip the conference rule.
+    assert classify_call("welcome to the Q3 investor conference call", None) == "earnings"
+    assert (
+        classify_call(
+            "welcome to the Q1 Earnings Call. Adrian will be participating in a "
+            "fireside chat at Cowen's retail conference next week.",
+            None,
+        )
+        == "earnings"
+    )
 
 
 def test_norm_name_strips_edgar_state_tags():
