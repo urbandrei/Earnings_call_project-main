@@ -13,8 +13,51 @@ app = typer.Typer(
     help="Earnings-call volatility prediction pipeline.",
 )
 
-data_app = typer.Typer(no_args_is_help=True, help="Data provenance commands (T0.3).")
+data_app = typer.Typer(no_args_is_help=True, help="Data acquisition & provenance (T0.3, T1.1).")
 app.add_typer(data_app, name="data")
+
+
+@data_app.command()
+def fetch(
+    dataset: str = typer.Argument(help="Dataset to mirror: fincall | maec | all."),
+    root: Path = typer.Option(Path("data"), help="Data root directory."),  # noqa: B008
+    skip_drive: bool = typer.Option(
+        False, help="FinCall only: skip the ~57 GB Google Drive payload (repo files only)."
+    ),
+) -> None:
+    """Mirror datasets locally with checksummed manifests (T1.1). Idempotent/resumable."""
+    from ecvol.data import fetch as f
+
+    if dataset not in ("fincall", "maec", "all"):
+        typer.echo(f"unknown dataset {dataset!r} (expected fincall | maec | all)", err=True)
+        raise typer.Exit(code=2)
+    if dataset in ("fincall", "all"):
+        manifest = f.fetch_fincall(root, skip_drive=skip_drive)
+        typer.echo(f"fincall mirrored; manifest: {manifest}")
+        for key, value in f.count_fincall_calls(root / "raw" / "fincall").items():
+            typer.echo(f"  {key}: {value}")
+    if dataset in ("maec", "all"):
+        manifest = f.fetch_maec(root)
+        typer.echo(f"maec mirrored; manifest: {manifest}")
+        for key, value in f.count_maec_calls(root / "raw" / "maec").items():
+            typer.echo(f"  {key}: {value}")
+
+
+@data_app.command()
+def spotcheck(
+    root: Path = typer.Option(Path("data/raw"), help="Tree to sample audio from."),  # noqa: B008
+    n: int = typer.Option(50, help="Number of audio files to decode."),
+    seed: int = typer.Option(0, help="Sampling seed."),
+) -> None:
+    """Decode a seeded-random sample of mirrored audio with ffmpeg (T1.1 acceptance)."""
+    from ecvol.data.fetch import spotcheck_audio
+
+    problems = spotcheck_audio(root, n=n, seed=seed)
+    if problems:
+        for problem in problems:
+            typer.echo(problem, err=True)
+        raise typer.Exit(code=1)
+    typer.echo(f"spotcheck OK: {n} file(s) decoded cleanly (seed={seed})")
 
 
 @data_app.command()
