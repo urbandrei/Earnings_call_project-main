@@ -52,16 +52,16 @@
 
 ## Phase 1 — Data foundation (~1–2 weeks) — *highest-risk-first*
 
-### T1.1 Dataset acquisition & mirroring — `[~]` *(do first — retires link-rot risk)*
+### T1.1 Dataset acquisition & mirroring — `[x]` *(do first — retires link-rot risk)*
 - **Goal:** local, checksummed mirrors of FinCall-Surprise and MAEC.
 - **End result:** `data/` mirrors + committed manifests; download scripts in-repo.
 - **Acceptance test:** manifest verify passes; counts match published sizes (FinCall-Surprise ≈ 2,688 calls; MAEC ≈ 3,443) or the gap is documented; audio files spot-decoded (random 50) without error.
 - **Subtasks:**
-  - [ ] FinCall-Surprise GitHub + Google Drive fetcher
-  - [ ] MAEC fetcher
-  - [ ] Checksum + license fields in manifests
-  - [ ] Storage estimate & location decision (external disk OK — manifests make it portable)
-- **Notes:** —
+  - [x] FinCall-Surprise GitHub + Google Drive fetcher
+  - [x] MAEC fetcher
+  - [x] Checksum + license fields in manifests
+  - [x] Storage estimate & location decision (external disk OK — manifests make it portable)
+- **Notes:** done 2026-06-12. `ecvol data fetch fincall|maec|all` + `ecvol data spotcheck`; mirrors on `D:\ecvol-data` via `data\raw` junction (DECISIONS.md). Counts exact: FinCall 2,688 calls (919/704/1065), MAEC 3,443 (all with text+features). Audio joins: 2,671/2,688 calls (99.4%) have their mp3; 17 missing, 456 surplus files. Spotcheck 50/50 decode OK (seed 0). **Gap:** MAEC 59 GB MFCC archive link-rotted upstream, no mirror exists (DECISIONS.md). Journal: 2026-06-12 T1.1 entry.
 
 ### T1.2 Price ingestion (Stooq + Tiingo cross-check) — `[ ]`
 - **Goal:** reliable adjusted daily OHLCV for the combined ticker universe.
