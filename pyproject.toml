@@ -1,0 +1,33 @@
+[project]
+name = "ecvol"
+version = "0.1.0"
+description = "Predicting post-earnings-call stock volatility from transcript text and call audio"
+requires-python = ">=3.12"
+dependencies = [
+    "typer>=0.15",
+]
+
+[project.scripts]
+ecvol = "ecvol.cli:app"
+
+[dependency-groups]
+dev = [
+    "pytest>=8",
+    "ruff>=0.11",
+    "pre-commit>=4",
+]
+
+[build-system]
+requires = ["uv_build>=0.11,<0.12"]
+build-backend = "uv_build"
+
+[tool.ruff]
+src = ["src", "tests"]
+line-length = 100
+extend-exclude = ["legacy"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
