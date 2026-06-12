@@ -14,7 +14,7 @@
 
 ## Phase 0 — Scaffolding (~3–5 days)
 
-### T0.1 Package skeleton — `[!]`
+### T0.1 Package skeleton — `[x]`
 - **Goal:** installable `ecvol` package with version control and CI.
 - **End result:** git repo initialized at project root; `pip install -e .` (via uv) works; `ecvol --help` lists all verbs as stubs.
 - **Acceptance test:** GitHub Actions green on ruff + pytest (empty suite passes); fresh-machine install from lockfile documented and tested once; `git log` shows small, focused commits from the very first one.
@@ -26,7 +26,7 @@
   - [x] Typer CLI stub (`prices|targets|splits|featurize|train|evaluate|report`)
   - [x] pre-commit (ruff format + lint)
   - [x] CI workflow (GitHub Actions)
-- **Notes:** 2026-06-12 — all local work done and green (ruff, pytest, pre-commit, fresh-clone install from lockfile per README.md); legacy-binaries gitignore choice logged in DECISIONS.md. **Blocked on user:** create GitHub repo + push (`gh auth login` is interactive) to verify the Actions-green acceptance item, then flip to `[x]`. Journal: 2026-06-12 T0.1 entry.
+- **Notes:** done 2026-06-12. All checks green locally (ruff, pytest, pre-commit) and fresh-clone install from lockfile tested per README.md; legacy-binaries gitignore choice logged in DECISIONS.md. Repo: github.com/urbandrei/Earnings_call_project-main (private); CI green on first push (user-verified). Journal: 2026-06-12 T0.1 entries.
 
 ### T0.2 Config system — `[ ]`
 - **Goal:** every experiment definable as a validated YAML.

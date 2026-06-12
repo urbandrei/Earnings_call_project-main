@@ -34,3 +34,8 @@ Keep entries factual and compact. Decisions that change the design belong in [DE
 - **Found:** Python 3.14.4 is the system default — pinned 3.12 instead for ML-wheel compatibility (torch et al. lag new CPython releases). Ruff initially linted the legacy notebooks (395 KB of findings) → `extend-exclude = ["legacy"]`, consistent with their read-only status. PowerShell 5.1 `Set-Content -Encoding utf8` writes BOMs — generated files rewritten BOM-free.
 - **Sources:** uv install/sync docs (docs.astral.sh/uv), astral-sh/ruff-pre-commit, astral-sh/setup-uv action.
 - **Next:** User: create the GitHub repo and push (needs `gh auth login` or manual repo creation) to verify Actions green — the one open T0.1 acceptance item. Then T0.2 config system.
+
+### 2026-06-12 — T0.1 closed
+- **Done:** User created the GitHub repo (`urbandrei/Earnings_call_project-main`, private) and pushed; CI run on `main` green on first try (user-verified in the Actions tab — repo is private, so no API access from the agent without `gh`). T0.1 acceptance fully met → `[x]`.
+- **Found:** Verifying Actions on a private repo from this machine needs an authenticated `gh`; worth installing (`winget install GitHub.cli` + `gh auth login`) before CI-dependent phases.
+- **Next:** T0.2 config system (pydantic schemas, example YAML, config-hash function).
