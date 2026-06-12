@@ -83,6 +83,20 @@ def test_resolve_company_ambiguous_is_unresolved():
     assert any(f.startswith("unresolved") for f in flags)
 
 
+def test_resolve_company_weak_body_tail_needs_opening_corroboration():
+    # Two prose mentions of a brand deep in the call, with the issuer missing
+    # from the table, must not resolve: the issuer is always named up front.
+    text = "Welcome to the quarterly call of a company not in any table. " + "x " * 800
+    text += "Vulcan Materials was cited. Vulcan Materials again."
+    ticker, _, _, _, _, flags = resolve_company(text, None, SEC)
+    assert ticker == ""
+    assert "unresolved:body_only_tail" in flags
+    # The same evidence near the opening resolves fine.
+    early = "Vulcan Materials was cited. Vulcan Materials again. " + "x " * 800
+    ticker, _, _, _, _, _ = resolve_company(early, None, SEC)
+    assert ticker == "VMC"
+
+
 def test_resolve_company_pdf_metadata_boost():
     ticker, _, score, _, _, flags = resolve_company(
         "Welcome to the call. International Paper. ", "International Paper Co", SEC

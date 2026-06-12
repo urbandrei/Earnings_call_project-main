@@ -309,7 +309,10 @@ def load_sec_table(data_root: Path) -> tuple[dict[str, tuple[str, str]], frozens
 
 
 def phrase_mentions(
-    text: str, sec: dict[str, tuple[str, str]], single_ok: frozenset[str] = frozenset()
+    text: str,
+    sec: dict[str, tuple[str, str]],
+    single_ok: frozenset[str] = frozenset(),
+    single_min: int = 2,
 ) -> Counter:
     """Count SEC-table matches (keyed by CIK, so share classes merge) over
     contiguous sub-spans of capitalized runs."""
@@ -325,7 +328,13 @@ def phrase_mentions(
         for i in range(len(tokens)):
             longest = None
             for j in range(i + 1, min(i + 7, len(tokens) + 1)):
-                key = norm_name(" ".join(tokens[i:j]))
+                span = " ".join(tokens[i:j])
+                key = norm_name(span)
+                if key not in sec and "'" in span:
+                    # Possessives join in norm_name ("Amgen's" -> "amgens", to
+                    # keep Kohl's-style brands); retry with the 's dropped so
+                    # "Amgen's results" still counts for AMGEN.
+                    key = norm_name(re.sub(r"['’]s\b", "", span))
                 if key not in sec:
                     continue
                 # Single-token keys ("On", "Bill", "Target") match ordinary
@@ -341,7 +350,7 @@ def phrase_mentions(
     # issuer's name repeats; a one-off capitalized word is prose) and is capped
     # so a third-party brand can't outvote greetings or trip the margin guard.
     for cik, n in singles.items():
-        if n >= 2:
+        if n >= single_min:
             counts[cik] += min(n, 3)
     return counts
 
@@ -379,18 +388,19 @@ def resolve_company(
     top_t, second_t = cik_to_ticker[top], cik_to_ticker.get(second, "")
     if top_score < 2:
         return "", "", int(top_score), top_t, int(second_score), ["unresolved:weak_evidence"]
-    if top_score - second_score < 2:
-        # Greeting dominance: greetings name the host; body mentions name
-        # anyone (GE's call discusses Baker Hughes ten times, VF its own
-        # spinoff). If one company's greeting evidence is strong and entirely
-        # unchallenged by anyone else's, it wins the tie-break.
-        g_ranked = greet.most_common(2)
-        if (
-            g_ranked
-            and g_ranked[0][1] >= 6
-            and g_ranked[0][1] - (g_ranked[1][1] if len(g_ranked) > 1 else 0) >= 6
-        ):
-            g_top = g_ranked[0][0]
+    # Greeting dominance: greetings name the host; body mentions name anyone
+    # (GE's call discusses Baker Hughes ten times, Southern Company its Georgia
+    # Power subsidiary). When one company's greeting evidence is strong and
+    # entirely unchallenged by anyone else's, it wins — whether the body-count
+    # leader merely ties or even clears the margin on mention volume.
+    g_ranked = greet.most_common(2)
+    if (
+        g_ranked
+        and g_ranked[0][1] >= 6
+        and g_ranked[0][1] - (g_ranked[1][1] if len(g_ranked) > 1 else 0) >= 6
+    ):
+        g_top = g_ranked[0][0]
+        if g_top != top or top_score - second_score < 2:
             g_runner = next((c for c, _ in scores.most_common() if c != g_top), "")
             return (
                 cik_to_ticker[g_top],
@@ -400,7 +410,19 @@ def resolve_company(
                 int(scores[g_runner]) if g_runner else 0,
                 flags + ["greeting_dominant"],
             )
+    if top_score - second_score < 2:
         return "", "", int(top_score), top_t, int(second_score), ["unresolved:ambiguous"]
+    # A weak body-only score (within reach of the capped single-token noise)
+    # must be corroborated near the call's opening, where the issuer is always
+    # named — two prose mentions of a third-party brand deep in the call once
+    # resolved a Discover call as Moody's when the delisted issuer was absent
+    # from the table.
+    if (
+        not flags
+        and top_score <= 3
+        and not phrase_mentions(transcript[:1500], sec, single_ok, single_min=1)[top]
+    ):
+        return "", "", int(top_score), top_t, int(second_score), ["unresolved:body_only_tail"]
     return top_t, top, int(top_score), second_t, int(second_score), flags
 
 
