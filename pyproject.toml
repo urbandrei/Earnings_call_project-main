@@ -4,6 +4,7 @@ version = "0.1.0"
 description = "Predicting post-earnings-call stock volatility from transcript text and call audio"
 requires-python = ">=3.12"
 dependencies = [
+    "pyarrow>=24.0.0",
     "pydantic>=2.13.4",
     "pyyaml>=6.0.3",
     "typer>=0.15",
