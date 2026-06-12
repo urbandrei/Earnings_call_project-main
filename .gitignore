@@ -1,9 +1,11 @@
-# Data payloads — tracked via committed manifests (data/manifests/), never in git
-data/
-!data/manifests/
+# Data payloads — tracked via committed manifests (data/manifests/), never in git.
+# Anchored to the repo root (src/ecvol/data is code); data/* + negation because
+# git cannot re-include below an excluded directory.
+/data/*
+!/data/manifests/
 
 # Run outputs
-artifacts/
+/artifacts/
 
 # Legacy bulk binaries (see DECISIONS.md 2026-06-12): third-party literature PDFs
 # and slides are not redistributable; notebooks/README/Paper.pdf ARE tracked.

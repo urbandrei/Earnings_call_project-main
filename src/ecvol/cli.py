@@ -4,12 +4,52 @@ Every verb is a stub until its task lands (see TASKS.md). The CLI contract
 (idempotent, resumable, config-driven) is DESIGN.md §8.2.
 """
 
+from pathlib import Path
+
 import typer
 
 app = typer.Typer(
     no_args_is_help=True,
     help="Earnings-call volatility prediction pipeline.",
 )
+
+data_app = typer.Typer(no_args_is_help=True, help="Data provenance commands (T0.3).")
+app.add_typer(data_app, name="data")
+
+
+@data_app.command()
+def verify(
+    manifests: list[Path] = typer.Argument(  # noqa: B008
+        None, help="Manifest JSON files (default: all of data/manifests/*.json)."
+    ),
+    root: Path = typer.Option(  # noqa: B008
+        Path("data"), help="Directory the manifest paths are relative to."
+    ),
+) -> None:
+    """Verify data files against their committed manifests (existence + SHA-256)."""
+    from ecvol.data.manifests import verify_manifest
+
+    if not manifests:
+        manifests = sorted(Path("data/manifests").glob("*.json"))
+        if not manifests:
+            typer.echo("no manifests found under data/manifests/ — nothing to verify")
+            return
+    failed = False
+    for manifest in manifests:
+        if not manifest.is_file():
+            typer.echo(f"{manifest}: manifest file not found", err=True)
+            failed = True
+            continue
+        problems = verify_manifest(manifest, root)
+        if problems:
+            failed = True
+            typer.echo(f"{manifest}: {len(problems)} problem(s)", err=True)
+            for problem in problems:
+                typer.echo(f"  {problem}", err=True)
+        else:
+            typer.echo(f"{manifest}: OK")
+    if failed:
+        raise typer.Exit(code=1)
 
 
 def _not_implemented(verb: str) -> None:
