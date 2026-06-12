@@ -86,11 +86,13 @@
   - [ ] Exclusion accounting with reason codes
 - **Notes:** legacy notebooks 3/3b contain the old target logic — useful as a cross-check, do not port (see OLDWORK.md §7).
 
-### T1.4 FinCall-Surprise ingestion — `[ ]`
+### T1.4 FinCall-Surprise ingestion — `[~]` *(identity work pulled ahead of T1.2 — DECISIONS.md 2026-06-12)*
 - **Goal:** normalized call records on the common schema.
 - **End result:** `(call_id, ticker, utc_timestamp, transcript_json, audio_path, speaker_metadata, source)` records for the full set.
 - **Acceptance test:** 100% of calls parse or are excluded with reason codes; audio-duration distribution report generated; **≥95% join rate to price data + targets**.
 - **Subtasks:**
+  - [ ] Identity reconstruction (call → ticker/company/date from transcripts + slide PDFs vs SEC table; committed identity CSV; audited accuracy gate)
+  - [ ] Call-type classification (earnings vs fireside/M&A/sales/other) with exclusion reason codes
   - [ ] Transcript JSON parser
   - [ ] Timestamp extraction/validation (after-hours rule needs call time — investigate availability; documented fallback: assume after-hours, flag it)
   - [ ] Ticker resolution
