@@ -28,6 +28,8 @@ from ecvol.data.fetch import _download
 
 SEC_TICKERS_URL = "https://www.sec.gov/files/company_tickers.json"
 SEC_LICENSE = "Public domain (US government work)"
+# SEC requires a descriptive User-Agent with contact info on programmatic requests.
+SEC_HEADERS = {"User-Agent": "ecvol research project (andrei.roman.personal@gmail.com)"}
 
 MONTHS = "January|February|March|April|May|June|July|August|September|October|November|December"
 MONTH_NUM = {m: i + 1 for i, m in enumerate(MONTHS.split("|"))}
@@ -93,7 +95,7 @@ def clean_candidate(name: str) -> str:
 def load_sec_table(data_root: Path) -> dict[str, tuple[str, str]]:
     """normalized name -> (ticker, cik). Cached under data/raw/ref/, idempotent."""
     cache = data_root / "raw" / "ref" / "company_tickers.json"
-    _download(SEC_TICKERS_URL, cache)
+    _download(SEC_TICKERS_URL, cache, headers=SEC_HEADERS)
     table: dict[str, tuple[str, str]] = {}
     for row in json.loads(cache.read_text(encoding="utf-8")).values():
         key = norm_name(row["title"])

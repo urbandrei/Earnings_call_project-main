@@ -53,13 +53,13 @@ MAEC_REPO = (
 MAEC_COMMIT = "65a109f5b1a8cb4c96e8337b749ce3db41f2c210"  # master @ 2022-01-11
 
 
-def _download(url: str, dest: Path) -> None:
+def _download(url: str, dest: Path, headers: dict[str, str] | None = None) -> None:
     """Stream `url` to `dest` atomically (temp file + rename). Skips if `dest` exists."""
     if dest.exists():
         return
     dest.parent.mkdir(parents=True, exist_ok=True)
     part = dest.with_name(dest.name + ".part")
-    with requests.get(url, stream=True, timeout=60) as resp:
+    with requests.get(url, stream=True, timeout=60, headers=headers) as resp:
         resp.raise_for_status()
         with open(part, "wb") as f:
             for chunk in resp.iter_content(chunk_size=1 << 20):
