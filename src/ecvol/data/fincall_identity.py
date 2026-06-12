@@ -35,22 +35,66 @@ MONTHS = "January|February|March|April|May|June|July|August|September|October|No
 MONTH_NUM = {m: i + 1 for i, m in enumerate(MONTHS.split("|"))}
 DATE_RE = re.compile(rf"({MONTHS})\s+(\d{{1,2}})\s*,?\s*(20\d\d)")
 
-# Operator greeting: "Welcome to the <name> First Quarter 2019 Earnings ..."
-GREETING_RE = re.compile(
-    r"[Ww]elcome,? (?:everyone,? )?to (?:the )?(.{3,60}?)(?:'s)?[ ,]+"
-    r"(?:first|second|third|fourth|[1-4]Q|Q[1-4]|fiscal|full[- ]year"
-    r"|\d{4}|earnings|year[- ]end|annual)"
-)
+# Host/greeting patterns naming the company near the start of the call, with the
+# evidence weight each carries. The name capture must start uppercase; EVENT_TAIL
+# cleanup strips trailing event words. Primary "welcome to" forms outweigh host/IR
+# forms, which can name a sell-side host instead of the issuer.
+GREETING_PATTERNS: list[tuple[re.Pattern, int]] = [
+    # "Welcome to/joined the <name> First Quarter 2019 Earnings ..."
+    (
+        re.compile(
+            r"(?:welcome,? (?:everyone,? )?(?:to )?|you've joined )(?:the )?"
+            r"([A-Z].{2,60}?)(?:'s)?[ ,]+"
+            r"(?:first|second|third|fourth|[1-4]Q|Q[1-4]|fiscal|full[- ]year"
+            r"|\d{4}|earnings|year[- ]end|annual|quarterly)",
+            re.I,
+        ),
+        6,
+    ),
+    # "Welcome to the Fourth Quarter 2018 <name> Earnings Conference Call"
+    # (greedy prefix anchors the capture to just before the event words)
+    (
+        re.compile(
+            r"welcome to .{0,60}(?:quarter|20\d\d|fiscal \d{4}|year[- ]end)\s+"
+            r"([A-Z].{2,50}?)\s+(?:earnings|results|financial)",
+            re.I,
+        ),
+        6,
+    ),
+    # "... Conference Call hosted by <name>." / "Teleconference for <name>."
+    (
+        re.compile(
+            r"(?:hosted by|teleconference (?:for|of)|conference call (?:for|of))\s+"
+            r"(?:the )?([A-Z][\w&.,' -]{2,60}?)\s*[.,;]",
+        ),
+        4,
+    ),
+    # "Investor Relations for <name>." / "Head of Investor Relations at <name>."
+    (
+        re.compile(
+            r"[Ii]nvestor [Rr]elations (?:for|at|of)\s+(?:the )?([A-Z][\w&.,' -]{2,60}?)\s*[.,;]"
+        ),
+        4,
+    ),
+    # "... Earnings Call for <name>."
+    (
+        re.compile(r"(?:earnings|results) call for\s+(?:the )?([A-Z][\w&.,' -]{2,60}?)\s*[.,;]"),
+        4,
+    ),
+]
 LEGAL_SUFFIXES = re.compile(
     r"\b(incorporated|inc|corporation|corp|company|companies|co|limited|ltd|plc|llc|lp|"
-    r"group|holdings?|trust|the|nv|sa|ag|se)\b\.?"
+    r"group|holdings?|the|nv|sa|ag|se)\b\.?"
 )
-# Trailing event words leaking into name candidates: "<name> Fourth Quarter ..."
-EVENT_TAIL = re.compile(
-    r"\b(first|second|third|fourth|[1-4]Q\d*|Q[1-4]|fiscal|year[- ]?end|full[- ]year|annual|"
-    r"quarter|earnings|results|investor|overview|review|conference|call|webcast|and|20\d\d)\b.*$",
-    re.I,
+_EVENT_WORDS = (
+    r"(?:first|second|third|fourth|[1-4]Q\d*|Q[1-4]|fiscal|year[- ]?end|full[- ]year|annual|"
+    r"quarter|quarterly|monthly|earnings|results|investor|overview|review|conference|call|"
+    r"webcast|and|20\d\d)"
 )
+# Event words leaking into name candidates, trailing ("<name> Fourth Quarter ...")
+# or leading ("Q2 2021 <name>").
+EVENT_TAIL = re.compile(rf"\b{_EVENT_WORDS}\b.*$", re.I)
+EVENT_HEAD = re.compile(rf"^(?:{_EVENT_WORDS}[ ,]+)+", re.I)
 # Maximal runs of capitalized tokens (allowing &) anywhere in the transcript.
 CAP_RUN_RE = re.compile(r"(?:[A-Z][\w.\-']*|&)(?:[ \t](?:[A-Z][\w.\-']*|&))*")
 
@@ -82,11 +126,44 @@ class IdentityRow:
 
 def norm_name(name: str) -> str:
     name = unicodedata.normalize("NFKD", name).encode("ascii", "ignore").decode()
-    name = re.sub(r"['’]s?\b", "", name)  # possessives before punctuation strip
+    # Join apostrophe-s rather than stripping it: brand names like Kohl's/McDonald's
+    # normalize to the SEC's spelling ("KOHLS CORP"); true possessives are handled
+    # by the drop-variant in _lookup_name.
+    name = re.sub(r"['’]", "", name)
     name = re.sub(r"/[A-Za-z]{2,3}/?\s*$", " ", name)  # EDGAR state tags: "CORP /MA/"
     name = re.sub(r"[^a-z0-9 ]", " ", name.lower())
     name = LEGAL_SUFFIXES.sub(" ", name)
+    name = re.sub(r"\b([a-z]) (?=[a-z]\b)", r"\1", name)  # "u s bancorp" -> "us bancorp"
     return re.sub(r"\s+", " ", name).strip()
+
+
+def _lookup_name(candidate: str, sec: dict[str, tuple[str, str]]) -> tuple[str, str] | None:
+    """Greeting/PDF-side lookup: exact, possessive-dropped, then conservative fuzzy."""
+    import difflib
+
+    key = norm_name(clean_candidate(candidate))
+    if len(key) < 2:
+        return None
+    if key in sec:
+        return sec[key]
+    dropped = norm_name(re.sub(r"['’]s\b", "", clean_candidate(candidate)))
+    if dropped in sec:
+        return sec[dropped]
+    # Prefix match: "Capital One" -> "capital one financial". The table preserves
+    # the SEC file's market-cap order, so when several keys share the prefix
+    # (Honeywell International / Honeywell Aerospace) the largest-cap entry wins —
+    # the right bias for an earnings-call corpus. Guarded to substantial keys.
+    if len(key) >= 5 or " " in key:
+        for table_key, value in sec.items():
+            if table_key.startswith(key + " "):
+                return value
+    # Fuzzy is for inflection-level misses ("Align Technologies" vs the SEC's
+    # "Align Technology"); requiring an identical first token keeps it from
+    # bridging genuinely different companies.
+    close = difflib.get_close_matches(key, sec.keys(), n=1, cutoff=0.85)
+    if close and close[0].split()[0] == key.split()[0]:
+        return sec[close[0]]
+    return None
 
 
 # Single tokens that survive suffix-stripping of real SEC titles but are far too
@@ -100,7 +177,7 @@ GENERIC_TOKENS = frozenset(
 
 
 def clean_candidate(name: str) -> str:
-    return EVENT_TAIL.sub("", name).strip(" ,.-|")
+    return EVENT_TAIL.sub("", EVENT_HEAD.sub("", name)).strip(" ,.-|")
 
 
 def load_sec_table(data_root: Path) -> dict[str, tuple[str, str]]:
@@ -112,12 +189,38 @@ def load_sec_table(data_root: Path) -> dict[str, tuple[str, str]]:
     cache = data_root / "raw" / "ref" / "company_tickers.json"
     _download(SEC_TICKERS_URL, cache, headers=SEC_HEADERS)
     table: dict[str, tuple[str, str]] = {}
+    first_tokens: Counter = Counter()
     for row in json.loads(cache.read_text(encoding="utf-8")).values():
         key = norm_name(row["title"])
         if not key or (" " not in key and key in GENERIC_TOKENS):
             continue
         if key not in table:  # ordered by market cap; first entry wins
             table[key] = (row["ticker"], str(row["cik_str"]))
+            if " " in key:
+                first_tokens[key.split()[0]] += 1
+    # Brand aliases from multi-word titles, usable by greeting/PDF matching only
+    # (body counting requires multi-word keys): the first token ("Verizon
+    # Communications" -> "verizon") and, more conservatively, the last token
+    # ("W.W. Grainger" -> "grainger"), when distinctive and naming exactly one company.
+    last_tokens: Counter = Counter(k.split()[-1] for k in table if " " in k)
+    for key, value in list(table.items()):
+        if " " not in key:
+            continue
+        first, last = key.split()[0], key.split()[-1]
+        if (
+            first_tokens[first] == 1
+            and len(first) >= 5
+            and first not in GENERIC_TOKENS
+            and first not in table
+        ):
+            table[first] = value
+        if (
+            last_tokens[last] == 1
+            and len(last) >= 6
+            and last not in GENERIC_TOKENS
+            and last not in table
+        ):
+            table[last] = value
     return table
 
 
@@ -129,15 +232,20 @@ def phrase_mentions(text: str, sec: dict[str, tuple[str, str]]) -> Counter:
         tokens = run.split()
         if not 1 <= len(tokens) <= 12:
             continue
-        spans = set()
+        # Each starting token contributes at most its longest match, so one
+        # occurrence can't double-count via nested sub-spans; separate mentions
+        # in the same run (sentences merged by abbreviation dots) still count.
         for i in range(len(tokens)):
+            longest = None
             for j in range(i + 1, min(i + 7, len(tokens) + 1)):
                 key = norm_name(" ".join(tokens[i:j]))
-                if key in sec and key not in spans:
-                    spans.add(key)
-        for key in spans:
-            # single-word names ("Target", "Gap") are weaker evidence per mention
-            counts[sec[key][1]] += 1 if " " in key else 0.5
+                # Body mentions only count for multi-word names: single-token
+                # keys ("On", "Bill", "Target") match ordinary prose far too
+                # often; single-word companies resolve via greeting/PDF evidence.
+                if key in sec and " " in key:
+                    longest = key
+            if longest:
+                counts[sec[longest][1]] += 1
     return counts
 
 
@@ -152,14 +260,14 @@ def resolve_company(
 
     scores.update(phrase_mentions(transcript, sec))
 
-    for source, boost, flag in (
-        (pdf_company, 5, "pdf_company"),
-        (_greeting_name(transcript), 3, "greeting"),
-    ):
-        if source:
-            key = norm_name(clean_candidate(source))
-            if key in sec:
-                scores[sec[key][1]] += boost
+    sources: list[tuple[str | None, int, str]] = [(pdf_company, 2, "pdf_company")]
+    sources += [(name, weight, "greeting") for name, weight in _greeting_names(transcript)]
+    boosted: set[tuple[str, str]] = set()  # (cik, flag): each evidence kind counts once
+    for source, boost, flag in sources:
+        if source and (hit := _lookup_name(source, sec)):
+            if (hit[1], flag) not in boosted:
+                boosted.add((hit[1], flag))
+                scores[hit[1]] += boost
                 flags.append(f"match:{flag}")
 
     cik_to_ticker = {cik: ticker for ticker, cik in reversed(sec.values())}
@@ -171,14 +279,19 @@ def resolve_company(
     top_t, second_t = cik_to_ticker[top], cik_to_ticker.get(second, "")
     if top_score < 2:
         return "", "", int(top_score), top_t, int(second_score), ["unresolved:weak_evidence"]
-    if second_score * 2 > top_score:
+    if top_score - second_score < 2:
         return "", "", int(top_score), top_t, int(second_score), ["unresolved:ambiguous"]
     return top_t, top, int(top_score), second_t, int(second_score), flags
 
 
-def _greeting_name(transcript: str) -> str | None:
-    m = GREETING_RE.search(transcript[:4000])
-    return m.group(1).strip() if m else None
+def _greeting_names(transcript: str) -> list[tuple[str, int]]:
+    head = transcript[:4000]
+    return [
+        (m.group(1).strip(), weight)
+        for pattern, weight in GREETING_PATTERNS
+        for m in [pattern.search(head)]
+        if m
+    ]
 
 
 def extract_date(page1_text: str | None, created: str | None) -> tuple[str, str, list[str]]:
@@ -235,16 +348,27 @@ def _pdf_signals(pdf_path: Path) -> tuple[str | None, str | None, str | None]:
         return None, None, None
 
 
+def _pdf_signals_cached(pdf_path: Path, cache: dict, cache_key: str):
+    """PDF parsing dominates build time; signals are immutable, so cache them."""
+    if cache_key not in cache:
+        cache[cache_key] = list(_pdf_signals(pdf_path))
+    return cache[cache_key]
+
+
 def build_identity(data_root: Path) -> tuple[Path, dict[str, int]]:
     """Resolve every FinCall call; write the committed identity CSV + return stats."""
     raw = data_root / "raw" / "fincall"
     sec = load_sec_table(data_root)
+    cache_path = data_root / "raw" / "ref" / "fincall_pdf_signals.json"
+    cache = json.loads(cache_path.read_text(encoding="utf-8")) if cache_path.exists() else {}
     rows: list[IdentityRow] = []
     for year in (2019, 2020, 2021):
         data = json.loads((raw / f"transcripts_{year}.json").read_text(encoding="utf-8"))
         for call_id, rec in sorted(data.items()):
             ppt_id = str(rec.get("ppt_id") or call_id)
-            company_meta, page1, created = _pdf_signals(raw / f"ppt_{year}" / f"{ppt_id}.pdf")
+            company_meta, page1, created = _pdf_signals_cached(
+                raw / f"ppt_{year}" / f"{ppt_id}.pdf", cache, f"{year}/{ppt_id}"
+            )
             ticker, cik, score, runner, runner_score, flags = resolve_company(
                 rec["input"], company_meta, sec
             )
@@ -265,6 +389,9 @@ def build_identity(data_root: Path) -> tuple[Path, dict[str, int]]:
                     flags=";".join(flags + date_flags),
                 )
             )
+
+    cache_path.parent.mkdir(parents=True, exist_ok=True)
+    cache_path.write_text(json.dumps(cache, sort_keys=True), encoding="utf-8")
 
     out = data_root / "identity" / "fincall_identity.csv"
     out.parent.mkdir(parents=True, exist_ok=True)

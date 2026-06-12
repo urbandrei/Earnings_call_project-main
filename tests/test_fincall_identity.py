@@ -22,9 +22,9 @@ SEC = {
 }
 
 
-def test_norm_name_strips_legal_suffixes_and_possessives():
+def test_norm_name_strips_legal_suffixes_and_joins_apostrophes():
     assert norm_name("Stanley Black & Decker, Inc.") == "stanley black decker"
-    assert norm_name("Citigroup's") == "citigroup"
+    assert norm_name("Kohl's Corporation") == "kohls"  # matches SEC's "KOHLS CORP"
     assert norm_name("The Vulcan Materials Company") == "vulcan materials"
 
 
@@ -124,3 +124,12 @@ def test_resolve_company_share_classes_merge():
     ticker, cik, _, _, _, _ = resolve_company(text, None, sec)
     assert cik == "1308161"
     assert ticker == "FOXA"  # largest-cap class wins
+
+
+def test_lookup_name_possessive_and_fuzzy():
+    from ecvol.data.fincall_identity import _lookup_name
+
+    sec = {"keycorp": ("KEY", "91576"), "align technology": ("ALGN", "1097149")}
+    assert _lookup_name("KeyCorp's", sec) == ("KEY", "91576")  # true possessive dropped
+    assert _lookup_name("Align Technologies", sec) == ("ALGN", "1097149")  # fuzzy 0.9
+    assert _lookup_name("Completely Unrelated Name", sec) is None
