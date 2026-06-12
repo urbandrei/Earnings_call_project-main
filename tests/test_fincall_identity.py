@@ -41,13 +41,13 @@ def test_phrase_mentions_finds_multiword_names():
         "Stanley Black & Decker's call."
     )
     counts = phrase_mentions(text, SEC)
-    assert counts["SWK"] >= 2
+    assert counts["93556"] >= 2  # keyed by CIK
 
 
 def test_phrase_mentions_discounts_generic_single_words():
     # One mention of a short generic name ("Target") must not count as full evidence.
     counts = phrase_mentions("Our Target audience grew.", SEC)
-    assert counts["TGT"] < 1
+    assert counts["27419"] < 1
 
 
 def test_resolve_company_dominant_match():
@@ -108,3 +108,19 @@ def test_classify_call_types():
         "conference"
     )
     assert classify_call("Good morning operator.", None) == "unknown"
+
+
+def test_norm_name_strips_edgar_state_tags():
+    assert norm_name("AMERICAN TOWER CORP /MA/") == "american tower"
+
+
+def test_resolve_company_share_classes_merge():
+    # Two share classes of one company (same CIK) must not trip the ambiguity guard.
+    sec = {
+        "fox a": ("FOXA", "1308161"),
+        "fox b": ("FOX", "1308161"),
+    }
+    text = "Welcome to the Fox A call. Fox A reported. Fox B also listed. Fox A. Fox B."
+    ticker, cik, _, _, _, _ = resolve_company(text, None, sec)
+    assert cik == "1308161"
+    assert ticker == "FOXA"  # largest-cap class wins

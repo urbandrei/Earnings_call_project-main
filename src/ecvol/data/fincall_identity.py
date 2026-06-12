@@ -83,9 +83,20 @@ class IdentityRow:
 def norm_name(name: str) -> str:
     name = unicodedata.normalize("NFKD", name).encode("ascii", "ignore").decode()
     name = re.sub(r"['’]s?\b", "", name)  # possessives before punctuation strip
+    name = re.sub(r"/[A-Za-z]{2,3}/?\s*$", " ", name)  # EDGAR state tags: "CORP /MA/"
     name = re.sub(r"[^a-z0-9 ]", " ", name.lower())
     name = LEGAL_SUFFIXES.sub(" ", name)
     return re.sub(r"\s+", " ", name).strip()
+
+
+# Single tokens that survive suffix-stripping of real SEC titles but are far too
+# generic to identify a company on their own ("INTERNATIONAL CORP" -> "international").
+GENERIC_TOKENS = frozenset(
+    "american international national general first united global standard federal "
+    "central southern northern western eastern pacific atlantic continental "
+    "industries enterprises resources technologies systems brands partners "
+    "capital financial energy services solutions communications".split()
+)
 
 
 def clean_candidate(name: str) -> str:
@@ -93,19 +104,26 @@ def clean_candidate(name: str) -> str:
 
 
 def load_sec_table(data_root: Path) -> dict[str, tuple[str, str]]:
-    """normalized name -> (ticker, cik). Cached under data/raw/ref/, idempotent."""
+    """normalized name -> (ticker, cik). Cached under data/raw/ref/, idempotent.
+
+    Share classes collapse to one entry (first = largest-cap ticker per the file's
+    ordering); keys that reduce to a single generic token are dropped entirely.
+    """
     cache = data_root / "raw" / "ref" / "company_tickers.json"
     _download(SEC_TICKERS_URL, cache, headers=SEC_HEADERS)
     table: dict[str, tuple[str, str]] = {}
     for row in json.loads(cache.read_text(encoding="utf-8")).values():
         key = norm_name(row["title"])
-        if key and key not in table:  # ordered by market cap; first entry wins
+        if not key or (" " not in key and key in GENERIC_TOKENS):
+            continue
+        if key not in table:  # ordered by market cap; first entry wins
             table[key] = (row["ticker"], str(row["cik_str"]))
     return table
 
 
 def phrase_mentions(text: str, sec: dict[str, tuple[str, str]]) -> Counter:
-    """Count SEC-table matches over contiguous sub-spans of capitalized runs."""
+    """Count SEC-table matches (keyed by CIK, so share classes merge) over
+    contiguous sub-spans of capitalized runs."""
     counts: Counter = Counter()
     for run in CAP_RUN_RE.findall(text):
         tokens = run.split()
@@ -119,7 +137,7 @@ def phrase_mentions(text: str, sec: dict[str, tuple[str, str]]) -> Counter:
                     spans.add(key)
         for key in spans:
             # single-word names ("Target", "Gap") are weaker evidence per mention
-            counts[sec[key][0]] += 1 if " " in key else 0.5
+            counts[sec[key][1]] += 1 if " " in key else 0.5
     return counts
 
 
@@ -129,7 +147,7 @@ def resolve_company(
     sec: dict[str, tuple[str, str]],
 ) -> tuple[str, str, int, str, int, list[str]]:
     """Score evidence; return (ticker, cik, score, runner_up, runner_score, flags)."""
-    scores: Counter = Counter()
+    scores: Counter = Counter()  # keyed by CIK so share classes can't self-compete
     flags: list[str] = []
 
     scores.update(phrase_mentions(transcript, sec))
@@ -141,20 +159,21 @@ def resolve_company(
         if source:
             key = norm_name(clean_candidate(source))
             if key in sec:
-                scores[sec[key][0]] += boost
+                scores[sec[key][1]] += boost
                 flags.append(f"match:{flag}")
 
+    cik_to_ticker = {cik: ticker for ticker, cik in reversed(sec.values())}
     if not scores:
         return "", "", 0, "", 0, ["unresolved:no_candidates"]
     ranked = scores.most_common(2)
     top, top_score = ranked[0]
     second, second_score = ranked[1] if len(ranked) > 1 else ("", 0)
-    if top_score < 3:
-        return "", "", int(top_score), top, int(second_score), ["unresolved:weak_evidence"]
+    top_t, second_t = cik_to_ticker[top], cik_to_ticker.get(second, "")
+    if top_score < 2:
+        return "", "", int(top_score), top_t, int(second_score), ["unresolved:weak_evidence"]
     if second_score * 2 > top_score:
-        return "", "", int(top_score), top, int(second_score), ["unresolved:ambiguous"]
-    cik = next(c for t, c in sec.values() if t == top)
-    return top, cik, int(top_score), second, int(second_score), flags
+        return "", "", int(top_score), top_t, int(second_score), ["unresolved:ambiguous"]
+    return top_t, top, int(top_score), second_t, int(second_score), flags
 
 
 def _greeting_name(transcript: str) -> str | None:
