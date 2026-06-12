@@ -28,15 +28,15 @@
   - [x] CI workflow (GitHub Actions)
 - **Notes:** done 2026-06-12. All checks green locally (ruff, pytest, pre-commit) and fresh-clone install from lockfile tested per README.md; legacy-binaries gitignore choice logged in DECISIONS.md. Repo: github.com/urbandrei/Earnings_call_project-main (private); CI green on first push (user-verified). Journal: 2026-06-12 T0.1 entries.
 
-### T0.2 Config system — `[ ]`
+### T0.2 Config system — `[x]`
 - **Goal:** every experiment definable as a validated YAML.
 - **End result:** pydantic schemas for data/feature/model/eval configs; loader with clear errors.
 - **Acceptance test:** invalid config (bad horizon, missing seed list) fails with an actionable message; round-trip load→resolve→dump is stable.
 - **Subtasks:**
-  - [ ] Schema modules under `src/ecvol/config/`
-  - [ ] `configs/example.yaml`
-  - [ ] Config-hash function (canonicalized JSON → SHA-256)
-- **Notes:** —
+  - [x] Schema modules under `src/ecvol/config/`
+  - [x] `configs/example.yaml`
+  - [x] Config-hash function (canonicalized JSON → SHA-256)
+- **Notes:** done 2026-06-12. `schema.py` (ExperimentConfig + sections, extra="forbid" everywhere) + `load.py` (loader with path+field error messages, deterministic `dump_config`, `config_hash`). Beyond-spec validations added: embargo ≥ longest horizon (encodes §5.4), unique seeds/horizons. Acceptance covered by `tests/test_config.py` (11 tests green). Journal: 2026-06-12 T0.2 entry.
 
 ### T0.3 Run tracking & manifests — `[ ]`
 - **Goal:** every run and every data file is traceable.
