@@ -1,0 +1,29 @@
+# Example experiment config (T0.2). One YAML per experiment, validated by
+# ecvol.config (DESIGN.md §8.2). Copy and edit for real experiments; every
+# committed experiment gets its own file under configs/.
+name: example-gbdt-fincall-temporal
+seeds: [101, 102, 103, 104, 105]
+
+data:
+  dataset: fincall_surprise
+
+target:
+  variant: delta # level | delta | har_residual (DESIGN.md §5.3)
+  horizons: [3, 7, 15, 30] # trading days
+
+split:
+  scheme: temporal # temporal | ticker_disjoint | combined (DESIGN.md §5.4)
+  embargo_trading_days: 30 # must cover the longest horizon
+
+features: [] # Stage-0/1 models use past-vol covariates + metadata only
+
+model:
+  name: gbdt
+  include_past_vol_covariates: true # §6 invariant; ablations set false
+  params:
+    num_leaves: 31
+    n_estimators: 500
+
+eval:
+  metrics: [mse, mae, r2_oos, spearman_quarterly]
+  bootstrap_resamples: 1000
