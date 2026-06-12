@@ -151,7 +151,11 @@ STRONG_CONF_RE = re.compile(
     r"(?:healthcare|tech(?:nology)?|growth|industrial) conference|investor conference(?! call)",
     re.I,
 )
-MEETING_RE = re.compile(r"(?:annual|special) meeting of (?:the )?(?:share|stock)holders", re.I)
+MEETING_RE = re.compile(
+    r"(?:annual|special) meeting of (?:the )?(?:share|stock)(?:holder|owner)s?"
+    r"|annual (?:share|stock)(?:holder|owner)s? meeting",
+    re.I,
+)
 SALES_RE = re.compile(r"\bmonthly sales\b", re.I)
 
 
@@ -267,17 +271,21 @@ def load_sec_table(data_root: Path) -> tuple[dict[str, tuple[str, str]], frozens
     # Communications" -> "verizon") and, more conservatively, the last token
     # ("W.W. Grainger" -> "grainger"), when distinctive and naming exactly one company.
     last_tokens: Counter = Counter(k.split()[-1] for k in table if " " in k)
+    rank = {key: i for i, key in enumerate(table)}  # insertion order = market cap
     for key, value in list(table.items()):
         if " " not in key:
             continue
         first, last = key.split()[0], key.split()[-1]
-        if (
-            first_tokens[first] == 1
-            and len(first) >= 5
-            and first not in GENERIC_TOKENS
-            and first not in table
-        ):
-            table[first] = value
+        if first_tokens[first] == 1 and len(first) >= 5 and first not in GENERIC_TOKENS:
+            if first not in table:
+                table[first] = value
+            elif table[first][1] != value[1] and rank.get(first, -1) > rank[key]:
+                # Brand collision: a smaller company's full name equals a
+                # larger company's brand token ("Vertex, Inc." vs "Vertex
+                # Pharmaceuticals") — the bare name belongs to the larger
+                # company, consistent with the market-cap bias used for share
+                # classes and prefix matches.
+                table[first] = value
         if (
             last_tokens[last] == 1
             and len(last) >= 6

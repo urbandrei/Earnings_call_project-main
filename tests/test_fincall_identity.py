@@ -133,6 +133,9 @@ def test_classify_call_types():
         == "conference"
     )
     assert classify_call("Welcome to the Annual Meeting of Shareholders", None) == "meeting"
+    assert classify_call("the Kellogg Company's 2021 Annual Shareholders Meeting", None) == (
+        "meeting"
+    )
     # ...but ordinary earnings-call phrasing must not trip the conference rule.
     assert classify_call("welcome to the Q3 investor conference call", None) == "earnings"
     assert (
@@ -230,6 +233,27 @@ def test_load_sec_table_merges_overrides(tmp_path):
     # Derived brand aliases must NOT be body-countable; override aliases are.
     assert "illinois" not in single_ok
     assert {"itw", "nordstrom"} <= single_ok
+
+
+def test_load_sec_table_brand_collision_goes_to_larger_company(tmp_path):
+    import json
+
+    from ecvol.data.fincall_identity import load_sec_table
+
+    ref = tmp_path / "raw" / "ref"
+    ref.mkdir(parents=True)
+    # File order = market-cap order: Vertex Pharmaceuticals before Vertex, Inc.
+    (ref / "company_tickers.json").write_text(
+        json.dumps(
+            {
+                "0": {"ticker": "VRTX", "title": "VERTEX PHARMACEUTICALS INC", "cik_str": 875320},
+                "1": {"ticker": "VERX", "title": "Vertex, Inc.", "cik_str": 1806837},
+            }
+        )
+    )
+    table, _ = load_sec_table(tmp_path)
+    assert table["vertex"] == ("VRTX", "875320")  # bare brand -> larger company
+    assert table["vertex pharmaceuticals"] == ("VRTX", "875320")
 
 
 def test_clean_candidate_strips_ordinal_event_tail():
