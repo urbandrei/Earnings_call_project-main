@@ -95,7 +95,7 @@
   - [ ] Timestamp extraction/validation (after-hours rule needs call time — investigate availability; documented fallback: assume after-hours, flag it)
   - [ ] Ticker resolution
   - [ ] Join audit
-- **Notes:** —
+- **Notes:** 2026-06-12 feasibility study (JOURNAL.md, `notebooks/explore_fincall_identity.py`): dataset has **no ticker/company/date metadata at all** — identity must be reconstructed (slide-PDF metadata/title pages + transcript prose → SEC company_tickers.json matching). Date signal 100% on a 50-call sample; name signal ~100% but matching needs an alias table or LLM-assisted extraction (quick heuristics: 58%). Corpus contains non-earnings calls (firesides, M&A, monthly sales) → needs call-type classification with exclusion reason codes. Scope expansion pending DECISIONS.md entry.
 
 ### T1.5 MAEC ingestion — `[ ]`
 - **Goal:** same contract as T1.4 for MAEC.
