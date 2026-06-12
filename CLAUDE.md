@@ -67,3 +67,4 @@ This is an **explorative research project**. Novel techniques, frontier models, 
 - Compute: single consumer GPU (16–24 GB VRAM) — respect the per-component VRAM budget in DESIGN.md §8.3; components run sequentially, never co-resident. Cloud bursts are possible but require a DECISIONS.md entry with budget.
 - Python via **uv** (lockfile committed) once T0.1 lands; configs are pydantic-validated YAML; `data/` and `artifacts/` are gitignored payloads tracked by committed manifests.
 - Secrets (API keys) live in `.env`, never in code or commits.
+- The GitHub repo (`urbandrei/Earnings_call_project-main`) is **private**, and no authenticated `gh` CLI is available. Agents cannot read GitHub Actions results — **the user is the source of truth for CI outcomes**: push, then ask them to report the run status instead of trying to query GitHub.
