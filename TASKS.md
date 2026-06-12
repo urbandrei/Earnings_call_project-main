@@ -91,13 +91,14 @@
 - **End result:** `(call_id, ticker, utc_timestamp, transcript_json, audio_path, speaker_metadata, source)` records for the full set.
 - **Acceptance test:** 100% of calls parse or are excluded with reason codes; audio-duration distribution report generated; **≥95% join rate to price data + targets**.
 - **Subtasks:**
-  - [ ] Identity reconstruction (call → ticker/company/date from transcripts + slide PDFs vs SEC table; committed identity CSV; audited accuracy gate)
-  - [ ] Call-type classification (earnings vs fireside/M&A/sales/other) with exclusion reason codes
+  - [x] Identity reconstruction (call → ticker/company/date from transcripts + slide PDFs vs SEC table; committed identity CSV; audited accuracy gate)
+  - [x] Call-type classification (earnings vs fireside/M&A/sales/meeting/other; type column in identity CSV — exclusion reason-code wiring lands with the parser)
   - [ ] Transcript JSON parser
   - [ ] Timestamp extraction/validation (after-hours rule needs call time — investigate availability; documented fallback: assume after-hours, flag it)
-  - [ ] Ticker resolution
+  - [x] Ticker resolution (via identity CSV + curated override table, CIKs EDGAR-verified)
   - [ ] Join audit
 - **Notes:** 2026-06-12 feasibility study (JOURNAL.md, `notebooks/explore_fincall_identity.py`): dataset has **no ticker/company/date metadata at all** — identity must be reconstructed (slide-PDF metadata/title pages + transcript prose → SEC company_tickers.json matching). Date signal 100% on a 50-call sample; name signal ~100% but matching needs an alias table or LLM-assisted extraction (quick heuristics: 58%). Corpus contains non-earnings calls (firesides, M&A, monthly sales) → needs call-type classification with exclusion reason codes. Scope expansion pending DECISIONS.md entry.
+  2026-06-12 (later session): identity table v2 — **2,496/2,688 resolved (92.9% overall; earnings-type 2,381/2,499 = 95.3%, over the ≥95% target)**; dates 2,629 (97.8%). Curated override CSV (`data/identity/fincall_name_overrides.csv`, 77 rows, CIKs EDGAR-verified) covers brand acronyms + companies delisted/renamed since the corpus era. **Accuracy gate: committed seeded audit (`data/identity/fincall_identity_audit.csv`) 60/60 correct** (40 random resolved-earnings + 20 newly resolved); ~30 wrong identities from v1 corrected (Zoetis-as-FISI, GE-as-Baker-Hughes, Vertex-Pharma-as-Vertex-tax, Discover-as-Moody's…). Call types: 2,499 earnings / 80 conference / 61 meeting / 33 unknown / 14 ma+sales. Residue (~190 calls) is mid-call fragments, firesides, webinars — mostly non-earnings. Journal: 2026-06-12 identity-v2 entry.
 
 ### T1.5 MAEC ingestion — `[ ]`
 - **Goal:** same contract as T1.4 for MAEC.
