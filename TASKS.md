@@ -38,15 +38,15 @@
   - [x] Config-hash function (canonicalized JSON → SHA-256)
 - **Notes:** done 2026-06-12. `schema.py` (ExperimentConfig + sections, extra="forbid" everywhere) + `load.py` (loader with path+field error messages, deterministic `dump_config`, `config_hash`). Beyond-spec validations added: embargo ≥ longest horizon (encodes §5.4), unique seeds/horizons. Acceptance covered by `tests/test_config.py` (11 tests green). Journal: 2026-06-12 T0.2 entry.
 
-### T0.3 Run tracking & manifests — `[ ]`
+### T0.3 Run tracking & manifests — `[x]`
 - **Goal:** every run and every data file is traceable.
 - **End result:** run-artifact writer (config hash, git SHA, seeds, env fingerprint, metrics parquet); manifest module with checksum verify command.
 - **Acceptance test:** rerunning an identical CPU-only config reproduces metrics **bit-identically**; `ecvol data verify` detects a deliberately corrupted file.
 - **Subtasks:**
-  - [ ] `manifests.py` (path, source URL, retrieved_at, SHA-256, license)
-  - [ ] Run-ID scheme + `artifacts/runs/<id>/` writer
-  - [ ] Env fingerprint capture (lockfile hash, CUDA/driver versions)
-- **Notes:** —
+  - [x] `manifests.py` (path, source URL, retrieved_at, SHA-256, license)
+  - [x] Run-ID scheme + `artifacts/runs/<id>/` writer
+  - [x] Env fingerprint capture (lockfile hash, CUDA/driver versions)
+- **Notes:** done 2026-06-12. `src/ecvol/data/manifests.py` (+ `ecvol data verify`, exit 1 on mismatch/missing) and `src/ecvol/tracking.py` (run ID `<UTC ts>-<confighash8>`, `write_run` → config.yaml/run.json/metrics.parquet, deterministic parquet verified bit-identical across interpreter processes). Acceptance covered by `tests/test_manifests.py` + `tests/test_tracking.py` (real-pipeline rerun re-asserted once `ecvol evaluate` exists, T2.2). Bonus fix: T0.1's unanchored `data/` gitignore pattern had silently untracked `src/ecvol/data/`. Journal: 2026-06-12 T0.3 entry.
 
 ---
 
