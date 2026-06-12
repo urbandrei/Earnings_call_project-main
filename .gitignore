@@ -29,6 +29,9 @@ dist/
 # Secrets
 .env
 
+# Claude Code session state (ephemeral lock for scheduled wakeups)
+/.claude/scheduled_tasks.lock
+
 # OS noise
 Thumbs.db
 .DS_Store
