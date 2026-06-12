@@ -133,3 +133,40 @@ def test_lookup_name_possessive_and_fuzzy():
     assert _lookup_name("KeyCorp's", sec) == ("KEY", "91576")  # true possessive dropped
     assert _lookup_name("Align Technologies", sec) == ("ALGN", "1097149")  # fuzzy 0.9
     assert _lookup_name("Completely Unrelated Name", sec) is None
+
+
+def test_norm_name_joins_dotted_initials_consistently():
+    # Punctuation removal leaves double spaces; the join must still fire so both
+    # spellings land on the same key.
+    assert norm_name("C. H. ROBINSON WORLDWIDE, INC.") == "ch robinson worldwide"
+    assert norm_name("C.H. Robinson") == "ch robinson"
+    assert norm_name("The J. M. Smucker Company") == "jm smucker"
+    assert norm_name("J M SMUCKER Co") == "jm smucker"
+
+
+def test_lookup_name_fuzzy_survives_closer_wrong_candidate():
+    from ecvol.data.fincall_identity import _lookup_name
+
+    # "palatin technologies" ranks closer to the query than the right key; the
+    # first-token guard must reject it and keep scanning, not give up.
+    sec = {"palatin technologies": ("PTN", "911216"), "align technology": ("ALGN", "1097149")}
+    assert _lookup_name("Align Technologies", sec) == ("ALGN", "1097149")
+
+
+def test_clean_candidate_strips_filler_head_and_event_words():
+    assert clean_candidate("you to the Adobe") == "Adobe"
+    assert clean_candidate("today's Bank of America") == "Bank of America"
+    assert clean_candidate("this Exxon Mobil Corporation") == "Exxon Mobil Corporation"
+    assert clean_candidate("KLA Corporation September 2020") == "KLA Corporation"
+    assert clean_candidate("Paychex, Inc. Reports") == "Paychex, Inc"
+    assert clean_candidate("Royal Caribbean Group's Business Update") == "Royal Caribbean Group's"
+
+
+def test_greeting_names_require_proper_noun_shape():
+    from ecvol.data.fincall_identity import _greeting_names
+
+    # re.I patterns capture lowercase prose; the proper-noun filter must drop it.
+    junk = "Hello, and welcome to the ladies first quarter 2020 earnings call."
+    assert _greeting_names(junk) == []
+    kept = "Welcome to the eBay Q1 2020 Earnings Conference Call."
+    assert ("eBay", 6) in _greeting_names(kept)

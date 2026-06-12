@@ -77,7 +77,7 @@ call_id,year,ticker,cik,company,score,runner_up,runner_up_score,date,date_source
 1640196,2019,NSC,702165,,13,,0,2019-01-24,pdf_page1,earnings,match:greeting
 1640216,2019,,,,0,,0,2019-01-24,pdf_page1,earnings,unresolved:no_candidates
 1640248,2019,WDC,106040,,11,,0,,,earnings,match:greeting;no_date
-1640723,2019,,,,1,CL,0,2019-04-23,pdf_created,earnings,unresolved:weak_evidence;date_from_creation_stamp
+1640723,2019,CL,21665,,7,,0,2019-04-23,pdf_created,earnings,match:greeting;date_from_creation_stamp
 1641285,2019,CAT,18230,Caterpillar Inc.,8,GS,1,2019-01-28,pdf_page1,earnings,match:pdf_company;match:greeting
 1641674,2019,WHR,106640,,6,,0,2019-01-28,pdf_created,earnings,match:greeting;date_from_creation_stamp
 1641690,2019,XRX,1770450,Xerox Corporation,8,,0,2019-01-29,pdf_page1,earnings,match:pdf_company;match:greeting
@@ -134,7 +134,7 @@ call_id,year,ticker,cik,company,score,runner_up,runner_up_score,date,date_source
 1645159,2019,ROP,882835,,5,,0,2019-01-31,pdf_created,earnings,date_from_creation_stamp
 1645172,2019,EMN,915389,,7,,0,2019-02-01,pdf_page1,earnings,match:greeting
 1645214,2019,HON,773840,,6,ADIG,1,2019-02-01,pdf_page1,earnings,match:greeting
-1645375,2019,,,,1,XOM,0,2019-02-01,pdf_page1,earnings,unresolved:weak_evidence
+1645375,2019,XOM,34088,,7,,0,2019-02-01,pdf_page1,earnings,match:greeting
 1645384,2019,WY,106535,,6,,0,2019-02-01,pdf_page1,earnings,match:greeting
 1645457,2019,CVX,93410,,6,,0,2019-02-01,pdf_page1,earnings,match:greeting
 1646770,2019,IT,749251,,6,,0,2019-02-05,pdf_page1,earnings,match:greeting
@@ -178,7 +178,7 @@ call_id,year,ticker,cik,company,score,runner_up,runner_up_score,date,date_source
 1654714,2019,AIZ,1267238,,6,,0,2019-02-19,pdf_created,earnings,match:greeting;date_from_creation_stamp
 1654753,2019,CBRE,1138118,,6,,0,2019-02-12,pdf_created,earnings,match:greeting;date_from_creation_stamp
 1654759,2019,TRIP,1526520,,6,,0,2019-02-12,pdf_created,earnings,match:greeting;date_from_creation_stamp
-1655362,2019,PR,1658566,,15,OXY,1,2019-02-13,pdf_page1,earnings,
+1655362,2019,PR,1658566,,15,OXY,7,2019-02-13,pdf_page1,earnings,match:greeting
 1655685,2019,,,,6,CSCO,6,2019-02-13,pdf_page1,earnings,unresolved:ambiguous
 1655814,2019,MGM,789570,,8,,0,2019-02-13,pdf_created,earnings,match:greeting;date_from_creation_stamp
 1656490,2019,EPAM,1352010,,8,,0,2019-02-13,pdf_created,earnings,match:greeting;date_from_creation_stamp
@@ -193,7 +193,7 @@ call_id,year,ticker,cik,company,score,runner_up,runner_up_score,date,date_source
 1656986,2019,REG,910606,,8,,0,2019-02-11,pdf_created,earnings,match:greeting;date_from_creation_stamp
 1657156,2019,VMC,1396009,,9,,0,2019-02-14,pdf_page1,earnings,match:greeting
 1658631,2019,DE,315189,,6,WFC,1,2019-02-15,pdf_created,earnings,match:greeting;date_from_creation_stamp
-1658727,2019,MCO,1059556,Moody's Corporation,2,,0,2019-02-15,pdf_page1,earnings,match:pdf_company
+1658727,2019,MCO,1059556,Moody's Corporation,8,,0,2019-02-15,pdf_page1,earnings,match:pdf_company;match:greeting
 1660217,2019,PANW,1327567,Palo Alto Networks,15,,0,2019-02-28,pdf_created,earnings,match:pdf_company;date_from_creation_stamp
 1660224,2019,WMT,104169,,6,JD,3,2019-02-18,pdf_created,earnings,match:greeting;date_from_creation_stamp
 1660329,2019,SCI,89089,,7,,0,2019-02-18,pdf_created,earnings,match:greeting;date_from_creation_stamp
@@ -226,7 +226,7 @@ call_id,year,ticker,cik,company,score,runner_up,runner_up_score,date,date_source
 1670663,2019,AES,874761,,6,,0,2019-02-27,pdf_page1,earnings,match:greeting
 1670684,2019,LOW,60667,,6,SHW,3,2019-02-27,pdf_created,earnings,match:greeting;date_from_creation_stamp
 1670838,2019,EOG,821189,,9,,0,2019-02-26,pdf_created,earnings,match:greeting;date_from_creation_stamp
-1670995,2019,PEG,788784,,2,,0,,,earnings,no_date
+1670995,2019,PEG,788784,,8,,0,,,earnings,match:greeting;no_date
 1671922,2019,HPQ,47217,,6,,0,2019-02-27,pdf_created,earnings,match:greeting;date_from_creation_stamp
 1672623,2019,,,,1,LMT,0,2019-02-26,pdf_created,earnings,unresolved:weak_evidence;date_from_creation_stamp
 1673527,2019,PGR,80661,,6,STT,1,2019-02-27,pdf_created,earnings,match:greeting;date_from_creation_stamp
@@ -240,14 +240,14 @@ call_id,year,ticker,cik,company,score,runner_up,runner_up_score,date,date_source
 1678781,2019,ANF,1018840,,7,,0,2019-03-05,pdf_created,earnings,match:greeting;date_from_creation_stamp
 1680131,2019,HRB,12659,,6,,0,2019-03-07,pdf_created,earnings,match:greeting;date_from_creation_stamp
 1681178,2019,,,,0,,0,2019-03-08,pdf_created,earnings,unresolved:no_candidates;date_from_creation_stamp
-1687671,2019,,,,0,,0,,,earnings,unresolved:no_candidates;no_date
+1687671,2019,ADBE,796343,,6,,0,,,earnings,match:greeting;no_date
 1690493,2019,GIS,40704,,8,,0,2019-03-19,pdf_created,earnings,date_from_creation_stamp
 1690859,2019,MU,723125,,6,,0,2019-03-20,pdf_created,earnings,match:greeting;date_from_creation_stamp
 1691216,2019,DRI,940944,,6,,0,2019-03-21,pdf_page1,earnings,match:greeting
 1691275,2019,CAG,23217,,13,,0,2019-03-21,pdf_page1,earnings,match:greeting
 1692833,2019,,,,0,,0,2019-03-26,pdf_page1,earnings,unresolved:no_candidates
 1692960,2019,FDS,1013237,,6,TRI,1,2019-03-26,pdf_page1,earnings,match:greeting
-1693639,2019,,,,0,,0,2019-03-27,pdf_created,earnings,unresolved:no_candidates;date_from_creation_stamp
+1693639,2019,PAYX,723531,,6,,0,2019-03-27,pdf_created,earnings,match:greeting;date_from_creation_stamp
 1695833,2019,,,,1,HD,0,2019-04-02,pdf_page1,earnings,unresolved:weak_evidence
 1695871,2019,LSEGY,1842726,,2,,0,2019-04-25,pdf_page1,unknown,
 1696807,2019,F,37996,Ford Motor Company,2,,0,2019-04-25,pdf_page1,earnings,match:pdf_company
@@ -262,7 +262,7 @@ call_id,year,ticker,cik,company,score,runner_up,runner_up_score,date,date_source
 1699403,2019,,,,0,,0,2019-04-12,pdf_created,earnings,unresolved:no_candidates;date_from_creation_stamp
 1699584,2019,,,"Comerica, Inc.",0,,0,2019-04-15,pdf_created,earnings,unresolved:no_candidates;date_from_creation_stamp
 1699592,2019,OMC,29989,,6,,0,2019-04-16,pdf_page1,earnings,match:greeting
-1699602,2019,,,Bank of America,2,BAC,1,2019-04-16,pdf_page1,earnings,unresolved:ambiguous
+1699602,2019,BAC,70858,Bank of America,8,JPM,1,2019-04-16,pdf_page1,earnings,match:pdf_company;match:greeting
 1699610,2019,JNJ,200406,,16,,0,2019-04-16,pdf_created,earnings,match:greeting;date_from_creation_stamp
 1699644,2019,FHN,36966,,3,WFC,1,2019-04-16,pdf_page1,earnings,
 1699707,2019,PLD,1045609,,6,,0,2019-04-15,pdf_created,earnings,match:greeting;date_from_creation_stamp
@@ -290,7 +290,7 @@ call_id,year,ticker,cik,company,score,runner_up,runner_up_score,date,date_source
 1701206,2019,,,,1,HBAN,0,2019-04-25,pdf_page1,earnings,unresolved:weak_evidence
 1701224,2019,HD,354950,,16,PPG,7,2019-04-18,pdf_page1,earnings,match:greeting
 1701915,2019,KMB,55785,,6,,0,2019-04-22,pdf_created,earnings,match:greeting;date_from_creation_stamp
-1702054,2019,O,726728,,2,,0,,,ma,no_date
+1702054,2019,,,,3,WPC,2,,,ma,unresolved:ambiguous;no_date
 1702064,2019,ZION,109380,,6,,0,2019-04-22,pdf_page1,earnings,match:greeting
 1702269,2019,NDAQ,1120193,,6,III,2,2019-04-24,pdf_page1,earnings,match:greeting
 1702273,2019,WHR,106640,,6,,0,2019-04-23,pdf_page1,earnings,match:greeting
@@ -314,7 +314,7 @@ call_id,year,ticker,cik,company,score,runner_up,runner_up_score,date,date_source
 1703637,2019,TER,97210,,6,BDMD,4,2019-04-24,pdf_page1,earnings,match:greeting;match:greeting
 1703663,2019,APD,2969,,6,FPH,2,2019-04-24,pdf_page1,earnings,match:greeting
 1703766,2019,CAT,18230,Caterpillar Inc.,8,WFC,1,2019-04-24,pdf_page1,earnings,match:pdf_company;match:greeting
-1703819,2019,,,,0,,0,2019-04-24,pdf_page1,earnings,unresolved:no_candidates
+1703819,2019,MCO,1059556,,6,,0,2019-04-24,pdf_page1,earnings,match:greeting
 1703871,2019,NOC,1133421,Northrop Grumman Corporation,12,,0,2019-04-24,pdf_page1,earnings,match:pdf_company;match:greeting
 1703930,2019,AVY,8818,,6,,0,2019-04-24,pdf_page1,earnings,match:greeting
 1704288,2019,ALGN,1097149,,7,PG,1,2019-04-24,pdf_created,earnings,match:greeting;date_from_creation_stamp
@@ -413,7 +413,7 @@ call_id,year,ticker,cik,company,score,runner_up,runner_up_score,date,date_source
 1716980,2019,,,,1,STX,0,2019-05-01,pdf_created,earnings,unresolved:weak_evidence;date_from_creation_stamp
 1717019,2019,HII,1501585,,2,,0,2019-05-02,pdf_page1,earnings,
 1717333,2019,PRU,1137774,,7,,0,2019-05-01,pdf_created,earnings,match:greeting;date_from_creation_stamp
-1717401,2019,PEG,788784,,2,,0,,,earnings,no_date
+1717401,2019,PEG,788784,,8,,0,,,earnings,match:greeting;no_date
 1717515,2019,KIM,879101,,6,FIVE,1,2019-05-30,pdf_created,earnings,match:greeting;date_from_creation_stamp
 1717861,2019,DUK,1326160,,38,BR,2,2019-05-09,pdf_page1,earnings,match:greeting;date_disagreement
 1718219,2019,FSLR,1274494,,4,,0,,,earnings,no_date
@@ -466,10 +466,10 @@ call_id,year,ticker,cik,company,score,runner_up,runner_up_score,date,date_source
 1752758,2019,CRM,1108524,,6,LUV,2,2019-06-05,pdf_created,earnings,match:greeting;date_from_creation_stamp
 1753098,2019,,,,0,,0,2019-06-04,pdf_created,earnings,unresolved:no_candidates;date_from_creation_stamp
 1754425,2019,CIEN,936395,,6,,0,2019-04-30,pdf_page1,earnings,match:greeting
-1754478,2019,,,,0,,0,2019-06-06,pdf_page1,earnings,unresolved:no_candidates
+1754478,2019,SJM,91419,,8,,0,2019-06-06,pdf_page1,earnings,match:greeting
 1756931,2019,HRB,12659,,6,,0,2019-06-11,pdf_created,earnings,match:greeting;date_from_creation_stamp
 1756943,2019,GIS,40704,,6,,0,2019-06-26,pdf_created,earnings,date_from_creation_stamp
-1762311,2019,,,,2,HD,1,,,earnings,unresolved:ambiguous;no_date
+1762311,2019,ADBE,796343,,6,HD,2,,,earnings,match:greeting;no_date
 1762936,2019,,,,0,,0,2019-05-17,pdf_created,earnings,unresolved:no_candidates;date_from_creation_stamp
 1763329,2019,DRI,940944,,6,,0,2019-06-20,pdf_page1,earnings,match:greeting
 1765944,2019,FDS,1013237,,6,TRI,1,2019-06-25,pdf_page1,earnings,match:greeting
@@ -486,7 +486,7 @@ call_id,year,ticker,cik,company,score,runner_up,runner_up_score,date,date_source
 1772293,2019,TXT,217346,,6,UAL,1,2019-07-17,pdf_page1,earnings,match:greeting
 1772297,2019,LEO,818972,,4,WFC,1,2019-07-17,pdf_page1,earnings,match:greeting
 1772314,2019,,,"Comerica, Inc.",0,,0,2019-07-16,pdf_created,earnings,unresolved:no_candidates;date_from_creation_stamp
-1772345,2019,,,Bank of America,2,WFC,2,2019-07-17,pdf_page1,earnings,unresolved:ambiguous
+1772345,2019,BAC,70858,Bank of America,8,WFC,2,2019-07-17,pdf_page1,earnings,match:pdf_company;match:greeting
 1772350,2019,USB,36104,,6,,0,2019-07-17,pdf_page1,earnings,match:greeting
 1772412,2019,UAL,100517,,11,GLDI,1,2019-07-17,pdf_page1,earnings,match:greeting
 1772439,2019,PNC,713676,PNC Bank,10,WFC,1,2019-07-17,pdf_page1,earnings,match:greeting
@@ -596,7 +596,7 @@ call_id,year,ticker,cik,company,score,runner_up,runner_up_score,date,date_source
 1783486,2019,,,,0,,0,2019-07-29,pdf_created,earnings,unresolved:no_candidates;date_from_creation_stamp
 1783545,2019,,,,0,,0,2019-08-05,pdf_created,earnings,unresolved:no_candidates;date_from_creation_stamp
 1783571,2019,MLM,916076,,6,RMGL,1,2019-07-30,pdf_page1,earnings,match:greeting
-1783619,2019,,,,1,PEG,0,,,earnings,unresolved:weak_evidence;no_date
+1783619,2019,PEG,788784,,7,,0,,,earnings,match:greeting;no_date
 1783657,2019,COP,1163165,,6,,0,2019-07-30,pdf_created,earnings,match:greeting;date_from_creation_stamp
 1784188,2019,EA,712515,,9,,0,2019-07-30,pdf_page1,earnings,match:greeting
 1784219,2019,MDLZ,1103982,,7,,0,2019-07-30,pdf_page1,earnings,match:greeting
@@ -604,7 +604,7 @@ call_id,year,ticker,cik,company,score,runner_up,runner_up_score,date,date_source
 1784267,2019,,,,0,,0,2019-07-31,pdf_created,earnings,unresolved:no_candidates;date_from_creation_stamp
 1784730,2019,BG,1996862,,6,BYND,3,2019-07-30,pdf_created,earnings,match:greeting;date_from_creation_stamp
 1784810,2019,GPJA,41091,Information Technology,13,SCCO,6,2019-07-31,pdf_page1,earnings,match:greeting
-1784833,2019,,,,2,GS,2,2019-07-31,pdf_page1,earnings,unresolved:ambiguous
+1784833,2019,CHRW,1043277,,6,GS,2,2019-07-31,pdf_page1,earnings,match:greeting
 1784846,2019,CDW,1402057,,6,,0,2019-07-31,pdf_page1,earnings,match:greeting
 1784863,2019,AMT,1053507,,21,,0,2019-07-31,pdf_page1,earnings,match:greeting
 1784885,2019,LHX,202058,,9,LMT,1,2019-07-31,pdf_page1,earnings,match:greeting
@@ -614,7 +614,7 @@ call_id,year,ticker,cik,company,score,runner_up,runner_up_score,date,date_source
 1785149,2019,FMC,37785,,4,,0,2019-07-31,pdf_page1,earnings,match:greeting
 1785194,2019,,,,3,GM,3,2019-08-06,pdf_created,earnings,unresolved:ambiguous;date_from_creation_stamp
 1785213,2019,ETR,65984,,6,ENJ,1,2019-07-30,pdf_created,earnings,match:greeting;date_from_creation_stamp
-1785371,2019,,,Moody's Corporation,2,MCO,1,2019-07-31,pdf_page1,earnings,unresolved:ambiguous
+1785371,2019,MCO,1059556,Moody's Corporation,8,WFC,1,2019-07-31,pdf_page1,earnings,match:pdf_company;match:greeting
 1786065,2019,FICO,814547,FICO,7,MS,1,2019-07-31,pdf_page1,earnings,match:greeting
 1786109,2019,CRSP,1674416,,3,FTRK,1,2019-07-31,pdf_page1,earnings,
 1786138,2019,LRCX,707549,,2,,0,2019-07-31,pdf_page1,earnings,
@@ -655,7 +655,7 @@ call_id,year,ticker,cik,company,score,runner_up,runner_up_score,date,date_source
 1789241,2019,,,,0,,0,,,earnings,unresolved:no_candidates;no_date
 1789250,2019,CBOE,1374310,,9,FISI,6,2019-08-02,pdf_page1,earnings,match:greeting;match:greeting
 1789469,2019,,,,1,WFC,0,2019-08-02,pdf_page1,earnings,unresolved:weak_evidence
-1789475,2019,,,,1,XOM,0,2019-08-02,pdf_page1,earnings,unresolved:weak_evidence
+1789475,2019,XOM,34088,,7,,0,2019-08-02,pdf_page1,earnings,match:greeting
 1789488,2019,XRAY,818479,,18,CAH,1,2019-08-02,pdf_page1,earnings,match:greeting
 1789594,2019,LYB,1489393,,6,,0,2019-08-02,pdf_page1,earnings,match:greeting
 1789734,2019,CVX,93410,,6,,0,2019-08-02,pdf_page1,earnings,match:greeting
@@ -692,7 +692,7 @@ call_id,year,ticker,cik,company,score,runner_up,runner_up_score,date,date_source
 1809206,2019,KEYS,1601046,,7,,0,2019-08-21,pdf_created,earnings,match:greeting;date_from_creation_stamp
 1810115,2019,HPQ,47217,,6,HPE,1,2019-08-22,pdf_page1,earnings,match:greeting
 1810124,2019,CRM,1108524,Salesforce,8,UNP,2,2019-08-21,pdf_created,earnings,match:pdf_company;match:greeting;date_from_creation_stamp
-1811727,2019,,,,0,,0,2019-08-27,pdf_page1,earnings,unresolved:no_candidates
+1811727,2019,SJM,91419,,8,,0,2019-08-27,pdf_page1,earnings,match:greeting
 1812022,2019,HPE,1645590,,9,,0,2019-08-27,pdf_created,earnings,match:greeting;date_from_creation_stamp
 1812026,2019,ADSK,769397,,6,TPC,3,2019-08-27,pdf_page1,earnings,match:greeting
 1812443,2019,COTY,1024305,,6,WFC,1,2019-08-28,pdf_page1,earnings,match:greeting
@@ -701,8 +701,8 @@ call_id,year,ticker,cik,company,score,runner_up,runner_up_score,date,date_source
 1815711,2019,GIS,40704,,13,,0,2019-07-09,pdf_page1,earnings,date_disagreement
 1817002,2019,PANW,1327567,,24,MS,1,2019-09-04,pdf_page1,earnings,match:greeting
 1817318,2019,CIEN,936395,,6,,0,2019-07-31,pdf_page1,earnings,match:greeting
-1824675,2019,,,,0,,0,,,earnings,unresolved:no_candidates;no_date
-1825469,2019,,,,1,DRI,0,2019-09-19,pdf_page1,earnings,unresolved:weak_evidence
+1824675,2019,ADBE,796343,,6,,0,,,earnings,match:greeting;no_date
+1825469,2019,DRI,940944,,7,,0,2019-09-19,pdf_page1,earnings,match:greeting
 1825680,2019,CAG,23217,,6,,0,2019-09-26,pdf_page1,earnings,
 1827600,2019,,,,6,JBL,6,2019-09-24,pdf_page1,earnings,unresolved:ambiguous
 1827657,2019,,,,0,,0,2019-09-24,pdf_created,earnings,unresolved:no_candidates;date_from_creation_stamp
@@ -758,7 +758,7 @@ call_id,year,ticker,cik,company,score,runner_up,runner_up_score,date,date_source
 1837172,2019,AVY,8818,,6,,0,2019-10-23,pdf_page1,earnings,match:greeting
 1837402,2019,LVS,1300514,,10,,0,2019-10-23,pdf_page1,earnings,match:greeting
 1837455,2019,EBAY,1065088,,6,,0,2019-10-23,pdf_page1,earnings,match:greeting
-1837462,2019,ZBH,1136869,,4,ALGN,2,2019-10-23,pdf_created,earnings,date_from_creation_stamp
+1837462,2019,ALGN,1097149,,8,ZBH,4,2019-10-23,pdf_created,earnings,match:greeting;date_from_creation_stamp
 1837465,2019,NOW,1373715,,6,,0,2019-10-23,pdf_created,earnings,match:greeting;date_from_creation_stamp
 1837474,2019,LRCX,707549,,2,,0,2019-10-23,pdf_page1,earnings,
 1837485,2019,F,37996,Ford Motor Company,6,,0,2019-10-23,pdf_page1,earnings,match:pdf_company
@@ -816,7 +816,7 @@ call_id,year,ticker,cik,company,score,runner_up,runner_up_score,date,date_source
 1844658,2019,BG,1996862,,6,BYND,1,2019-10-30,pdf_created,earnings,match:greeting;date_from_creation_stamp
 1844698,2019,MCK,927653,,6,DSGR,1,2019-10-30,pdf_page1,earnings,match:greeting
 1844724,2019,BKR,1701605,,9,GE,7,2019-10-30,pdf_created,earnings,match:greeting;date_from_creation_stamp
-1844791,2019,,,,2,MS,1,2019-10-30,pdf_page1,earnings,unresolved:ambiguous
+1844791,2019,CHRW,1043277,,6,MS,2,2019-10-30,pdf_page1,earnings,match:greeting
 1844804,2019,,,,1,WFC,0,2019-10-30,pdf_page1,earnings,unresolved:weak_evidence
 1844843,2019,NI,1111711,,6,NGG,1,2019-10-30,pdf_page1,earnings,match:greeting
 1844855,2019,IQV,1478242,,6,,0,2019-10-30,pdf_page1,earnings,match:greeting
@@ -825,10 +825,10 @@ call_id,year,ticker,cik,company,score,runner_up,runner_up_score,date,date_source
 1845067,2019,FMC,37785,,4,,0,2019-10-30,pdf_page1,earnings,match:greeting
 1845092,2019,IEX,832101,,6,,0,2019-10-30,pdf_page1,earnings,match:greeting
 1845179,2019,TAP,24545,,9,,0,2019-10-30,pdf_page1,earnings,match:greeting
-1845300,2019,MCO,1059556,Moody's Corporation,2,,0,2019-10-30,pdf_page1,earnings,match:pdf_company
+1845300,2019,MCO,1059556,Moody's Corporation,8,,0,2019-10-30,pdf_page1,earnings,match:pdf_company;match:greeting
 1845518,2019,UDR,74208,,6,,0,2019-11-05,pdf_created,earnings,match:greeting;date_from_creation_stamp
 1845945,2019,MSI,68505,,8,,0,2019-10-30,pdf_created,earnings,match:greeting;date_from_creation_stamp
-1845973,2019,,,,0,,0,2019-10-30,pdf_page1,earnings,unresolved:no_candidates
+1845973,2019,KLAC,319201,,6,,0,2019-10-30,pdf_page1,earnings,match:greeting
 1845989,2019,TRMB,864749,,6,,0,2019-10-30,pdf_created,earnings,match:greeting;date_from_creation_stamp
 1846031,2019,ETSY,1370637,,6,,0,2019-10-30,pdf_page1,earnings,match:greeting
 1846042,2019,,,,0,,0,2019-10-29,pdf_created,earnings,unresolved:no_candidates;date_from_creation_stamp
@@ -853,13 +853,13 @@ call_id,year,ticker,cik,company,score,runner_up,runner_up_score,date,date_source
 1849050,2019,WU,1365135,,14,,0,2019-10-31,pdf_page1,earnings,match:greeting
 1849076,2019,FTNT,1262039,,6,GLDI,1,2019-10-31,pdf_page1,earnings,match:greeting
 1849084,2019,ANET,1596532,,10,,0,2019-10-31,pdf_created,earnings,match:greeting;date_from_creation_stamp
-1849368,2019,IP,51434,,5,WFC,2,2019-10-31,pdf_page1,earnings,
+1849368,2019,IP,51434,,11,WFC,2,2019-10-31,pdf_page1,earnings,match:greeting
 1849873,2019,,,,0,,0,2019-10-31,pdf_page1,earnings,unresolved:no_candidates
 1849959,2019,CBOE,1374310,,11,FISI,6,2019-11-01,pdf_page1,earnings,match:greeting;match:greeting
 1850102,2019,D,715957,,14,SFD,1,2019-11-01,pdf_page1,earnings,match:greeting
 1850143,2019,OLN,74303,,6,NOC,3,2019-11-01,pdf_page1,earnings,match:greeting
 1851570,2019,SYY,96021,,6,USFD,1,2019-11-01,pdf_created,earnings,match:greeting;date_from_creation_stamp
-1852432,2019,,,,1,BR,0,2019-11-06,pdf_page1,earnings,unresolved:weak_evidence
+1852432,2019,COTY,1024305,,6,BR,1,2019-11-06,pdf_page1,earnings,match:greeting
 1852483,2019,,,,0,,0,2019-11-05,pdf_page1,earnings,unresolved:no_candidates
 1852493,2019,BHF,1685040,,7,,0,2019-11-04,pdf_created,earnings,match:greeting;date_from_creation_stamp
 1852552,2019,,,,0,,0,2019-11-04,pdf_created,earnings,unresolved:no_candidates;date_from_creation_stamp
@@ -894,7 +894,7 @@ call_id,year,ticker,cik,company,score,runner_up,runner_up_score,date,date_source
 1858460,2019,FISI,862831,,6,ZTS,4,2019-11-07,pdf_page1,earnings,match:greeting;match:greeting
 1858990,2019,DUK,1326160,,15,,0,2019-11-08,pdf_page1,earnings,match:greeting;date_disagreement
 1861577,2019,,,,1,DXC,0,2019-11-11,pdf_page1,earnings,unresolved:weak_evidence
-1862178,2019,FISI,862831,,6,,0,2019-11-11,pdf_created,earnings,match:greeting;date_from_creation_stamp
+1862178,2019,,,,0,,0,2019-11-11,pdf_created,earnings,unresolved:no_candidates;date_from_creation_stamp
 1865005,2019,,,,6,CSCO,6,2019-11-13,pdf_page1,earnings,unresolved:ambiguous
 1865129,2019,NTAP,1002047,,6,,0,2019-11-13,pdf_page1,earnings,match:greeting
 1869482,2019,TDG,1260221,,6,,0,2019-11-19,pdf_page1,earnings,match:greeting
@@ -912,7 +912,7 @@ call_id,year,ticker,cik,company,score,runner_up,runner_up_score,date,date_source
 1878873,2019,HRB,12659,,6,,0,2019-12-04,pdf_created,earnings,match:greeting;date_from_creation_stamp
 1881255,2019,,,,0,,0,2019-12-10,pdf_created,earnings,unresolved:no_candidates;date_from_creation_stamp
 1882710,2019,,,,6,CIEN,6,2019-10-31,pdf_page1,earnings,unresolved:ambiguous
-1883058,2019,,,,1,NYT,1,,,earnings,unresolved:weak_evidence;no_date
+1883058,2019,ADBE,796343,,6,NYT,1,,,earnings,match:greeting;no_date
 1885172,2019,JBL,898293,,6,JNJ,1,2019-12-17,pdf_page1,earnings,match:greeting
 1885573,2019,PAYX,723531,,6,,0,2019-12-17,pdf_created,earnings,match:greeting;date_from_creation_stamp
 1885874,2019,,,,1,CAG,0,2019-12-19,pdf_page1,earnings,unresolved:weak_evidence
@@ -981,7 +981,7 @@ call_id,year,ticker,cik,company,score,runner_up,runner_up_score,date,date_source
 1895479,2020,HESM,1789832,,7,,0,2020-01-28,pdf_created,earnings,date_from_creation_stamp
 1895499,2020,,,,1,ARE,1,2020-02-04,pdf_created,earnings,unresolved:weak_evidence;date_from_creation_stamp
 1895603,2020,AVY,8818,,7,MS,1,2020-01-29,pdf_page1,earnings,match:greeting
-1895836,2020,,,,0,,0,2020-01-29,pdf_created,earnings,unresolved:no_candidates;date_from_creation_stamp
+1895836,2020,ALGN,1097149,,6,,0,2020-01-29,pdf_created,earnings,match:greeting;date_from_creation_stamp
 1895844,2020,MDLZ,1103982,,8,,0,2020-01-29,pdf_page1,earnings,match:greeting
 1895847,2020,PYPL,1633917,,6,UAL,1,2020-01-29,pdf_created,earnings,match:greeting;date_from_creation_stamp
 1895866,2020,NOW,1373715,,6,MS,2,2020-01-29,pdf_created,earnings,match:greeting;date_from_creation_stamp
@@ -996,7 +996,7 @@ call_id,year,ticker,cik,company,score,runner_up,runner_up_score,date,date_source
 1896479,2020,XEL,72903,Xcel Energy,11,,0,2020-01-29,pdf_created,earnings,match:pdf_company;match:greeting;date_from_creation_stamp
 1896493,2020,DOV,29905,,6,,0,2020-01-30,pdf_page1,earnings,match:greeting
 1896528,2020,KIM,879101,,6,URBN,1,2020-02-20,pdf_created,earnings,match:greeting;date_from_creation_stamp
-1896537,2020,IP,51434,,9,GPK,7,2020-01-30,pdf_page1,earnings,
+1896537,2020,IP,51434,,15,GPK,7,2020-01-30,pdf_page1,earnings,match:greeting
 1896559,2020,IEX,832101,,6,,0,2020-01-30,pdf_page1,earnings,match:greeting
 1896594,2020,URI,1067701,,5,,0,2020-01-29,pdf_created,earnings,date_from_creation_stamp
 1896610,2020,BC,14930,,6,,0,2020-01-29,pdf_created,earnings,match:greeting;date_from_creation_stamp
@@ -1013,7 +1013,7 @@ call_id,year,ticker,cik,company,score,runner_up,runner_up_score,date,date_source
 1897454,2020,HON,773840,,6,,0,2020-01-31,pdf_created,earnings,match:greeting;date_from_creation_stamp
 1897568,2020,,,,1,WFC,0,2020-01-30,pdf_created,earnings,unresolved:weak_evidence;date_from_creation_stamp
 1897574,2020,WY,106535,,6,,0,2020-01-31,pdf_page1,earnings,match:greeting
-1897585,2020,,,,1,XOM,1,2020-01-30,pdf_created,earnings,unresolved:weak_evidence;date_from_creation_stamp
+1897585,2020,XOM,34088,,7,FCEL,1,2020-01-30,pdf_created,earnings,match:greeting;date_from_creation_stamp
 1897628,2020,CVX,93410,,6,,0,2020-01-31,pdf_page1,earnings,match:greeting
 1897689,2020,PSX,1534701,,6,,0,2020-01-31,pdf_page1,earnings,match:greeting
 1897767,2020,CHD,313927,,7,PG,1,2020-01-31,pdf_created,earnings,date_from_creation_stamp
@@ -1053,7 +1053,7 @@ call_id,year,ticker,cik,company,score,runner_up,runner_up_score,date,date_source
 1906760,2020,AIZ,1267238,,6,,0,2020-03-02,pdf_created,earnings,match:greeting;date_from_creation_stamp
 1906851,2020,BG,1996862,,6,BYND,1,2020-02-12,pdf_page1,earnings,match:greeting
 1907005,2020,IQV,1478242,,6,,0,2020-02-12,pdf_page1,earnings,match:greeting
-1907380,2020,,,,0,,0,2020-02-12,pdf_page1,earnings,unresolved:no_candidates
+1907380,2020,MCO,1059556,,6,,0,2020-02-12,pdf_page1,earnings,match:greeting
 1907915,2020,,,,6,CSCO,6,2020-02-12,pdf_page1,earnings,unresolved:ambiguous
 1908044,2020,TRMB,864749,,6,MS,1,2020-02-12,pdf_created,earnings,match:greeting;date_from_creation_stamp
 1908919,2020,IRM,1020569,,9,GS,2,2020-02-13,pdf_page1,earnings,match:greeting
@@ -1086,7 +1086,7 @@ call_id,year,ticker,cik,company,score,runner_up,runner_up_score,date,date_source
 1919759,2020,PANW,1327567,,14,MS,1,,,earnings,match:greeting;no_date
 1920063,2020,HPQ,47217,,6,,0,2020-02-24,pdf_page1,earnings,match:greeting
 1920686,2020,OKE,1039684,,6,GS,1,2020-02-24,pdf_created,earnings,match:greeting;date_from_creation_stamp
-1922152,2020,PEG,788784,,2,,0,2020-02-26,pdf_page1,earnings,
+1922152,2020,PEG,788784,,8,,0,2020-02-26,pdf_page1,earnings,match:greeting
 1922703,2020,ETSY,1370637,,6,,0,2020-02-26,pdf_page1,earnings,match:greeting
 1923339,2020,FTI,1681459,,6,,0,2020-02-27,pdf_page1,earnings,match:greeting
 1923417,2020,,,,2,BKR,2,2020-02-27,pdf_created,earnings,unresolved:ambiguous;date_from_creation_stamp
@@ -1100,11 +1100,11 @@ call_id,year,ticker,cik,company,score,runner_up,runner_up_score,date,date_source
 1929058,2020,,,,0,,0,2020-06-02,pdf_created,earnings,unresolved:no_candidates;date_from_creation_stamp
 1930412,2020,,,,6,CIEN,6,2020-01-31,pdf_page1,earnings,unresolved:ambiguous
 1930997,2020,COO,711404,,6,,0,2020-03-06,pdf_created,earnings,match:greeting;date_from_creation_stamp
-1936021,2020,,,,1,TM,1,,,earnings,unresolved:weak_evidence;no_date
+1936021,2020,ADBE,796343,,6,TM,1,,,earnings,match:greeting;no_date
 1938333,2020,GIS,40704,,13,,0,2019-07-09,pdf_page1,earnings,match:greeting;date_disagreement
 1944839,2020,,,,0,,0,2020-03-26,pdf_page1,earnings,unresolved:no_candidates
 1944952,2020,PAYX,723531,,6,,0,2020-03-25,pdf_created,earnings,match:greeting;date_from_creation_stamp
-1945086,2020,,,,0,,0,2020-03-25,pdf_created,earnings,unresolved:no_candidates;date_from_creation_stamp
+1945086,2020,MU,723125,,6,,0,2020-03-25,pdf_created,earnings,match:greeting;date_from_creation_stamp
 1948373,2020,,,,0,,0,2020-03-31,pdf_page1,earnings,unresolved:no_candidates
 1948462,2020,CAG,23217,,13,,0,2020-03-31,pdf_page1,earnings,match:greeting
 1950008,2020,,,Alliance Boots,0,,0,2020-04-02,pdf_page1,earnings,unresolved:no_candidates
@@ -1122,14 +1122,14 @@ call_id,year,ticker,cik,company,score,runner_up,runner_up_score,date,date_source
 1954655,2020,HWM,4281,,6,,0,2020-05-05,pdf_page1,earnings,
 1954704,2020,,,,0,,0,2020-04-14,pdf_created,earnings,unresolved:no_candidates;date_from_creation_stamp
 1955046,2020,LEO,818972,,6,,0,2020-04-15,pdf_created,earnings,match:greeting;date_from_creation_stamp
-1955071,2020,BAC,70858,Bank of America,2,,0,2020-04-15,pdf_page1,earnings,match:pdf_company
+1955071,2020,BAC,70858,Bank of America,8,,0,2020-04-15,pdf_page1,earnings,match:pdf_company;match:greeting
 1955073,2020,PNC,713676,PNC Bank,8,,0,2020-04-15,pdf_page1,earnings,match:greeting
 1955128,2020,IR,1699150,,23,ROP,1,2020-05-12,pdf_page1,earnings,
 1955133,2020,GS,886982,,27,WFC,1,2020-04-15,pdf_page1,earnings,match:greeting
 1955135,2020,,,,1,WFC,0,2020-04-15,pdf_page1,earnings,unresolved:weak_evidence
 1955234,2020,FITB,35527,Fifth Third Bank,7,WFC,1,2020-04-21,pdf_page1,earnings,match:pdf_company
 1955637,2020,ABT,1800,,6,,0,2020-04-15,pdf_created,earnings,match:greeting;date_from_creation_stamp
-1955851,2020,,,,0,,0,2020-04-20,pdf_created,earnings,unresolved:no_candidates;date_from_creation_stamp
+1955851,2020,EFX,33185,,6,,0,2020-04-20,pdf_created,earnings,match:greeting;date_from_creation_stamp
 1956171,2020,CFG,759944,,7,,0,2020-04-17,pdf_page1,earnings,match:greeting
 1956182,2020,PG,80424,,5,GS,1,2020-04-17,pdf_page1,earnings,
 1956191,2020,STT,93751,State Street Corporation,24,,0,2020-04-17,pdf_page1,earnings,match:pdf_company;match:greeting
@@ -1196,7 +1196,7 @@ call_id,year,ticker,cik,company,score,runner_up,runner_up_score,date,date_source
 1962063,2020,MRK,310158,,6,,0,2020-04-27,pdf_created,earnings,match:greeting;date_from_creation_stamp
 1962117,2020,HII,1501585,,5,,0,2020-05-07,pdf_page1,earnings,
 1962376,2020,DXCM,1093557,,6,,0,2020-04-27,pdf_created,earnings,match:greeting;date_from_creation_stamp
-1962420,2020,F,37996,,5,,0,2020-04-28,pdf_created,earnings,date_from_creation_stamp
+1962420,2020,F,37996,,11,,0,2020-04-28,pdf_created,earnings,match:greeting;date_from_creation_stamp
 1962459,2020,MDLZ,1103982,,7,,0,2020-04-28,pdf_page1,earnings,match:greeting
 1962495,2020,FISI,862831,,6,,0,2020-04-28,pdf_created,earnings,match:greeting;date_from_creation_stamp
 1962528,2020,ROP,882835,,3,,0,2020-04-27,pdf_created,earnings,date_from_creation_stamp
@@ -1254,12 +1254,12 @@ call_id,year,ticker,cik,company,score,runner_up,runner_up_score,date,date_source
 1967208,2020,RMD,943819,ResMed,8,,0,2020-04-30,pdf_page1,earnings,match:pdf_company;match:greeting
 1967246,2020,,,,7,AMZN,6,2020-04-29,pdf_created,earnings,unresolved:ambiguous;date_from_creation_stamp
 1967294,2020,V,1403161,,6,UAL,1,2020-04-30,pdf_page1,earnings,match:greeting
-1967321,2020,,,,0,,0,2020-04-30,pdf_page1,earnings,unresolved:no_candidates
+1967321,2020,FTV,1659166,,6,,0,2020-04-30,pdf_page1,earnings,match:greeting
 1967434,2020,SCCO,1001838,Information Technology,6,GPJA,1,2020-04-30,pdf_page1,earnings,match:greeting
 1967718,2020,MPC,1510295,,11,WM,1,2020-05-05,pdf_created,unknown,match:greeting;date_from_creation_stamp
 1967863,2020,EMN,915389,,8,,0,2020-05-01,pdf_page1,earnings,match:greeting
 1967929,2020,,,,7,CBOE,6,2020-05-01,pdf_page1,earnings,unresolved:ambiguous
-1968063,2020,,,,1,XOM,0,,,earnings,unresolved:weak_evidence;no_date
+1968063,2020,XOM,34088,,7,,0,,,earnings,match:greeting;no_date
 1968093,2020,WY,106535,,6,,0,2020-05-01,pdf_page1,earnings,match:greeting
 1968343,2020,PSX,1534701,,6,,0,2020-05-01,pdf_page1,earnings,match:greeting
 1968400,2020,CLX,21076,,6,,0,2020-05-01,pdf_created,earnings,match:greeting;date_from_creation_stamp
@@ -1269,7 +1269,7 @@ call_id,year,ticker,cik,company,score,runner_up,runner_up_score,date,date_source
 1970296,2020,,,,0,,0,2020-05-04,pdf_page1,earnings,unresolved:no_candidates
 1970301,2020,LEG,58492,,9,,0,2020-05-04,pdf_page1,earnings,match:greeting
 1970419,2020,XYL,1524472,,6,,0,2020-05-05,pdf_page1,earnings,match:greeting
-1970429,2020,FISI,862831,,6,STT,1,2020-05-04,pdf_page1,earnings,match:greeting
+1970429,2020,,,,1,STT,0,2020-05-04,pdf_page1,earnings,unresolved:weak_evidence
 1970490,2020,,,,1,JNJ,0,2020-05-05,pdf_page1,earnings,unresolved:weak_evidence
 1970504,2020,,,,0,,0,2020-05-05,pdf_page1,earnings,unresolved:no_candidates
 1970516,2020,D,715957,Dominion Resources Services,15,,0,2020-05-05,pdf_page1,earnings,match:greeting
@@ -1354,13 +1354,13 @@ call_id,year,ticker,cik,company,score,runner_up,runner_up_score,date,date_source
 2002421,2020,CRM,1108524,,6,PG,1,2020-05-28,pdf_created,earnings,match:greeting;date_from_creation_stamp
 2006097,2020,,,,1,GS,0,2020-09-21,pdf_created,earnings,unresolved:weak_evidence;date_from_creation_stamp
 2007526,2020,,,,6,CIEN,6,2020-05-02,pdf_page1,earnings,unresolved:ambiguous
-2007564,2020,,,,1,GS,1,2020-06-04,pdf_page1,earnings,unresolved:weak_evidence
+2007564,2020,SJM,91419,,7,GS,1,2020-06-04,pdf_page1,earnings,match:greeting
 2012673,2020,,,,0,,0,2020-06-25,pdf_page1,earnings,unresolved:no_candidates
 2015700,2020,ADBE,796343,,6,,0,,,earnings,match:greeting;no_date
 2021462,2020,JBL,898293,,6,,0,2020-06-19,pdf_page1,earnings,match:greeting
 2025093,2020,KBH,795266,,10,,0,2020-06-24,pdf_created,earnings,match:greeting;date_from_creation_stamp
 2025737,2020,DRI,940944,,6,MS,1,2020-06-25,pdf_page1,earnings,match:greeting
-2028851,2020,,,,0,,0,2020-06-29,pdf_created,earnings,unresolved:no_candidates;date_from_creation_stamp
+2028851,2020,MU,723125,,6,,0,2020-06-29,pdf_created,earnings,match:greeting;date_from_creation_stamp
 2029339,2020,GIS,40704,,8,GS,1,2019-07-09,pdf_page1,earnings,date_disagreement
 2029448,2020,CAG,23217,,12,HD,1,2020-06-30,pdf_page1,earnings,match:greeting
 2030414,2020,STZ,16918,,8,,0,2020-07-10,pdf_created,earnings,match:greeting;date_from_creation_stamp
@@ -1475,7 +1475,7 @@ call_id,year,ticker,cik,company,score,runner_up,runner_up_score,date,date_source
 2049626,2020,OKE,1039684,"ONEOK, Inc.",8,,0,2020-07-28,pdf_created,earnings,match:pdf_company;match:greeting;date_from_creation_stamp
 2050224,2020,QCOM,804328,,6,,0,2020-07-29,pdf_page1,earnings,match:greeting
 2050241,2020,,,FICO,0,,0,2020-06-30,pdf_page1,earnings,unresolved:no_candidates
-2050285,2020,,,,1,LRCX,0,2020-07-29,pdf_page1,earnings,unresolved:weak_evidence
+2050285,2020,LRCX,707549,,7,,0,2020-07-29,pdf_page1,earnings,match:greeting
 2050301,2020,CTSH,1058290,,7,,0,2020-07-29,pdf_page1,earnings,match:greeting
 2050308,2020,PYPL,1633917,Hewlett-Packard Company,6,HPE,2,2020-07-29,pdf_page1,earnings,match:pdf_company;match:greeting
 2050348,2020,,,,1,KO,1,2020-07-28,pdf_created,earnings,unresolved:weak_evidence;date_from_creation_stamp
@@ -1514,7 +1514,7 @@ call_id,year,ticker,cik,company,score,runner_up,runner_up_score,date,date_source
 2051554,2020,BC,14930,Cubicle Ninjas,6,WFC,1,2020-07-29,pdf_created,earnings,match:greeting;date_from_creation_stamp
 2051556,2020,URI,1067701,,3,,0,2020-07-29,pdf_created,earnings,date_from_creation_stamp
 2051824,2020,AVB,915912,,9,,0,2020-07-29,pdf_page1,earnings,match:greeting
-2051918,2020,MCO,1059556,Moody's Corporation,2,,0,2020-07-30,pdf_page1,earnings,match:pdf_company
+2051918,2020,MCO,1059556,Moody's Corporation,8,,0,2020-07-30,pdf_page1,earnings,match:pdf_company;match:greeting
 2052294,2020,GILD,882095,,7,,0,2020-07-30,pdf_page1,earnings,match:greeting
 2052317,2020,,,,7,AMZN,6,2020-07-29,pdf_created,earnings,unresolved:ambiguous;date_from_creation_stamp
 2052339,2020,TAP,24545,,7,,0,2020-07-30,pdf_page1,earnings,match:greeting
@@ -1528,7 +1528,7 @@ call_id,year,ticker,cik,company,score,runner_up,runner_up_score,date,date_source
 2053310,2020,VFC,103379,,6,PIPR,1,2020-07-30,pdf_created,earnings,match:greeting;date_from_creation_stamp
 2053319,2020,CHTR,1091667,,6,,0,2020-07-31,pdf_page1,earnings,match:greeting
 2053333,2020,,,,7,CBOE,6,2020-07-31,pdf_page1,earnings,unresolved:ambiguous
-2053470,2020,,,,1,XOM,0,2020-07-31,pdf_created,earnings,unresolved:weak_evidence;date_from_creation_stamp
+2053470,2020,XOM,34088,,7,,0,2020-07-31,pdf_created,earnings,match:greeting;date_from_creation_stamp
 2053488,2020,,,,1,WFC,0,2020-07-30,pdf_created,earnings,unresolved:weak_evidence;date_from_creation_stamp
 2053500,2020,SNA,91440,,31,,0,2020-07-30,pdf_created,earnings,match:greeting;date_from_creation_stamp
 2053567,2020,WY,106535,,6,,0,2020-07-31,pdf_page1,earnings,match:greeting
@@ -1713,7 +1713,7 @@ call_id,year,ticker,cik,company,score,runner_up,runner_up_score,date,date_source
 2182010,2021,TXT,217346,Latitude,6,,0,2021-01-27,pdf_page1,earnings,match:greeting
 2182013,2021,,,,0,,0,2021-02-04,pdf_page1,earnings,unresolved:no_candidates
 2182022,2021,NDAQ,1120193,,6,AEP,1,2021-01-27,pdf_page1,earnings,match:greeting
-2182044,2021,GLDI,1053092,,3,WFC,1,2021-01-27,pdf_page1,earnings,
+2182044,2021,CHRW,1043277,,6,GLDI,3,2021-01-27,pdf_page1,earnings,match:greeting
 2182053,2021,GLW,24741,,6,GS,1,2021-01-27,pdf_page1,earnings,match:greeting
 2182054,2021,VFC,103379,,6,,0,2021-01-26,pdf_created,earnings,match:greeting;date_from_creation_stamp
 2182078,2021,EHC,785161,,10,,0,2021-01-27,pdf_page1,earnings,match:greeting
@@ -1759,7 +1759,7 @@ call_id,year,ticker,cik,company,score,runner_up,runner_up_score,date,date_source
 2187077,2021,,,,0,,0,2021-02-01,pdf_page1,earnings,unresolved:no_candidates
 2188171,2021,,,,0,,0,2021-02-02,pdf_page1,earnings,unresolved:no_candidates
 2188181,2021,BR,1383312,,6,,0,2021-02-01,pdf_created,earnings,match:greeting;date_from_creation_stamp
-2188242,2021,HOG,793952,,44,,0,2021-02-02,pdf_page1,earnings,
+2188242,2021,HOG,793952,,50,,0,2021-02-02,pdf_page1,earnings,match:greeting
 2188313,2021,HUBB,48898,,6,,0,2021-02-02,pdf_page1,earnings,match:greeting
 2188365,2021,,,,1,BKR,1,2021-02-02,pdf_page1,earnings,unresolved:weak_evidence
 2188410,2021,,,,0,,0,2021-02-01,pdf_created,earnings,unresolved:no_candidates;date_from_creation_stamp
@@ -1783,14 +1783,14 @@ call_id,year,ticker,cik,company,score,runner_up,runner_up_score,date,date_source
 2191867,2021,CMI,26172,,6,,0,2021-02-04,pdf_page1,earnings,match:greeting
 2191879,2021,APD,2969,,6,,0,2021-02-04,pdf_page1,earnings,match:greeting
 2191901,2021,SNA,91440,,24,,0,2021-02-03,pdf_created,earnings,match:greeting;date_from_creation_stamp
-2191941,2021,IP,51434,,9,,0,2021-02-04,pdf_page1,earnings,
+2191941,2021,IP,51434,,15,,0,2021-02-04,pdf_page1,earnings,match:greeting
 2191979,2021,IEX,832101,,6,,0,2021-02-04,pdf_page1,earnings,match:greeting
 2191997,2021,PM,1413329,,8,,0,2021-02-04,pdf_page1,earnings,match:greeting
 2192003,2021,PH,76334,,7,,0,2021-02-04,pdf_page1,earnings,match:greeting
 2192165,2021,MET,1099219,,6,,0,2021-02-03,pdf_created,earnings,match:greeting;date_from_creation_stamp
 2192411,2021,,,,2,MS,1,2021-03-02,pdf_created,unknown,unresolved:ambiguous;date_from_creation_stamp
 2192537,2021,FTNT,1262039,,6,GS,1,2021-02-04,pdf_page1,earnings,match:greeting
-2192611,2021,,,,2,DXC,1,2021-02-04,pdf_page1,earnings,unresolved:ambiguous
+2192611,2021,DXC,1688568,,8,MS,1,2021-02-04,pdf_page1,earnings,match:greeting
 2192623,2021,MSI,68505,,9,,0,2021-02-04,pdf_created,earnings,match:greeting;date_from_creation_stamp
 2192680,2021,FTV,1659166,,6,CWK,1,2021-02-04,pdf_page1,earnings,match:greeting
 2194241,2021,,,,7,CBOE,6,2021-02-05,pdf_page1,earnings,unresolved:ambiguous
@@ -1848,13 +1848,13 @@ call_id,year,ticker,cik,company,score,runner_up,runner_up_score,date,date_source
 2213657,2021,DVN,1090012,,7,GS,1,2021-02-16,pdf_page1,earnings,match:greeting
 2213766,2021,EQT,33213,,6,,0,2021-02-17,pdf_page1,earnings,match:greeting
 2213776,2021,GPC,40987,,13,,0,2021-02-17,pdf_page1,earnings,match:greeting
-2213938,2021,,,The J. M. Smucker Company,1,SJM,0,2021-02-25,pdf_page1,earnings,unresolved:weak_evidence
+2213938,2021,SJM,91419,The J. M. Smucker Company,3,,0,2021-02-25,pdf_page1,earnings,match:pdf_company
 2215209,2021,EPAM,1352010,,7,,0,2021-02-17,pdf_created,earnings,match:greeting;date_from_creation_stamp
 2215216,2021,LKQ,1065696,,6,,0,2021-02-18,pdf_page1,earnings,match:greeting
 2215244,2021,OMC,29989,,6,,0,2021-02-18,pdf_page1,earnings,match:greeting
 2215271,2021,CF,1324404,,2,,0,2017-11-01,pdf_page1,earnings,date_disagreement
 2215308,2021,ALB,915913,,6,,0,2021-02-18,pdf_page1,earnings,match:greeting
-2215448,2021,,,,6,VTR,6,2021-02-18,pdf_page1,earnings,unresolved:ambiguous;date_disagreement
+2215448,2021,VTR,740260,,6,,0,2021-02-18,pdf_page1,earnings,match:greeting;date_disagreement
 2215489,2021,MOS,1285785,,6,MS,1,2021-02-18,pdf_created,earnings,match:greeting;date_from_creation_stamp
 2215633,2021,WMT,104169,,6,DG,1,2021-02-17,pdf_created,earnings,match:greeting;date_from_creation_stamp
 2215694,2021,GPJA,41091,,9,SCCO,6,2021-02-18,pdf_page1,earnings,match:greeting
@@ -1964,7 +1964,7 @@ call_id,year,ticker,cik,company,score,runner_up,runner_up_score,date,date_source
 2254740,2021,BA,12927,,6,,0,2021-04-28,pdf_page1,earnings,match:greeting
 2254770,2021,,,,0,,0,2021-04-27,pdf_created,unknown,unresolved:no_candidates;date_from_creation_stamp
 2254802,2021,LVS,1300514,,7,,0,2021-04-21,pdf_page1,earnings,match:greeting
-2254834,2021,LRCX,707549,,2,,0,2021-04-21,pdf_page1,earnings,
+2254834,2021,LRCX,707549,,8,,0,2021-04-21,pdf_page1,earnings,match:greeting
 2255277,2021,UNP,100885,,17,,0,2021-04-22,pdf_page1,earnings,match:greeting
 2255278,2021,IQV,1478242,,6,DGX,1,2021-04-22,pdf_page1,earnings,match:greeting
 2255285,2021,AAL,6201,AMR Corporation,14,,0,2021-04-21,pdf_created,earnings,match:greeting;date_from_creation_stamp
@@ -2004,7 +2004,7 @@ call_id,year,ticker,cik,company,score,runner_up,runner_up_score,date,date_source
 2259552,2021,,,,0,,0,2021-05-04,pdf_page1,earnings,unresolved:no_candidates
 2259744,2021,EIX,827052,,11,,0,2021-04-27,pdf_page1,earnings,match:greeting
 2259765,2021,FISI,862831,,6,,0,2021-04-27,pdf_page1,earnings,match:greeting
-2259803,2021,,,,0,,0,2021-04-27,pdf_page1,earnings,unresolved:no_candidates
+2259803,2021,CHRW,1043277,,6,,0,2021-04-27,pdf_page1,earnings,match:greeting
 2259807,2021,COF,927628,,6,,0,2021-04-27,pdf_page1,earnings,match:greeting
 2259810,2021,V,1403161,,6,GS,1,2021-04-27,pdf_page1,earnings,match:greeting
 2259832,2021,,,,1,GS,0,2021-04-27,pdf_created,earnings,unresolved:weak_evidence;date_from_creation_stamp
@@ -2026,12 +2026,12 @@ call_id,year,ticker,cik,company,score,runner_up,runner_up_score,date,date_source
 2261419,2021,,,,0,,0,2021-05-04,pdf_created,earnings,unresolved:no_candidates;date_from_creation_stamp
 2261433,2021,ALGN,1097149,,6,,0,2021-04-28,pdf_created,earnings,match:greeting;date_from_creation_stamp
 2261464,2021,PTC,857005,,6,KMB,2,2021-04-28,pdf_page1,earnings,match:greeting
-2261507,2021,F,37996,,3,WFC,1,2021-04-28,pdf_page1,earnings,
+2261507,2021,F,37996,,9,WFC,1,2021-04-28,pdf_page1,earnings,match:greeting
 2261707,2021,EBAY,1065088,,6,,0,2021-04-28,pdf_created,earnings,match:greeting;date_from_creation_stamp
 2262178,2021,,,,0,,0,2021-04-29,pdf_page1,earnings,unresolved:no_candidates
 2262372,2021,LKQ,1065696,,6,,0,2021-04-29,pdf_page1,earnings,match:greeting
 2262389,2021,IR,1699150,,19,,0,2021-04-29,pdf_page1,earnings,match:greeting
-2262397,2021,,,,1,BSX,0,2021-04-28,pdf_created,earnings,unresolved:weak_evidence;date_from_creation_stamp
+2262397,2021,TFX,96943,,6,BSX,1,2021-04-28,pdf_created,earnings,match:greeting;date_from_creation_stamp
 2262398,2021,RJF,720005,,8,,0,2021-04-28,pdf_page1,earnings,match:greeting
 2262429,2021,,,,0,,0,2021-04-29,pdf_page1,earnings,unresolved:no_candidates
 2262454,2021,WST,105770,,7,,0,2021-04-29,pdf_created,earnings,match:greeting;date_from_creation_stamp
@@ -2059,7 +2059,7 @@ call_id,year,ticker,cik,company,score,runner_up,runner_up_score,date,date_source
 2263614,2021,GILD,882095,,7,,0,2021-04-30,pdf_created,earnings,match:greeting;date_from_creation_stamp
 2263618,2021,WDC,106040,,10,,0,2021-04-29,pdf_page1,earnings,match:greeting
 2263667,2021,,,,7,AMZN,6,2021-04-27,pdf_created,earnings,unresolved:ambiguous;date_from_creation_stamp
-2263671,2021,,,,0,,0,2021-04-29,pdf_page1,earnings,unresolved:no_candidates
+2263671,2021,KLAC,319201,,6,,0,2021-04-29,pdf_page1,earnings,match:greeting
 2263702,2021,FTV,1659166,,6,,0,2021-04-29,pdf_page1,earnings,match:greeting
 2263715,2021,DLR,1297996,,6,,0,2021-04-29,pdf_created,earnings,match:greeting;date_from_creation_stamp
 2263802,2021,,,,6,VERX,6,2021-04-29,pdf_created,earnings,unresolved:ambiguous;date_from_creation_stamp
@@ -2265,8 +2265,8 @@ call_id,year,ticker,cik,company,score,runner_up,runner_up_score,date,date_source
 2351721,2021,MSCI,1408198,,6,,0,2021-07-27,pdf_page1,earnings,match:greeting
 2351784,2021,PCAR,75362,PACCAR Inc.,8,,0,2021-07-27,pdf_created,earnings,match:pdf_company;match:greeting;date_from_creation_stamp
 2351835,2021,APG,1796209,,4,CARR,1,2021-07-29,pdf_page1,earnings,match:greeting
-2352078,2021,FISI,862831,,6,,0,2021-07-27,pdf_created,earnings,match:greeting;date_from_creation_stamp
-2352095,2021,,,,0,,0,2021-07-27,pdf_page1,earnings,unresolved:no_candidates
+2352078,2021,,,,0,,0,2021-07-27,pdf_created,earnings,unresolved:no_candidates;date_from_creation_stamp
+2352095,2021,CHRW,1043277,,6,,0,2021-07-27,pdf_page1,earnings,match:greeting
 2352096,2021,MDLZ,1103982,,7,,0,2021-07-27,pdf_page1,earnings,match:greeting
 2352099,2021,MAT,63276,,6,,0,2021-07-27,pdf_created,earnings,match:greeting;date_from_creation_stamp
 2352168,2021,V,1403161,,6,NBHC,2,2021-07-27,pdf_page1,earnings,match:greeting
@@ -2289,7 +2289,7 @@ call_id,year,ticker,cik,company,score,runner_up,runner_up_score,date,date_source
 2353354,2021,CTSH,1058290,,8,GILD,1,2021-07-28,pdf_page1,earnings,match:greeting
 2353364,2021,LRCX,707549,,3,,0,2021-07-28,pdf_page1,earnings,
 2353372,2021,PYPL,1633917,,6,,0,2021-07-28,pdf_page1,earnings,match:greeting
-2353391,2021,F,37996,,4,,0,2021-07-28,pdf_page1,earnings,
+2353391,2021,F,37996,,10,,0,2021-07-28,pdf_page1,earnings,match:greeting
 2353394,2021,PTC,857005,,6,,0,2021-07-28,pdf_page1,earnings,match:greeting
 2353423,2021,EQIX,1101239,,6,,0,2021-07-28,pdf_page1,earnings,match:greeting
 2353962,2021,TXT,217346,Latitude,6,,0,2021-07-29,pdf_page1,earnings,match:greeting
@@ -2312,7 +2312,7 @@ call_id,year,ticker,cik,company,score,runner_up,runner_up_score,date,date_source
 2354145,2021,BAX,10456,,10,WFC,1,2021-07-29,pdf_page1,earnings,match:greeting
 2354156,2021,MA,1141391,,6,JPM,2,2021-07-29,pdf_page1,earnings,match:greeting
 2354187,2021,AMT,1053507,,8,,0,2021-07-29,pdf_page1,earnings,match:greeting
-2354274,2021,,,,4,IP,3,2021-07-29,pdf_page1,earnings,unresolved:ambiguous
+2354274,2021,IP,51434,,10,GPK,3,2021-07-29,pdf_page1,earnings,match:greeting
 2354307,2021,CMCSA,1166691,,6,,0,2021-07-28,pdf_created,earnings,match:greeting;date_from_creation_stamp
 2354389,2021,TAP,24545,,7,,0,2021-07-29,pdf_page1,earnings,match:greeting
 2354390,2021,BC,14930,,6,,0,2021-07-28,pdf_created,earnings,match:greeting;date_from_creation_stamp
@@ -2325,7 +2325,7 @@ call_id,year,ticker,cik,company,score,runner_up,runner_up_score,date,date_source
 2355334,2021,FSLR,1274494,,11,,0,2021-07-29,pdf_page1,earnings,
 2355344,2021,FTNT,1262039,,6,,0,2021-07-29,pdf_page1,earnings,match:greeting
 2355377,2021,GILD,882095,,7,,0,2021-07-29,pdf_created,earnings,match:greeting;date_from_creation_stamp
-2355391,2021,,,,0,,0,2021-06-30,pdf_page1,earnings,unresolved:no_candidates
+2355391,2021,KLAC,319201,,6,,0,2021-06-30,pdf_page1,earnings,match:greeting
 2355392,2021,MTD,1037646,,6,,0,2021-07-29,pdf_page1,earnings,match:greeting
 2355418,2021,,,,7,AMZN,6,2021-07-26,pdf_created,earnings,unresolved:ambiguous;date_from_creation_stamp
 2355465,2021,DLR,1297996,,6,BIPC,1,2021-07-29,pdf_created,earnings,match:greeting;date_from_creation_stamp
@@ -2359,7 +2359,7 @@ call_id,year,ticker,cik,company,score,runner_up,runner_up_score,date,date_source
 2360652,2021,HSIC,1000228,"Henry Schein, Inc.",25,XRAY,1,2021-08-05,pdf_created,earnings,match:pdf_company;match:greeting;date_from_creation_stamp
 2360706,2021,CMI,26172,,6,,0,2021-08-03,pdf_page1,earnings,match:greeting
 2360718,2021,LPX,60519,,7,HD,1,2021-08-03,pdf_page1,earnings,match:greeting
-2360743,2021,,,,1,PEG,0,2021-08-03,pdf_page1,earnings,unresolved:weak_evidence
+2360743,2021,PEG,788784,,7,,0,2021-08-03,pdf_page1,earnings,match:greeting
 2360755,2021,XYL,1524472,,6,,0,2021-08-03,pdf_created,earnings,match:greeting;date_from_creation_stamp
 2360770,2021,LLY,59478,Eli Lilly and Company,3,,0,2021-08-03,pdf_page1,earnings,match:pdf_company
 2360831,2021,COP,1163165,,6,,0,,,earnings,match:greeting;no_date
@@ -2453,7 +2453,7 @@ call_id,year,ticker,cik,company,score,runner_up,runner_up_score,date,date_source
 2386101,2021,CRM,1108524,,6,,0,2021-08-25,pdf_created,earnings,match:greeting;date_from_creation_stamp
 2386629,2021,ANF,1018840,,7,,0,2021-08-25,pdf_created,earnings,match:greeting;date_from_creation_stamp
 2386634,2021,COTY,1024305,,6,,0,2021-08-25,pdf_created,earnings,match:greeting;date_from_creation_stamp
-2386663,2021,SJM,91419,The J. M. Smucker Company,7,,0,2021-11-23,pdf_page1,earnings,match:greeting
+2386663,2021,SJM,91419,The J. M. Smucker Company,9,,0,2021-11-23,pdf_page1,earnings,match:pdf_company;match:greeting
 2387045,2021,HPQ,47217,,6,,0,2021-08-26,pdf_page1,earnings,match:greeting
 2388950,2021,,,,0,,0,2021-08-30,pdf_page1,earnings,unresolved:no_candidates
 2390328,2021,,,,0,,0,2021-08-31,pdf_created,earnings,unresolved:no_candidates;date_from_creation_stamp
@@ -2469,7 +2469,7 @@ call_id,year,ticker,cik,company,score,runner_up,runner_up_score,date,date_source
 2402245,2021,FDS,1013237,,6,RSSS,1,2021-09-28,pdf_page1,earnings,match:greeting
 2402497,2021,MU,723125,,6,,0,2021-09-28,pdf_created,earnings,match:greeting;date_from_creation_stamp
 2402753,2021,JBL,898293,,6,,0,2021-09-29,pdf_page1,earnings,match:greeting
-2403246,2021,,,,0,,0,2021-09-30,pdf_created,earnings,unresolved:no_candidates;date_from_creation_stamp
+2403246,2021,PAYX,723531,,6,,0,2021-09-30,pdf_created,earnings,match:greeting;date_from_creation_stamp
 2403933,2021,,,,0,,0,2021-11-02,pdf_created,earnings,unresolved:no_candidates;date_from_creation_stamp
 2404254,2021,,,,0,,0,2021-11-04,pdf_page1,earnings,unresolved:no_candidates
 2404477,2021,,,,0,,0,2021-10-06,pdf_created,earnings,unresolved:no_candidates;date_from_creation_stamp
@@ -2479,10 +2479,10 @@ call_id,year,ticker,cik,company,score,runner_up,runner_up_score,date,date_source
 2405869,2021,BLK,2012383,,6,MS,1,2021-10-13,pdf_page1,earnings,match:greeting
 2405878,2021,JPM,19617,,7,WFC,1,2021-10-13,pdf_page1,earnings,match:greeting
 2406228,2021,USB,36104,US Bancorp,8,WFC,1,2021-10-14,pdf_page1,earnings,match:pdf_company;match:greeting
-2406276,2021,,,,0,,0,2021-10-14,pdf_created,earnings,unresolved:no_candidates;date_from_creation_stamp
+2406276,2021,BAC,70858,,6,,0,2021-10-14,pdf_created,earnings,match:greeting;date_from_creation_stamp
 2406285,2021,KOS,1509991,,5,OXY,1,2021-11-05,pdf_page1,earnings,match:greeting
 2406309,2021,,,,2,WFC,1,2021-10-14,pdf_page1,earnings,unresolved:ambiguous
-2406358,2021,WFC,72971,,5,,0,2021-10-14,pdf_page1,earnings,
+2406358,2021,WFC,72971,,11,,0,2021-10-14,pdf_page1,earnings,match:greeting
 2406372,2021,,,,0,,0,2021-11-04,pdf_page1,earnings,unresolved:no_candidates
 2406408,2021,,,,1,OPCH,0,2021-10-15,pdf_created,earnings,unresolved:weak_evidence;date_from_creation_stamp
 2406524,2021,AA,1675149,,6,,0,2021-10-14,pdf_page1,earnings,match:greeting
@@ -2531,7 +2531,7 @@ call_id,year,ticker,cik,company,score,runner_up,runner_up_score,date,date_source
 2412864,2021,PCAR,75362,,6,,0,2021-10-25,pdf_created,earnings,match:greeting;date_from_creation_stamp
 2413166,2021,,,,6,FFIV,6,2021-10-26,pdf_page1,earnings,unresolved:ambiguous
 2413182,2021,FISI,862831,,6,,0,2021-10-27,pdf_created,earnings,match:greeting;date_from_creation_stamp
-2413200,2021,SPSC,1092699,,4,,0,2021-10-26,pdf_page1,earnings,
+2413200,2021,CHRW,1043277,,6,SPSC,4,2021-10-26,pdf_page1,earnings,match:greeting
 2413238,2021,V,1403161,,6,,0,2021-10-26,pdf_page1,earnings,match:greeting
 2413240,2021,MSFT,789019,,6,PG,2,2021-12-07,pdf_created,earnings,match:greeting;date_from_creation_stamp
 2413253,2021,DLR,1297996,,6,,0,2021-10-26,pdf_created,earnings,match:greeting;date_from_creation_stamp
@@ -2544,10 +2544,10 @@ call_id,year,ticker,cik,company,score,runner_up,runner_up_score,date,date_source
 2414028,2021,PH,76334,,3,,0,2021-11-04,pdf_page1,earnings,
 2414129,2021,PFG,1126328,,8,FISI,6,2021-10-27,pdf_page1,earnings,match:greeting;match:greeting
 2414152,2021,BMY,14272,,8,,0,2021-10-27,pdf_page1,earnings,match:greeting
-2414153,2021,IP,51434,,5,,0,2021-10-27,pdf_page1,earnings,
+2414153,2021,IP,51434,,11,,0,2021-10-27,pdf_page1,earnings,match:greeting
 2414173,2021,IEX,832101,,6,,0,2021-10-27,pdf_page1,earnings,match:greeting
 2414420,2021,EQR,906107,,8,TOL,3,2021-10-27,pdf_page1,earnings,match:greeting
-2414663,2021,,,,0,,0,2021-10-27,pdf_created,earnings,unresolved:no_candidates;date_from_creation_stamp
+2414663,2021,ALGN,1097149,,6,,0,2021-10-27,pdf_created,earnings,match:greeting;date_from_creation_stamp
 2414697,2021,CTSH,1058290,,8,,0,2021-10-27,pdf_page1,earnings,match:greeting
 2415435,2021,LKQ,1065696,,6,,0,2021-10-28,pdf_page1,earnings,match:greeting
 2415436,2021,TFX,96943,,6,,0,2021-10-27,pdf_created,earnings,match:greeting;date_from_creation_stamp
@@ -2580,7 +2580,7 @@ call_id,year,ticker,cik,company,score,runner_up,runner_up_score,date,date_source
 2417756,2021,,,,2,EMN,1,2021-10-28,pdf_page1,earnings,unresolved:ambiguous
 2417832,2021,CBOE,1374310,,8,FISI,6,2021-10-29,pdf_page1,earnings,match:greeting;match:greeting
 2417834,2021,CHTR,1091667,,6,,0,2021-10-29,pdf_page1,earnings,match:greeting
-2418013,2021,XOM,34088,,2,,0,2021-10-28,pdf_created,earnings,date_from_creation_stamp
+2418013,2021,XOM,34088,,8,,0,2021-10-28,pdf_created,earnings,match:greeting;date_from_creation_stamp
 2418104,2021,,,,0,,0,2021-10-28,pdf_created,earnings,unresolved:no_candidates;date_from_creation_stamp
 2418231,2021,MHK,851968,"Hawthorne Visual Communications, Inc.",8,,0,2021-10-29,pdf_created,earnings,match:greeting;date_from_creation_stamp
 2418243,2021,CPT,906345,,7,BBY,4,2021-10-27,pdf_created,earnings,match:greeting;date_from_creation_stamp
@@ -2598,7 +2598,7 @@ call_id,year,ticker,cik,company,score,runner_up,runner_up_score,date,date_source
 2421070,2021,ROK,1024478,,6,,0,2021-11-02,pdf_page1,earnings,match:greeting
 2421082,2021,ZBRA,877212,,7,,0,2021-11-02,pdf_page1,earnings,match:greeting
 2421241,2021,WMB,107263,,6,,0,2021-11-02,pdf_page1,earnings,match:greeting
-2421320,2021,,,,6,CMI,6,2021-11-02,pdf_page1,earnings,unresolved:ambiguous
+2421320,2021,CMI,26172,,6,,0,2021-11-02,pdf_page1,earnings,match:greeting
 2421340,2021,HSIC,1000228,,25,,0,2021-11-05,pdf_created,earnings,match:greeting;date_from_creation_stamp
 2421380,2021,GNRC,1474735,,6,,0,2021-11-05,pdf_created,earnings,match:greeting;date_from_creation_stamp
 2421438,2021,,,,1,PEG,0,,,earnings,unresolved:weak_evidence;no_date
@@ -2652,11 +2652,11 @@ call_id,year,ticker,cik,company,score,runner_up,runner_up_score,date,date_source
 2427310,2021,FISI,862831,,6,,0,2021-11-05,pdf_page1,earnings,match:greeting
 2427319,2021,KIM,879101,,6,BSTT,1,2021-11-08,pdf_created,earnings,match:greeting;date_from_creation_stamp
 2427492,2021,GT,42582,,6,,0,2021-11-04,pdf_created,earnings,match:greeting;date_from_creation_stamp
-2427628,2021,,,,6,VTR,6,2021-11-05,pdf_page1,earnings,unresolved:ambiguous
+2427628,2021,VTR,740260,,6,,0,2021-11-05,pdf_page1,earnings,match:greeting
 2427841,2021,PNW,764622,,7,PPHC,1,2021-11-05,pdf_page1,earnings,match:greeting
 2428171,2021,CAH,721371,,14,STT,1,2021-11-08,pdf_created,earnings,date_from_creation_stamp
 2430104,2021,PYPL,1633917,,6,UAL,1,2021-11-08,pdf_page1,earnings,match:greeting
-2430817,2021,FISI,862831,,6,,0,2021-11-08,pdf_created,earnings,match:greeting;date_from_creation_stamp
+2430817,2021,,,,0,,0,2021-11-08,pdf_created,earnings,unresolved:no_candidates;date_from_creation_stamp
 2431058,2021,SYY,96021,,6,,0,2021-11-09,pdf_page1,earnings,match:greeting
 2431096,2021,,,,0,,0,2021-11-09,pdf_page1,earnings,unresolved:no_candidates
 2434124,2021,FICO,814547,,7,,0,2021-11-10,pdf_created,earnings,match:greeting;date_from_creation_stamp
@@ -2675,7 +2675,7 @@ call_id,year,ticker,cik,company,score,runner_up,runner_up_score,date,date_source
 2447228,2021,A,1090872,,8,,0,2021-11-19,pdf_created,earnings,match:greeting;date_from_creation_stamp
 2447241,2021,URBN,912615,,10,,0,2021-11-22,pdf_created,earnings,match:greeting;date_from_creation_stamp
 2447489,2021,ANF,1018840,,7,,0,2021-11-22,pdf_created,earnings,match:greeting;date_from_creation_stamp
-2447510,2021,SJM,91419,The J. M. Smucker Company,7,,0,2021-11-23,pdf_page1,earnings,match:greeting
+2447510,2021,SJM,91419,The J. M. Smucker Company,9,,0,2021-11-23,pdf_page1,earnings,match:pdf_company;match:greeting
 2452930,2021,HPE,1645590,,7,,0,2021-11-30,pdf_created,earnings,match:greeting;date_from_creation_stamp
 2452962,2021,CRM,1108524,,6,RL,1,2021-11-30,pdf_created,earnings,match:greeting;date_from_creation_stamp
 2452978,2021,NTAP,1002047,,6,,0,2021-11-30,pdf_page1,earnings,match:greeting

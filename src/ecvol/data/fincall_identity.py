@@ -87,9 +87,17 @@ LEGAL_SUFFIXES = re.compile(
     r"group|holdings?|the|nv|sa|ag|se)\b\.?"
 )
 _EVENT_WORDS = (
-    r"(?:first|second|third|fourth|[1-4]Q\d*|Q[1-4]|fiscal|year[- ]?end|full[- ]year|annual|"
-    r"quarter|quarterly|monthly|earnings|results|investor|overview|review|conference|call|"
-    r"webcast|and|20\d\d)"
+    rf"(?:first|second|third|fourth|[1-4]Q\d*|Q[1-4]|fiscal|year[- ]?end|full[- ]year|annual|"
+    rf"quarter|quarterly|monthly|earnings|results|reports?|investor|overview|review|conference|"
+    rf"call|webcast|business update|update|and|20\d\d|{MONTHS})"
+)
+# Leading prose filler the greeting regexes can swallow before the actual name
+# ("you to the Adobe...", "today's Bank of America..."); stripped iteratively.
+FILLER_HEAD = re.compile(
+    r"^(?:(?:you|to|the|this|that|our|your|todays?|thank|thanks|for|joining|all|of|"
+    r"everyone|come|into|welcome|and|shareholders|ladies|gentlemen|good|morning|"
+    r"afternoon|evening)(?:'s)?[ ,]+)+",
+    re.I,
 )
 # Event words leaking into name candidates, trailing ("<name> Fourth Quarter ...")
 # or leading ("Q2 2021 <name>").
@@ -133,8 +141,11 @@ def norm_name(name: str) -> str:
     name = re.sub(r"/[A-Za-z]{2,3}/?\s*$", " ", name)  # EDGAR state tags: "CORP /MA/"
     name = re.sub(r"[^a-z0-9 ]", " ", name.lower())
     name = LEGAL_SUFFIXES.sub(" ", name)
-    name = re.sub(r"\b([a-z]) (?=[a-z]\b)", r"\1", name)  # "u s bancorp" -> "us bancorp"
-    return re.sub(r"\s+", " ", name).strip()
+    # Collapse whitespace *before* the single-letter join: punctuation removal
+    # leaves double spaces ("C. H. Robinson" -> "c  h  robinson") that would
+    # otherwise block the join and normalize dotted initials inconsistently.
+    name = re.sub(r"\s+", " ", name).strip()
+    return re.sub(r"\b([a-z]) (?=[a-z]\b)", r"\1", name)  # "u s bancorp" -> "us bancorp"
 
 
 def _lookup_name(candidate: str, sec: dict[str, tuple[str, str]]) -> tuple[str, str] | None:
@@ -159,10 +170,12 @@ def _lookup_name(candidate: str, sec: dict[str, tuple[str, str]]) -> tuple[str, 
                 return value
     # Fuzzy is for inflection-level misses ("Align Technologies" vs the SEC's
     # "Align Technology"); requiring an identical first token keeps it from
-    # bridging genuinely different companies.
-    close = difflib.get_close_matches(key, sec.keys(), n=1, cutoff=0.85)
-    if close and close[0].split()[0] == key.split()[0]:
-        return sec[close[0]]
+    # bridging genuinely different companies. Scan several candidates: the
+    # closest match can fail the first-token guard ("palatin technologies")
+    # while the right key still clears the cutoff.
+    for close in difflib.get_close_matches(key, sec.keys(), n=5, cutoff=0.85):
+        if close.split()[0] == key.split()[0]:
+            return sec[close]
     return None
 
 
@@ -177,6 +190,7 @@ GENERIC_TOKENS = frozenset(
 
 
 def clean_candidate(name: str) -> str:
+    name = FILLER_HEAD.sub("", name)
     return EVENT_TAIL.sub("", EVENT_HEAD.sub("", name)).strip(" ,.-|")
 
 
@@ -286,12 +300,17 @@ def resolve_company(
 
 def _greeting_names(transcript: str) -> list[tuple[str, int]]:
     head = transcript[:4000]
-    return [
-        (m.group(1).strip(), weight)
-        for pattern, weight in GREETING_PATTERNS
-        for m in [pattern.search(head)]
-        if m
-    ]
+    names: list[tuple[str, int]] = []
+    for pattern, weight in GREETING_PATTERNS:
+        if not (m := pattern.search(head)):
+            continue
+        name = clean_candidate(m.group(1).strip())
+        # The re.I patterns make their [A-Z] anchor case-blind; after cleanup,
+        # require a proper-noun shape (second-char rule keeps eBay-style brands)
+        # so prose fragments ("ladies", "virtual") don't reach the lookup.
+        if len(name) >= 2 and (name[0].isupper() or name[1].isupper()):
+            names.append((name, weight))
+    return names
 
 
 def extract_date(page1_text: str | None, created: str | None) -> tuple[str, str, list[str]]:
