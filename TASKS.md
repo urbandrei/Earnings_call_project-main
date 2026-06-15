@@ -63,17 +63,17 @@
   - [x] Storage estimate & location decision (external disk OK — manifests make it portable)
 - **Notes:** done 2026-06-12. `ecvol data fetch fincall|maec|all` + `ecvol data spotcheck`; mirrors on `D:\ecvol-data` via `data\raw` junction (DECISIONS.md). Counts exact: FinCall 2,688 calls (919/704/1065), MAEC 3,443 (all with text+features). Audio joins: 2,671/2,688 calls (99.4%) have their mp3; 17 missing, 456 surplus files. Spotcheck 50/50 decode OK (seed 0). **Gap:** MAEC 59 GB MFCC archive link-rotted upstream, no mirror exists (DECISIONS.md). Journal: 2026-06-12 T1.1 entry.
 
-### T1.2 Price ingestion (Stooq + Tiingo cross-check) — `[ ]`
+### T1.2 Price ingestion (yfinance + Tiingo cross-check) — `[~]` *(2 acceptance items pending a Tiingo key)*
 - **Goal:** reliable adjusted daily OHLCV for the combined ticker universe.
 - **End result:** `ecvol prices pull` → per-ticker parquet + manifest; coverage report (matched/missing/delisted with reasons).
 - **Acceptance test:** ≥98% ticker coverage for the FinCall-Surprise universe (or documented shortfall); Tiingo cross-check correlation >0.999 on a 5% sample; zero silent drops (every excluded ticker has a reason code).
 - **Subtasks:**
-  - [ ] Ticker normalization (share classes, renames)
-  - [ ] Stooq fetcher with caching
-  - [ ] Tiingo sampler
-  - [ ] Trading-calendar module (`exchange_calendars`)
-  - [ ] Coverage report generator
-- **Notes:** —
+  - [x] Ticker normalization (share classes via `to_yahoo_symbol`; renames handled as reason-coded coverage misses, no rename table needed)
+  - [x] ~~Stooq~~ price fetcher with caching — **source changed to yfinance** (Stooq closed free access; DECISIONS.md 2026-06-15). `prices.py`: batched yfinance, deterministic parquet, idempotent/resumable.
+  - [x] Tiingo sampler (`tiingo.py`: 5% seeded sample + return-correlation gate; built, run pending key)
+  - [x] Trading-calendar module (`exchange_calendars` → `calendar.py`, XNYS)
+  - [x] Coverage report generator (`data/coverage/prices_coverage.csv` + `prices_sources.json`)
+- **Notes:** 2026-06-15. Universe = FinCall (388) ∪ MAEC (1,213) = 1,309 tickers (DECISIONS.md). Pulled 999/1,309. **FinCall coverage 372/388 = 95.88%** (gate 98%); covered tickers essentially complete (min completeness 0.979, zero gappy). MAEC 906/1,213 = 74.69% (informational until T1.5). **Shortfall = 16 FinCall tickers Yahoo's API does not serve** — predominantly 2024–26 M&A delistings/take-privates Yahoo purges (WBA, DFS, ANSS, X, JWN, HES, CTLT, IPG, SNV, K, HOLX, SEE…) plus a few Yahoo coverage gaps; **all reason-coded (zero silent drops)**. yfinance's known delisted-ticker blindness (the §5.2 risk) is the cause; **Tiingo fallback built** (`fetch_tiingo_ohlcv`, auto-recovers Yahoo misses when a key is present) → expected to clear 98% once the key lands. **Two acceptance items pending the same free `TIINGO_API_KEY`:** (a) the >0.999 cross-check run (`ecvol prices crosscheck`); (b) the 98% recovery via Tiingo fallback (`ecvol prices pull`). Tests: `test_prices.py`/`test_tiingo.py`/`test_calendar.py` (78 total green). Join audit (T1.4 subtask) now unblocked. Journal: 2026-06-15 T1.2 entry.
 
 ### T1.3 Target computation — `[ ]`
 - **Goal:** exact, tested implementation of DESIGN.md §5.3.
