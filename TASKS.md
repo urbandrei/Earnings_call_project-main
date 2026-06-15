@@ -165,8 +165,9 @@
 - **Acceptance test:** section-detection precision >90% on a 30-call hand-checked sample; speaker-role tagging audited on the same sample.
 - **Subtasks:**
   - [ ] `features/text/sections.py` (heuristics + format-specific parsers)
+  - [ ] Speaker-turn chunking: chunk by speaker turn, **never split a turn across chunks** (prior-team lesson — DECISIONS.md 2026-06-14; reuses FinCall speaker metadata)
   - [ ] Audit notebook
-- **Notes:** —
+- **Notes:** speaker-turn chunking adopted from prior-team work (DECISIONS.md 2026-06-14); feeds the TX1 QA exploration.
 
 ### T3.2 Frozen text features — `[ ]`
 - **Goal:** Stage-2 representations, cached.
@@ -357,4 +358,41 @@
 - **Subtasks:**
   - [ ] Gate evaluation + DECISIONS.md entry
   - [ ] (If go) cloud setup, QLoRA runs, audio-LLM runs
-- **Notes:** —
+- **Notes:** the concrete Stage-6 audio-LLM recipe (Qwen2.5-Omni-7B: masked-mean-pool the Thinker last hidden state, 4-bit NF4, QA-conditioned + task-aware prompt) is recorded from prior-team work — DECISIONS.md 2026-06-14; carries the §3.5 gender-confound analysis. Still gated; no spend authorized.
+
+---
+
+## Exploration tracks (gated; promotion requires DECISIONS.md)
+
+Adopted from this team's prior multimodal-volatility work (see `ingest/ingest.md`, DECISIONS.md 2026-06-14). **These are exploratory, not confirmatory:** re-implemented open-weight, fit train-split-only, and reported as exploratory until they survive the §7.3 identity controls and the §4 framing gate. IDs are `TX#` and never renumber; promoting any to the confirmatory ladder requires a new DECISIONS.md entry. None is started ahead of its phase-order dependencies.
+
+### TX1 — QA-driven structured features (open-weights) — `[ ]` *(extends Stage 5 / RQ3; build after Phase 3)*
+- **Goal:** test whether data-driven QA topic features are auditable semantics that beat opaque embeddings (RQ3), using open weights only.
+- **End result:** speaker-turn chunk (T3.1) → Qwen2.5-7B-Instruct QA generation → volatility-topic labels → open-model embeddings → **train-split-only** clustering → per-call topic-frequency features → Stage-1 GBDT; on FinCall (primary) + MAEC.
+- **Acceptance test:** open-model QA audit **κ > 0.6** on 50 calls (mirrors T6.2) before corpus scale; clustering/taxonomy fit on **train split only** with a leakage assertion (no val/test calls inform the taxonomy); throughput ETA recorded before the full run; **DM tests vs. Stage 2 and Stage 4** on Δv (a win must clear the same bar as confirmatory features).
+- **Subtasks:**
+  - [ ] Open-weight QA-generation prompt (port the general/conceptual prior-team prompt; no proprietary models)
+  - [ ] Train-only topic taxonomy (label → embed → cluster; k chosen honestly, not asserted)
+  - [ ] Per-call topic-frequency feature builder + cache
+  - [ ] Human-audit tooling (reuse T6.2 `audit.py`) + leakage assertion
+- **Notes:** feasibility scouted in `notebooks/explore_qa_generation.py` (JOURNAL.md 2026-06-14). DECISIONS.md 2026-06-14.
+
+### TX2 — Short-horizon / implied-vol target exploration — `[ ]` *(needs T1.2/T1.3 first; IV needs a new data source)*
+- **Goal:** explore the field's open gap (Undermind review): intraday/event-window RV and/or options-implied volatility around calls.
+- **End result:** one or more exploratory targets — 1-day / [0,+1] event-window RV, and/or short-maturity near-the-money IV — computed under the §5.3 information rule + after-hours timing.
+- **Acceptance test:** targets computed deterministically under the §5.4 information rule (no post-`as_of` reads); options/IV data sourced with a SHA-256 manifest + license note; results reported **alongside, never replacing**, the headline {3,7,15,30}d RV targets.
+- **Subtasks:**
+  - [ ] Timestamp-precision audit (event-window RV needs call time — §10 risk #7)
+  - [ ] Options/IV data source evaluation (license, coverage 2019–2021; not in §5.2)
+  - [ ] Target implementation + unit tests (mirror T1.3)
+- **Notes:** §5.3 headline targets unchanged. DECISIONS.md 2026-06-14.
+
+### TX3 — Re-examine prior "beats-KeFVP" result through our controls — `[ ]` *(needs Phase 2 controls + MAEC ingestion T1.5)*
+- **Goal:** determine whether the prior team's ~8% MSE improvement over KeFVP is real signal or ticker-identity memorization.
+- **End result:** the prior MAEC/EC result re-run with our control suite: HAR-RV/persistence floor, ticker-only baseline, same-ticker transcript shuffle, and the Δv target.
+- **Acceptance test:** all four controls produce numbers; the KeFVP-label-vs-computed-target handling is documented (preferred: recompute MAEC targets per §5.3; else label the KeFVP-label run as exploration); conclusion stated honestly regardless of outcome.
+- **Subtasks:**
+  - [ ] Reproduce the prior result's data setup (MAEC; document label provenance)
+  - [ ] Apply §7.3 controls + Δv target
+  - [ ] Write-up (signal vs. identity) → feeds the §4 framing-gate evidence
+- **Notes:** their setup reuses KeFVP's released labels (conflicts with §5.3 computed targets). DECISIONS.md 2026-06-14.

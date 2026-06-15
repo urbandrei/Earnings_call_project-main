@@ -191,7 +191,7 @@ v_post(τ) = ln( sqrt( (1/τ) · Σ_{t=1..τ} (r_t − r̄)² ) ),   r̄ = mean(
 - **Volatility change:** `Δv(τ) = v_post(τ) − v_pre(τ)` — subtracts the company's own level; a model must predict *how this call changes things*.
 - **HAR residual:** `v_post(τ) − HAR_RV_forecast(τ)`, where the HAR-RV model [R17] (`RV_{t,t+τ} ~ β₀ + β_d·RV_daily + β_w·RV_weekly + β_m·RV_monthly`) is fit on training data only.
 
-**Out of v1 scope** (exploratory backlog): directional movement, abnormal volume, implied-vol targets.
+**Out of v1 scope** (exploratory backlog): directional movement, abnormal volume, implied-vol targets. *(Short-horizon/event-window RV and implied-vol are explored — not added to the headline targets — under TASKS.md TX2; DECISIONS.md 2026-06-14.)*
 
 Edge rules (encode in `targets.py`, unit-tested): non-trading-day call dates roll forward; insufficient post-call history (τ days unavailable, e.g., delisting) → target is NaN and the (call, τ) row is excluded with a reason code; zero-variance windows → NaN (log of 0), excluded with reason code.
 
@@ -229,6 +229,8 @@ Edge rules (encode in `targets.py`, unit-tested): non-trading-day call dates rol
 | **6** *(optional, cloud, gated)* | QLoRA fine-tune of Qwen2.5-7B on transcripts; audio-LLM scoring (Qwen2.5-Omni / Qwen2-Audio); per-sentence alignment revisit | "Does end-to-end adaptation beat frozen features in this small-data regime?" | Only if Stages 2–5 show DM-significant signal; requires a Decision-Log entry with budget | Cloud A100s |
 
 Model/version pins (exact HF revisions recorded in configs at implementation time): `BAAI/bge-large-en-v1.5` (or current best financial-domain embedding on MTEB at Phase-3 start — pinned then), `ProsusAI/finbert`, `microsoft/wavlm-large`, `emotion2vec/emotion2vec_plus_large`, `openai/whisper-large-v3-turbo` (ASR/QC only), `pyannote/speaker-diarization-3.1`, `Qwen/Qwen2.5-7B-Instruct`.
+
+**Exploration hooks (adopted from prior-team work; DECISIONS.md 2026-06-14, exploratory until they clear §7.3/§4):** Stage 5 has an open-weight, data-driven variant — QA-generation → train-only volatility-topic clustering → per-call topic-frequency features (TASKS.md **TX1**). Stage 6's audio-LLM scoring has a concrete recipe — Qwen2.5-Omni-7B, masked-mean-pool the Thinker last hidden state (3584-d), 4-bit NF4, QA-conditioned + task-aware prompt (TASKS.md T8.3).
 
 ---
 
@@ -428,6 +430,15 @@ What ships with the paper (tracked against [R18]'s failure causes):
 - [R23] "AlphaAgents: Large Language Model based Multi-Agents for Equity Portfolio Constructions," 2025. https://arxiv.org/abs/2508.11152
 - [R24] "Kronos: A Foundation Model for the Language of Financial Markets," 2025. https://arxiv.org/abs/2508.02739
 - [R25] Zhu et al., "FinCast: A Foundation Model for Financial Time-Series Forecasting," CIKM 2025. https://arxiv.org/abs/2508.19609
+
+### Papers — additional ECC-volatility methods (surfaced by the Undermind review; added 2026-06-14, DECISIONS.md)
+
+- [R28] Ye, Qin & Xu, "Financial Risk Prediction with Multi-Round Q&A Attention Network," IJCAI 2020 (dialogue/Q&A-structure modeling). https://www.ijcai.org/proceedings/2020/631
+- [R29] Sawhney et al., "Multimodal Multi-Task Financial Risk Forecasting," ACM Multimedia 2020 (joint volatility + price-movement). https://dl.acm.org/doi/10.1145/3394171.3413752
+- [R30] Chen et al., "Distilling Numeral Information for Volatility Forecasting" (NAM / ECNum), CIKM 2021 (numeral-aware text). https://doi.org/10.1145/3459637.3482089
+- [R31] Yang et al., "NumHTML: Numeric-Oriented Hierarchical Transformer Model for Multi-task Financial Forecasting," AAAI 2022. https://arxiv.org/abs/2201.01770
+- [R32] Shi et al., "Enhancing Volatility Forecasting in Financial Markets: A General Numeral Attachment Dataset for Understanding Earnings Calls" (GNAVol), IJCNLP-AACL 2023. https://aclanthology.org/2023.ijcnlp-short.5/
+- *Deferred:* DeFVP (ICME 2024, differentiable sentence-selection for volatility) — surfaced by the review but no canonical URL verified as of 2026-06-14; add when confirmed.
 
 ### Datasets
 
