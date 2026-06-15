@@ -113,10 +113,67 @@ def _not_implemented(verb: str) -> None:
     raise typer.Exit(code=2)
 
 
-@app.command()
-def prices() -> None:
-    """Pull and cache adjusted daily OHLCV for the call universe (T1.2)."""
-    _not_implemented("prices")
+prices_app = typer.Typer(no_args_is_help=True, help="Adjusted daily OHLCV ingestion (T1.2).")
+app.add_typer(prices_app, name="prices")
+
+
+@prices_app.command("pull")
+def prices_pull(
+    root: Path = typer.Option(Path("data"), help="Data root directory."),  # noqa: B008
+    refresh: bool = typer.Option(False, help="Re-download tickers even if cached."),
+) -> None:
+    """Pull adjusted daily OHLCV for the FinCall+MAEC universe → parquet + coverage (T1.2)."""
+    from ecvol.data.prices import pull_prices
+
+    summary = pull_prices(root, refresh=refresh)
+    typer.echo(
+        f"FinCall coverage: {summary.covered_fincall}/{summary.fincall_total} "
+        f"({summary.fincall_coverage_pct}%)"
+    )
+    typer.echo(
+        f"MAEC coverage:    {summary.covered_maec}/{summary.maec_total} "
+        f"({summary.maec_coverage_pct}%)"
+    )
+    typer.echo(
+        f"Combined:         {summary.covered_total}/{summary.universe_total} "
+        f"({summary.combined_coverage_pct}%)"
+    )
+    typer.echo(f"missing: {len(summary.missing_tickers)}; gappy: {len(summary.low_completeness)}")
+    typer.echo("coverage report: data/coverage/prices_coverage.csv")
+
+
+@prices_app.command("crosscheck")
+def prices_crosscheck(
+    root: Path = typer.Option(Path("data"), help="Data root directory."),  # noqa: B008
+    fraction: float = typer.Option(0.05, help="Fraction of covered tickers to sample."),
+    seed: int = typer.Option(0, help="Sampling seed."),
+) -> None:
+    """Cross-check the price pull against Tiingo on a random sample (gate: corr>0.999)."""
+    from ecvol.data.tiingo import cross_check, load_api_key, sample_tickers
+
+    key = load_api_key()
+    if not key:
+        typer.echo(
+            "no Tiingo key — set TIINGO_API_KEY (env or .env). Free key: https://www.tiingo.com/",
+            err=True,
+        )
+        raise typer.Exit(code=2)
+    prices_dir = root / "prices"
+    covered = sorted(p.stem for p in prices_dir.glob("*.parquet"))
+    if not covered:
+        typer.echo("no cached prices — run `ecvol prices pull` first", err=True)
+        raise typer.Exit(code=2)
+    sample = sample_tickers(covered, fraction=fraction, seed=seed)
+    result = cross_check(prices_dir, sample, key)
+    for r in result.rows:
+        typer.echo(f"  {r.ticker:8} corr={r.correlation} n={r.n_overlap} [{r.status}]")
+    typer.echo(
+        f"sampled {result.n_sampled}; passed {result.n_passed}; min corr {result.min_correlation}"
+    )
+    if not result.gate_passed:
+        typer.echo("cross-check gate FAILED (some corr ≤ 0.999)", err=True)
+        raise typer.Exit(code=1)
+    typer.echo("cross-check gate PASSED (all corr > 0.999)")
 
 
 @app.command()
