@@ -92,7 +92,7 @@ ANF,ANF,ok,,2035,2014-06-02,2022-06-29,2035,1.0,True,5,True,5
 ANGO,ANGO,ok,,2035,2014-06-02,2022-06-29,2035,1.0,False,0,True,1
 ANIK,ANIK,ok,,2035,2014-06-02,2022-06-29,2035,1.0,False,0,True,2
 ANIP,ANIP,ok,,2035,2014-06-02,2022-06-29,2035,1.0,False,0,True,4
-ANSS,ANSS,missing,no_data:delisted_renamed_or_unlisted_on_yahoo,0,,,0,0.0,True,8,True,6
+ANSS,ANSS,ok,,2036,2014-06-02,2022-06-30,2036,1.0,True,8,True,6
 ANTM,ANTM,missing,no_data:delisted_renamed_or_unlisted_on_yahoo,0,,,0,0.0,False,0,True,2
 AON,AON,ok,,2035,2014-06-02,2022-06-29,2035,1.0,False,0,True,1
 AOS,AOS,ok,,2035,2014-06-02,2022-06-29,2035,1.0,False,0,True,2
@@ -257,7 +257,7 @@ CLH,CLH,ok,,2035,2014-06-02,2022-06-29,2035,1.0,False,0,True,2
 CLI,CLI,missing,no_data:delisted_renamed_or_unlisted_on_yahoo,0,,,0,0.0,False,0,True,3
 CLW,CLW,ok,,2035,2014-06-02,2022-06-29,2035,1.0,False,0,True,1
 CLX,CLX,ok,,2035,2014-06-02,2022-06-29,2035,1.0,True,8,True,3
-CMA,CMA,missing,no_data:delisted_renamed_or_unlisted_on_yahoo,0,,,0,0.0,True,11,True,1
+CMA,CMA,ok,,2036,2014-06-02,2022-06-30,2036,1.0,True,11,True,1
 CMC,CMC,ok,,2035,2014-06-02,2022-06-29,2035,1.0,False,0,True,3
 CMCSA,CMCSA,ok,,2035,2014-06-02,2022-06-29,2035,1.0,True,8,True,6
 CME,CME,ok,,2035,2014-06-02,2022-06-29,2035,1.0,False,0,True,5
@@ -312,7 +312,7 @@ CSX,CSX,ok,,2035,2014-06-02,2022-06-29,2035,1.0,True,9,True,2
 CTAS,CTAS,ok,,2035,2014-06-02,2022-06-29,2035,1.0,False,0,True,1
 CTB,CTB,missing,no_data:delisted_renamed_or_unlisted_on_yahoo,0,,,0,0.0,False,0,True,4
 CTL,CTL,missing,no_data:delisted_renamed_or_unlisted_on_yahoo,0,,,0,0.0,False,0,True,8
-CTLT,CTLT,missing,no_data:delisted_renamed_or_unlisted_on_yahoo,0,,,0,0.0,True,6,True,2
+CTLT,CTLT,ok,,1994,2014-07-31,2022-06-30,1994,1.0,True,6,True,2
 CTRA,CTRA,ok,,2035,2014-06-02,2022-06-29,2035,1.0,True,1,False,0
 CTRE,CTRE,ok,,2035,2014-06-02,2022-06-29,2035,1.0,False,0,True,3
 CTRL,CTRL,missing,no_data:delisted_renamed_or_unlisted_on_yahoo,0,,,0,0.0,False,0,True,3
@@ -348,7 +348,7 @@ DEA,DEA,ok,,1862,2015-02-06,2022-06-29,1862,1.0,False,0,True,5
 DECK,DECK,ok,,2035,2014-06-02,2022-06-29,2035,1.0,False,0,True,1
 DEI,DEI,ok,,2035,2014-06-02,2022-06-29,2035,1.0,False,0,True,1
 DF,DF,missing,no_data:delisted_renamed_or_unlisted_on_yahoo,0,,,0,0.0,False,0,True,2
-DFS,DFS,missing,no_data:delisted_renamed_or_unlisted_on_yahoo,0,,,0,0.0,True,6,True,2
+DFS,DFS,ok,,2036,2014-06-02,2022-06-30,2036,1.0,True,6,True,2
 DGII,DGII,ok,,2035,2014-06-02,2022-06-29,2035,1.0,False,0,True,2
 DGX,DGX,ok,,2035,2014-06-02,2022-06-29,2035,1.0,False,0,True,6
 DHI,DHI,ok,,2035,2014-06-02,2022-06-29,2035,1.0,True,10,True,2
@@ -548,7 +548,7 @@ HCSG,HCSG,ok,,2035,2014-06-02,2022-06-29,2035,1.0,False,0,True,2
 HD,HD,ok,,2035,2014-06-02,2022-06-29,2035,1.0,False,0,True,2
 HE,HE,ok,,2035,2014-06-02,2022-06-29,2035,1.0,False,0,True,4
 HELE,HELE,ok,,2035,2014-06-02,2022-06-29,2035,1.0,False,0,True,2
-HES,HES,missing,no_data:delisted_renamed_or_unlisted_on_yahoo,0,,,0,0.0,True,2,True,3
+HES,HES,ok,,2036,2014-06-02,2022-06-30,2036,1.0,True,2,True,3
 HF,HF,missing,no_data:delisted_renamed_or_unlisted_on_yahoo,0,,,0,0.0,False,0,True,2
 HFC,HFC,missing,no_data:delisted_renamed_or_unlisted_on_yahoo,0,,,0,0.0,False,0,True,6
 HI,HI,missing,no_data:delisted_renamed_or_unlisted_on_yahoo,0,,,0,0.0,False,0,True,1
@@ -563,7 +563,7 @@ HMST,HMST,missing,no_data:delisted_renamed_or_unlisted_on_yahoo,0,,,0,0.0,False,
 HMSY,HMSY,missing,no_data:delisted_renamed_or_unlisted_on_yahoo,0,,,0,0.0,False,0,True,3
 HNI,HNI,ok,,2035,2014-06-02,2022-06-29,2035,1.0,False,0,True,5
 HOG,HOG,ok,,2035,2014-06-02,2022-06-29,2035,1.0,True,6,True,1
-HOLX,HOLX,missing,no_data:delisted_renamed_or_unlisted_on_yahoo,0,,,0,0.0,True,3,True,1
+HOLX,HOLX,ok,,2036,2014-06-02,2022-06-30,2036,1.0,True,3,True,1
 HOMB,HOMB,ok,,2035,2014-06-02,2022-06-29,2035,1.0,False,0,True,2
 HON,HON,ok,,2035,2014-06-02,2022-06-29,2035,1.0,True,8,True,2
 HOPE,HOPE,ok,,2035,2014-06-02,2022-06-29,2035,1.0,False,0,True,2
@@ -618,7 +618,7 @@ IOSP,IOSP,ok,,2035,2014-06-02,2022-06-29,2035,1.0,False,0,True,3
 IP,IP,ok,,2035,2014-06-02,2022-06-29,2035,1.0,True,10,True,1
 IPAR,IPAR,ok,,2035,2014-06-02,2022-06-29,2035,1.0,False,0,True,2
 IPCC,IPCC,ok,,1035,2014-06-02,2018-07-11,1036,0.999,False,0,True,4
-IPG,IPG,missing,no_data:delisted_renamed_or_unlisted_on_yahoo,0,,,0,0.0,True,6,True,5
+IPG,IPG,ok,,2036,2014-06-02,2022-06-30,2036,1.0,True,6,True,5
 IQV,IQV,ok,,2035,2014-06-02,2022-06-29,2035,1.0,True,10,False,0
 IR,IR,ok,,1292,2017-05-12,2022-06-29,1292,1.0,True,10,True,3
 IRBT,IRBT,missing,no_data:delisted_renamed_or_unlisted_on_yahoo,0,,,0,0.0,False,0,True,2
@@ -649,7 +649,7 @@ JLL,JLL,ok,,2035,2014-06-02,2022-06-29,2035,1.0,False,0,True,1
 JNJ,JNJ,ok,,2035,2014-06-02,2022-06-29,2035,1.0,True,7,True,1
 JNPR,JNPR,missing,no_data:delisted_renamed_or_unlisted_on_yahoo,0,,,0,0.0,False,0,True,3
 JPM,JPM,ok,,2035,2014-06-02,2022-06-29,2035,1.0,True,8,True,2
-JWN,JWN,missing,no_data:delisted_renamed_or_unlisted_on_yahoo,0,,,0,0.0,True,8,True,3
+JWN,JWN,ok,,2036,2014-06-02,2022-06-30,2036,1.0,True,8,True,3
 K,K,missing,no_data:delisted_renamed_or_unlisted_on_yahoo,0,,,0,0.0,True,9,True,5
 KALU,KALU,ok,,2035,2014-06-02,2022-06-29,2035,1.0,False,0,True,1
 KAMN,KAMN,missing,no_data:delisted_renamed_or_unlisted_on_yahoo,0,,,0,0.0,False,0,True,1
@@ -789,7 +789,7 @@ MNTA,MNTA,missing,no_data:delisted_renamed_or_unlisted_on_yahoo,0,,,0,0.0,False,
 MO,MO,ok,,2035,2014-06-02,2022-06-29,2035,1.0,True,8,True,3
 MOH,MOH,ok,,2035,2014-06-02,2022-06-29,2035,1.0,True,1,True,2
 MON,MON,missing,no_data:delisted_renamed_or_unlisted_on_yahoo,0,,,0,0.0,False,0,True,5
-MOR,MOR,missing,no_data:delisted_renamed_or_unlisted_on_yahoo,0,,,0,0.0,True,1,False,0
+MOR,MOR,ok,,1058,2018-04-19,2022-06-30,1058,1.0,True,1,False,0
 MOS,MOS,ok,,2035,2014-06-02,2022-06-29,2035,1.0,True,3,True,1
 MOV,MOV,ok,,2035,2014-06-02,2022-06-29,2035,1.0,False,0,True,8
 MPAA,MPAA,ok,,2035,2014-06-02,2022-06-29,2035,1.0,False,0,True,2
@@ -1052,7 +1052,7 @@ SCI,SCI,ok,,2035,2014-06-02,2022-06-29,2035,1.0,True,7,False,0
 SCSC,SCSC,ok,,2035,2014-06-02,2022-06-29,2035,1.0,False,0,True,6
 SCVL,SCVL,ok,,2035,2014-06-02,2022-06-29,2035,1.0,False,0,True,1
 SEDG,SEDG,ok,,1829,2015-03-26,2022-06-29,1829,1.0,False,0,True,2
-SEE,SEE,missing,no_data:delisted_renamed_or_unlisted_on_yahoo,0,,,0,0.0,True,7,True,4
+SEE,SEE,ok,,2036,2014-06-02,2022-06-30,2036,1.0,True,7,True,4
 SEIC,SEIC,ok,,2035,2014-06-02,2022-06-29,2035,1.0,False,0,True,4
 SEM,SEM,ok,,2035,2014-06-02,2022-06-29,2035,1.0,False,0,True,2
 SF,SF,ok,,2035,2014-06-02,2022-06-29,2035,1.0,False,0,True,1
@@ -1084,7 +1084,7 @@ SNBR,SNBR,ok,,2035,2014-06-02,2022-06-29,2035,1.0,False,0,True,1
 SNH,SNH,missing,no_data:delisted_renamed_or_unlisted_on_yahoo,0,,,0,0.0,False,0,True,1
 SNIRF,SNIRF,ok,,2035,2014-06-02,2022-06-29,2035,1.0,True,1,False,0
 SNPS,SNPS,ok,,2035,2014-06-02,2022-06-29,2035,1.0,False,0,True,4
-SNV,SNV,missing,no_data:delisted_renamed_or_unlisted_on_yahoo,0,,,0,0.0,True,6,True,1
+SNV,SNV,ok,,2036,2014-06-02,2022-06-30,2036,1.0,True,6,True,1
 SNX,SNX,ok,,2035,2014-06-02,2022-06-29,2035,1.0,False,0,True,3
 SO,SO,ok,,2035,2014-06-02,2022-06-29,2035,1.0,True,9,False,0
 SON,SON,ok,,2035,2014-06-02,2022-06-29,2035,1.0,False,0,True,2
@@ -1250,7 +1250,7 @@ VZ,VZ,ok,,2035,2014-06-02,2022-06-29,2035,1.0,True,8,True,8
 WAB,WAB,ok,,2035,2014-06-02,2022-06-29,2035,1.0,True,5,True,3
 WAGE,WAGE,missing,no_data:delisted_renamed_or_unlisted_on_yahoo,0,,,0,0.0,False,0,True,1
 WAT,WAT,ok,,2035,2014-06-02,2022-06-29,2035,1.0,True,2,True,1
-WBA,WBA,missing,no_data:delisted_renamed_or_unlisted_on_yahoo,0,,,0,0.0,True,10,True,3
+WBA,WBA,ok,,2036,2014-06-02,2022-06-30,2036,1.0,True,10,True,3
 WBS,WBS,ok,,2035,2014-06-02,2022-06-29,2035,1.0,False,0,True,3
 WCG,WCG,missing,no_data:delisted_renamed_or_unlisted_on_yahoo,0,,,0,0.0,False,0,True,4
 WD,WD,ok,,2035,2014-06-02,2022-06-29,2035,1.0,False,0,True,2
