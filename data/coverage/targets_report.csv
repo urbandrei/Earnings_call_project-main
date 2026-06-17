@@ -1,0 +1,17 @@
+metric,value
+total_calls,2688
+resolved_calls,2496
+rows_total,10752
+ok_rows,9696
+excluded_rows,1056
+calls_with_any_ok,2424
+join_rate_pct,97.12
+horizon_3_ok,2424
+horizon_7_ok,2424
+horizon_15_ok,2424
+horizon_30_ok,2424
+reason:insufficient_post_history,4
+reason:invalid_date,220
+reason:no_price_data,60
+reason:unresolved_ticker,768
+reason:zero_variance_post,4

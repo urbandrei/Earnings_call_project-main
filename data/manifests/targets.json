@@ -1,0 +1,9 @@
+[
+  {
+    "license": "Derived artifact \u2014 computed from price data (DESIGN \u00a75.3); no external source",
+    "path": "targets/targets.parquet",
+    "retrieved_at": "2026-06-17T23:37:44+00:00",
+    "sha256": "cc5c00e899c9a64586a42d877185e519e1bb682dd7ae400e728ba503d29d4542",
+    "source_url": "computed: ecvol targets build (DESIGN \u00a75.3)"
+  }
+]
