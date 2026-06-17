@@ -9,6 +9,7 @@ from ecvol.data.tiingo import (
     fetch_tiingo,
     fetch_tiingo_ohlcv,
     load_api_key,
+    load_documented_exceptions,
     return_correlation,
     sample_tickers,
 )
@@ -125,4 +126,38 @@ def test_cross_check_flags_divergent_ticker(tmp_path, monkeypatch):
     monkeypatch.setattr("ecvol.data.tiingo.fetch_tiingo", fake_fetch)
     result = cross_check(prices_dir, ["AAA"], key="k")
     assert not result.gate_passed
-    assert result.rows[0].status in ("warn", "investigate")
+    assert result.rows[0].status == "investigate"
+    assert result.undocumented == ["AAA"]
+
+
+def test_documented_exception_passes_gate(tmp_path, monkeypatch):
+    """A sub-0.99 ticker with a committed reason code clears the gate (DESIGN §5.2)."""
+    prices_dir = tmp_path / "prices"
+    prices_dir.mkdir()
+    rows = [
+        {"date": "2020-01-02", "open": 1, "high": 1, "low": 1, "close": 10.0, "volume": 1},
+        {"date": "2020-01-03", "open": 1, "high": 1, "low": 1, "close": 11.0, "volume": 1},
+        {"date": "2020-01-06", "open": 1, "high": 1, "low": 1, "close": 9.9, "volume": 1},
+        {"date": "2020-01-07", "open": 1, "high": 1, "low": 1, "close": 12.1, "volume": 1},
+    ]
+    write_price_parquet(rows, prices_dir / "XRX.parquet")
+
+    def fake_fetch(ticker, key, start=date(2014, 6, 1), end=date(2022, 6, 30)):
+        return {"2020-01-02": 5.0, "2020-01-03": 4.0, "2020-01-06": 6.0, "2020-01-07": 3.0}
+
+    monkeypatch.setattr("ecvol.data.tiingo.fetch_tiingo", fake_fetch)
+    undocumented = cross_check(prices_dir, ["XRX"], key="k")
+    assert not undocumented.gate_passed  # no reason → fails
+
+    documented = cross_check(prices_dir, ["XRX"], key="k", documented={"XRX": "corporate action"})
+    assert documented.gate_passed  # same data, now documented → passes
+    assert documented.undocumented == []
+    assert documented.rows[0].status == "investigate"  # status is unchanged; only the gate verdict
+
+
+def test_load_documented_exceptions(tmp_path):
+    assert load_documented_exceptions(tmp_path / "missing.csv") == {}
+    (tmp_path / "exc.csv").write_text(
+        "ticker,reason\nXRX,spin-off\n ,blank-skipped\nHPQ,\n", encoding="utf-8"
+    )
+    assert load_documented_exceptions(tmp_path / "exc.csv") == {"XRX": "spin-off", "HPQ": ""}

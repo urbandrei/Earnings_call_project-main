@@ -13,6 +13,7 @@ from __future__ import annotations
 
 import csv
 import io
+import json
 import os
 import random
 from dataclasses import dataclass
@@ -157,6 +158,24 @@ class CrossCheckResult:
     n_passed: int
     min_correlation: float
     gate_passed: bool
+    undocumented: list[str]  # sub-0.99 tickers without a committed reason code
+
+
+def load_documented_exceptions(path: Path) -> dict[str, str]:
+    """Read committed `ticker,reason` cross-check exceptions (missing file → empty).
+
+    DESIGN §5.2 allows a sub-0.99 ticker through the gate only when it is
+    *investigated and documented*; the reason code lives in a committed CSV so
+    the gate stays reproducible and CI-checkable (no silent acceptances).
+    """
+    if not path.is_file():
+        return {}
+    out: dict[str, str] = {}
+    for row in csv.DictReader(path.open(encoding="utf-8")):
+        ticker = (row.get("ticker") or "").strip()
+        if ticker:
+            out[ticker] = (row.get("reason") or "").strip()
+    return out
 
 
 def cross_check(
@@ -166,8 +185,15 @@ def cross_check(
     *,
     start: date = START,
     end: date = END,
+    documented: dict[str, str] | None = None,
 ) -> CrossCheckResult:
-    """Cross-check sampled tickers' returns against Tiingo. Gate: all corr > 0.999."""
+    """Cross-check sampled tickers' returns against Tiingo (DESIGN §5.2 gate).
+
+    Gate passes iff every scored ticker is `pass` (>0.999) or `warn` (0.99–0.999,
+    tolerated drift) or a `documented` `investigate` (<0.99 with a committed reason).
+    Undocumented sub-0.99 tickers fail the gate and are surfaced for investigation.
+    """
+    documented = documented or {}
     rows: list[CrossCheckRow] = []
     for ticker in tickers:
         parquet = prices_dir / f"{ticker}.parquet"
@@ -192,5 +218,52 @@ def cross_check(
     scored = [r for r in rows if r.status in ("pass", "warn", "investigate")]
     n_passed = sum(1 for r in scored if r.status == "pass")
     min_corr = min((r.correlation for r in scored), default=float("nan"))
-    gate = bool(scored) and all(r.status == "pass" for r in scored)
-    return CrossCheckResult(rows, len(tickers), n_passed, min_corr, gate)
+    undocumented = [
+        r.ticker for r in scored if r.status == "investigate" and r.ticker not in documented
+    ]
+    gate = bool(scored) and not undocumented
+    return CrossCheckResult(rows, len(tickers), n_passed, min_corr, gate, undocumented)
+
+
+def write_crosscheck_report(
+    result: CrossCheckResult,
+    documented: dict[str, str],
+    out_dir: Path,
+    *,
+    fraction: float,
+    seed: int,
+) -> Path:
+    """Persist the cross-check run as `crosscheck_report.csv` + `crosscheck_summary.json`.
+
+    Stdout-only results aren't reproducible; these committed artifacts are the
+    auditable record of the gate (one row per sampled ticker + a summary).
+    """
+    out_dir.mkdir(parents=True, exist_ok=True)
+    report = out_dir / "crosscheck_report.csv"
+    with report.open("w", encoding="utf-8", newline="") as f:
+        writer = csv.writer(f)
+        writer.writerow(["ticker", "correlation", "n_overlap", "status", "reason"])
+        for r in result.rows:
+            writer.writerow(
+                [r.ticker, r.correlation, r.n_overlap, r.status, documented.get(r.ticker, "")]
+            )
+    summary = out_dir / "crosscheck_summary.json"
+    summary.write_text(
+        json.dumps(
+            {
+                "n_sampled": result.n_sampled,
+                "n_passed": result.n_passed,
+                "n_warn": sum(1 for r in result.rows if r.status == "warn"),
+                "n_investigate": sum(1 for r in result.rows if r.status == "investigate"),
+                "min_correlation": result.min_correlation,
+                "gate_passed": result.gate_passed,
+                "undocumented": result.undocumented,
+                "fraction": fraction,
+                "seed": seed,
+            },
+            indent=2,
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+    return report

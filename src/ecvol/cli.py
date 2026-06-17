@@ -148,8 +148,14 @@ def prices_crosscheck(
     fraction: float = typer.Option(0.05, help="Fraction of covered tickers to sample."),
     seed: int = typer.Option(0, help="Sampling seed."),
 ) -> None:
-    """Cross-check the price pull against Tiingo on a random sample (gate: corr>0.999)."""
-    from ecvol.data.tiingo import cross_check, load_api_key, sample_tickers
+    """Cross-check the price pull against Tiingo on a random sample (DESIGN §5.2 gate)."""
+    from ecvol.data.tiingo import (
+        cross_check,
+        load_api_key,
+        load_documented_exceptions,
+        sample_tickers,
+        write_crosscheck_report,
+    )
 
     key = load_api_key()
     if not key:
@@ -163,17 +169,27 @@ def prices_crosscheck(
     if not covered:
         typer.echo("no cached prices — run `ecvol prices pull` first", err=True)
         raise typer.Exit(code=2)
+    coverage_dir = root / "coverage"
+    documented = load_documented_exceptions(coverage_dir / "crosscheck_exceptions.csv")
     sample = sample_tickers(covered, fraction=fraction, seed=seed)
-    result = cross_check(prices_dir, sample, key)
+    result = cross_check(prices_dir, sample, key, documented=documented)
     for r in result.rows:
-        typer.echo(f"  {r.ticker:8} corr={r.correlation} n={r.n_overlap} [{r.status}]")
+        note = f" — documented: {documented[r.ticker]}" if r.ticker in documented else ""
+        typer.echo(f"  {r.ticker:8} corr={r.correlation} n={r.n_overlap} [{r.status}]{note}")
+    report = write_crosscheck_report(result, documented, coverage_dir, fraction=fraction, seed=seed)
     typer.echo(
         f"sampled {result.n_sampled}; passed {result.n_passed}; min corr {result.min_correlation}"
     )
+    typer.echo(f"report: {report}")
     if not result.gate_passed:
-        typer.echo("cross-check gate FAILED (some corr ≤ 0.999)", err=True)
+        typer.echo(
+            "cross-check gate FAILED — undocumented sub-0.99 ticker(s): "
+            + ", ".join(result.undocumented)
+            + f"\ninvestigate, then add a reason to {coverage_dir / 'crosscheck_exceptions.csv'}",
+            err=True,
+        )
         raise typer.Exit(code=1)
-    typer.echo("cross-check gate PASSED (all corr > 0.999)")
+    typer.echo("cross-check gate PASSED (corr>0.999, or documented exception)")
 
 
 @app.command()
