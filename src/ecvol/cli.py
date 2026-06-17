@@ -192,10 +192,32 @@ def prices_crosscheck(
     typer.echo("cross-check gate PASSED (corr>0.999, or documented exception)")
 
 
-@app.command()
-def targets() -> None:
-    """Compute volatility targets per (call, horizon) (T1.3)."""
-    _not_implemented("targets")
+targets_app = typer.Typer(no_args_is_help=True, help="Volatility target computation (T1.3).")
+app.add_typer(targets_app, name="targets")
+
+
+@targets_app.command("build")
+def targets_build(
+    root: Path = typer.Option(Path("data"), help="Data root directory."),  # noqa: B008
+    horizons: str = typer.Option("3,7,15,30", help="Comma-separated trading-day horizons."),
+) -> None:
+    """Compute v_pre/v_post/Δv + HAR inputs per (call, horizon) → parquet + report (T1.3)."""
+    from ecvol.data.targets import build_targets
+
+    taus = tuple(int(h) for h in horizons.split(",") if h.strip())
+    summary = build_targets(root, horizons=taus)
+    typer.echo(
+        f"calls: {summary.resolved_calls}/{summary.total_calls} resolved; "
+        f"rows: {summary.ok_rows}/{summary.rows_total} ok"
+    )
+    typer.echo(
+        f"join rate: {summary.calls_with_any_ok}/{summary.resolved_calls} "
+        f"calls with ≥1 target ({summary.join_rate_pct}%)"
+    )
+    typer.echo("per-horizon ok: " + ", ".join(f"{h}d={n}" for h, n in summary.horizon_ok.items()))
+    if summary.reason_counts:
+        typer.echo("exclusions: " + ", ".join(f"{k}={v}" for k, v in summary.reason_counts.items()))
+    typer.echo("targets: data/targets/targets.parquet; report: data/coverage/targets_report.csv")
 
 
 @app.command()

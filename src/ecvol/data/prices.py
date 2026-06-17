@@ -135,6 +135,21 @@ def write_price_parquet(rows: list[dict], path: Path) -> None:
     pq.write_table(table, path, compression="none", store_schema=True)
 
 
+def load_close_series(prices_dir: Path, ticker: str) -> dict[str, float]:
+    """Adjusted close by ISO date for a cached ticker (`{}` if no parquet).
+
+    The price I/O counterpart used by `targets.py`; mirrors `tiingo._parquet_close`
+    but keyed by `(prices_dir, ticker)` so callers don't construct paths themselves.
+    """
+    path = prices_dir / f"{ticker}.parquet"
+    if not path.is_file():
+        return {}
+    table = pq.read_table(path, columns=["date", "close"])
+    dates = table.column("date").to_pylist()
+    closes = table.column("close").to_pylist()
+    return dict(zip(dates, closes, strict=True))
+
+
 def fetch_batch(symbols: list[str], start: date, end: date) -> dict[str, list[dict]]:
     """Download a batch of Yahoo symbols → {symbol: rows}. Empty list = no data."""
     if not symbols:
@@ -393,5 +408,6 @@ __all__ = [
     "pull_prices",
     "to_yahoo_symbol",
     "write_price_parquet",
+    "load_close_series",
     "sha256_file",
 ]
