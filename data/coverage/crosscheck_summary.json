@@ -1,0 +1,11 @@
+{
+  "n_sampled": 50,
+  "n_passed": 47,
+  "n_warn": 2,
+  "n_investigate": 1,
+  "min_correlation": 0.975641,
+  "gate_passed": true,
+  "undocumented": [],
+  "fraction": 0.05,
+  "seed": 0
+}
