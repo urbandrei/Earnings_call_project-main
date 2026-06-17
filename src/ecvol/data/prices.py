@@ -305,7 +305,15 @@ def pull_prices(
 
     # Fallback pass — Tiingo recovers tickers Yahoo has purged (delisted/acquired),
     # but only if a key is available. Inert (and the shortfall is documented) otherwise.
-    still_missing = [t for t in universe if not (prices_dir / f"{t}.parquet").exists()]
+    # Scoped to the FinCall universe: the ≥98% gate binds on FinCall only (DECISIONS
+    # 2026-06-15) and the free Tiingo tier is 50 req/hr · 500 symbols/month — attempting
+    # all ~310 misses (mostly MAEC) would rate-limit and silently drop. MAEC Tiingo
+    # recovery is deferred to T1.5 (DECISIONS 2026-06-17).
+    still_missing = [
+        t
+        for t, entry in universe.items()
+        if entry.in_fincall and not (prices_dir / f"{t}.parquet").exists()
+    ]
     if still_missing:
         _tiingo_fallback(still_missing, prices_dir, root, sources, start, end)
 

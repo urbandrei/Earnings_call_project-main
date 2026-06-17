@@ -152,6 +152,35 @@ def test_pull_prices_tiingo_fallback_recovers_yahoo_misses(tmp_path, monkeypatch
     assert "yahoo.com" in by_path["prices/AAA.parquet"]
 
 
+def test_tiingo_fallback_scoped_to_fincall_only(tmp_path, monkeypatch):
+    """MAEC-only misses must not hit Tiingo (gate is FinCall-only; free-tier budget)."""
+    from ecvol.data import prices as P
+
+    _make_identity(tmp_path, [("BBB", "earnings")])  # FinCall: BBB
+    _make_maec(tmp_path, ["20200102_MMM"])  # MAEC-only: MMM
+
+    def fake_fetch_batch(symbols, start, end):
+        return {s: [] for s in symbols}  # Yahoo serves neither
+
+    tiingo_calls = []
+
+    def fake_tiingo(ticker, key, start, end):
+        tiingo_calls.append(ticker)
+        return [
+            {"date": "2020-01-02", "open": 2.0, "high": 2.0, "low": 2.0, "close": 2.0, "volume": 9}
+        ]
+
+    monkeypatch.setattr(P, "fetch_batch", fake_fetch_batch)
+    monkeypatch.setattr("ecvol.data.tiingo.load_api_key", lambda root=None: "key")
+    monkeypatch.setattr("ecvol.data.tiingo.fetch_tiingo_ohlcv", fake_tiingo)
+
+    P.pull_prices(tmp_path)
+
+    assert tiingo_calls == ["BBB"]  # FinCall miss attempted; MAEC-only MMM skipped
+    assert (tmp_path / "prices" / "BBB.parquet").is_file()
+    assert not (tmp_path / "prices" / "MMM.parquet").exists()
+
+
 def test_pull_prices_no_key_leaves_documented_shortfall(tmp_path, monkeypatch):
     from ecvol.data import prices as P
 
