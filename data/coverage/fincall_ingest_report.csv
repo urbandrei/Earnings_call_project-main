@@ -1,0 +1,9 @@
+metric,value
+total_calls,2688
+parsed,2688
+ok,2331
+audio_present,2671
+audio_decoded,2671
+reason:no_date,50
+reason:non_earnings,115
+reason:unresolved_ticker,192

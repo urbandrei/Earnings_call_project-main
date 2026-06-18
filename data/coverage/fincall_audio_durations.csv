@@ -1,0 +1,11 @@
+metric,value
+audio_decoded,2671
+duration_min_sec,1096.1
+duration_p05_sec,2565.9
+duration_p25_sec,3421.1
+duration_median_sec,3692.7
+duration_p75_sec,4018.2
+duration_p95_sec,4936.1
+duration_max_sec,11938.9
+duration_mean_sec,3732.5
+duration_total_hours,2769.3

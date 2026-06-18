@@ -1,0 +1,9 @@
+[
+  {
+    "license": "Derived artifact \u2014 normalized from FinCall-Surprise (Apache-2.0)",
+    "path": "fincall/calls.parquet",
+    "retrieved_at": "2026-06-18T21:53:33+00:00",
+    "sha256": "fe450d9ad4a7cc2b6503b48b0d5d2572f388018848c56c88301120c4fd5a47be",
+    "source_url": "computed: ecvol data ingest fincall (T1.4)"
+  }
+]
