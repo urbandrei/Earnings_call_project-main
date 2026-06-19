@@ -7,8 +7,8 @@ from ecvol.cli import app
 runner = CliRunner()
 
 VERBS = ["prices", "targets", "splits", "featurize", "train", "evaluate", "report"]
-# Implemented as sub-apps: prices (T1.2), targets (T1.3), splits (T1.6).
-STUB_VERBS = ["featurize", "train", "evaluate", "report"]
+# Implemented: prices (T1.2), targets (T1.3), splits (T1.6), evaluate (T2.2).
+STUB_VERBS = ["featurize", "train", "report"]
 
 
 def test_help_lists_all_verbs():

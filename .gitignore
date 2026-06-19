@@ -6,6 +6,7 @@
 !/data/identity/
 !/data/coverage/
 !/data/splits/
+!/data/results/
 
 # Run outputs
 /artifacts/

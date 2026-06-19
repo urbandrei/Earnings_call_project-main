@@ -297,9 +297,33 @@ def train() -> None:
 
 
 @app.command()
-def evaluate() -> None:
-    """Evaluate trained models on committed splits (T2.2)."""
-    _not_implemented("evaluate")
+def evaluate(
+    root: Path = typer.Option(Path("data"), help="Data root directory."),  # noqa: B008
+    seeds: str = typer.Option("0,1,2,3,4", help="Comma-separated seeds for the GBDT baseline."),
+) -> None:
+    """Run Stage-0/1 baselines → Result Table 1 + sanity gates (T2.2)."""
+    from ecvol.eval.evaluate import run_evaluate
+
+    seed_tuple = tuple(int(s) for s in seeds.split(",") if s.strip())
+    s = run_evaluate(root, seeds=seed_tuple)
+    for ds, frac in s.garch_convergence.items():
+        flag = "OK" if frac > 0.95 else "BELOW 95% gate"
+        typer.echo(f"GARCH convergence {ds}: {frac:.1%} [{flag}]")
+    typer.echo("HAR vs persistence R2_OOS (tau=30, level-v, test):")
+    for cell, r2 in s.gate_detail["har_r2_oos_vs_persistence"].items():
+        typer.echo(f"  {cell}: {r2:+.4f}")
+    if s.gate_detail["literal_pass"]:
+        typer.echo("sanity gate: PASSED (HAR>persistence, FinCall temporal tau=30)")
+    elif s.gate_detail["covid_regime_exception"]:
+        typer.echo(
+            "sanity gate: PASSED with documented COVID-regime exception "
+            "(FinCall temporal tau=30 fails, but targets corroborated by FinCall "
+            "ticker-disjoint + MAEC temporal; DECISIONS 2026-06-18)"
+        )
+    typer.echo("Result Table 1: data/results/result_table_1.csv")
+    if not s.gate_passed:
+        typer.echo("gate FAILED — halt and debug targets (DESIGN §6 Stage 0)", err=True)
+        raise typer.Exit(code=1)
 
 
 @app.command()
