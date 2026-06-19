@@ -205,15 +205,15 @@
 
 ## Phase 4 — Audio ladder (~2 weeks, throughput-bound)
 
-### T4.1 Audio QC — `[ ]`
+### T4.1 Audio QC — `[x]` *(done 2026-06-19; FinCall-only — MAEC ships no audio)*
 - **Goal:** know the corpus before burning GPU-weeks.
 - **End result:** QC report for 100% of audio (duration, sample rate, clipping, silence ratio, decode errors); 16 kHz mono resampled store.
 - **Acceptance test:** pipeline validated on Earnings-21 samples (known-good reference); corrupt files flagged with reason codes, not dropped silently.
 - **Subtasks:**
-  - [ ] `features/audio/qc.py`
-  - [ ] ffmpeg-based resampler
-  - [ ] QC report artifact
-- **Notes:** —
+  - [x] `features/audio/qc.py` (one ffmpeg pass per call: `astats`+`silencedetect` on the source for QC, write 16 kHz mono FLAC; no Python audio deps)
+  - [x] ffmpeg-based resampler (16 kHz mono FLAC, metadata-stripped, idempotent) — store `data/raw/audio_16k/fincall/` (gitignored cache, 2,671 files / 119 GB)
+  - [x] QC report artifact — committed `data/coverage/fincall_audio_qc.csv` (per-call) + `_summary.csv`; Earnings-21 validation `earnings21_qc_validation.csv`
+- **Notes:** **DONE 2026-06-19.** `ecvol audio qc` / `audio qc-ref`. **2,671/2,671 FinCall decoded (100%); 1 `mostly_silent` flagged (reason-coded, not dropped), 0 decode errors.** Median dur ~61 min, silence 0.16, peak −1.07 dBFS. **QC finding:** heterogeneous source sample rates — 22050 (1361) / 16000 (930) / 44100 (256) / 11025 (77) / **8000 (14, telephone-grade)** / 32000 / 24000 / 48000; all upsampled to 16 kHz for the store (sub-16k sources gain no info — flagged for audio-model interpretation). **Acceptance met both ways:** synthetic ffmpeg signals (CI unit tests) + 3 real Earnings-21 wavs (all decode_ok, sane metrics — peak ≈0 dBFS, silence 15–21%). MAEC has no raw audio → audio ladder (T4.1–T4.4, Result Table 3) is FinCall-only. 8 new tests (pure parse_qc CI-safe + ffmpeg-guarded integration); 202 green, ruff clean. Journal: 2026-06-19 T4.1 entry.
 
 ### T4.2 eGeMAPS extraction (CPU, first) — `[ ]`
 - **Goal:** cheap interpretable paralinguistics for the whole corpus.

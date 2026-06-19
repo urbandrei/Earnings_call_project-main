@@ -1,0 +1,8 @@
+metric,value
+n,2671
+decoded,2671
+median_duration_sec,3692.7
+median_silence_ratio,0.16042858425547626
+median_peak_dbfs,-1.072762
+flag:mostly_silent,1
+resampled_flac_files,2671

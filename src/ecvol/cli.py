@@ -358,6 +358,48 @@ def featurize_text(
         )
 
 
+audio_app = typer.Typer(no_args_is_help=True, help="Audio QC + features (Phase 4).")
+app.add_typer(audio_app, name="audio")
+
+
+@audio_app.command("qc")
+def audio_qc(
+    root: Path = typer.Option(Path("data"), help="Data root directory."),  # noqa: B008
+    limit: int = typer.Option(0, help="Process only the first N calls (0 = all)."),
+    workers: int = typer.Option(8, help="Parallel ffmpeg workers."),
+) -> None:
+    """QC FinCall audio + write the 16 kHz mono FLAC store (T4.1; MAEC has no audio)."""
+    from ecvol.features.audio.qc import build_qc, have_ffmpeg
+
+    if not have_ffmpeg():
+        typer.echo("ffmpeg/ffprobe not found on PATH", err=True)
+        raise typer.Exit(code=2)
+    s = build_qc(root, limit=(limit or None), workers=workers)
+    typer.echo(f"audio QC: {s.decoded}/{s.n} decoded; store: {s.store_dir}")
+    typer.echo(
+        "flagged: " + (", ".join(f"{k}={v}" for k, v in sorted(s.flagged.items())) or "none")
+    )
+    typer.echo("report: data/coverage/fincall_audio_qc.csv")
+
+
+@audio_app.command("qc-ref")
+def audio_qc_ref(
+    root: Path = typer.Option(Path("data"), help="Data root directory."),  # noqa: B008
+    n: int = typer.Option(3, help="Number of Earnings-21 reference files to fetch + QC."),
+) -> None:
+    """Validate the QC pipeline on known-good Earnings-21 samples (T4.1; needs --group gpu)."""
+    from ecvol.features.audio.qc import validate_earnings21
+
+    rows = validate_earnings21(root, n=n)
+    for r in rows:
+        typer.echo(
+            f"  {r['call_id']}: decode={r['decode_ok']} sr={r['sample_rate']} "
+            f"peak={r['peak_dbfs']:.1f}dB silence={r['silence_ratio']:.2f} "
+            f"reason={r['reason'] or 'ok'}"
+        )
+    typer.echo("report: data/coverage/earnings21_qc_validation.csv")
+
+
 @app.command()
 def train() -> None:
     """Train a model from a validated YAML config (Phases 2-5)."""
