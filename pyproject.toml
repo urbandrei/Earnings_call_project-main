@@ -29,6 +29,23 @@ dev = [
     "ruff>=0.11",
     "pre-commit>=4",
 ]
+# GPU feature stack (Phase 3+ frozen text/audio/LLM features). Not installed by
+# default or in CI (`uv sync` installs only `dev`); install with
+# `uv sync --group gpu`. torch is pinned to the CUDA 12.8 index for Blackwell
+# (RTX 50-series, sm_120) support. See DECISIONS 2026-06-19 (T3.2).
+gpu = [
+    "torch>=2.7",
+    "sentence-transformers>=3.0",
+    "transformers>=4.44",
+]
+
+[[tool.uv.index]]
+name = "pytorch-cu128"
+url = "https://download.pytorch.org/whl/cu128"
+explicit = true
+
+[tool.uv.sources]
+torch = [{ index = "pytorch-cu128" }]
 
 [build-system]
 requires = ["uv_build>=0.11,<0.12"]

@@ -311,6 +311,53 @@ def featurize_sections(
         )
 
 
+@featurize_app.command("text")
+def featurize_text(
+    dataset: str = typer.Option("fincall", help="Dataset: fincall | maec."),
+    root: Path = typer.Option(Path("data"), help="Data root directory."),  # noqa: B008
+    limit: int = typer.Option(0, help="Process only the first N calls (0 = full corpus)."),
+    device: str = typer.Option("cuda", help="torch device (cuda | cpu)."),
+    batch_size: int = typer.Option(32, help="Inference batch size."),
+    weighted: bool = typer.Option(False, help="Use n_words-weighted embedding pooling."),
+) -> None:
+    """Stage-2 frozen text features: BGE-M3 embeddings + FinBERT + surface stats (T3.2)."""
+    import time
+
+    import pyarrow.parquet as pq
+
+    from ecvol.features.text import embeddings, finbert, surface
+
+    lim = limit or None
+    total = pq.read_metadata(root / dataset / "chunks.parquet").num_rows
+
+    t = time.perf_counter()
+    n_surf = surface.build(root, dataset, limit=lim)
+    t_surf = time.perf_counter() - t
+
+    t = time.perf_counter()
+    n_emb, new_emb = embeddings.build(
+        root, dataset, limit=lim, device=device, batch_size=batch_size, weighted=weighted
+    )
+    t_emb = time.perf_counter() - t
+
+    t = time.perf_counter()
+    n_fin, new_fin = finbert.build(root, dataset, limit=lim, device=device, batch_size=batch_size)
+    t_fin = time.perf_counter() - t
+
+    typer.echo(f"{dataset}: {total} chunks total; device={device}")
+    typer.echo(f"  surface:    {n_surf} rows in {t_surf:.1f}s")
+    typer.echo(f"  embeddings: {n_emb} rows, {new_emb} chunks encoded in {t_emb:.1f}s")
+    typer.echo(f"  finbert:    {n_fin} rows, {new_fin} chunks in {t_fin:.1f}s")
+    if lim and new_emb and new_fin:
+        r_emb, r_fin = new_emb / t_emb, new_fin / t_fin
+        eta_min = (total / r_emb + total / r_fin) / 60
+        typer.echo(f"  throughput: BGE-M3 {r_emb:.0f} ch/s, FinBERT {r_fin:.0f} ch/s")
+        typer.echo(
+            f"  full-corpus ETA (~{total} chunks): ~{eta_min:.1f} min "
+            "(incl. one-time model load; conservative)"
+        )
+
+
 @app.command()
 def train() -> None:
     """Train a model from a validated YAML config (Phases 2-5)."""

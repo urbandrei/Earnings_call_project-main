@@ -42,3 +42,4 @@ def test_featurize_subcommands_exposed():
     result = runner.invoke(app, ["featurize", "--help"])
     assert result.exit_code == 0
     assert "sections" in result.output
+    assert "text" in result.output
