@@ -1,0 +1,9 @@
+[
+  {
+    "license": "derived; model ProsusAI/finbert",
+    "path": "fincall/text_finbert.parquet",
+    "retrieved_at": "2026-06-19T07:23:57+00:00",
+    "sha256": "03b6c038037d54640787c232da7ea602be59d0edb1ea60a3eb5de5899e84a0d5",
+    "source_url": "derived: ecvol featurize text (ProsusAI/finbert, T3.2)"
+  }
+]

@@ -1,0 +1,9 @@
+[
+  {
+    "license": "derived",
+    "path": "maec/text_surface.parquet",
+    "retrieved_at": "2026-06-19T06:53:00+00:00",
+    "sha256": "c36bfd457718c8f5f49c09154432387e67609d8945fc920cf0b9ec80ced47301",
+    "source_url": "derived: ecvol featurize text (surface, T3.2)"
+  }
+]
