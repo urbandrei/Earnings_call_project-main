@@ -109,7 +109,7 @@ def session_offsets(day0: date, back: int, fwd: int) -> dict[int, date]:
 
 @dataclass
 class TargetRow:
-    call_id: int
+    call_id: int | str  # int for FinCall (numeric ids), str YYYYMMDD_TICKER for MAEC
     ticker: str
     call_type: str
     call_date: str
@@ -158,7 +158,7 @@ def compute_call_targets(
     horizons: tuple[int, ...] = HORIZONS,
 ) -> list[TargetRow]:
     """One TargetRow per horizon for a single call. Never raises; encodes reasons."""
-    call_id = int(call["call_id"])
+    call_id = call["call_id"]  # type preserved as given (FinCall int, MAEC str)
     ticker = str(call.get("ticker") or "").strip()
     call_type = str(call.get("call_type") or "").strip()
     call_date = str(call.get("date") or "").strip()
@@ -270,16 +270,22 @@ def _read_identity(root: Path) -> list[dict]:
     missing = cols - set(df.columns)
     if missing:
         raise ValueError(f"{FINCALL_IDENTITY} missing columns: {sorted(missing)}")
-    return df[["call_id", "ticker", "date", "call_type"]].to_dict("records")
+    records = df[["call_id", "ticker", "date", "call_type"]].to_dict("records")
+    for r in records:  # FinCall ids are numeric; coerce here so TargetRow.call_id is int
+        r["call_id"] = int(r["call_id"])
+    return records
 
 
-def write_targets_parquet(rows: list[TargetRow], path: Path) -> None:
+def write_targets_parquet(
+    rows: list[TargetRow], path: Path, *, id_type: pa.DataType | None = None
+) -> None:
     """Write target rows as deterministic parquet (sorted by call_id, horizon)."""
+    id_type = id_type or pa.int64()  # FinCall default; MAEC passes pa.string()
     path.parent.mkdir(parents=True, exist_ok=True)
     rows = sorted(rows, key=lambda r: (r.call_id, r.horizon))
     table = pa.table(
         {
-            "call_id": pa.array([r.call_id for r in rows], pa.int64()),
+            "call_id": pa.array([r.call_id for r in rows], id_type),
             "ticker": pa.array([r.ticker for r in rows], pa.string()),
             "call_type": pa.array([r.call_type for r in rows], pa.string()),
             "call_date": pa.array([r.call_date for r in rows], pa.string()),

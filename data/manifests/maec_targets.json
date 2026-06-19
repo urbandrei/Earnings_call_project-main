@@ -1,0 +1,9 @@
+[
+  {
+    "license": "Derived artifact \u2014 computed from price data (DESIGN \u00a75.3); no external source",
+    "path": "maec/targets.parquet",
+    "retrieved_at": "2026-06-19T00:55:22+00:00",
+    "sha256": "75706b6efca19caf4b131bc88f582c927a94f6ab4f60eec43519468cea53e28d",
+    "source_url": "computed: ecvol data ingest maec / targets (DESIGN \u00a75.3)"
+  }
+]

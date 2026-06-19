@@ -31,8 +31,6 @@ coverage reports, written by `ecvol data ingest fincall`.
 
 from __future__ import annotations
 
-import csv
-import io
 import json
 import re
 import subprocess
@@ -40,9 +38,8 @@ from dataclasses import dataclass
 from pathlib import Path
 
 import pandas as pd
-import pyarrow as pa
-import pyarrow.parquet as pq
 
+from ecvol.data.calls import NAN, CallRecord, write_calls_parquet, write_metric_csv
 from ecvol.data.manifests import make_entry, write_manifest
 
 SOURCE = "fincall"
@@ -50,8 +47,6 @@ YEARS = (2019, 2020, 2021)
 FINCALL_IDENTITY = "identity/fincall_identity.csv"
 CALLS_LICENSE = "Derived artifact — normalized from FinCall-Surprise (Apache-2.0)"
 CALLS_SOURCE = "computed: ecvol data ingest fincall (T1.4)"
-
-NAN = float("nan")
 
 # Coarse speaker-role markers the corpus uses (often glued to the prior word,
 # e.g. "...North AmericaAnalysts:"). We split on the role word wherever it
@@ -136,28 +131,6 @@ def probe_duration(path: Path) -> float | None:
 # --- record assembly ---------------------------------------------------------
 
 
-@dataclass
-class CallRecord:
-    call_id: int
-    source: str
-    ticker: str
-    call_date: str  # ISO yyyy-mm-dd; "" when unknown
-    time_known: bool  # call time-of-day available? (never, for this corpus)
-    assumed_after_hours: bool  # the §5.3 documented fallback was applied
-    call_type: str
-    label: int  # FinCall-Surprise label; -1 when absent
-    n_turns: int
-    n_chars: int
-    transcript_json: str  # JSON list of {role, text} turns
-    speaker_metadata: str  # JSON {n_turns, roles:{role:{turns,chars}}}
-    audio_path: str  # relative; "" when the mp3 is missing
-    audio_exists: bool
-    audio_duration_sec: float  # NaN when missing/undecoded
-    parsed: bool  # transcript produced >=1 turn
-    status: str  # "ok" (usable earnings record) | "excluded"
-    reason: str  # parse/cohort reason code; "" when status == ok
-
-
 def _cohort_reason(parsed: bool, ticker: str, call_type: str, call_date: str) -> tuple[str, str]:
     """(status, reason) for a parsed call: ok iff resolved earnings call with a date.
 
@@ -234,45 +207,6 @@ def build_records(
 
 
 # --- artifacts ---------------------------------------------------------------
-
-
-def write_calls_parquet(records: list[CallRecord], path: Path) -> None:
-    """Deterministic parquet (sorted by call_id), matching the T0.3 convention."""
-    path.parent.mkdir(parents=True, exist_ok=True)
-    records = sorted(records, key=lambda r: r.call_id)
-    cols = {f: [getattr(r, f) for r in records] for f in CallRecord.__dataclass_fields__}
-    table = pa.table(
-        {
-            "call_id": pa.array(cols["call_id"], pa.int64()),
-            "source": pa.array(cols["source"], pa.string()),
-            "ticker": pa.array(cols["ticker"], pa.string()),
-            "call_date": pa.array(cols["call_date"], pa.string()),
-            "time_known": pa.array(cols["time_known"], pa.bool_()),
-            "assumed_after_hours": pa.array(cols["assumed_after_hours"], pa.bool_()),
-            "call_type": pa.array(cols["call_type"], pa.string()),
-            "label": pa.array(cols["label"], pa.int64()),
-            "n_turns": pa.array(cols["n_turns"], pa.int64()),
-            "n_chars": pa.array(cols["n_chars"], pa.int64()),
-            "transcript_json": pa.array(cols["transcript_json"], pa.string()),
-            "speaker_metadata": pa.array(cols["speaker_metadata"], pa.string()),
-            "audio_path": pa.array(cols["audio_path"], pa.string()),
-            "audio_exists": pa.array(cols["audio_exists"], pa.bool_()),
-            "audio_duration_sec": pa.array(cols["audio_duration_sec"], pa.float64()),
-            "parsed": pa.array(cols["parsed"], pa.bool_()),
-            "status": pa.array(cols["status"], pa.string()),
-            "reason": pa.array(cols["reason"], pa.string()),
-        }
-    )
-    pq.write_table(table, path, compression="none", store_schema=True)
-
-
-def _write_metric_csv(rows: list[tuple[str, object]], path: Path) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    buf = io.StringIO()
-    w = csv.writer(buf, lineterminator="\n")
-    w.writerow(["metric", "value"])
-    w.writerows(rows)
-    path.write_text(buf.getvalue(), encoding="utf-8")
 
 
 @dataclass
@@ -397,9 +331,9 @@ def ingest_fincall(
         ("audio_present", summary.audio_present),
         ("audio_decoded", summary.audio_decoded),
     ] + [(f"reason:{k}", v) for k, v in reason_counts.items()]
-    _write_metric_csv(ingest_rows, cov / "fincall_ingest_report.csv")
-    _write_metric_csv(_duration_stats(records), cov / "fincall_audio_durations.csv")
-    _write_metric_csv(join_rows, cov / "fincall_join_audit.csv")
+    write_metric_csv(ingest_rows, cov / "fincall_ingest_report.csv")
+    write_metric_csv(_duration_stats(records), cov / "fincall_audio_durations.csv")
+    write_metric_csv(join_rows, cov / "fincall_join_audit.csv")
 
     # Manifest for the gitignored payload.
     entry = make_entry(calls_path, root, source_url=CALLS_SOURCE, license=CALLS_LICENSE)

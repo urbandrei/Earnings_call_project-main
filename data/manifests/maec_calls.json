@@ -1,0 +1,9 @@
+[
+  {
+    "license": "Derived artifact \u2014 normalized from MAEC (CC-BY-SA-4.0)",
+    "path": "maec/calls.parquet",
+    "retrieved_at": "2026-06-19T00:55:22+00:00",
+    "sha256": "0d403111e1d24f8269b4f77b68e4e01c19ecee0cf73191287147b051615cb908",
+    "source_url": "computed: ecvol data ingest maec (T1.5)"
+  }
+]

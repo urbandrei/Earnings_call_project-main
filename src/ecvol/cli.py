@@ -58,28 +58,45 @@ def identity(
 
 @data_app.command()
 def ingest(
-    dataset: str = typer.Argument(help="Dataset to normalize: fincall."),
+    dataset: str = typer.Argument(help="Dataset to normalize: fincall | maec."),
     root: Path = typer.Option(Path("data"), help="Data root directory."),  # noqa: B008
     no_audio: bool = typer.Option(
-        False, help="Skip ffprobe audio-duration probing (faster; durations left NaN)."
+        False, help="FinCall only: skip ffprobe audio-duration probing (durations left NaN)."
     ),
 ) -> None:
-    """Normalize a dataset onto the common call schema → parquet + reports (T1.4)."""
-    if dataset != "fincall":
-        typer.echo(f"unknown dataset {dataset!r} (expected fincall)", err=True)
+    """Normalize a dataset onto the common call schema → parquet + reports (T1.4/T1.5)."""
+    if dataset not in ("fincall", "maec"):
+        typer.echo(f"unknown dataset {dataset!r} (expected fincall | maec)", err=True)
         raise typer.Exit(code=2)
-    from ecvol.data.fincall_ingest import ingest_fincall
+    if dataset == "fincall":
+        from ecvol.data.fincall_ingest import ingest_fincall
 
-    s = ingest_fincall(root, probe_audio=not no_audio)
-    typer.echo(f"calls: {s.ok}/{s.total_calls} ok ({s.parsed} parsed)")
-    typer.echo(f"audio: {s.audio_decoded}/{s.audio_present} decoded (of {s.total_calls} calls)")
-    typer.echo(
-        f"join: {s.earnings_joined}/{s.earnings_resolved} earnings-cohort calls "
-        f"with >=1 target ({s.join_rate_pct}%)"
-    )
-    if s.reason_counts:
-        typer.echo("exclusions: " + ", ".join(f"{k}={v}" for k, v in s.reason_counts.items()))
-    typer.echo("calls: data/fincall/calls.parquet; reports: data/coverage/fincall_*.csv")
+        s = ingest_fincall(root, probe_audio=not no_audio)
+        typer.echo(f"calls: {s.ok}/{s.total_calls} ok ({s.parsed} parsed)")
+        typer.echo(f"audio: {s.audio_decoded}/{s.audio_present} decoded (of {s.total_calls} calls)")
+        typer.echo(
+            f"join: {s.earnings_joined}/{s.earnings_resolved} earnings-cohort calls "
+            f"with >=1 target ({s.join_rate_pct}%)"
+        )
+        if s.reason_counts:
+            typer.echo("exclusions: " + ", ".join(f"{k}={v}" for k, v in s.reason_counts.items()))
+        typer.echo("calls: data/fincall/calls.parquet; reports: data/coverage/fincall_*.csv")
+    else:
+        from ecvol.data.maec_ingest import ingest_maec
+
+        m = ingest_maec(root)
+        typer.echo(f"calls: {m.ok}/{m.total_calls} ok ({m.parsed} parsed)")
+        typer.echo(
+            f"audio features: {m.calls_with_features}/{m.total_calls} calls "
+            f"({m.total_sentences} sentences); raw audio: 0 (MAEC ships none)"
+        )
+        typer.echo(
+            f"join: {m.joined}/{m.parsed} calls with >=1 target ({m.join_rate_pct}%); "
+            f"missing-price tickers: {m.missing_price_tickers}"
+        )
+        if m.reason_counts:
+            typer.echo("exclusions: " + ", ".join(f"{k}={v}" for k, v in m.reason_counts.items()))
+        typer.echo("calls/targets: data/maec/*.parquet; reports: data/coverage/maec_*.csv")
 
 
 @data_app.command()

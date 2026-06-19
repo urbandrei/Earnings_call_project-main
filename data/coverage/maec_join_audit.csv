@@ -1,0 +1,11 @@
+metric,value
+calls_parsed,3419
+calls_joined_to_targets,2578
+join_rate_pct,75.4
+unique_tickers,1209
+missing_price_tickers,296
+target_reason:insufficient_post_history,65
+target_reason:insufficient_pre_history,4
+target_reason:no_price_data,3304
+target_reason:zero_variance_post,1
+target_reason:zero_variance_pre,4

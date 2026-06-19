@@ -1,0 +1,12 @@
+metric,value
+calls_total,3443
+calls_with_features,3443
+calls_with_raw_audio,0
+total_sentences,394249
+mean_sentences_per_call,115.3
+duration_source,summed sentence Audio Length (MAEC ships no raw audio)
+duration_min_sec,0.3
+duration_median_sec,805.5
+duration_max_sec,4245.6
+duration_mean_sec,958.8
+duration_total_hours,917.0
