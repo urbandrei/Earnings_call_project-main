@@ -1,0 +1,183 @@
+"""Render result tables from run artifacts — Markdown + LaTeX (T2.3).
+
+`ecvol report` turns the committed `data/results/result_table_1.csv` (the
+long-format Stage-0/1 metrics from T2.2) into paper-ready tables in **both**
+Markdown and LaTeX, deterministically (byte-identical regeneration is the
+acceptance test, CI-checked).
+
+**Table specs are data** (`TABLE_1_SPECS`): each spec selects a slice
+(dataset × split × target × metric, test segment) and pivots model × horizon.
+Adding a table is adding a `TableSpec`, never new rendering code. Cells carry a
+`*` when the model is DM-significant vs. persistence (p<0.05; DESIGN §7.5);
+NaN renders as an em dash. The headline metric is R²_OOS vs. persistence
+(DESIGN §7.1); MSE is rendered too for literature comparability.
+
+Cluster-bootstrap CIs (DESIGN §7.2) need per-call predictions, which the
+aggregated Result Table 1 does not carry — they are added when the headline
+content-model comparison tables land (Phase 3+), alongside persisted per-call
+predictions. The source CSV holds every (split × target × segment) cell,
+including the combined split and the HAR-residual target not rendered here.
+"""
+
+from __future__ import annotations
+
+from dataclasses import dataclass
+from pathlib import Path
+
+import pandas as pd
+
+RESULTS_CSV = "results/result_table_1.csv"
+MD_OUT = "results/result_table_1.md"
+TEX_OUT = "results/result_table_1.tex"
+
+MODEL_ORDER = ["persistence", "ewma", "har", "garch", "gbdt_tickerFE"]
+MODEL_LABELS = {
+    "persistence": "Persistence",
+    "ewma": "EWMA",
+    "har": "HAR-RV",
+    "garch": "GARCH(1,1)",
+    "gbdt_tickerFE": "GBDT (ticker FE)",
+}
+HORIZONS = [3, 7, 15, 30]
+TARGET_LABELS = {"v": "level-v", "dv": "Δv", "har_resid": "HAR-residual"}
+METRIC_LABELS = {"r2_oos": "R²_OOS vs persistence", "mse": "MSE", "mae": "MAE"}
+DM_ALPHA = 0.05
+
+
+@dataclass(frozen=True)
+class TableSpec:
+    dataset: str
+    split: str
+    target: str
+    metric: str
+    segment: str = "test"
+
+    @property
+    def title(self) -> str:
+        return (
+            f"{self.dataset} — {self.split} split — {TARGET_LABELS[self.target]} — "
+            f"{METRIC_LABELS[self.metric]} ({self.segment})"
+        )
+
+
+def _specs() -> list[TableSpec]:
+    """The committed Result-Table-1 view set (headline R²_OOS + MSE)."""
+    specs: list[TableSpec] = []
+    for metric in ("r2_oos", "mse"):
+        for dataset in ("fincall", "maec"):
+            for target in ("v", "dv"):
+                for split in ("temporal", "ticker_disjoint"):
+                    specs.append(TableSpec(dataset, split, target, metric))
+    return specs
+
+
+TABLE_1_SPECS = _specs()
+
+
+# --- cell formatting ---------------------------------------------------------
+
+
+def _fmt(x: float) -> str:
+    return "—" if pd.isna(x) else f"{x:.3f}"
+
+
+def _cell(row: pd.Series, metric: str) -> str:
+    """Formatted metric, with a `*` when DM-significant vs persistence."""
+    if row.empty:
+        return "—"
+    val = _fmt(row[metric])
+    star = ""
+    if row["model"] != "persistence" and not pd.isna(row["dm_p_vs_persistence"]):
+        star = "*" if row["dm_p_vs_persistence"] < DM_ALPHA else ""
+    return f"{val}{star}"
+
+
+def build_table(df: pd.DataFrame, spec: TableSpec) -> tuple[list[str], list[list[str]], int]:
+    """(header, body rows, n) for a model × horizon view; deterministic order."""
+    sel = df[
+        (df["dataset"] == spec.dataset)
+        & (df["split"] == spec.split)
+        & (df["target"] == spec.target)
+        & (df["segment"] == spec.segment)
+    ]
+    n = int(sel["n"].max()) if len(sel) else 0
+    header = ["Model", *[f"τ={h}" for h in HORIZONS]]
+    body: list[list[str]] = []
+    for model in MODEL_ORDER:
+        cells = [MODEL_LABELS[model]]
+        for h in HORIZONS:
+            row = sel[(sel["model"] == model) & (sel["horizon"] == h)]
+            cells.append(_cell(row.iloc[0], spec.metric) if len(row) else "—")
+        body.append(cells)
+    return header, body, n
+
+
+# --- renderers ---------------------------------------------------------------
+
+
+def render_markdown(df: pd.DataFrame, specs: list[TableSpec]) -> str:
+    lines = [
+        "# Result Table 1 — Stage-0/1 baselines",
+        "",
+        "`*` = DM-significant vs persistence (p<0.05).",
+        "",
+    ]
+    for spec in specs:
+        header, body, n = build_table(df, spec)
+        lines.append(f"## {spec.title} (n={n})")
+        lines.append("")
+        lines.append("| " + " | ".join(header) + " |")
+        lines.append("| " + " | ".join(["---"] * len(header)) + " |")
+        for r in body:
+            lines.append("| " + " | ".join(r) + " |")
+        lines.append("")
+    return "\n".join(lines) + "\n"
+
+
+def _tex_escape(s: str) -> str:
+    return (
+        s.replace("_", r"\_")
+        .replace("Δ", r"$\Delta$")
+        .replace("τ", r"$\tau$")
+        .replace("²", r"\textsuperscript{2}")
+    )
+
+
+def render_latex(df: pd.DataFrame, specs: list[TableSpec]) -> str:
+    lines = [
+        "% Result Table 1 — Stage-0/1 baselines (generated by `ecvol report`)",
+        "% * = DM-significant vs persistence (p<0.05)",
+    ]
+    for spec in specs:
+        header, body, n = build_table(df, spec)
+        ncol = len(header)
+        lines.append("")
+        lines.append(r"\begin{table}[t]")
+        lines.append(r"\centering")
+        lines.append(r"\begin{tabular}{l" + "r" * (ncol - 1) + "}")
+        lines.append(r"\toprule")
+        lines.append(" & ".join(_tex_escape(h) for h in header) + r" \\")
+        lines.append(r"\midrule")
+        for r in body:
+            lines.append(" & ".join(_tex_escape(c) for c in r) + r" \\")
+        lines.append(r"\bottomrule")
+        lines.append(r"\end{tabular}")
+        lines.append(r"\caption{" + _tex_escape(f"{spec.title} (n={n}).") + "}")
+        lines.append(r"\end{table}")
+    return "\n".join(lines) + "\n"
+
+
+# --- entry point -------------------------------------------------------------
+
+
+def write_reports(root: Path, specs: list[TableSpec] | None = None) -> tuple[Path, Path]:
+    """Render Result Table 1 to Markdown + LaTeX; return the two paths."""
+    specs = specs or TABLE_1_SPECS
+    csv_path = root / RESULTS_CSV
+    if not csv_path.is_file():
+        raise ValueError(f"no results at {csv_path} — run `ecvol evaluate` first")
+    df = pd.read_csv(csv_path)
+    md_path, tex_path = root / MD_OUT, root / TEX_OUT
+    md_path.write_text(render_markdown(df, specs), encoding="utf-8")
+    tex_path.write_text(render_latex(df, specs), encoding="utf-8")
+    return md_path, tex_path

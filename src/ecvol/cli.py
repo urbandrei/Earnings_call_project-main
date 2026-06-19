@@ -327,6 +327,12 @@ def evaluate(
 
 
 @app.command()
-def report() -> None:
-    """Regenerate result tables from run artifacts (T2.3)."""
-    _not_implemented("report")
+def report(
+    root: Path = typer.Option(Path("data"), help="Data root directory."),  # noqa: B008
+) -> None:
+    """Render result tables (Markdown + LaTeX) from run artifacts (T2.3)."""
+    from ecvol.eval.report import write_reports
+
+    md_path, tex_path = write_reports(root)
+    typer.echo(f"markdown: {md_path}")
+    typer.echo(f"latex:    {tex_path}")

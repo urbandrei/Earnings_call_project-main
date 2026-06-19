@@ -146,15 +146,15 @@
   - [x] First end-to-end `ecvol evaluate` run (→ `data/results/result_table_1.csv`, 720 rows)
 - **Notes:** **DONE 2026-06-18.** `models/{baselines,gbdt}.py` + `eval/evaluate.py` + `ecvol evaluate`. Added deps `arch`, `lightgbm`, `scikit-learn` (statsmodels transitively). Three targets (level-v, Δv, HAR-residual — the train-only HAR fit deferred from T1.3 lands here); persistence = per-target trivial forecast = R²_OOS baseline. DM p-values per cell (significance API from T2.1). **GARCH-convergence gate PASSED** (FinCall 99.6%, MAEC 99.9%). **Sanity gate: PASSED with a documented COVID-regime exception.** The literal HAR>persistence@τ=30-temporal check fails on FinCall (R²_OOS −0.287) but the failure was **debugged and the targets validated** — the same HAR/targets beat persistence at τ=30 on FinCall ticker-disjoint (+0.229), MAEC temporal (+0.206), and all FinCall τ≤15; root cause = COVID regime shift (18% of FinCall temporal-train is Feb–May 2020; test is calm late-2021, 0.22 lower v_post). The gate now passes only when corroborated by the regime-stable cells (unit-tested 3 ways); the τ=30-temporal under-performance is a reported finding (DECISIONS 2026-06-18, DESIGN §5.4.5). Result Table 1 deterministic (byte-identical reruns). Tests: `tests/test_{baselines,gbdt,evaluate}.py` (14). 155 green, ruff clean. Journal: 2026-06-18 T2.2 entry.
 
-### T2.3 Reporting — `[ ]`
+### T2.3 Reporting — `[x]` *(done 2026-06-18 — completes Phase 2)*
 - **Goal:** all paper tables regenerable by one command.
 - **End result:** `ecvol report` renders LaTeX + Markdown tables from run artifacts.
 - **Acceptance test:** byte-identical regeneration from unchanged artifacts (CI check); Result Table 1 renders in both formats.
 - **Subtasks:**
-  - [ ] `eval/report.py`
-  - [ ] Table specs as data
-  - [ ] Figure stubs for notebooks
-- **Notes:** —
+  - [x] `eval/report.py` (+ `ecvol report` → `data/results/result_table_1.{md,tex}`)
+  - [x] Table specs as data (`TABLE_1_SPECS`: frozen `TableSpec`s, model×horizon pivots; add a spec, not code)
+  - [x] Figure stubs for notebooks (`notebooks/figures_result_table_1.py`)
+- **Notes:** **DONE 2026-06-18.** `eval/report.py` renders the committed `result_table_1.csv` to Markdown + LaTeX (booktabs). Render set = R²_OOS + MSE × {fincall,maec} × {level-v,Δv} × {temporal,ticker_disjoint} test (16 tables); `*` = DM-significant vs persistence; combined split + HAR-residual stay in the CSV (add a spec to render). **Acceptance met:** determinism test + a **committed-artifacts CI guard** (`test_committed_reports_match_fresh_render`) re-renders from the committed CSV and asserts byte-equality with the committed `.md`/`.tex`. Cluster-bootstrap CIs deferred (need per-call predictions; land with the Phase-3+ content-model comparison tables — DECISIONS 2026-06-18). Tests: `tests/test_report.py` (6). 161 green, ruff clean. Journal: 2026-06-18 T2.3 entry.
 
 ---
 
