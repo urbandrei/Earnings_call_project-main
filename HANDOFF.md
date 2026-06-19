@@ -11,19 +11,15 @@ Each entry: date · task ID · what the user must do · what unblocks when it's 
 
 ## Active (action needed to unblock a task)
 
-- **2026-06-19 · T3.1 · verify the section-detection audit (closes T3.1).** Open
-  `data/coverage/fincall_section_audit.csv` (30 earnings calls; also `maec_section_audit.csv`).
-  Each row shows three context columns so you can judge without opening the transcript:
-  **`prev_text`** (tail of the last prepared-remarks turn — usually the operator's "first
-  question from…" intro), **`boundary_text`** (the first turn tagged Q&A — should be an analyst
-  question), **`next_text`** (the next turn — usually management's answer). Mark `correct_y_n`
-  = `y` when that prepared→Q&A transition is right, `n` when the boundary lands inside prepared
-  remarks or too late. **Acceptance = >90% `y` on FinCall** (≥27/30). Reply when done and I'll
-  mark T3.1 `[x]`. *(MAEC is best-effort/secondary — its 25% Q&A-detection rate is expected and
-  documented, not a gate.)* Automated proxy: FinCall Q&A detected 98.7%, 90.7% corroborated.
-  Tip: install the **Edit csv** + **Rainbow CSV** VS Code extensions for a grid view.
-  - **Also at this Phase-3-start checkpoint:** push the local commits (loop infra + T3.1) and
-    confirm CI is green before T3.2 begins (gate policy: phase-boundary checkpoint).
+*None.* The T3.1 section audit was completed 2026-06-19 (30/30 correct → gate cleared, T3.1
+`[x]`). Next pause is the **T3.2 design call** (a decision, surfaced in-session, not a queued
+chore). **Optional whenever convenient:** push the local commits (loop infra + T3.1×2) so CI
+runs — not strictly required until the Phase-3 boundary (after T3.4) under the gate policy, but a
+one-time push is worth it to confirm the new hooks/CI work end-to-end.
+
+### Resolved
+- **2026-06-19 · T3.1 section audit — DONE (30/30 correct).** Both operator-handoff and
+  analyst-question boundaries accepted as correct Q&A-section starts.
 
 ---
 
