@@ -160,15 +160,15 @@
 
 ## Phase 3 — Text ladder + early identity controls (~1–2 weeks)
 
-### T3.1 Transcript normalization — `[ ]`
+### T3.1 Transcript normalization — `[~]` *(implementation done 2026-06-19; acceptance pending the human 30-call audit — HANDOFF.md)*
 - **Goal:** robust sectioning and speaker structure without per-sentence alignment.
 - **End result:** per-call structure: prepared remarks vs. Q&A; speaker turns with roles (operator/management/analyst) where derivable.
 - **Acceptance test:** section-detection precision >90% on a 30-call hand-checked sample; speaker-role tagging audited on the same sample.
 - **Subtasks:**
-  - [ ] `features/text/sections.py` (heuristics + format-specific parsers)
-  - [ ] Speaker-turn chunking: chunk by speaker turn, **never split a turn across chunks** (prior-team lesson — DECISIONS.md 2026-06-14; reuses FinCall speaker metadata)
-  - [ ] Audit notebook
-- **Notes:** speaker-turn chunking adopted from prior-team work (DECISIONS.md 2026-06-14); feeds the TX1 QA exploration.
+  - [x] `features/text/sections.py` (deterministic heuristic: operator Q&A-cue + first-analyst-turn boundary; MAEC = in-text cues only, roles unavailable — DECISIONS 2026-06-19)
+  - [x] Speaker-turn chunking: chunk by speaker turn, **never split a turn across chunks** (DECISIONS.md 2026-06-14); oversized turns sentence-split into same-turn sub-chunks (DECISIONS 2026-06-19). Reuses FinCall speaker metadata.
+  - [x] Audit artifact — committed seeded `data/coverage/{dataset}_section_audit.csv` (30 calls each) in place of a notebook (CI-friendly; DECISIONS 2026-06-19); **human precision check is the open acceptance item**.
+- **Notes:** `ecvol featurize sections` → `data/{dataset}/chunks.parquet` (gitignored deterministic payload, byte-identical reruns verified; manifests `data/manifests/{dataset}_chunks.json` verify OK) + committed `data/coverage/{dataset}_sections.csv`. **FinCall:** Q&A detected 2654/2688 (98.7%), 2408 corroborated by both signals (90.7% of detections), 196,233 chunks, 0 oversize; methods first_analyst=2151 / operator_cue=443 / text_cue=60 / none=34. **MAEC** (no speaker labels — best-effort text-cue): Q&A detected 867/3443 (25.2%), 394,280 chunks, 1 oversize. Eyeball of the FinCall audit sample is clean (boundaries on real analyst/operator-intro turns; the only soft cases are out-of-cohort non-earnings calls). 13 new tests; 174 green, ruff clean. Speaker-turn chunking adopted from prior-team work (DECISIONS.md 2026-06-14); feeds the TX1 QA exploration. Journal: 2026-06-19 T3.1 entry. **Next:** user verifies the 30-call audit (>90%) to close; then T3.2 (a design call — embedding model + pooling).
 
 ### T3.2 Frozen text features — `[ ]`
 - **Goal:** Stage-2 representations, cached.

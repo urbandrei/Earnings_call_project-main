@@ -284,10 +284,31 @@ def splits_build(
     typer.echo("splits: data/splits/<dataset>_<scheme>.csv (committed)")
 
 
-@app.command()
-def featurize() -> None:
-    """Extract and cache text / audio / LLM features (Phases 3-6)."""
-    _not_implemented("featurize")
+featurize_app = typer.Typer(no_args_is_help=True, help="Text / audio / LLM features (Phases 3-6).")
+app.add_typer(featurize_app, name="featurize")
+
+
+@featurize_app.command("sections")
+def featurize_sections(
+    root: Path = typer.Option(Path("data"), help="Data root directory."),  # noqa: B008
+    max_words: int = typer.Option(320, help="Chunk word cap; oversized turns are sentence-split."),
+    audit_n: int = typer.Option(30, help="Calls in the seeded section-precision audit sample."),
+    seed: int = typer.Option(0, help="Audit-sample seed."),
+) -> None:
+    """Section transcripts (prepared vs Q&A) + speaker-turn chunk -> chunks.parquet (T3.1)."""
+    from ecvol.features.text.sections import build_sections
+
+    for s in build_sections(root, max_words=max_words, audit_n=audit_n, seed=seed):
+        typer.echo(
+            f"{s.dataset}: processed {s.n_processed}/{s.n_calls} "
+            f"(no_turns {s.n_no_turns}); Q&A detected {s.calls_with_qa} "
+            f"(corroborated {s.corroborated})"
+        )
+        methods = ", ".join(f"{k}={v}" for k, v in sorted(s.method_counts.items()))
+        typer.echo(f"  methods: {methods}")
+        typer.echo(
+            f"  chunks: {s.total_chunks} (oversize {s.oversize_chunks}); audit: {s.audit_path}"
+        )
 
 
 @app.command()

@@ -1,0 +1,9 @@
+[
+  {
+    "license": "derived",
+    "path": "fincall/chunks.parquet",
+    "retrieved_at": "2026-06-19T03:58:47+00:00",
+    "sha256": "b87b07019e19011806d8fa02a88fcf28cb7d1782d77ee76f28cfd0677b59aa66",
+    "source_url": "derived: ecvol featurize sections (T3.1)"
+  }
+]

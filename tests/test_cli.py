@@ -7,8 +7,9 @@ from ecvol.cli import app
 runner = CliRunner()
 
 VERBS = ["prices", "targets", "splits", "featurize", "train", "evaluate", "report"]
-# Implemented: prices (T1.2), targets (T1.3), splits (T1.6), evaluate (T2.2), report (T2.3).
-STUB_VERBS = ["featurize", "train"]
+# Implemented: prices (T1.2), targets (T1.3), splits (T1.6), evaluate (T2.2), report (T2.3),
+# featurize sections (T3.1).
+STUB_VERBS = ["train"]
 
 
 def test_help_lists_all_verbs():
@@ -35,3 +36,9 @@ def test_splits_build_exposed():
     result = runner.invoke(app, ["splits", "--help"])
     assert result.exit_code == 0
     assert "build" in result.output
+
+
+def test_featurize_subcommands_exposed():
+    result = runner.invoke(app, ["featurize", "--help"])
+    assert result.exit_code == 0
+    assert "sections" in result.output

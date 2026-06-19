@@ -11,8 +11,16 @@ Each entry: date · task ID · what the user must do · what unblocks when it's 
 
 ## Active (action needed to unblock a task)
 
-*None right now.* The next phases of work (Phase 3 — text ladder + identity controls) need no
-keys, accounts, or spend. The loop will append here the moment it hits a real blocker.
+- **2026-06-19 · T3.1 · verify the section-detection audit (closes T3.1).** Open
+  `data/coverage/fincall_section_audit.csv` (30 calls; also `maec_section_audit.csv`). For each
+  row, check the detected prepared→Q&A boundary is right (the `boundary_text` snippet should be
+  the first analyst question or the operator's "first question from…" intro) and mark
+  `correct_y_n`. **Acceptance = >90% correct on FinCall.** Reply when done and I'll mark T3.1
+  `[x]`. *(MAEC is best-effort/secondary — its low Q&A-detection rate, 25%, is expected and
+  documented, not a gate.)* Automated proxy is encouraging: FinCall Q&A detected 98.7%, 90.7%
+  corroborated by both signals.
+  - **Also at this Phase-3-start checkpoint:** push the local commits (loop infra + T3.1) and
+    confirm CI is green before T3.2 begins (gate policy: phase-boundary checkpoint).
 
 ---
 
