@@ -11,15 +11,18 @@ Each entry: date · task ID · what the user must do · what unblocks when it's 
 
 ## Active (action needed to unblock a task)
 
-*None.* The T3.1 section audit was completed 2026-06-19 (30/30 correct → gate cleared, T3.1
-`[x]`). Next pause is the **T3.2 design call** (a decision, surfaced in-session, not a queued
-chore). **Optional whenever convenient:** push the local commits (loop infra + T3.1×2) so CI
-runs — not strictly required until the Phase-3 boundary (after T3.4) under the gate policy, but a
-one-time push is worth it to confirm the new hooks/CI work end-to-end.
+- **2026-06-19 · PHASE-3 BOUNDARY CHECKPOINT (gate policy) — push + confirm CI.** Phase 3
+  (T3.1–T3.4) is complete; per the gate policy the loop **pauses here** until you push the local
+  commits (~13: loop infra → T3.4) and confirm GitHub Actions is green. Then reply "CI green,
+  continue" and the loop starts **Phase 4 (audio ladder)**. *(Heads-up for Phase 4 · T4.3:* if
+  audio diarization is enabled, that's the HF gated-model accept + `HF_TOKEN` — see Anticipated.)*
 
 ### Resolved
 - **2026-06-19 · T3.1 section audit — DONE (30/30 correct).** Both operator-handoff and
   analyst-question boundaries accepted as correct Q&A-section starts.
+- **2026-06-19 · §4 framing-gate decision — DONE (provisional Path B).** Adopt "rigorous
+  re-examination" now; revisit/flip to Path A only if Phase-4 audio beats the floor surviving the
+  identity controls. (DECISIONS 2026-06-19.)
 
 ---
 
