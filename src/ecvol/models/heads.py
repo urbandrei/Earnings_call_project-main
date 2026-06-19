@@ -26,10 +26,10 @@ MLP_MAX_ITER = 300
 PCA_DIM = 256
 
 
-def ridge_fit_predict(X_tr, y_tr, X_val, y_val, X_test, *, alphas=RIDGE_ALPHAS):
-    """Fit on train, pick alpha by val MSE, predict val+test → (pred_val, pred_test, alpha)."""
+def ridge_fit(X_tr, y_tr, X_val, y_val, *, alphas=RIDGE_ALPHAS):
+    """Fit ridge, picking alpha by finite-val MSE. Returns (scaler, model, alpha)."""
     scaler = StandardScaler().fit(X_tr)
-    xtr, xval, xte = scaler.transform(X_tr), scaler.transform(X_val), scaler.transform(X_test)
+    xtr, xval = scaler.transform(X_tr), scaler.transform(X_val)
     vmask = np.isfinite(y_val)
     best = None
     for a in alphas:
@@ -41,14 +41,12 @@ def ridge_fit_predict(X_tr, y_tr, X_val, y_val, X_test, *, alphas=RIDGE_ALPHAS):
         )
         if best is None or mse < best[0]:
             best = (mse, a, model)
-    _, alpha, model = best
-    return model.predict(xval), model.predict(xte), alpha
+    return scaler, best[2], best[1]
 
 
-def mlp_fit_predict(X_tr, y_tr, X_val, X_test, *, seed):
-    """Seeded 1-hidden-layer MLP (L2 + internal early-stop). Returns (pred_val, pred_test)."""
+def mlp_fit(X_tr, y_tr, *, seed):
+    """Fit a seeded 1-hidden-layer MLP (L2 + internal early-stop). Returns (scaler, model)."""
     scaler = StandardScaler().fit(X_tr)
-    xtr, xval, xte = scaler.transform(X_tr), scaler.transform(X_val), scaler.transform(X_test)
     model = MLPRegressor(
         hidden_layer_sizes=MLP_HIDDEN,
         alpha=MLP_ALPHA,
@@ -56,8 +54,25 @@ def mlp_fit_predict(X_tr, y_tr, X_val, X_test, *, seed):
         early_stopping=True,
         random_state=seed,
     )
-    model.fit(xtr, y_tr)
-    return model.predict(xval), model.predict(xte)
+    model.fit(scaler.transform(X_tr), y_tr)
+    return scaler, model
+
+
+def predict(scaler, model, X):
+    """Predict with a fitted (scaler, model) pair."""
+    return model.predict(scaler.transform(X))
+
+
+def ridge_fit_predict(X_tr, y_tr, X_val, y_val, X_test, *, alphas=RIDGE_ALPHAS):
+    """Fit on train, pick alpha by val MSE, predict val+test → (pred_val, pred_test, alpha)."""
+    scaler, model, alpha = ridge_fit(X_tr, y_tr, X_val, y_val, alphas=alphas)
+    return predict(scaler, model, X_val), predict(scaler, model, X_test), alpha
+
+
+def mlp_fit_predict(X_tr, y_tr, X_val, X_test, *, seed):
+    """Seeded 1-hidden-layer MLP (L2 + internal early-stop). Returns (pred_val, pred_test)."""
+    scaler, model = mlp_fit(X_tr, y_tr, seed=seed)
+    return predict(scaler, model, X_val), predict(scaler, model, X_test)
 
 
 def pca_reduce(emb_tr, emb_val, emb_test, *, dim=PCA_DIM):

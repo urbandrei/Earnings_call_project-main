@@ -414,6 +414,25 @@ def evaluate_text(
 
 
 @app.command()
+def controls(
+    root: Path = typer.Option(Path("data"), help="Data root directory."),  # noqa: B008
+    seeds: str = typer.Option("0,1,2,3,4", help="Comma-separated seeds for the heads."),
+) -> None:
+    """Run the §7.3 identity-control suite (ticker-only, shuffle, probe) → control tables (T3.4)."""
+    from ecvol.eval.controls import run_controls
+
+    seed_tuple = tuple(int(s) for s in seeds.split(",") if s.strip())
+    ctrl, probe = run_controls(root, seeds=seed_tuple)
+    typer.echo(f"Result Controls: {len(ctrl)} rows → data/results/result_controls.csv")
+    for r in probe.itertuples():
+        typer.echo(
+            f"identity probe [{r.dataset}]: acc={r.probe_accuracy:.3f} "
+            f"vs chance {r.chance:.4f} ({r.accuracy_over_chance:.0f}x), "
+            f"{r.n_tickers} tickers / {r.n_calls} calls"
+        )
+
+
+@app.command()
 def report(
     root: Path = typer.Option(Path("data"), help="Data root directory."),  # noqa: B008
 ) -> None:
