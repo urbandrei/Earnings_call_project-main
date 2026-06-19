@@ -12,6 +12,8 @@ Research project predicting post-earnings-call stock volatility from multimodal 
 | [TASKS.md](TASKS.md) | **Living tracker.** Every task (T0.1–T8.3) with acceptance tests. Update statuses/notes as part of finishing work. A task is done only when its acceptance test passes. |
 | [DECISIONS.md](DECISIONS.md) | **Append-only decision log.** Every deviation from DESIGN.md, scope change, exploration promotion, spend approval, and gate outcome — dated, with rationale and rejected alternatives. |
 | [JOURNAL.md](JOURNAL.md) | **Append-only work journal.** One entry per working session: done / found / sources / next. The project's narrative memory. |
+| [LOOP.md](LOOP.md) | **Autonomous-loop protocol.** How the self-paced `/loop` advances the backlog: per-iteration algorithm, design-call stops, hard-stop blocker taxonomy, gate policy. Read at the start of every loop iteration. |
+| [HANDOFF.md](HANDOFF.md) | **Append-only human-pending queue.** What the *user* must do (keys, spend, labeling) to unblock `[!]` tasks — worked in parallel while the loop continues. |
 | [OLDWORK.md](OLDWORK.md) | Summary of the legacy project. **Outdated — reference only.** Never extend or rerun it. |
 | `legacy/` | The abandoned project's artifacts (notebooks, Paper.pdf, `papers/` literature). **Read-only.** The literature folder is genuinely useful. |
 
@@ -33,6 +35,7 @@ Research project predicting post-earnings-call stock volatility from multimodal 
 - **Log every decision.** Any deviation from DESIGN.md, scope change, exploration promotion, or spend approval gets a dated [DECISIONS.md](DECISIONS.md) entry — decision, rationale, alternatives rejected — *before or alongside* the change, never retroactively reconstructed. Reversals are new entries, not edits. Rationale: the design contract is only trustworthy if every divergence is traceable.
 - **Acceptance test = definition of done.** If the test seems wrong, fix it via a DECISIONS.md entry first, then implement.
 - **Sequencing matters.** Phases retire risk early (data → baselines → models; controls before expensive extraction). Don't jump ahead of an unmet gate.
+- **Autonomous loop.** When a self-paced `/loop` is running, follow [LOOP.md](LOOP.md): advance the backlog one task per iteration, **stop and ask on any design call**, skip + queue ([HANDOFF.md](HANDOFF.md)) on hard-stop blockers, and run the full local gate (`ruff check` · `ruff format --check` · `pytest -q`, a faithful CI mirror) before each local commit. CI verification moves from after-every-task to **phase boundaries** (DECISIONS 2026-06-18) — the user still owns `git push` + CI confirmation there.
 
 ## Automation & deep testing
 

@@ -35,6 +35,8 @@ dist/
 
 # Claude Code session state (ephemeral lock for scheduled wakeups)
 /.claude/scheduled_tasks.lock
+# Machine-specific Claude Code overrides (settings.json + hooks ARE committed)
+/.claude/settings.local.json
 
 # OS noise
 Thumbs.db
