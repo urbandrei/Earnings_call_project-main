@@ -394,13 +394,36 @@ def evaluate(
         raise typer.Exit(code=1)
 
 
+@app.command(name="evaluate-text")
+def evaluate_text(
+    root: Path = typer.Option(Path("data"), help="Data root directory."),  # noqa: B008
+    seeds: str = typer.Option("0,1,2,3,4", help="Comma-separated seeds for the heads."),
+) -> None:
+    """Run Stage-2 content heads (ridge + MLP on text features) → Result Table 2 (T3.3)."""
+    from ecvol.eval.stage2 import run_stage2
+
+    seed_tuple = tuple(int(s) for s in seeds.split(",") if s.strip())
+    table = run_stage2(root, seeds=seed_tuple)
+    typer.echo(f"Result Table 2: {len(table)} rows → data/results/result_table_2.csv")
+    head = table[(table["target"] == "dv") & (table["segment"] == "test")]
+    sig = head[head["dm_p_vs_stage1"] < 0.05]
+    typer.echo(
+        f"Δv test cells: {len(head)}; DM-significant vs Stage-1 (p<0.05): {len(sig)} "
+        "(see `ecvol report` for the rendered tables)"
+    )
+
+
 @app.command()
 def report(
     root: Path = typer.Option(Path("data"), help="Data root directory."),  # noqa: B008
 ) -> None:
-    """Render result tables (Markdown + LaTeX) from run artifacts (T2.3)."""
-    from ecvol.eval.report import write_reports
+    """Render result tables (Markdown + LaTeX) from run artifacts (T2.3, T3.3)."""
+    from ecvol.eval.report import write_reports, write_reports2
 
     md_path, tex_path = write_reports(root)
-    typer.echo(f"markdown: {md_path}")
-    typer.echo(f"latex:    {tex_path}")
+    typer.echo(f"Table 1 markdown: {md_path}")
+    typer.echo(f"Table 1 latex:    {tex_path}")
+    if (root / "results" / "result_table_2.csv").is_file():
+        md2, tex2 = write_reports2(root)
+        typer.echo(f"Table 2 markdown: {md2}")
+        typer.echo(f"Table 2 latex:    {tex2}")

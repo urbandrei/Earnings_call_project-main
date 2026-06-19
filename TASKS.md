@@ -181,15 +181,15 @@
   - [x] **Full-corpus extraction** (FinCall 196,233 chunks / MAEC 394,280) — done 2026-06-19, both datasets, fp32 batch 64.
 - **Notes:** model picks BGE-M3 + ProsusAI/finbert, fp32 + deterministic kernels (DECISIONS 2026-06-19). **Full run (both datasets, ~95 min wall):** FinCall → `text_embeddings` 7,835 rows (185,126 chunks encoded, ~11k dedup/benchmark cache hits) + `text_finbert` 28,123 rows (per scope×role) + `text_surface` 7,835 rows; MAEC → 7,739 rows each (no roles → per-scope finbert). MAEC ~5× faster per chunk (short sentences vs FinCall turns). **Acceptance MET:** (1) **deterministic re-extraction = bit-identical** — warm-cache re-run encoded 0 chunks, all three FinCall parquets byte-identical (verified); (2) GPU throughput + ETA recorded (benchmark: BGE-M3 37 ch/s, FinBERT 90 ch/s). Payloads `data/{dataset}/text_{embeddings,finbert,surface}.parquet` (gitignored, ~61 MB embeddings) + caches under `data/{dataset}/cache/` (~0.7–1.5 GB, gitignored, content-hash keyed) + committed manifests `data/manifests/{dataset}_text_{embeddings,finbert,surface}.json` (`ecvol data verify` OK). 8 new tests (torch-free, CI-safe); 182 green, ruff clean. Journal: 2026-06-19 T3.2 entries.
 
-### T3.3 Stage-2 results → Result Table 2 — `[ ]`
+### T3.3 Stage-2 results → Result Table 2 — `[x]` *(done 2026-06-19)*
 - **Goal:** first content-bearing models, honestly evaluated.
 - **End result:** ridge + shallow-MLP heads, 5 seeds, with and without past-vol covariates; **Result Table 2** with DM tests vs. HAR-RV and vs. Stage 1.
 - **Acceptance test:** every cell carries mean ± std over seeds; report regenerates; confirmatory comparisons labeled per DESIGN.md §7.5.
 - **Subtasks:**
-  - [ ] `models/heads.py`
-  - [ ] Multi-seed orchestration
-  - [ ] Ablation configs
-- **Notes:** —
+  - [x] `models/heads.py` (ridge: α chosen on val from a fixed grid, no retrain-on-train+val; shallow MLP 1×256, internal early-stop, seeded; train-fit PCA(256) of the embedding block for the MLP; train-median impute of missing covariates)
+  - [x] Multi-seed orchestration (`eval/stage2.py` → `ecvol evaluate-text` → `data/results/result_table_2.csv`; 5 seeds, mean + seed-std for MLP)
+  - [x] Ablation configs (3 covariate variants: **text**, **pastvol**, **text_pastvol** × {ridge, mlp}; feature matrix = `features/text/assemble.py`, embeddings prepared+qa + FinBERT scope×role + surface)
+- **Notes:** **DONE 2026-06-19.** Result Table 2 = 864 rows (2 datasets × 3 splits × 3 targets × 4 horizons × 6 head×variant models × 2 segments), zero NaN; per cell: R²_OOS (vs persistence), MSE, MAE, Spearman, MLP seed-std, and **DM p vs persistence / vs HAR-RV / vs Stage-1** (the §7.5 confirmatory comparisons). Rendered to `result_table_2.{md,tex}` (`*` = DM-significant vs Stage-1); render byte-identical + committed-artifacts CI guard (`test_committed_table2_matches_fresh_render`). **Two real bugs found by the run (held the commit): (1)** 4 MAEC ok-rows have NaN `rv_monthly` (insufficient 22-session history) → heads now train-median-impute covariates + fit on finite-target rows + select α on finite-val (DECISIONS 2026-06-19); **(2)** pandas `.to_numpy()` returned a read-only array → `.copy()`; both now regression-tested. **HEADLINE FINDING (honest):** text content does **not** cleanly beat the identity/past-vol baselines — on FinCall *temporal* Δv the text+pastvol heads overfit (R²_OOS strongly negative across the COVID regime shift); on *ticker-disjoint* Δv text heads are positive (+0.09…+0.28) but `ridge_pastvol` (no text) is comparably strong, so the gain is not clearly *content*. This is the §4-framing-gate evidence that **T3.4 identity controls** must adjudicate. 9 new tests; 189 green, ruff clean. GPU stack not needed (sklearn/CPU). Journal: 2026-06-19 T3.3 entry.
 
 ### T3.4 Identity-control suite (text) — `[ ]` *(run NOW, not at paper time)*
 - **Goal:** know what the text models are actually reading before investing in audio.
