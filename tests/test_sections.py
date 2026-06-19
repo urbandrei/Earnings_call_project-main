@@ -5,8 +5,12 @@ hand-checked sample — that human check runs on the committed `*_section_audit.
 These tests lock the detection heuristic and the chunking invariants that feed it.
 """
 
+import csv
 import json
 from pathlib import Path
+
+import pyarrow as pa
+import pyarrow.parquet as pq
 
 from ecvol.data.calls import CallRecord, write_calls_parquet
 from ecvol.features.text import sections as S
@@ -186,3 +190,24 @@ def test_build_sections_skips_absent_dataset(tmp_path: Path):
     _build_toy(root)  # only fincall present
     out = S.build_sections(root)
     assert [s.dataset for s in out] == ["fincall"]
+
+
+def test_audit_restricted_to_cohort_with_context_columns(tmp_path: Path):
+    root = tmp_path / "data"
+    _build_toy(root)  # calls 1 (has Q&A) and 2 (no Q&A)
+    # Only call 1 is in the cohort (has an ok target row).
+    pq.write_table(
+        pa.table(
+            {
+                "call_id": pa.array([1, 2], pa.int64()),
+                "status": pa.array(["ok", "excluded"], pa.string()),
+            }
+        ),
+        root / "fincall" / "targets.parquet",
+    )
+    S.build_sections(root, audit_n=30, seed=0)
+    text = (root / "coverage" / "fincall_section_audit.csv").read_text(encoding="utf-8")
+    rows = list(csv.DictReader(text.splitlines()))
+    assert {r["call_id"] for r in rows} == {"1"}  # call 2 excluded from the sample
+    for col in ("prev_text", "boundary_text", "next_text"):
+        assert col in rows[0]

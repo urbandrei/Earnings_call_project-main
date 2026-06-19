@@ -214,9 +214,23 @@ def _write_csv(header: list[str], rows: list[list], path: Path) -> None:
     path.write_text(buf.getvalue(), encoding="utf-8")
 
 
-def _snippet(text: str, n: int = 160) -> str:
+def _snippet(text: str, n: int = 160, *, tail: bool = False) -> str:
     s = " ".join((text or "").split())
-    return s[:n]
+    return s[-n:] if tail else s[:n]
+
+
+def _cohort_ids(targets_path: Path) -> set | None:
+    """Call_ids with >=1 ok target row (the modeling cohort); None when no targets file.
+
+    Mirrors `splits.load_cohort` so the audit samples the same earnings cohort the models use,
+    excluding non-earnings residue (firesides, annual meetings) that has no price target.
+    """
+    if not targets_path.is_file():
+        return None
+    table = pq.read_table(targets_path, columns=["call_id", "status"])
+    ids = table.column("call_id").to_pylist()
+    status = table.column("status").to_pylist()
+    return {cid for cid, st in zip(ids, status, strict=True) if st == "ok"}
 
 
 @dataclass
@@ -275,13 +289,16 @@ def build_sections(
                     }
                 )
             n_prepared = sum(1 for s in res.sections if s == SECTION_PREPARED)
-            b_turn = turns[res.boundary_idx] if res.has_qa else None
+            bi = res.boundary_idx
+            b_turn = turns[bi] if res.has_qa else None
+            prev_turn = turns[bi - 1] if res.has_qa and bi > 0 else None
+            next_turn = turns[bi + 1] if res.has_qa and bi + 1 < len(turns) else None
             per_call.append(
                 {
                     "call_id": row.call_id,
                     "ticker": row.ticker,
                     "n_turns": len(turns),
-                    "boundary_idx": res.boundary_idx,
+                    "boundary_idx": bi,
                     "has_qa": res.has_qa,
                     "method": res.method,
                     "corroborated": res.corroborated,
@@ -289,7 +306,11 @@ def build_sections(
                     "n_qa_turns": len(turns) - n_prepared,
                     "n_chunks": len(cks),
                     "boundary_role": b_turn["role"] if b_turn else "",
+                    # prev = tail of the last prepared turn (should still be management);
+                    # boundary/next = head of the first/second Q&A turn.
+                    "prev_text": _snippet(prev_turn["text"], tail=True) if prev_turn else "",
                     "boundary_text": _snippet(b_turn["text"]) if b_turn else "",
+                    "next_text": _snippet(next_turn["text"]) if next_turn else "",
                 }
             )
 
@@ -323,7 +344,11 @@ def build_sections(
         write_metric_csv(summary_rows, cov / f"{dataset}_sections.csv")
 
         # Seeded human-precision audit sample (the >90% gate; verified by hand — HANDOFF.md).
-        ordered = sorted(per_call, key=lambda pc: str(pc["call_id"]))
+        # Sample from the modeling cohort only (calls with >=1 ok target), so non-earnings
+        # residue doesn't dilute the precision number; fall back to all when no targets exist.
+        cohort = _cohort_ids(root / dataset / "targets.parquet")
+        pool = [pc for pc in per_call if cohort is None or pc["call_id"] in cohort] or per_call
+        ordered = sorted(pool, key=lambda pc: str(pc["call_id"]))
         sample = random.Random(seed).sample(ordered, min(audit_n, len(ordered)))
         sample = sorted(sample, key=lambda pc: str(pc["call_id"]))
         audit_header = [
@@ -334,7 +359,9 @@ def build_sections(
             "method",
             "corroborated",
             "boundary_role",
+            "prev_text",
             "boundary_text",
+            "next_text",
             "correct_y_n",
         ]
         audit_rows = [
@@ -346,7 +373,9 @@ def build_sections(
                 pc["method"],
                 pc["corroborated"],
                 pc["boundary_role"],
+                pc["prev_text"],
                 pc["boundary_text"],
+                pc["next_text"],
                 "",
             ]
             for pc in sample
