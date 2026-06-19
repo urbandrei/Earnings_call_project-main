@@ -38,6 +38,11 @@ gpu = [
     "sentence-transformers>=3.0",
     "transformers>=4.44",
 ]
+# Audio feature stack (eGeMAPS via openSMILE; CPU). Not in default/CI installs;
+# `uv sync --group audio`. Imported lazily (T4.2).
+audio = [
+    "opensmile>=2.5",
+]
 
 [[tool.uv.index]]
 name = "pytorch-cu128"

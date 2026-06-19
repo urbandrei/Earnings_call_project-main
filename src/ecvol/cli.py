@@ -400,6 +400,21 @@ def audio_qc_ref(
     typer.echo("report: data/coverage/earnings21_qc_validation.csv")
 
 
+@audio_app.command("egemaps")
+def audio_egemaps(
+    root: Path = typer.Option(Path("data"), help="Data root directory."),  # noqa: B008
+    limit: int = typer.Option(0, help="Process only the first N decoded calls (0 = all)."),
+    workers: int = typer.Option(8, help="Parallel openSMILE workers."),
+) -> None:
+    """Extract eGeMAPSv02 functionals (88) per FinCall call → parquet + summary (T4.2)."""
+    from ecvol.features.audio.egemaps import build_egemaps
+
+    n, fails, features = build_egemaps(root, limit=(limit or None), workers=workers)
+    typer.echo(f"eGeMAPS: {n} calls × {len(features)} features; failures: {fails}")
+    typer.echo("output: data/fincall/audio_egemaps.parquet")
+    typer.echo("summary: data/coverage/fincall_egemaps_summary.csv")
+
+
 @app.command()
 def train() -> None:
     """Train a model from a validated YAML config (Phases 2-5)."""

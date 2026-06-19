@@ -215,15 +215,15 @@
   - [x] QC report artifact — committed `data/coverage/fincall_audio_qc.csv` (per-call) + `_summary.csv`; Earnings-21 validation `earnings21_qc_validation.csv`
 - **Notes:** **DONE 2026-06-19.** `ecvol audio qc` / `audio qc-ref`. **2,671/2,671 FinCall decoded (100%); 1 `mostly_silent` flagged (reason-coded, not dropped), 0 decode errors.** Median dur ~61 min, silence 0.16, peak −1.07 dBFS. **QC finding:** heterogeneous source sample rates — 22050 (1361) / 16000 (930) / 44100 (256) / 11025 (77) / **8000 (14, telephone-grade)** / 32000 / 24000 / 48000; all upsampled to 16 kHz for the store (sub-16k sources gain no info — flagged for audio-model interpretation). **Acceptance met both ways:** synthetic ffmpeg signals (CI unit tests) + 3 real Earnings-21 wavs (all decode_ok, sane metrics — peak ≈0 dBFS, silence 15–21%). MAEC has no raw audio → audio ladder (T4.1–T4.4, Result Table 3) is FinCall-only. 8 new tests (pure parse_qc CI-safe + ffmpeg-guarded integration); 202 green, ruff clean. Journal: 2026-06-19 T4.1 entry.
 
-### T4.2 eGeMAPS extraction (CPU, first) — `[ ]`
+### T4.2 eGeMAPS extraction (CPU, first) — `[x]` *(done 2026-06-19; per-call; per-turn deferred to T4.3 diarization)*
 - **Goal:** cheap interpretable paralinguistics for the whole corpus.
 - **End result:** openSMILE eGeMAPS functionals per call (and per speaker turn where diarization available), cached.
 - **Acceptance test:** deterministic; full corpus completes on CPU (parallelized); feature distributions sanity-checked against published eGeMAPS ranges.
 - **Subtasks:**
-  - [ ] `egemaps.py`
-  - [ ] Multiprocessing harness
-  - [ ] Distribution report
-- **Notes:** —
+  - [x] `features/audio/egemaps.py` (opensmile eGeMAPSv02 Functionals, 88-d, per call over the 16 kHz store)
+  - [x] Multiprocessing harness (ProcessPoolExecutor, 8 workers) — **resumable + checkpointed** (flush every 200; skips cached call_ids on re-run)
+  - [x] Distribution report (`data/coverage/fincall_egemaps_summary.csv`: per-feature mean/std)
+- **Notes:** **DONE 2026-06-19.** `ecvol audio egemaps`; `opensmile` in the `audio` dep group (CI-light, lazy import). **2,671/2,671 calls × 88 features, 0 failures.** Deterministic (sorted parquet; **resumable re-run byte-identical**, manifest `fincall_audio_egemaps.json` verifies OK). **Distribution sanity (vs published eGeMAPS):** F0 median 28.6 semitones (human-voice ~20–45), loudness median 0.46 (>0), no all-NaN columns. Per-speaker-turn extraction deferred to T4.3 (needs diarization). **Runtime reality: ~1.6 h wall on 8 cores** (eGeMAPS over ~hour-long calls is ~30–60 s CPU each — NOT the 15–30 min I first estimated; ETA-measure-first should apply to CPU extraction too, lesson logged). Mid-run I added resumability/checkpointing/progress (the original batch-write-at-end had no crash recovery — fixed; validated by the byte-identical skip-all re-run). 4 new tests (parquet/summary/resume-logic CI-safe + openSMILE-guarded extraction that skips in CI); 206 green, ruff clean. Output `data/fincall/audio_egemaps.parquet` (gitignored payload). Journal: 2026-06-19 T4.2 entry.
 
 ### T4.3 Neural audio representations — `[ ]`
 - **Goal:** WavLM-Large + emotion2vec+ embeddings, chunked for consumer VRAM.
