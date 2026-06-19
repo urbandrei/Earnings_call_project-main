@@ -125,15 +125,15 @@
 
 ## Phase 2 — Eval harness + econometric baselines (~1 week) — *the floor*
 
-### T2.1 Metrics & significance module — `[ ]`
+### T2.1 Metrics & significance module — `[x]` *(done 2026-06-18)*
 - **Goal:** DESIGN.md §7.1–7.2 implemented and validated.
 - **End result:** `eval/metrics.py` (MSE, MAE, R²_OOS, quarterly Spearman) and `eval/significance.py` (DM test, cluster bootstrap, Holm correction).
 - **Acceptance test:** DM test validated against a published worked example / statsmodels reference; bootstrap CIs validated on synthetic data with known sampling distribution.
 - **Subtasks:**
-  - [ ] Metric functions over the (call, τ) prediction frame
-  - [ ] Clustering keys (ticker, quarter)
-  - [ ] Significance API consumed by `report`
-- **Notes:** —
+  - [x] Metric functions over the (call, τ) prediction frame (`metrics.py`: pure array `mse`/`mae`/`r2_oos`/`spearman` + frame helpers `spearman_by_quarter`/`metrics_by_horizon`; NaN rows dropped)
+  - [x] Clustering keys (ticker, quarter) (`quarter_of` ISO→`YYYYQn`; cluster arrays consumed by `cluster_bootstrap_ci`)
+  - [x] Significance API consumed by `report` (`significance.py`: `diebold_mariano`, `cluster_bootstrap_ci`, `holm_correction` — pure/seeded, no CLI verb)
+- **Notes:** **DONE 2026-06-18.** `src/ecvol/eval/{metrics,significance}.py`. Added **scipy** dependency (`uv add scipy`; t-dist p-values + Spearman; DECISIONS 2026-06-18). Prediction-frame contract: one row per (call,τ) with `call_id,ticker,as_of,horizon,y_true,y_pred` (+ `y_persistence` for R²_OOS, caller-supplied: `v_pre` for level-v, 0 for Δv). **DM** = HLN-corrected vs `t_{n-1}`, LRV = γ0+2Σγ_k (h-step), sign: +ve ⇒ model A worse. **Acceptance met:** DM validated via the exact identity `DM*(h=1)==paired-t on loss diff` (scipy `ttest_rel`, 1e-9); cluster-bootstrap CI reproduces the analytic normal half-width on i.i.d. data and widens >3× under intra-cluster correlation; Holm matches R `p.adjust(method="holm")`. Tests: `tests/test_metrics.py` (9) + `tests/test_significance.py` (9). 141 tests green, ruff clean. Journal: 2026-06-18 T2.1 entry.
 
 ### T2.2 Stage-0/1 baselines → Result Table 1 — `[ ]`
 - **Goal:** the honest floor, committed.
