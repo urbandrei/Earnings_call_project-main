@@ -310,7 +310,7 @@ def ingest_fincall(
             reason_counts[r.reason] = reason_counts.get(r.reason, 0) + 1
     reason_counts = dict(sorted(reason_counts.items()))
 
-    join_stats, join_rows = _join_audit(records, root / "targets" / "targets.parquet")
+    join_stats, join_rows = _join_audit(records, root / "fincall" / "targets.parquet")
 
     summary = IngestSummary(
         total_calls=n,

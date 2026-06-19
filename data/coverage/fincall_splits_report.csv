@@ -1,0 +1,16 @@
+metric,value
+cohort,2424
+horizon,30
+embargo,30
+seed,0
+temporal:train,1480
+temporal:val,228
+temporal:test,481
+temporal:embargo,235
+ticker_disjoint:train,1701
+ticker_disjoint:val,239
+ticker_disjoint:test,484
+combined:train,1029
+combined:val,21
+combined:test,92
+combined:excluded,1282

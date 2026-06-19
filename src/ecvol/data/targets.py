@@ -361,11 +361,11 @@ def build_targets(root: Path, *, horizons: tuple[int, ...] = HORIZONS) -> Target
             close_cache[ticker] = load_close_series(prices_dir, ticker)
         rows.extend(compute_call_targets(call, close_cache.get(ticker, {}), horizons=horizons))
 
-    targets_path = root / "targets" / "targets.parquet"
+    targets_path = root / "fincall" / "targets.parquet"
     write_targets_parquet(rows, targets_path)
     summary = _summarize(rows, total_calls=len(calls), horizons=horizons)
     write_targets_report(summary, root / "coverage" / "targets_report.csv")
     entry = make_entry(targets_path, root, source_url=TARGETS_SOURCE, license=TARGETS_LICENSE)
     (root / "manifests").mkdir(parents=True, exist_ok=True)
-    write_manifest([entry], root / "manifests" / "targets.json")
+    write_manifest([entry], root / "manifests" / "fincall_targets.json")
     return summary

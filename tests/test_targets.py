@@ -208,20 +208,20 @@ def test_build_targets_summary_and_determinism(tmp_path):
     assert summary.total_calls == 3
     assert summary.resolved_calls == 2  # AAA, BBB (102 unresolved)
     assert summary.rows_total == 3 * 2  # one row per (call, τ)
-    assert (root / "targets" / "targets.parquet").is_file()
+    assert (root / "fincall" / "targets.parquet").is_file()
     assert (root / "coverage" / "targets_report.csv").is_file()
-    assert (root / "manifests" / "targets.json").is_file()
+    assert (root / "manifests" / "fincall_targets.json").is_file()
     # AAA is a clean ascending series → both horizons ok; BBB has no prices
     assert summary.reason_counts.get("no_price_data") == 2
     assert summary.calls_with_any_ok == 1
 
     # deterministic: same inputs → byte-identical parquet
-    first = (root / "targets" / "targets.parquet").read_bytes()
+    first = (root / "fincall" / "targets.parquet").read_bytes()
     build_targets(root, horizons=(3, 7))
-    assert (root / "targets" / "targets.parquet").read_bytes() == first
+    assert (root / "fincall" / "targets.parquet").read_bytes() == first
 
     # schema sanity + deterministic ordering (sorted by call_id, then horizon)
-    table = pq.read_table(root / "targets" / "targets.parquet")
+    table = pq.read_table(root / "fincall" / "targets.parquet")
     keys = list(
         zip(table.column("call_id").to_pylist(), table.column("horizon").to_pylist(), strict=True)
     )

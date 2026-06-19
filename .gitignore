@@ -5,6 +5,7 @@
 !/data/manifests/
 !/data/identity/
 !/data/coverage/
+!/data/splits/
 
 # Run outputs
 /artifacts/

@@ -163,13 +163,13 @@ def test_ingest_writes_artifacts_and_audits_join(tmp_path: Path):
     root = tmp_path / "data"
     _full_corpus(root)
     # Targets parquet: call 1 has an ok row, call 2 does not.
-    (root / "targets").mkdir(parents=True, exist_ok=True)
+    (root / "fincall").mkdir(parents=True, exist_ok=True)
     pd.DataFrame(
         [
             {"call_id": 1, "status": "ok"},
             {"call_id": 2, "status": "excluded"},
         ]
-    ).to_parquet(root / "targets" / "targets.parquet")
+    ).to_parquet(root / "fincall" / "targets.parquet")
 
     s = ingest_fincall(root, probe_audio=False)
 

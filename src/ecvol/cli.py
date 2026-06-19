@@ -260,13 +260,28 @@ def targets_build(
     typer.echo("per-horizon ok: " + ", ".join(f"{h}d={n}" for h, n in summary.horizon_ok.items()))
     if summary.reason_counts:
         typer.echo("exclusions: " + ", ".join(f"{k}={v}" for k, v in summary.reason_counts.items()))
-    typer.echo("targets: data/targets/targets.parquet; report: data/coverage/targets_report.csv")
+    typer.echo("targets: data/fincall/targets.parquet; report: data/coverage/targets_report.csv")
 
 
-@app.command()
-def splits() -> None:
-    """Build leakage-proof temporal / ticker-disjoint splits (T1.6)."""
-    _not_implemented("splits")
+splits_app = typer.Typer(no_args_is_help=True, help="Leakage-proof split construction (T1.6).")
+app.add_typer(splits_app, name="splits")
+
+
+@splits_app.command("build")
+def splits_build(
+    root: Path = typer.Option(Path("data"), help="Data root directory."),  # noqa: B008
+    embargo: int = typer.Option(30, help="Trading-day embargo between temporal segments."),
+    seed: int = typer.Option(0, help="Seed for the ticker-disjoint partition."),
+) -> None:
+    """Build temporal / ticker-disjoint / combined split CSVs per dataset (T1.6)."""
+    from ecvol.data.splits import build_splits
+
+    for s in build_splits(root, embargo=embargo, seed=seed):
+        typer.echo(f"{s.dataset}: cohort={s.cohort} horizon={s.horizon} embargo={s.embargo}")
+        for scheme, counts in s.scheme_counts.items():
+            parts = ", ".join(f"{k}={v}" for k, v in sorted(counts.items()))
+            typer.echo(f"  {scheme}: {parts}")
+    typer.echo("splits: data/splits/<dataset>_<scheme>.csv (committed)")
 
 
 @app.command()
