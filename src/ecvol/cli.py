@@ -415,6 +415,33 @@ def audio_egemaps(
     typer.echo("summary: data/coverage/fincall_egemaps_summary.csv")
 
 
+@audio_app.command("wavlm")
+def audio_wavlm(
+    root: Path = typer.Option(Path("data"), help="Data root directory."),  # noqa: B008
+    limit: int = typer.Option(0, help="Embed only the first N calls (use 50 for the ETA gate)."),
+    device: str = typer.Option("cuda", help="torch device (cuda | cpu)."),
+    fp16: bool = typer.Option(False, help="Half precision (faster; slightly non-deterministic)."),
+    batch: int = typer.Option(4, help="Windows per forward pass (VRAM-bound)."),
+) -> None:
+    """WavLM-Large per-call audio embeddings → parquet (T4.3; resumable). Run --limit 50 first."""
+    import pandas as pd
+
+    from ecvol.features.audio.wavlm import build_wavlm
+
+    lim = limit or None
+    total = int(pd.read_csv(root / "coverage" / "fincall_audio_qc.csv")["decode_ok"].sum())
+    n, n_new, secs = build_wavlm(root, limit=lim, device=device, fp16=fp16, batch=batch)
+    typer.echo(
+        f"WavLM: {n} calls embedded ({n_new} new in {secs:.0f}s); output: audio_wavlm.parquet"
+    )
+    if lim and n_new:
+        rate = n_new / secs
+        typer.echo(
+            f"throughput: {rate:.2f} calls/s → full-corpus ETA (~{total} calls): "
+            f"~{total / rate / 60:.0f} min (incl. one-time model load)"
+        )
+
+
 @app.command()
 def train() -> None:
     """Train a model from a validated YAML config (Phases 2-5)."""

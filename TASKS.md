@@ -225,15 +225,17 @@
   - [x] Distribution report (`data/coverage/fincall_egemaps_summary.csv`: per-feature mean/std)
 - **Notes:** **DONE 2026-06-19.** `ecvol audio egemaps`; `opensmile` in the `audio` dep group (CI-light, lazy import). **2,671/2,671 calls × 88 features, 0 failures.** Deterministic (sorted parquet; **resumable re-run byte-identical**, manifest `fincall_audio_egemaps.json` verifies OK). **Distribution sanity (vs published eGeMAPS):** F0 median 28.6 semitones (human-voice ~20–45), loudness median 0.46 (>0), no all-NaN columns. Per-speaker-turn extraction deferred to T4.3 (needs diarization). **Runtime reality: ~1.6 h wall on 8 cores** (eGeMAPS over ~hour-long calls is ~30–60 s CPU each — NOT the 15–30 min I first estimated; ETA-measure-first should apply to CPU extraction too, lesson logged). Mid-run I added resumability/checkpointing/progress (the original batch-write-at-end had no crash recovery — fixed; validated by the byte-identical skip-all re-run). 4 new tests (parquet/summary/resume-logic CI-safe + openSMILE-guarded extraction that skips in CI); 206 green, ruff clean. Output `data/fincall/audio_egemaps.parquet` (gitignored payload). Journal: 2026-06-19 T4.2 entry.
 
-### T4.3 Neural audio representations — `[ ]`
+### T4.3 Neural audio representations — `[~]` *(WavLM impl + ETA gate done 2026-06-19; full fp16 run in progress; emotion2vec+ next)*
 - **Goal:** WavLM-Large + emotion2vec+ embeddings, chunked for consumer VRAM.
 - **End result:** pooled per-call (and per-turn) embeddings, cached; pyannote diarization behind a config flag.
 - **Acceptance test:** **ETA measured on a 50-call sample before full run; full-corpus plan (local vs. cloud burst) recorded in DECISIONS.md**; extraction idempotent/restartable mid-corpus.
 - **Subtasks:**
-  - [ ] Chunking strategy (≤30 s windows, documented overlap)
-  - [ ] `wavlm.py`, `emotion2vec.py`, `diarize.py`
-  - [ ] Resume logic
-- **Notes:** —
+  - [x] Chunking strategy — 30 s non-overlapping windows, mean-pooled to one per-call vector (user decision 2026-06-19)
+  - [x] `wavlm.py` (`microsoft/wavlm-large`, 1024-d, GPU, window-batched, fp16 option) + `ecvol audio wavlm`
+  - [ ] `emotion2vec.py` — second pass after WavLM lands (funasr dep)
+  - [ ] `diarize.py` — **skipped** for v1 (per-call pooling only; no gated pyannote/HF_TOKEN — user decision 2026-06-19)
+  - [x] Resume logic — checkpoints every 100, skips cached call_ids (carried from T4.2)
+- **Notes:** **ETA gate (DESIGN-mandated) DONE:** naive impl 50 calls/1478 s → ~22 h; **optimized (window-batching + fp16) 30 calls/361 s → ~9 h fp16 / ~18–22 h fp32.** **Full-corpus plan = local overnight, fp16, resumable** (user decision 2026-06-19; cloud burst rejected — 119 GB audio upload friction for a ~9 h local job; fp16 negligible on mean-pooled per-call vectors). Run in progress → `data/fincall/audio_wavlm.parquet`. Diarization skipped → per-call pooling only (matches text/eGeMAPS). 2 new WavLM tests (pure parquet CI-safe + guarded embed); 208 green, ruff clean. emotion2vec+ is the remaining sub-task before T4.4. Journal: 2026-06-19 T4.3 entry.
 
 ### T4.4 Stage-3 results + gender-confound analysis → Result Table 3 — `[ ]`
 - **Goal:** audio's honest contribution, plus the DESIGN.md §3.5 analysis.
