@@ -442,6 +442,28 @@ def audio_wavlm(
         )
 
 
+@audio_app.command("emotion2vec")
+def audio_emotion2vec(
+    root: Path = typer.Option(Path("data"), help="Data root directory."),  # noqa: B008
+    limit: int = typer.Option(0, help="Embed only the first N calls (use a small N for ETA)."),
+    device: str = typer.Option("cuda", help="torch device (cuda | cpu)."),
+) -> None:
+    """emotion2vec+ per-call audio embeddings → parquet (T4.3; resumable). Run a small --limit first."""  # noqa: E501
+    import pandas as pd
+
+    from ecvol.features.audio.emotion2vec import build_emotion2vec
+
+    lim = limit or None
+    total = int(pd.read_csv(root / "coverage" / "fincall_audio_qc.csv")["decode_ok"].sum())
+    n, n_new, secs = build_emotion2vec(root, limit=lim, device=device)
+    typer.echo(f"emotion2vec+: {n} calls ({n_new} new in {secs:.0f}s) → audio_emotion2vec.parquet")
+    if lim and n_new:
+        rate = n_new / secs
+        typer.echo(
+            f"throughput: {rate:.2f} calls/s → full ETA (~{total}): ~{total / rate / 60:.0f} min"
+        )
+
+
 @app.command()
 def train() -> None:
     """Train a model from a validated YAML config (Phases 2-5)."""

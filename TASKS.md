@@ -232,7 +232,7 @@
 - **Subtasks:**
   - [x] Chunking strategy — 30 s non-overlapping windows, mean-pooled to one per-call vector (user decision 2026-06-19)
   - [x] `wavlm.py` (`microsoft/wavlm-large`, 1024-d, GPU, window-batched, fp16 option) + `ecvol audio wavlm`
-  - [ ] `emotion2vec.py` — second pass after WavLM lands (funasr dep)
+  - [x] `emotion2vec.py` (`emotion2vec_plus_large` via funasr, 1024-d, per-call 30 s-window mean-pool) + `ecvol audio emotion2vec`; ETA ~12.3 h → full fp32 run in progress (user decision 2026-06-23)
   - [ ] `diarize.py` — **skipped** for v1 (per-call pooling only; no gated pyannote/HF_TOKEN — user decision 2026-06-19)
   - [x] Resume logic — checkpoints every 100, skips cached call_ids (carried from T4.2)
 - **Notes:** **ETA gate (DESIGN-mandated) DONE:** naive impl 50 calls/1478 s → ~22 h; **optimized (window-batching + fp16) 30 calls/361 s → ~9 h fp16 / ~18–22 h fp32.** **Full-corpus plan = local overnight, fp16, resumable** (user decision 2026-06-19; cloud burst rejected — 119 GB audio upload friction for a ~9 h local job; fp16 negligible on mean-pooled per-call vectors). **WavLM full run DONE (2026-06-23): 2,671×1024, all finite, 0 all-NaN; manifest OK; resume = clean no-op (0 new).** Window counts median 124 (≈62 min/call), range 37–398; mean L2 norm 1.52. `data/fincall/audio_wavlm.parquet` (gitignored payload) + `fincall_audio_wavlm.json`. Diarization skipped → per-call pooling only (matches text/eGeMAPS). 2 new WavLM tests (pure parquet CI-safe + guarded embed); 208 green, ruff clean. **emotion2vec+ is the remaining sub-task before T4.4.** Journal: 2026-06-19/23 T4.3 entries.
