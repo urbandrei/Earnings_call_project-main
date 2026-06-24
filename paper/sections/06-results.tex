@@ -1,0 +1,56 @@
+\section{Results}
+\label{sec:results}
+
+We report results factually and defer the headline framing to
+\S\ref{sec:discussion}. Curated headline tables appear here on the identity-robust
+\dv{} target for FinCall-Surprise; the complete grid (both corpora, level-$v$ and
+\dv, \Rtwo{} and MSE, all splits and horizons) is in
+Appendix~\ref{app:complete}. Stars denote Diebold--Mariano significance
+($p<0.05$): in Table~\ref{tab:baselines} vs.\ persistence, and in
+Table~\ref{tab:text} vs.\ the Stage-1 ticker-FE GBDT.
+
+\subsection{Baselines (Stages 0--1)}
+Table~\ref{tab:baselines} shows the econometric floor. HAR-RV is strong at short and
+medium horizons on both splits, confirming RQ1's premise that past-volatility
+baselines are hard to beat. The one striking failure is the FinCall \emph{temporal}
+split at $\tau{=}30$, where every model falls below persistence (HAR-RV
+$\Rtwo=-0.287$): the training window is COVID-inflated (Feb--May~2020) while the
+test window is calm late~2021, so a long-horizon level forecast trained on the
+crisis regime is mis-calibrated. The same models pass comfortably on the
+\tickerdisjoint{} split (HAR-RV $\Rtwo=+0.229$ at $\tau{=}30$) and on MAEC, so we
+treat this as a documented regime exception rather than a target bug; per-year
+breakdowns are mandatory in the appendix.
+
+\input{tables/baselines}
+
+\subsection{Text content (Stage 2)}
+Table~\ref{tab:text} shows frozen-text heads against the Stage-1 baseline on \dv.
+The result is a clean negative: \emph{text content does not cleanly beat the
+identity/past-volatility baselines}. On the FinCall temporal split the text ridge
+head is near zero and collapses at $\tau{=}30$; the MLP heads overfit badly. On the
+\tickerdisjoint{} split the text ridge head is weak ($\Rtwo$ between $-0.04$ and
+$+0.17$) while the past-vol-only head is consistently strong
+($\Rtwo\approx0.19$--$0.45$), so any apparent text gain is not separable from what
+past volatility already provides. MAEC shows the same pattern at smaller magnitude
+(Appendix~\ref{app:complete}).
+
+\input{tables/text}
+
+\subsection{Identity controls (Stage 2 diagnostic)}
+Table~\ref{tab:controls} explains the negative result. A linear probe recovers the
+ticker from frozen call embeddings at 89.5\% on FinCall (319$\times$ chance) and
+53.9\% on MAEC (487$\times$ chance): identity is heavily encoded. The transcript
+shuffle is decisive---replacing each test call's transcript with a \emph{different
+call from the same ticker} barely changes \Rtwo, whereas a global shuffle degrades
+it. The heads are reading \emph{which company} is speaking, not \emph{what} is said.
+This is the in-corpus confirmation of \citet{scss2024} and the reason RQ4 is central.
+
+\subsection{Audio, fusion, LLM, and lookahead (pending)}
+\pending{Stage 3 audio (Result Table~3): WavLM-Large and emotion2vec+ full-corpus
+extraction and heads; eGeMAPS (88-d) already extracted for all 2{,}671 calls.}
+\pending{Stage 4 fusion (Result Table~4): the main \S\ref{sec:experiments} ablation
+grid.}
+\pending{Stage 5 LLM structured features (Result Table~5) and the masking ablation.}
+\pending{Phase 7 post-cutoff lookahead evaluation on 2025--2026 calls.}
+Each lands as its phase completes; the framing gate (\S\ref{sec:discussion}) is
+re-evaluated when the audio results are in.

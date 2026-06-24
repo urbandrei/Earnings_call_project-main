@@ -1,0 +1,103 @@
+% ============================================================================
+% ecvol — Multimodal Earnings-Call Volatility Prediction
+% Living manuscript scaffold. See paper/README.md for build instructions.
+%
+% FORMAT: self-contained two-column layout (ACL/EMNLP-style) that compiles with
+% a stock TeX distribution and NO external style files.
+%
+% TO SWITCH TO THE OFFICIAL ACL/EMNLP CLASS once you have the template files:
+%   1. Drop `acl.sty` and `acl_natbib.bst` into this directory.
+%   2. Replace the `\documentclass`/geometry/twocolumn block below with:
+%          \documentclass[11pt]{article}
+%          \usepackage[review]{acl}        % or final, depending on submission stage
+%   3. Change `\bibliographystyle{plainnat}` to `\bibliographystyle{acl_natbib}`.
+% Everything else (sections, tables, refs.bib) is template-agnostic.
+% ============================================================================
+
+\documentclass[10pt,twocolumn]{article}
+
+% --- Page geometry: approximate ACL/EMNLP two-column proportions -------------
+\usepackage[a4paper,margin=2.5cm,columnsep=0.6cm]{geometry}
+
+% --- Encoding & fonts (all standard, present in any TeX Live / MiKTeX) -------
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{times}
+\usepackage{microtype}
+\usepackage{xspace}
+
+% --- Math, tables, graphics -------------------------------------------------
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{multirow}
+\usepackage{tikz}
+\usepackage{caption}
+\captionsetup{font=small,labelfont=bf}
+% The appendix \input{}s ~32 generated table floats with little intervening text;
+% raise the float-storage limit so they don't overflow ("Too many unprocessed floats").
+\extrafloats{120}
+
+% --- Bibliography (author-year, ACL-like) -----------------------------------
+\usepackage{natbib}
+\bibliographystyle{plainnat}
+\setcitestyle{authoryear,round}
+
+% --- Links ------------------------------------------------------------------
+\usepackage{xcolor}
+\usepackage[colorlinks=true,allcolors=blue!55!black,breaklinks=true]{hyperref}
+\usepackage{url}
+
+% --- Draft/TODO machinery ---------------------------------------------------
+% Set \draftmode to false (or pass \drafttrue->false) to hide TODOs for a clean
+% camera-ready render. While drafting, TODOs are visible and greppable.
+\newif\ifdraftmode\draftmodetrue
+\newcommand{\TODO}[1]{%
+  \ifdraftmode{\color{red!75!black}\textbf{[TODO:} #1\textbf{]}}\fi}
+\newcommand{\pending}[1]{%
+  \ifdraftmode{\color{orange!80!black}\textit{[pending: #1]}}\fi}
+
+% --- Convenience macros -----------------------------------------------------
+\newcommand{\ecvol}{\textsc{ecvol}\xspace}
+\newcommand{\Rtwo}{$R^2_{\mathrm{OOS}}$\xspace}
+\newcommand{\dv}{$\Delta v$\xspace}
+\newcommand{\tickerdisjoint}{ticker-disjoint\xspace}
+
+% ============================================================================
+\title{Modern, Honest, and Open Multimodal Prediction of\\
+       Post-Earnings-Call Volatility\\
+       \large\textit{(working title --- living draft, framing-neutral)}}
+
+\author{
+  Anonymous Author(s)\\
+  \texttt{path-agnostic placeholder}\\
+}
+\date{Draft compiled \today}
+
+% ============================================================================
+\begin{document}
+\maketitle
+\begin{abstract}
+\input{sections/00-abstract}
+\end{abstract}
+
+\input{sections/01-introduction}
+\input{sections/02-related-work}
+\input{sections/03-data}
+\input{sections/04-methods}
+\input{sections/05-experiments}
+\input{sections/06-results}
+\input{sections/07-discussion}
+\input{sections/08-conclusion}
+
+% ACL-style unnumbered required sections
+\input{sections/09-limitations}
+\input{sections/10-ethics}
+
+\bibliography{refs}
+
+\appendix
+\input{sections/A1-complete-results}
+
+\end{document}

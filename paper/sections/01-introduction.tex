@@ -1,0 +1,74 @@
+\section{Introduction}
+\label{sec:intro}
+
+Earnings conference calls are one of the few recurring events at which management
+speaks at length, semi-spontaneously, about a public company---in both \emph{what}
+is said (the transcript) and \emph{how} it is said (the audio). A line of research
+beginning with \citet{qin2019what} and continuing through HTML
+\citep{yang2020html}, MAEC \citep{li2020maec}, KeFVP \citep{niu2023kefvp}, and ECC
+Analyzer \citep{cao2024ecc} claims that multimodal models over this data predict
+post-call stock volatility better than classical methods.
+
+Two recent observations cast doubt on how much of that progress is real. First,
+\citet{scss2024} (``Same Company, Same Signal'') show that transcript
+representations used across this literature predominantly encode \emph{company
+identity} rather than content: same-ticker transcripts cluster tightly, and
+training-free baselines built on a company's own past volatility beat all
+transcript-based models on their evaluation. Because volatility is strongly
+autocorrelated and company-specific, a model that learns ``which company is this''
+inherits most of the apparent skill. Second, a 2025 survey of financial NLP
+\citep{finnlp2025survey} finds that only $\sim$14\% of reported results reproduce
+exactly, attributing the gap to dead data links, API drift, and contamination.
+Together these suggest that the field's leaderboard may be partly an artifact of
+identity leakage, weak baselines, and irreproducibility.
+
+This paper reworks an abandoned 2024 study in this lineage from the ground up,
+with three goals. (i)~\textbf{Modernise:} replace 2019-era components
+(GloVe, Praat-only acoustics, hand-rolled hierarchical transformers) with current
+open-weight models---financial sentence embeddings, FinBERT, self-supervised
+speech and prosodic features, and instruction-tuned LLMs with constrained
+decoding. (ii)~\textbf{Open \& reproduce:} use only openly licensed data and
+open-weight models, pin the environment, and release everything needed to rebuild
+the study, designing explicitly against the reproducibility crisis. (iii)~\textbf{
+Evaluate honestly:} measure every model against strong econometric baselines under
+identity-aware controls and leakage-proof splits, so that any positive claim is
+attributable to content rather than identity.
+
+Concretely, we ask four research questions:
+\begin{description}
+  \item[RQ1] Does earnings-call \emph{content} (text and/or audio) add predictive
+    signal for post-call volatility beyond past-volatility persistence (HAR-RV,
+    GARCH)?
+  \item[RQ2] Is multimodal (audio $+$ text) better than the best unimodal model,
+    after controlling for past volatility?
+  \item[RQ3] Do LLM-extracted \emph{structured, auditable} features (guidance,
+    hedging, evasiveness, \dots) outperform opaque dense embeddings?
+  \item[RQ4] Do any positive results survive (a) ticker-identity controls,
+    (b)~\tickerdisjoint{} splits, and (c) evaluation on post-LLM-knowledge-cutoff
+    calls?
+\end{description}
+
+The study is pre-registered so that no single outcome strands the work: a clean
+negative or mixed answer to RQ1/RQ4 is itself a publishable contribution. The
+paper's framing is decided by the data at a pre-registered gate
+(\S\ref{sec:discussion}), not retro-fitted to it; this draft is written
+\emph{framing-neutral} while the audio, fusion, LLM, and lookahead experiments
+are completed.
+
+\paragraph{Contributions.}
+\begin{enumerate}
+  \item \textbf{\ecvol, an open multimodal volatility benchmark} over
+    FinCall-Surprise (primary) and MAEC (secondary): three target families (level
+    $v$, change \dv, HAR-residual), temporal and \tickerdisjoint{} splits with a
+    30-trading-day embargo, SHA-256 data manifests, and a reproducible harness.
+  \item \textbf{Honest baselines everywhere}: persistence, EWMA, HAR-RV,
+    GARCH(1,1), and ticker-fixed-effect models reported for every horizon, split,
+    and target variant---the comparison most prior work omits.
+  \item \textbf{A modern open-model feature ladder on consumer hardware}:
+    financial embeddings, FinBERT, WavLM / emotion2vec+ / eGeMAPS audio features,
+    fusion heads, and LLM-extracted structured features---all runnable on a single
+    16--24\,GB GPU.
+  \item \textbf{A diagnostic suite} for this task family: identity probes,
+    transcript-shuffle controls, \tickerdisjoint{} evaluation, lookahead-bias tests
+    on post-cutoff data, and a gender-confound analysis.
+\end{enumerate}

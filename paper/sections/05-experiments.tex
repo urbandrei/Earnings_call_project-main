@@ -1,0 +1,47 @@
+\section{Experimental Protocol}
+\label{sec:experiments}
+
+\paragraph{Metrics.}
+We report MSE on log-RV per horizon (literature comparability); \Rtwo{} vs.\
+persistence (\citealp{gukellyxiu2020};
+$1 - \sum(y-\hat y)^2 / \sum(y - \hat y_{\mathrm{persist}})^2$), the headline metric,
+which is not gameable by identity memorisation the way raw MSE is; MAE; and
+cross-sectional Spearman rank correlation per calendar quarter. All metrics are
+reported on all three targets ($v$, \dv, HAR-residual) $\times$ all splits.
+
+\paragraph{Statistical rigor.}
+Every learned model is run with $\geq$5 seeds (mean $\pm$ std). We use
+Diebold--Mariano tests \citep{dm1995} (HLN small-sample correction) on per-call
+squared-error differentials vs.\ persistence and vs.\ the best preceding stage;
+cluster-bootstrap confidence intervals (1{,}000 resamples) clustered by ticker and
+by calendar quarter; and Holm-corrected $p$-values across horizons for confirmatory
+claims. Confirmatory vs.\ exploratory analyses are labelled in advance: confirmatory
+analyses are Stage-$k$ vs.\ Stage-1 DM tests on \dv{} at each $\tau$, Stage~4 vs.\
+best unimodal, Stage~5 vs.\ Stage~2, and the temporal-vs-\tickerdisjoint{} gap per
+stage; all per-year/regime, COVID-exclusion, prepared-vs-Q\&A, call-length, and
+gender-confound analyses are exploratory.
+
+\paragraph{Identity-control suite.}
+\label{sec:controls-protocol}
+The signature diagnostic of this study probes whether content models read content or
+identity, via four controls. \emph{(1) Ticker-only model}: predict the per-ticker
+target mean (global mean for unseen tickers); if a content model matches it on
+level-$v$, that model reads identity. \emph{(2) Same-ticker transcript shuffle}:
+replace each test call's transcript with a different call from the \emph{same}
+ticker; if performance is unchanged the model reads identity, not content, whereas a
+\emph{global} shuffle (any other call) isolates pure overfitting. \emph{(3) Identity
+probe}: a linear probe predicting the ticker from frozen call embeddings; high
+accuracy demonstrates identity is encoded. \emph{(4) Ticker-disjoint split} results
+reported beside temporal-split results in every table.
+
+\paragraph{Lookahead-bias experiments.}
+\pending{Phase 7.} The entire frozen pipeline---no retraining, no post-hoc
+threshold changes (rule fixed in advance)---will be evaluated on the 2025--2026
+post-cutoff corpus; disproportionate degradation of Stage-5 LLM features relative to
+other stages would be contamination evidence. A masking ablation (company names,
+tickers, dates removed from Stage-5 prompts) will estimate identity-mediated leakage.
+
+\paragraph{Reproducibility.}
+All results regenerate byte-identically from committed CSV artifacts via
+\texttt{ecvol report}, guarded by a CI test. Every data file carries a SHA-256
+manifest entry, and every run artifact is keyed by config hash plus git SHA.

@@ -1,0 +1,54 @@
+\section{Methods}
+\label{sec:methods}
+
+We organise models as a ladder (Stages~0--5; Figure~\ref{fig:pipeline}). Two
+invariants make the comparison honest. First, from Stage~2 upward every learned
+model includes past-volatility covariates ($v_{\mathrm{pre}}$ at all horizons plus
+the HAR-RV forecast) and is \emph{also} reported with them ablated, baking the
+persistence control into every comparison. Second, given the small-data regime
+($10^3$--$10^4$ samples) we use frozen representations with light heads (ridge,
+shallow MLP, LightGBM) and per-horizon models by default; fine-tuning is gated to
+Stage~6 and a shared multi-task head is an ablation, not the headline.
+
+\input{figures/pipeline}
+
+\paragraph{Stage 0 --- econometric baselines.}
+Persistence ($\hat v = v_{\mathrm{pre}}$), EWMA (RiskMetrics $\lambda{=}0.94$),
+HAR-RV (OLS on daily/weekly/monthly realised-variance factors,
+\citealp{corsi2009har}), and GARCH(1,1) (per-call fit, \texttt{arch}). These
+establish the floor and the denominator of the headline metric.
+
+\paragraph{Stage 1 --- tabular identity baseline.}
+LightGBM over past-volatility features, trivial metadata (transcript length, Q\&A
+turn count where available), and a \textbf{ticker fixed effect}. This is the
+in-house ``Same-Company-Same-Signal'' control: it measures how much apparent
+multimodal performance is identity plus metadata.
+
+\paragraph{Stage 2 --- frozen text content.}
+We segment each transcript into prepared-remarks vs.\ Q\&A and speaker turns, then
+extract three feature blocks: BGE-M3 \citep{bge2023} section-pooled sentence
+embeddings (1024-d), FinBERT \citep{finbert} sentiment aggregates per
+scope$\times$role, and surface statistics. Heads are ridge (with the $\alpha$ grid
+selected on validation, \emph{no} retrain on train$+$val) and a shallow MLP
+(1$\times$256, L2 $+$ early stopping, 5 seeds). Features use fp32 with content-hash
+caching for bit-identical re-extraction.
+
+\paragraph{Stage 3 --- frozen audio content.}
+Audio is QC'd and resampled to 16\,kHz mono FLAC. We extract eGeMAPSv02 functionals
+(88-d, openSMILE \citep{opensmile}, CPU, interpretable), then WavLM-Large
+\citep{wavlm} and emotion2vec+ \citep{emotion2vec} chunk embeddings mean-pooled to a
+per-call vector, fed to the same heads. We use per-call pooling only (no per-sentence
+alignment), and report a gender-confound analysis.
+\pending{WavLM and emotion2vec+ full-corpus extraction + heads (T4.3--T4.4).}
+
+\paragraph{Stage 4 --- fusion.}
+Gated-fusion and cross-attention heads over frozen modality embeddings, plus
+late-fusion stacking with the Stage-1 GBDT, to test whether multimodal beats the
+best unimodal model (RQ2). \pending{Phase 5.}
+
+\paragraph{Stage 5 --- LLM-extracted structured features.}
+Qwen2.5-7B-Instruct \citep{qwen25} (4-bit) with Outlines-constrained JSON
+\citep{outlines} extracts auditable per-section features (guidance direction,
+hedging intensity, Q\&A evasiveness, surprise mentions, analyst tone) fed into the
+Stage-1 GBDT. A human-audit gate ($\kappa>0.6$ on 50 calls) precedes corpus-scale
+extraction (RQ3). \pending{Phase 6.}

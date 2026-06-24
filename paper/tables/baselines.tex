@@ -1,0 +1,30 @@
+% Curated headline: Stage-0/1 baselines, FinCall, Delta-v target, R^2_OOS vs
+% persistence (test). Values copied from data/results/result_table_1.tex
+% (temporal n=481; ticker-disjoint n=484). * = DM-significant vs persistence.
+\begin{table}[t]
+\centering
+\small
+\begin{tabular}{lrrrr}
+\toprule
+Model & $\tau$=3 & $\tau$=7 & $\tau$=15 & $\tau$=30 \\
+\midrule
+\multicolumn{5}{l}{\textit{Temporal split ($n{=}481$)}}\\
+Persistence       & 0.000 & 0.000 & 0.000 & 0.000 \\
+EWMA              & 0.387* & 0.362* & 0.145* & -0.219* \\
+HAR-RV            & 0.464* & 0.410* & 0.207* & -0.287* \\
+GARCH(1,1)        & 0.265* & 0.193* & -0.140* & -0.541* \\
+GBDT (ticker FE)  & 0.344* & 0.248* & -0.057 & -0.904* \\
+\midrule
+\multicolumn{5}{l}{\textit{Ticker-disjoint split ($n{=}484$)}}\\
+Persistence       & 0.000 & 0.000 & 0.000 & 0.000 \\
+EWMA              & 0.357* & 0.199* & -0.009 & 0.046 \\
+HAR-RV            & 0.495* & 0.357* & 0.211* & 0.229* \\
+GARCH(1,1)        & 0.356* & 0.229* & 0.088 & 0.209* \\
+GBDT (ticker FE)  & 0.407* & 0.275* & 0.089 & 0.108 \\
+\bottomrule
+\end{tabular}
+\caption{\textbf{Baselines.} \Rtwo{} vs.\ persistence on the \dv{} target,
+FinCall-Surprise (test). HAR-RV is strong except on the COVID-regime temporal
+$\tau{=}30$ cell. $*$: Diebold--Mariano significant vs.\ persistence ($p<0.05$).}
+\label{tab:baselines}
+\end{table}

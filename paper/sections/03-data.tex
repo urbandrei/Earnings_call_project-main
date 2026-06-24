@@ -1,0 +1,59 @@
+\section{Data}
+\label{sec:data}
+
+\subsection{Corpora}
+We build on two openly licensed multimodal earnings-call corpora and reserve a
+third, fresh corpus for a lookahead test.
+
+\textbf{FinCall-Surprise} \citep{fincall2024} (primary; Apache-2.0) contains 2{,}688
+calls spanning 2019--2021 with full MP3 audio, JSON transcripts, and slides.
+\textbf{MAEC} \citep{li2020maec} (secondary; CC-BY-SA-4.0) contains $\sim$3{,}443
+calls over 2015--2018 (S\&P~1500) with sentence-aligned audio features and
+transcripts but no raw audio. A fresh \textbf{2025--2026 post-cutoff corpus}
+($\geq$200 calls) is acquired by released scripts for the lookahead experiment
+(\S\ref{sec:experiments}); raw audio/transcripts from sources with unclear licenses
+are never redistributed (a \emph{scripts-not-data} policy).
+
+FinCall-Surprise ships without ticker/date metadata, which we reconstruct from
+transcript content and cross-check against price data; identity reconstruction
+resolves 2{,}496/2{,}688 earnings calls (92.9\%) and passes a 60/60 manual audit.
+
+\subsection{Price data and targets}
+Daily adjusted-close OHLCV is obtained from a free, no-account source and
+cross-checked against Tiingo on a random ticker sample (adjusted-return correlation
+$>0.999$); delisted or unmatched tickers produce an explicit coverage report rather
+than being silently dropped. After price joining, FinCall-Surprise yields 2{,}424
+calls with at least one target (97.1\% join rate) and MAEC yields 2{,}578 (75.4\%; a
+documented shortfall driven by 2015--2018 delistings), for a combined modelling set
+of 5{,}002 calls.
+
+For each call we define returns $r_t = (P_t - P_{t-1})/P_{t-1}$ relative to day
+$t=0$, the last trading day before the call's information is public. Because $<$4\%
+of calls carry usable timestamps, we apply an after-hours rule (calls assumed to
+occur after market close; $t{=}1$ is the next trading session) and flag it.
+The primary target is log realised volatility over horizon
+$\tau \in \{3,7,15,30\}$ trading days,
+\begin{equation}
+  v_{\mathrm{post}}(\tau) = \ln\!\Big(\sqrt{\tfrac{1}{\tau}\textstyle\sum_{t=1}^{\tau}(r_t-\bar r)^2}\Big),
+\end{equation}
+with pre-call volatility $v_{\mathrm{pre}}(\tau)$ defined over the $\tau$ sessions
+ending at day~0. We add two identity-robust variants: the \textbf{change}
+$\Delta v(\tau) = v_{\mathrm{post}}(\tau) - v_{\mathrm{pre}}(\tau)$, which subtracts
+the company's own level, and the \textbf{HAR-residual}
+$v_{\mathrm{post}}(\tau) - \widehat{\mathrm{HAR}}(\tau)$, deviation from a train-only
+HAR-RV \citep{corsi2009har} forecast. Insufficient post-call history and
+zero-variance windows yield \texttt{NaN} targets excluded with a reason code.
+
+\subsection{Leakage-proof splits}
+\label{sec:splits}
+Three split families are generated once as committed CSVs and guarded by
+leakage assertions in CI. \emph{Temporal}: train $<$ validation $<$ test in strict
+calendar order ($\sim$70/10/20) with a \textbf{30-trading-day embargo} between
+segments so that no 30-day target window crosses a boundary---a constraint most
+prior work ignores. \emph{Ticker-disjoint}: companies in validation/test never
+appear in training (grouped, seeded), the headline identity-control split.
+\emph{Combined}: both constraints simultaneously, reported as the hardest
+robustness row. An information rule is codified and enforced: every feature function
+receives an \texttt{as\_of} timestamp, and the harness fails any feature that reads
+price data after it. FinCall-Surprise spans COVID; per-year breakdowns are
+mandatory and a Feb--Apr~2020 exclusion is reported as an exploratory sensitivity.

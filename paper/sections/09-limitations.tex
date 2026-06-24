@@ -1,0 +1,17 @@
+\section*{Limitations}
+\addcontentsline{toc}{section}{Limitations}
+
+\textbf{Scope of current evidence.} The negative finding is established on the text
+ladder only; audio (Stage~3), fusion (Stage~4), and LLM-structured features
+(Stage~5) are not yet complete, so claims about \emph{multimodal} content are
+deferred. \textbf{Timestamps.} Fewer than 4\% of calls carry usable timestamps, so
+we apply an after-hours rule; mis-dated calls would add noise to short-horizon
+targets. \textbf{Regime sensitivity.} FinCall-Surprise spans COVID; the temporal
+$\tau{=}30$ baseline failure shows long-horizon level forecasts are regime-sensitive,
+which is why we emphasise the identity-robust \dv{} target and report per-year
+breakdowns. \textbf{MAEC coverage.} The 75.4\% price-join rate (2015--2018
+delistings) makes MAEC a secondary, comparability corpus. \textbf{Lookahead.}
+LLM-feature results on 2019--2021 calls are suspect by default until the Phase~7
+post-cutoff evaluation and masking ablation quantify contamination. \textbf{No
+diarisation in v1.} Audio uses per-call pooling, not speaker-resolved features.
+\TODO{Revisit and tighten as later phases land.}

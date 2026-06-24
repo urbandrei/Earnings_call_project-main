@@ -1,0 +1,25 @@
+% Stage-ladder schematic (Stage 0 -> 5). Simple TikZ stub; refine for camera-ready.
+\begin{figure}[t]
+\centering
+\begin{tikzpicture}[
+    node distance=3.2mm,
+    box/.style={draw, rounded corners, align=center, font=\scriptsize,
+                inner sep=2pt, text width=0.9\linewidth, minimum height=6mm},
+    done/.style={box, fill=green!8},
+    wip/.style={box, fill=orange!10},
+    todo/.style={box, fill=red!6},
+]
+\node[done] (s0) {\textbf{Stage 0} Persistence, EWMA, HAR-RV, GARCH(1,1)};
+\node[done, below=of s0] (s1) {\textbf{Stage 1} LightGBM $+$ ticker fixed effect};
+\node[done, below=of s1] (s2) {\textbf{Stage 2} Frozen text: BGE-M3, FinBERT, surface $\to$ ridge / MLP};
+\node[wip,  below=of s2] (s3) {\textbf{Stage 3} Frozen audio: eGeMAPS, WavLM, emotion2vec+};
+\node[todo, below=of s3] (s4) {\textbf{Stage 4} Fusion (gated / cross-attention / stacking)};
+\node[todo, below=of s4] (s5) {\textbf{Stage 5} LLM-extracted structured features (constrained JSON)};
+\foreach \a/\b in {s0/s1, s1/s2, s2/s3, s3/s4, s4/s5}
+  \draw[->, >=stealth] (\a) -- (\b);
+\end{tikzpicture}
+\caption{\textbf{The modelling ladder.} From Stage~2 up, every model also carries
+past-volatility covariates (and is reported with them ablated). Green = complete,
+orange = in progress, red = planned. \TODO{update shading as phases land}.}
+\label{fig:pipeline}
+\end{figure}

@@ -1,0 +1,33 @@
+\section{Discussion}
+\label{sec:discussion}
+
+\paragraph{What the evidence so far shows.}
+On finished phases, three statements hold. (i)~Strong econometric baselines are
+hard to beat, and the headline metric (\Rtwo{} vs.\ persistence) exposes a
+long-horizon regime failure (FinCall temporal $\tau{=}30$) that raw MSE would
+obscure. (ii)~Frozen text content does not cleanly add signal over past-volatility
+and identity baselines on the identity-robust \dv{} target. (iii)~The reason is
+measurable: call embeddings encode ticker identity (89.5\% probe accuracy on
+FinCall), and within-ticker transcript shuffles leave performance essentially
+unchanged---an in-corpus replication of the ``Same Company, Same Signal'' effect
+\citep{scss2024}.
+
+\paragraph{The framing gate (pre-registered, still open).}
+The paper's spine is decided at a pre-registered gate, not retro-fitted. \emph{Path
+A (positive showcase)} is adopted only if content-bearing models beat the Stage-0/1
+floor on \dv{} or HAR-residual with DM-significant improvements that survive the
+identity-control suite on at least two of four horizons. \emph{Path B (rigorous
+re-examination)} is adopted otherwise. The text-only evidence currently points
+toward Path B, but the gate is not yet final: it is re-evaluated once the audio
+ladder (Stage~3) completes, since prosody is the modality most plausibly carrying
+content orthogonal to identity \citep{soundofrisk2024}, and again after fusion
+(Stage~4), LLM features (Stage~5), and the post-cutoff lookahead test (Phase~7).
+This draft is therefore written framing-neutral.
+\TODO{Resolve the gate and rewrite the abstract/intro headline once Stage~3 lands;
+record the decision in the project DECISION log.}
+
+\paragraph{Why the contribution holds either way.}
+Independent of the gate, \ecvol{} contributes an open, identity-controlled,
+leakage-proof multimodal benchmark with honest baselines and a reusable diagnostic
+suite---precisely the apparatus the field has lacked. A negative or mixed answer to
+RQ1/RQ4 is a publishable result that the existing literature does not provide.

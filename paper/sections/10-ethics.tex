@@ -1,0 +1,17 @@
+\section*{Ethics Statement}
+\addcontentsline{toc}{section}{Ethics Statement}
+
+\textbf{Data and licensing.} We use only openly licensed corpora
+(FinCall-Surprise, Apache-2.0; MAEC, CC-BY-SA-4.0) and open-weight models. Derived
+numeric features inherit and explicitly state their upstream license; raw
+audio/transcripts from unclear-license sources are never redistributed
+(\emph{scripts-not-data}). \textbf{Gender confound.} Audio features encode speaker
+gender and female executives are underrepresented in these corpora, which can
+produce error disparities \citep{ama2024,emobias2024,docfin2022}; we analyse and
+report a gender-confound diagnostic rather than silently propagate the bias.
+\textbf{Intended use.} This is a forecasting-research benchmark, not investment
+advice; predictions are noisy and regime-sensitive, and should not be used for
+automated trading. \textbf{Reproducibility as an ethical commitment.} Given the
+documented reproducibility crisis in financial NLP \citep{finnlp2025survey}, we pin
+the environment, checksum every data file, and regenerate all result tables
+byte-identically from committed artifacts.

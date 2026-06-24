@@ -1,0 +1,21 @@
+% Framing-neutral abstract. Methods/data/eval are factual; the headline claim is
+% deliberately deferred until the audio (Phase 4), fusion (Phase 5), LLM (Phase 6)
+% and lookahead (Phase 7) results resolve the Path-A / Path-B framing gate.
+A decade of work predicts post-earnings-call stock volatility from the text and
+audio of quarterly conference calls, yet much of this literature compares against
+weak baselines and may reward models that memorise \emph{which company} is
+speaking rather than \emph{what} is said. We revisit the task with modern
+open-weight models, strong econometric baselines, leakage-proof evaluation, and
+an explicit identity-control suite. We build \ecvol, an open multimodal
+volatility benchmark over the FinCall-Surprise and MAEC corpora, providing three
+target families (level log-realised-volatility, change \dv, and HAR-residual),
+temporal and \tickerdisjoint{} splits with a 30-trading-day embargo, SHA-256 data
+manifests, and a reproducible evaluation harness. Against persistence, EWMA,
+HAR-RV, GARCH(1,1), and ticker-fixed-effect baselines, we evaluate a ladder of
+frozen-representation content models (financial sentence embeddings, FinBERT,
+self-supervised and prosodic audio features) with light heads, under
+significance testing (Diebold--Mariano, cluster bootstrap, Holm correction) and
+identity controls (linear identity probes and same-ticker transcript shuffles).
+\TODO{Finalise headline numbers and the one-sentence verdict once Phases 4--7
+land; current evidence is reported framing-neutral in \S\ref{sec:results}.}
+We release all code, configs, manifests, and result tables.

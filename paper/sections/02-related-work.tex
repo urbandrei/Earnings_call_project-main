@@ -1,0 +1,43 @@
+\section{Related Work}
+\label{sec:related}
+
+\paragraph{The benchmark lineage.}
+\citet{qin2019what} introduced text$+$audio volatility prediction and the 572-call
+EarningsCall dataset, establishing the 3/7/15/30-trading-day log-realised-volatility
+target family that the field still uses. MAEC \citep{li2020maec} scaled this to
+$\sim$3{,}443 sentence-aligned multimodal calls over the S\&P~1500. HTML
+\citep{yang2020html} introduced a hierarchical transformer with multi-task learning
+across horizons; VolTAGE \citep{sawhney2020voltage} added graph convolution over
+inter-stock relations with text/audio fusion; DialogueGAT \citep{sang2022dialoguegat}
+modelled speaker/dialogue structure with graph attention. KeFVP
+\citep{niu2023kefvp} combined knowledge-enhanced pre-training with a price-conditioned
+time-series module and is the standard SOTA reference. More recent work moves toward
+LLMs: ECC Analyzer \citep{cao2024ecc} uses hierarchical LLM summarisation with a RAG
+``question bank'' and wav2vec2 features; RiskLabs \citep{cao2024risklabs} fuses calls
+with news and market series; AT-FinGPT \citep{atfingpt2025} is an audio-text LLM.
+Numeral-aware variants (NumHTML \citep{yang2022numhtml}, NAM/ECNum
+\citep{chen2021nam}, GNAVol \citep{shi2023gnavol}) and Q\&A-structure models
+\citep{ye2020mraqa} target specific aspects of call language.
+
+\paragraph{Audio and prosody.}
+\citet{soundofrisk2024} report that physics-informed acoustic features explain up to
+43.8\% of 30-day realised-volatility variance, motivating an audio ladder; the
+FinAudio benchmark \citep{cao2025finaudio} cautions that audio-LLMs struggle on long
+financial audio, informing our preference for frozen pooled features over end-to-end
+audio-LLMs in v1.
+
+\paragraph{Known pitfalls (the methodological core).}
+Our design is organised around four documented failure modes.
+\emph{(1) Ticker-identity leakage} \citep{scss2024} is the central threat to
+validity (\S\ref{sec:intro}); we respond with identity-robust targets (\dv,
+HAR-residual), a ticker-fixed-effect baseline, and an identity-control suite
+(\S\ref{sec:experiments}). \emph{(2) LLM lookahead bias} \citep{lookahead2024,
+datedgpt2025}: a 2024-cutoff model ``predicting'' 2019--2021 outcomes it has
+effectively seen; we respond with a planned post-cutoff test set and a
+prompt-masking ablation. \emph{(3) Weak baselines}: much prior work omits
+persistence, GARCH(1,1), and HAR-RV \citep{corsi2009har}, which are hard to beat at
+long horizons; we compute these first and use persistence as the denominator of our
+headline metric \citep{gukellyxiu2020}. \emph{(4) Gender bias in audio features}
+\citep{ama2024,emobias2024,docfin2022}: we analyse and report a gender confound
+rather than debias. We deliberately exclude agentic trading systems and time-series
+foundation models from v1 scope.

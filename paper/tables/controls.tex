@@ -1,0 +1,36 @@
+% Identity-control suite (hand-built from data/results/controls_probe.csv and
+% result_controls.csv; fincall temporal split, Delta-v target, ridge text head, test).
+\begin{table}[t]
+\centering
+\small
+\begin{tabular}{lrr}
+\toprule
+& \multicolumn{2}{c}{Identity probe (linear)} \\
+\cmidrule(lr){2-3}
+Corpus & Accuracy & $\times$ chance \\
+\midrule
+FinCall ($n{=}2656$, 357 tickers) & 89.5\% & 319$\times$ \\
+MAEC ($n{=}3132$, 902 tickers)    & 53.9\% & 487$\times$ \\
+\bottomrule
+\end{tabular}
+
+\vspace{0.6em}
+
+\begin{tabular}{lrrrr}
+\toprule
+Condition & $\tau$=3 & $\tau$=7 & $\tau$=15 & $\tau$=30 \\
+\midrule
+Real transcript      & 0.028 & 0.030 & 0.015 & -0.144 \\
+Within-ticker shuffle & 0.017 & 0.020 & 0.006 & -0.142 \\
+Global shuffle        & -0.099 & -0.121 & -0.115 & -0.266 \\
+\bottomrule
+\end{tabular}
+\caption{\textbf{Identity controls.} Top: a linear probe predicts the ticker from
+frozen BGE-M3 call embeddings far above chance, demonstrating identity is heavily
+encoded. Bottom: \Rtwo{} of the text ridge head on the \dv{} target
+(FinCall, temporal split, test, $n{=}481$). Replacing each test call's transcript
+with a \emph{different call from the same ticker} (within-ticker shuffle) barely
+changes performance, whereas a global shuffle degrades it---evidence the head reads
+ticker identity rather than call content.}
+\label{tab:controls}
+\end{table}

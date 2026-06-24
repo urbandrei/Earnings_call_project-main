@@ -1,0 +1,30 @@
+% Curated headline: Stage-2 text heads, FinCall, Delta-v, R^2_OOS vs persistence
+% (test). Values copied from data/results/result_table_2.tex (temporal n=481;
+% ticker-disjoint n=484). * = DM-significant vs Stage-1 ticker-FE GBDT.
+\begin{table}[t]
+\centering
+\small
+\begin{tabular}{lrrrr}
+\toprule
+Model & $\tau$=3 & $\tau$=7 & $\tau$=15 & $\tau$=30 \\
+\midrule
+\multicolumn{5}{l}{\textit{Temporal split ($n{=}481$)}}\\
+Ridge (text)      & 0.028* & 0.030* & 0.015 & -0.144* \\
+Ridge (past-vol)  & 0.415* & -1.053 & -2.858 & -0.667 \\
+Ridge (text+vol)  & -1.678 & -3.076 & -3.586 & -0.468 \\
+MLP (text)        & -0.108* & -0.175* & -0.265* & -1.042 \\
+\midrule
+\multicolumn{5}{l}{\textit{Ticker-disjoint split ($n{=}484$)}}\\
+Ridge (text)      & -0.044* & -0.026* & 0.008 & 0.171 \\
+Ridge (past-vol)  & 0.451 & 0.306 & 0.191* & 0.224* \\
+Ridge (text+vol)  & 0.223* & 0.129* & 0.094 & 0.236 \\
+MLP (past-vol)    & 0.492* & 0.363* & 0.230* & 0.249* \\
+\bottomrule
+\end{tabular}
+\caption{\textbf{Text content (Stage 2).} \Rtwo{} vs.\ persistence on the \dv{}
+target, FinCall-Surprise (test). The text-only head does not separate from the
+past-volatility head; adding text to past-vol does not help. $*$: Diebold--Mariano
+significant vs.\ the Stage-1 ticker-FE GBDT ($p<0.05$). Full head set in
+Appendix~\ref{app:complete}.}
+\label{tab:text}
+\end{table}
