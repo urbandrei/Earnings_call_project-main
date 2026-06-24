@@ -11,11 +11,16 @@ Each entry: date · task ID · what the user must do · what unblocks when it's 
 
 ## Active (action needed to unblock a task)
 
-- **2026-06-19 · PHASE-3 BOUNDARY CHECKPOINT (gate policy) — push + confirm CI.** Phase 3
-  (T3.1–T3.4) is complete; per the gate policy the loop **pauses here** until you push the local
-  commits (~13: loop infra → T3.4) and confirm GitHub Actions is green. Then reply "CI green,
-  continue" and the loop starts **Phase 4 (audio ladder)**. *(Heads-up for Phase 4 · T4.3:* if
-  audio diarization is enabled, that's the HF gated-model accept + `HF_TOKEN` — see Anticipated.)*
+- **2026-06-24 · PHASE-4 BOUNDARY CHECKPOINT (gate policy) — push + confirm CI.** Phase 4
+  (T4.1–T4.4, audio ladder) is complete; the loop **pauses here** until you push the local commits
+  (~20 since the last push: Phase-3 + all of Phase 4 + the `paper/` scaffold) and confirm GitHub
+  Actions is green. Then reply "CI green, continue" and the loop starts **Phase 5 (fusion +
+  full ablation grid → Result Table 4, the main paper table)**. *Note:* CI installs only the `dev`
+  group, so the new `gpu`/`audio` deps (torch/funasr/opensmile) are **not** in CI — the audio/GPU
+  tests skip there by design; confirm the suite still goes green.
+  - *Untracked, left for you:* `setup.md` (a generic project-governance bootstrap doc from a
+    parallel session) is uncommitted at the repo root — commit it or move it out as you see fit;
+    it's unrelated to the ecvol pipeline.
 
 ### Resolved
 - **2026-06-19 · T3.1 section audit — DONE (30/30 correct).** Both operator-handoff and
@@ -23,6 +28,10 @@ Each entry: date · task ID · what the user must do · what unblocks when it's 
 - **2026-06-19 · §4 framing-gate decision — DONE (provisional Path B).** Adopt "rigorous
   re-examination" now; revisit/flip to Path A only if Phase-4 audio beats the floor surviving the
   identity controls. (DECISIONS 2026-06-19.)
+- **2026-06-24 · §4 framing-gate revisit (post-audio) — DONE (Path B kept PROVISIONAL).** Audio is
+  inert beyond past-vol (shuffle≈real even global), WavLM identity probe 76%, no gender disparity →
+  Path A criterion not met; user chose to keep Path B provisional and revisit after Phase-5 fusion
+  + Phase-6 LLM. (DECISIONS 2026-06-24.)
 
 ---
 

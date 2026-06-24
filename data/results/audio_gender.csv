@@ -1,0 +1,11 @@
+metric,value
+dataset,fincall
+model,"wavlm_ridge_audio (temporal, level-v, tau=30, test)"
+f0_proxy_coverage,1.0
+f0_split_semitones,31.0
+n_low_pitch,387
+n_high_pitch,94
+mse_low_pitch,0.24128814288338007
+mse_high_pitch,0.2417884856627623
+corr_f0_sq_error,0.0343
+corr_f0_prediction,-0.2454

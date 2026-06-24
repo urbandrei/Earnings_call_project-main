@@ -237,15 +237,15 @@
   - [x] Resume logic — checkpoints every 100, skips cached call_ids (carried from T4.2)
 - **Notes:** **ETA gate (DESIGN-mandated) DONE:** naive impl 50 calls/1478 s → ~22 h; **optimized (window-batching + fp16) 30 calls/361 s → ~9 h fp16 / ~18–22 h fp32.** **Full-corpus plan = local overnight, fp16, resumable** (user decision 2026-06-19; cloud burst rejected — 119 GB audio upload friction for a ~9 h local job; fp16 negligible on mean-pooled per-call vectors). **WavLM full run DONE (2026-06-23): 2,671×1024, all finite, 0 all-NaN; manifest OK; resume = clean no-op (0 new).** Window counts median 124 (≈62 min/call), range 37–398; mean L2 norm 1.52. `data/fincall/audio_wavlm.parquet` (gitignored payload) + `fincall_audio_wavlm.json`. Diarization skipped → per-call pooling only (matches text/eGeMAPS). 2 new WavLM tests (pure parquet CI-safe + guarded embed); 208 green, ruff clean. **emotion2vec+ is the remaining sub-task before T4.4.** Journal: 2026-06-19/23 T4.3 entries.
 
-### T4.4 Stage-3 results + gender-confound analysis → Result Table 3 — `[ ]`
+### T4.4 Stage-3 results + gender-confound analysis → Result Table 3 — `[x]` *(done 2026-06-24 — completes Phase 4)*
 - **Goal:** audio's honest contribution, plus the DESIGN.md §3.5 analysis.
 - **End result:** audio-only and audio+covariate heads (5 seeds); **Result Table 3**; gender analysis (F0-based speaker-gender proxy → feature/error correlations, per-group error rates).
 - **Acceptance test:** DM tests vs. Stage 1 and Stage 2; gender analysis covers ≥90% of calls with a dominant-speaker proxy; limitations paragraph drafted.
 - **Subtasks:**
-  - [ ] Head configs
-  - [ ] Gender-proxy construction
-  - [ ] Per-group reporting in `report.py`
-- **Notes:** —
+  - [x] Head configs (`eval/stage3.py` + `features/audio/assemble.py`: ridge+MLP on eGeMAPS / WavLM / emotion2vec+ / WavLM+eGeMAPS / WavLM+text fusion × {audio, audio+pastvol}, 5 seeds; reuses the T3.3 harness) → `ecvol evaluate-audio` → `result_table_3.csv` (1,296 rows, DM vs persistence/HAR/Stage-1/Stage-2)
+  - [x] Gender-proxy construction (`eval/audio_eval.py`: eGeMAPS-F0 pitch proxy, 100% coverage; per-group test MSE + F0↔error/prediction correlations → `audio_gender.csv`) + identity probe (WavLM 76%/emotion2vec 29%) + same-ticker audio shuffle (`audio_shuffle.csv`)
+  - [x] Per-group reporting in `report.py` (`write_reports3` → `result_table_3.{md,tex}`, `*` = DM-sig vs Stage-1; byte-identical render)
+- **Notes:** **DONE 2026-06-24 — Phase 4 COMPLETE.** **Acceptance met:** DM vs Stage-1 & Stage-2 in every cell; gender F0 proxy covers **100%** (≥90% gate); limitations drafted (DECISIONS + here). **Findings (RQ1-audio, decisive for the framing gate):** (1) **identity probe** WavLM **76.3%** ticker accuracy (271× chance), emotion2vec 29.4% (105×) — audio encodes identity. (2) **Δv vs Stage-1:** the only DM-significant wins are the **+past-vol** variants on **ticker-disjoint** (e.g. `ridge_wavlm_audio_pastvol` τ3 +0.337/τ7 +0.171/τ30 +0.212); **nothing** beats the floor on temporal. (3) **Audio shuffle (the clincher):** those ticker-disjoint Δv gains are ~unchanged even under **global** audio shuffle (τ3 0.337→0.318, τ30 0.212→0.100) → **the WavLM features are inert; past-vol carries the signal.** (4) **Gender:** per-group MSE near-identical (low 0.241 / high 0.242), F0↔err² corr 0.03 — no large disparity. → **§4 Path A criterion NOT met.** **Framing gate (user decision 2026-06-24): Path B kept PROVISIONAL, revisit after Phase-5 fusion + Phase-6 LLM** (DECISIONS 2026-06-24). 6 new tests; ruff clean. FinCall-only (MAEC no audio). Journal: 2026-06-24 T4.4 entry.
 
 ---
 

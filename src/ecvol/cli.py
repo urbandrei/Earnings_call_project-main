@@ -538,12 +538,42 @@ def controls(
         )
 
 
+@app.command(name="evaluate-audio")
+def evaluate_audio(
+    root: Path = typer.Option(Path("data"), help="Data root directory."),  # noqa: B008
+    seeds: str = typer.Option("0,1,2,3,4", help="Comma-separated seeds for the heads."),
+) -> None:
+    """Stage-3 audio heads → Result Table 3 + identity probe + §3.5 gender analysis (T4.4)."""
+    from ecvol.eval.audio_eval import run_audio_eval
+    from ecvol.eval.stage3 import run_stage3
+
+    seed_tuple = tuple(int(s) for s in seeds.split(",") if s.strip())
+    table = run_stage3(root, seeds=seed_tuple)
+    typer.echo(f"Result Table 3: {len(table)} rows → data/results/result_table_3.csv")
+    probe, gender, shuffle = run_audio_eval(root)
+    for r in probe.itertuples():
+        typer.echo(
+            f"identity probe [{r.embedding}]: acc={r.probe_accuracy:.3f} "
+            f"vs chance {r.chance:.4f} ({r.accuracy_over_chance:.0f}x)"
+        )
+    g = dict(zip(gender["metric"], gender["value"], strict=True))
+    typer.echo(
+        f"gender (F0 proxy, coverage {g['f0_proxy_coverage']}): "
+        f"MSE low={g['mse_low_pitch']} high={g['mse_high_pitch']}; "
+        f"corr(F0,err2)={g['corr_f0_sq_error']}"
+    )
+    typer.echo(
+        f"audio shuffle: {len(shuffle)} cells (real vs within/global) → "
+        "data/results/audio_shuffle.csv"
+    )
+
+
 @app.command()
 def report(
     root: Path = typer.Option(Path("data"), help="Data root directory."),  # noqa: B008
 ) -> None:
-    """Render result tables (Markdown + LaTeX) from run artifacts (T2.3, T3.3)."""
-    from ecvol.eval.report import write_reports, write_reports2
+    """Render result tables (Markdown + LaTeX) from run artifacts (T2.3, T3.3, T4.4)."""
+    from ecvol.eval.report import write_reports, write_reports2, write_reports3
 
     md_path, tex_path = write_reports(root)
     typer.echo(f"Table 1 markdown: {md_path}")
@@ -552,3 +582,7 @@ def report(
         md2, tex2 = write_reports2(root)
         typer.echo(f"Table 2 markdown: {md2}")
         typer.echo(f"Table 2 latex:    {tex2}")
+    if (root / "results" / "result_table_3.csv").is_file():
+        md3, tex3 = write_reports3(root)
+        typer.echo(f"Table 3 markdown: {md3}")
+        typer.echo(f"Table 3 latex:    {tex3}")
