@@ -1,3 +1,7 @@
+# Human-handoff working area (e.g. rater packages with rendered transcripts = licensed
+# payload). HANDOFF.md (the root queue file) IS tracked; this lowercase dir is not.
+/handoff/
+
 # Data payloads — tracked via committed manifests (data/manifests/), never in git.
 # Anchored to the repo root (src/ecvol/data is code); data/* + negation because
 # git cannot re-include below an excluded directory.

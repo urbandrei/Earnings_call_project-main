@@ -11,23 +11,38 @@ Each entry: date · task ID · what the user must do · what unblocks when it's 
 
 ## Active (action needed to unblock a task)
 
+- **2026-06-24 · T6.2 — the corpus run goes to OSC (local OOM'd); needs OSC access + a context-policy call.**
+  The local ETA probe proved the 16 GB GPU **can't** run extraction at full context (CUDA OOM on
+  long-section prefill; see `data/coverage/llm_probe_report.md`). Everything for the cloud burst is
+  built (`cloud/osc/`) and the $1000 spend is approved (DECISIONS 2026-06-24). To proceed:
+  1. **Confirm your OSC allocation** — project/account code (`PASxxxx`) + cluster (recommend **Ascend
+     A100-80GB** or **Cardinal H100**). Put the account in `cloud/osc/slurm/extract.sbatch`.
+  2. **Build + stage on a login node:** `apptainer build cloud/osc/ecvol-llm.sif …` then
+     `bash cloud/osc/stage.sh Qwen/Qwen2.5-7B-Instruct Qwen/Qwen2.5-32B-Instruct` (README has the
+     full workflow). rsync the gitignored `data/{fincall,maec}/{calls,chunks}.parquet` + `data/splits/`.
+  3. **Decide the >32k-token section policy** (design call): truncate-to-context vs YaRN-extend to
+     ~64k (FinCall max section = 61k tokens). Must match between a model's κ-audit and its corpus run.
+  - **What unblocks:** per-model corpus extraction (panel: 7B → 32B, cross-validated) → `ecvol
+    llm-kappa` per model → T6.3. The κ-audit's 50-call extraction runs on OSC too (audit must match
+    corpus), so the human labeling (below) can proceed in parallel.
+
 - **2026-06-24 · T6.1 — read 20 calls + fill the labeling sheet, then sign off the schema.**
   The v1 LLM feature schema + rubric + prompts + reading tooling are built and committed; T6.1's
   acceptance test is **human** (two passes over 10 calls agree the schema applies), so the loop
   **pauses here**. To unblock:
-  1. The pack is already generated: read the 20 transcripts in `data/fincall/llm_reading/*.md`
-     (regenerate any time with `ecvol featurize llm-reading-pack --dataset fincall --n 20 --seed 0`).
+  1. The pack is already generated at the **50-call audit size** (aligned with the κ-audit set):
+     read the transcripts in `data/fincall/llm_reading/*.md` (regenerate any time with
+     `ecvol featurize llm-audit-sample --dataset fincall --n 50 --seed 0`).
   2. Read the rubric `docs/llm_feature_rubric.md` and fill `data/coverage/fincall_llm_label_sheet.csv`
      (one row per call×section; "NA" cells are Q&A-only fields that don't apply to prepared remarks).
      For two-pass agreement, a second rater fills a copy of the 10-call subset.
   3. **Either sign off the v1 schema** ("schema signed off, continue") **or list rubric/field edits**
-     you want — I'll revise and bump `PROMPT_VERSION` before building extraction.
-  - **What unblocks:** T6.2 (Qwen2.5-7B-Instruct 4-bit + Outlines constrained extraction, resumable,
-    ETA-gated) gets built against the **frozen** schema + prompt version; then the **κ>0.6 50-call
-    audit** (same sheet/tooling) gates the corpus-scale run. T6.2 wants a **local LLM** (Qwen 7B
-    4-bit via the GPU stack) — no new key, but a model download + a VRAM/throughput ETA gate.
+     you want — I'll revise and bump `PROMPT_VERSION` before extraction.
+  - **What unblocks:** extraction runs against the **frozen** schema + prompt version on OSC (see
+    the T6.2 entry above — local OOM'd); the filled sheet then feeds `ecvol llm-kappa` per model for
+    the **κ>0.6** gate. Labeling can proceed in parallel with the OSC setup.
   - **Note:** all of Phase 6 (T6.2/T6.3) and Phase 7 T7.1 (API key) are human-gated, so the loop
-    has no unblocked task to skip to — it genuinely waits here until you sign off.
+    has no unblocked task to skip to — it genuinely waits on these.
 
 ### Resolved
 - **2026-06-24 · PHASE-5 BOUNDARY CHECKPOINT — DONE (CI green).** Phase 5 (T5.1 fusion + T5.2

@@ -452,6 +452,9 @@ def featurize_llm(
     device: str = typer.Option("cuda", help="torch device (transformers engine)."),
     limit: int = typer.Option(0, help="Process only the first N calls (0 = full corpus)."),
     no_4bit: bool = typer.Option(False, help="Disable bitsandbytes 4-bit (transformers engine)."),
+    max_model_len: int = typer.Option(
+        0, help="vLLM context window (0 = model default; set ~65536 to cover the >32k tail)."
+    ),
 ) -> None:
     """Constrained LLM structured-feature extraction → llm_features__{model}.parquet (T6.2)."""
     from ecvol.features.llm.extract import build_llm
@@ -459,6 +462,8 @@ def featurize_llm(
     kwargs = {}
     if engine == "transformers":
         kwargs = {"device": device, "load_in_4bit": not no_4bit}
+    elif engine == "vllm" and max_model_len:
+        kwargs = {"max_model_len": max_model_len}
     res = build_llm(
         root,
         dataset,
