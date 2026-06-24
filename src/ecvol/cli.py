@@ -358,6 +358,23 @@ def featurize_text(
         )
 
 
+@featurize_app.command("llm-reading-pack")
+def featurize_llm_reading_pack(
+    dataset: str = typer.Option("fincall", help="Dataset: fincall | maec."),
+    root: Path = typer.Option(Path("data"), help="Data root directory."),  # noqa: B008
+    n: int = typer.Option(20, help="Calls to sample (train split only) for human reading."),
+    seed: int = typer.Option(0, help="Sample seed (deterministic)."),
+) -> None:
+    """Render N train-split calls + a blank rubric labeling sheet for the T6.1 human pass."""
+    from ecvol.features.llm.reading import build_reading_pack
+
+    pack = build_reading_pack(root, dataset, n=n, seed=seed)
+    typer.echo(f"{dataset}: {len(pack.call_ids)} train-split calls (seed {seed})")
+    typer.echo(f"  transcripts: {pack.reading_dir} (gitignored payload)")
+    typer.echo(f"  labeling sheet: {pack.sheet_path}")
+    typer.echo("  rubric: docs/llm_feature_rubric.md — fill the sheet, then sign off (HANDOFF)")
+
+
 audio_app = typer.Typer(no_args_is_help=True, help="Audio QC + features (Phase 4).")
 app.add_typer(audio_app, name="audio")
 

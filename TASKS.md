@@ -276,15 +276,15 @@
 
 ## Phase 6 — LLM structured features (~2 weeks)
 
-### T6.1 Feature schema design — `[ ]`
+### T6.1 Feature schema design — `[!]` *(scaffolding done; blocked on human reading + sign-off)*
 - **Goal:** an auditable semantic feature set, grounded in actual calls.
 - **End result:** pydantic JSON schema (per-section): guidance direction {raise/maintain/lower/none}, hedging intensity (0–4), Q&A evasiveness (0–4), surprise mentions, analyst-tone (0–4), plus free-text evidence spans for auditability. Designed from manual reading of 20 calls.
 - **Acceptance test:** two human passes over 10 calls agree on the schema's applicability; every field has a written rubric.
 - **Subtasks:**
-  - [ ] Manual reading notes (20 calls)
-  - [ ] Schema + rubric doc
-  - [ ] Prompt drafts (`features/llm/prompts.py`)
-- **Notes:** —
+  - [~] Manual reading notes (20 calls) — *tooling built (`ecvol featurize llm-reading-pack`); 20 train-split calls rendered to `data/fincall/llm_reading/*.md`; **human reading + notes pending** (HANDOFF)*
+  - [x] Schema + rubric doc — `features/llm/schema.py` (`SectionFeatures`, v1) + `docs/llm_feature_rubric.md` (per-field anchors, applicability, κ protocol)
+  - [x] Prompt drafts (`features/llm/prompts.py`) — section-aware, `PROMPT_VERSION="v1"`
+- **Notes:** 2026-06-24 — v1 scaffolding committed (engineering); field set is the pre-registered one. **Blocked:** acceptance test is human (two-pass agreement over 10 calls) → blank labeling sheet `data/coverage/fincall_llm_label_sheet.csv` (one row per call×section, leakage-safe train-only sample). User reads + labels + signs off (or requests rubric edits) before T6.2 extraction is built against the frozen schema+prompt. DECISIONS 2026-06-24.
 
 ### T6.2 Constrained extraction + human-audit gate — `[ ]`
 - **Goal:** reliable corpus-scale extraction on consumer GPU.

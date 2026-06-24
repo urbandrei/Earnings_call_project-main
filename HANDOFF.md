@@ -11,20 +11,27 @@ Each entry: date · task ID · what the user must do · what unblocks when it's 
 
 ## Active (action needed to unblock a task)
 
-- **2026-06-24 · PHASE-5 BOUNDARY CHECKPOINT (gate policy) — push + confirm CI.** Phase 5
-  (T5.1 fusion + T5.2 Result Table 4) is complete; the loop **pauses here** until you push the
-  local commits (Phase 5: fusion, grid, the two parallel-session commits paper/ + validate_results)
-  and confirm GitHub Actions is green. Then reply "CI green, continue" and the loop starts
-  **Phase 6 — LLM structured features**.
-  - **⚠️ Heads-up — Phase 6 carries the first hard human-labor blocker:** T6.2 (and exploration
-    TX1) require a **50-call human audit with κ>0.6** before corpus-scale LLM extraction, and T6.1
-    needs you to read ~20 calls to co-design the feature schema. I'll build all the labeling tooling
-    and pre-fill what I can, but the agreement numbers are yours — budget for a labeling session.
-    T6.2 may also want a **local LLM** (Qwen2.5-7B-Instruct 4-bit via the GPU stack) — no new key,
-    but a model download + a VRAM/throughput ETA gate like the audio runs.
-  - *(Phase-4 checkpoint cleared: CI was confirmed green; `setup.md` is now gitignored.)*
+- **2026-06-24 · T6.1 — read 20 calls + fill the labeling sheet, then sign off the schema.**
+  The v1 LLM feature schema + rubric + prompts + reading tooling are built and committed; T6.1's
+  acceptance test is **human** (two passes over 10 calls agree the schema applies), so the loop
+  **pauses here**. To unblock:
+  1. The pack is already generated: read the 20 transcripts in `data/fincall/llm_reading/*.md`
+     (regenerate any time with `ecvol featurize llm-reading-pack --dataset fincall --n 20 --seed 0`).
+  2. Read the rubric `docs/llm_feature_rubric.md` and fill `data/coverage/fincall_llm_label_sheet.csv`
+     (one row per call×section; "NA" cells are Q&A-only fields that don't apply to prepared remarks).
+     For two-pass agreement, a second rater fills a copy of the 10-call subset.
+  3. **Either sign off the v1 schema** ("schema signed off, continue") **or list rubric/field edits**
+     you want — I'll revise and bump `PROMPT_VERSION` before building extraction.
+  - **What unblocks:** T6.2 (Qwen2.5-7B-Instruct 4-bit + Outlines constrained extraction, resumable,
+    ETA-gated) gets built against the **frozen** schema + prompt version; then the **κ>0.6 50-call
+    audit** (same sheet/tooling) gates the corpus-scale run. T6.2 wants a **local LLM** (Qwen 7B
+    4-bit via the GPU stack) — no new key, but a model download + a VRAM/throughput ETA gate.
+  - **Note:** all of Phase 6 (T6.2/T6.3) and Phase 7 T7.1 (API key) are human-gated, so the loop
+    has no unblocked task to skip to — it genuinely waits here until you sign off.
 
 ### Resolved
+- **2026-06-24 · PHASE-5 BOUNDARY CHECKPOINT — DONE (CI green).** Phase 5 (T5.1 fusion + T5.2
+  Result Table 4) pushed; user confirmed GitHub Actions green. Loop advanced to Phase 6.
 - **2026-06-19 · T3.1 section audit — DONE (30/30 correct).** Both operator-handoff and
   analyst-question boundaries accepted as correct Q&A-section starts.
 - **2026-06-19 · §4 framing-gate decision — DONE (provisional Path B).** Adopt "rigorous
