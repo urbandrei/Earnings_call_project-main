@@ -24,6 +24,21 @@ __pycache__/
 build/
 dist/
 
+# LaTeX paper build artifacts (paper/main.pdf IS tracked; aux files are not).
+/paper/*.aux
+/paper/*.bbl
+/paper/*.blg
+/paper/*.log
+/paper/*.out
+/paper/*.toc
+/paper/*.lof
+/paper/*.lot
+/paper/*.fls
+/paper/*.fdb_latexmk
+/paper/*.synctex.gz
+/paper/sections/*.aux
+/paper/_preview_*.png
+
 # Tooling caches
 .pytest_cache/
 .ruff_cache/

@@ -94,7 +94,10 @@ def reconcile_targets():
         result_type="expand",
     )
     recomp.columns = ["v_pre_chk", "v_post_chk", "delta_chk"]
-    m = pd.concat([ok.reset_index(drop=True), recomp], axis=1)
+    # reset BOTH indices: ok.apply keeps ok's original (non-contiguous) index, so
+    # concat(axis=1) against a renumbered ok would align by index and compare each
+    # row to a different row's recompute. Reset both so positions line up.
+    m = pd.concat([ok.reset_index(drop=True), recomp.reset_index(drop=True)], axis=1)
     for a, b in [("v_pre", "v_pre_chk"), ("v_post", "v_post_chk"), ("delta_v", "delta_chk")]:
         d = (m[a] - m[b]).abs()
         finite = d[np.isfinite(d)]
