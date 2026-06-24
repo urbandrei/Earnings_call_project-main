@@ -568,6 +568,22 @@ def evaluate_audio(
     )
 
 
+@app.command(name="evaluate-fusion")
+def evaluate_fusion(
+    root: Path = typer.Option(Path("data"), help="Data root directory."),  # noqa: B008
+    seeds: str = typer.Option("0,1,2,3,4", help="Comma-separated seeds for the heads."),
+) -> None:
+    """Stage-4 fusion heads (gated + late-fusion stack) → fusion rows for Result Table 4 (T5.1)."""
+    from ecvol.eval.stage4 import run_stage4
+
+    seed_tuple = tuple(int(s) for s in seeds.split(",") if s.strip())
+    table = run_stage4(root, seeds=seed_tuple)
+    typer.echo(f"Stage-4 fusion: {len(table)} rows → data/results/result_table_4_fusion.csv")
+    head = table[(table["target"] == "dv") & (table["segment"] == "test")]
+    beat = head[(head["r2_oos"] > 0) & (head["dm_p_vs_stage1"] < 0.05)]
+    typer.echo(f"Δv test cells beating Stage-1 (r2>0 & DM p<0.05): {len(beat)} of {len(head)}")
+
+
 @app.command()
 def report(
     root: Path = typer.Option(Path("data"), help="Data root directory."),  # noqa: B008

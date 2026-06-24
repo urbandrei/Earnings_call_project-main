@@ -251,15 +251,15 @@
 
 ## Phase 5 — Fusion + full ablation grid (~1 week)
 
-### T5.1 Fusion models — `[ ]`
+### T5.1 Fusion models — `[x]` *(done 2026-06-24)*
 - **Goal:** Stage-4 multimodal heads.
 - **End result:** gated fusion and cross-attention heads over frozen modality embeddings; late-fusion stacking with Stage-1 GBDT; 5 seeds each.
 - **Acceptance test:** fusion params <5M (small-data discipline); training fits in <2 GB VRAM; results reproducible from configs.
 - **Subtasks:**
-  - [ ] `models/fusion.py`
-  - [ ] Stacking harness
-  - [ ] Hyperparameter ranges fixed in configs (no post-hoc sweeps beyond pre-registered grid)
-- **Notes:** —
+  - [x] `models/fusion.py` — **gated fusion** (per-modality train-fit PCA(64) + L2-norm "gate" → concat → shallow MLP) + **late-fusion stacking** (meta-ridge over [text, audio, Stage-1 GBDT] base preds, fit on val). sklearn/CPU, trivially <5M params / <2 GB.
+  - [x] Stacking harness (`stack_fit_predict`; bases fit on train, meta on val, applied to test — no train-pred leakage)
+  - [x] Hyperparameter ranges fixed (reuses heads.py MLP/ridge configs; no post-hoc sweeps) — `eval/stage4.py` + `ecvol evaluate-fusion`
+- **Notes:** **DONE 2026-06-24.** All modalities (text BGE + WavLM + emotion2vec+ + eGeMAPS) + past-vol; covariates {in, out}; DM vs persistence/Stage-1/Stage-2/Stage-3. **Cross-attention omitted** (one pooled vector per modality → 2–3-token attention ≈ gated fusion; DECISIONS 2026-06-24). **`result_table_4_fusion.csv` = 288 rows, 0 NaN.** **RQ2 finding: multimodal is NOT > best unimodal** — only 1/48 Δv-test cells beats all of Stage-1/2/3 DM-significantly (gated τ7 r2 +0.019, negligible); best fusion (stack ticker-disjoint τ3 r2 +0.436) is **not** DM-sig vs Stage-1 (p=0.13). Fusion ≈ best unimodal ≈ past-vol → consistent with provisional Path B. sklearn/CPU (CI-torch-free). 5 new tests; ruff clean. FinCall-only. Journal: 2026-06-24 T5.1 entry.
 
 ### T5.2 Full ablation grid → Result Table 4 (main table) — `[ ]`
 - **Goal:** the DESIGN.md §7.6 grid, populated.
