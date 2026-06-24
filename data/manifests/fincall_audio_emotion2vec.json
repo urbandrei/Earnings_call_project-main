@@ -1,0 +1,9 @@
+[
+  {
+    "license": "derived; model emotion2vec/emotion2vec_plus_large",
+    "path": "fincall/audio_emotion2vec.parquet",
+    "retrieved_at": "2026-06-24T04:02:35+00:00",
+    "sha256": "a018dfc38a81fd1ad687356ef0c95400e8cc181958cbf221bd3865aa1117a762",
+    "source_url": "derived: ecvol audio emotion2vec (T4.3)"
+  }
+]
