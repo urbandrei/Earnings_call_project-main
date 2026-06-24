@@ -1,0 +1,33 @@
+Bootstrap: docker
+From: vllm/vllm-openai:latest
+
+# Apptainer image for the T6.2 cloud-burst LLM extraction on the Ohio Supercomputer
+# Center (OSC). Built on the official vLLM image (CUDA + torch + vLLM already present);
+# we add Outlines (constrained decoding) and the ecvol package's runtime deps.
+#
+# Build (on an OSC login node with internet, or locally then `scp` the .sif):
+#   module load apptainer
+#   apptainer build cloud/osc/ecvol-llm.sif cloud/osc/apptainer/ecvol-llm.def
+#
+# The repo is bind-mounted at runtime (see slurm/extract.sbatch), so code edits do
+# NOT require a rebuild — only dependency changes do.
+
+%files
+    pyproject.toml /opt/ecvol/pyproject.toml
+    README.md      /opt/ecvol/README.md
+    src            /opt/ecvol/src
+
+%post
+    set -eux
+    pip install --no-cache-dir "outlines>=0.1"
+    # Install ecvol (console script `ecvol`) + its base runtime deps from pyproject.
+    # vLLM/torch/CUDA come from the base image; we don't reinstall them.
+    pip install --no-cache-dir --no-deps /opt/ecvol
+    pip install --no-cache-dir pandas pyarrow pydantic typer scipy scikit-learn pyyaml
+
+%environment
+    export HF_HUB_OFFLINE=1
+    export TOKENIZERS_PARALLELISM=false
+
+%runscript
+    exec ecvol "$@"

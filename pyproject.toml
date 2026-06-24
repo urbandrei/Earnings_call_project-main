@@ -40,6 +40,7 @@ gpu = [
     "transformers>=4.44",
     "outlines>=0.1",  # JSON-schema-constrained decoding for LLM features (T6.2); cross-platform
     "bitsandbytes>=0.43",  # local 4-bit (nf4) inference of the 7B model on the 16GB GPU (T6.2)
+    "accelerate>=1.0",  # device_map / 4-bit model loading for the transformers engine (T6.2)
 ]
 # Audio feature stack (eGeMAPS via openSMILE; CPU). Not in default/CI installs;
 # `uv sync --group audio`. Imported lazily (T4.2).
