@@ -42,6 +42,27 @@ def _train_call_ids(root: Path, dataset: str) -> set[str]:
     return set(split.loc[split["split"] == "train", "call_id"])
 
 
+def sample_train_calls(root: str | Path, dataset: str, n: int, seed: int) -> list[str]:
+    """Deterministic train-split-only sample of ``n`` call_ids that have chunks.
+
+    Shared by the reading pack (T6.1), the audit sample, and the ETA probe (T6.2) so the
+    human-labeled calls are exactly the model-extracted ones. **Leakage guard:** every
+    returned call_id is asserted to be in the train split (never val/test/embargo).
+    """
+    root = Path(root)
+    chunks = pd.read_parquet(root / dataset / "chunks.parquet")
+    train_ids = _train_call_ids(root, dataset)
+    have_chunks = set(chunks["call_id"].astype(str))
+    candidates = sorted(train_ids & have_chunks)
+    if len(candidates) < n:
+        raise ValueError(f"{dataset}: only {len(candidates)} train calls with chunks, need {n}")
+    picked = sorted(random.Random(seed).sample(candidates, n))
+    leaked = set(picked) - train_ids
+    if leaked:
+        raise AssertionError(f"sample leaked non-train calls: {sorted(leaked)}")
+    return picked
+
+
 def _render_call(chunks: pd.DataFrame) -> str:
     """Markdown transcript for one call: sections in order, one block per speaker turn."""
     lines: list[str] = []
@@ -66,17 +87,7 @@ def build_reading_pack(
     calls = pd.read_parquet(root / dataset / "calls.parquet")
     chunks = pd.read_parquet(root / dataset / "chunks.parquet")
 
-    train_ids = _train_call_ids(root, dataset)
-    have_chunks = set(chunks["call_id"].astype(str))
-    candidates = sorted(train_ids & have_chunks)
-    if len(candidates) < n:
-        raise ValueError(f"{dataset}: only {len(candidates)} train calls with chunks, need {n}")
-    picked = sorted(random.Random(seed).sample(candidates, n))
-
-    # Leakage assertion: every picked call must be train-only (never val/test/embargo).
-    leaked = set(picked) - train_ids
-    if leaked:
-        raise AssertionError(f"reading pack leaked non-train calls: {sorted(leaked)}")
+    picked = sample_train_calls(root, dataset, n, seed)  # train-only, leakage-asserted
 
     reading_dir = root / dataset / "llm_reading"
     reading_dir.mkdir(parents=True, exist_ok=True)

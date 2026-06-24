@@ -38,12 +38,22 @@ gpu = [
     "torchaudio>=2.7",  # required by funasr (emotion2vec+, T4.3)
     "sentence-transformers>=3.0",
     "transformers>=4.44",
+    "outlines>=0.1",  # JSON-schema-constrained decoding for LLM features (T6.2); cross-platform
+    "bitsandbytes>=0.43",  # local 4-bit (nf4) inference of the 7B model on the 16GB GPU (T6.2)
 ]
 # Audio feature stack (eGeMAPS via openSMILE; CPU). Not in default/CI installs;
 # `uv sync --group audio`. Imported lazily (T4.2).
 audio = [
     "opensmile>=2.5",
     "funasr>=1.1",  # emotion2vec+ (T4.3); pulls librosa/modelscope/numba — runs with the gpu group
+]
+# Cloud-burst LLM stack for the OSC (Linux) extraction run (T6.2). vLLM has no
+# Windows wheel, so it is gated behind a Linux marker — `uv lock` stays resolvable
+# on Windows, and this group is installed ONLY inside the OSC Apptainer container
+# (`uv sync --group cloud`), never locally or in CI.
+cloud = [
+    "vllm>=0.6; sys_platform == 'linux'",
+    "outlines>=0.1",
 ]
 
 [[tool.uv.index]]

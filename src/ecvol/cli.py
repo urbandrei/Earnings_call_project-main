@@ -375,6 +375,103 @@ def featurize_llm_reading_pack(
     typer.echo("  rubric: docs/llm_feature_rubric.md — fill the sheet, then sign off (HANDOFF)")
 
 
+@featurize_app.command("llm-audit-sample")
+def featurize_llm_audit_sample(
+    dataset: str = typer.Option("fincall", help="Dataset: fincall | maec."),
+    root: Path = typer.Option(Path("data"), help="Data root directory."),  # noqa: B008
+    n: int = typer.Option(50, help="Audit calls (train split only); the κ-gate sample size."),
+    seed: int = typer.Option(0, help="Sample seed (deterministic; must match the probe)."),
+) -> None:
+    """Fix the 50-call train-only κ-audit sample + (re)write its labeling sheet (T6.2)."""
+    from ecvol.features.llm.reading import build_reading_pack
+
+    pack = build_reading_pack(root, dataset, n=n, seed=seed)
+    typer.echo(f"{dataset}: {len(pack.call_ids)} train-split audit calls (seed {seed})")
+    typer.echo(f"  transcripts: {pack.reading_dir} (gitignored payload)")
+    typer.echo(f"  labeling sheet: {pack.sheet_path}")
+    typer.echo("  fill this sheet, then `ecvol llm-kappa` once features are extracted")
+
+
+@featurize_app.command("llm-eta")
+def featurize_llm_eta(
+    dataset: str = typer.Option("fincall", help="Dataset whose train audit sample to probe."),
+    root: Path = typer.Option(Path("data"), help="Data root directory."),  # noqa: B008
+    model_id: str = typer.Option("Qwen/Qwen2.5-7B-Instruct", help="HF model id."),
+    revision: str = typer.Option("", help="Pinned HF commit (recommended; DESIGN §12)."),
+    n_probe: int = typer.Option(50, help="Audit calls to extract for timing (aligns with sample)."),
+    seed: int = typer.Option(0, help="Sample seed (must match llm-audit-sample)."),
+    device: str = typer.Option("cuda", help="torch device (cuda | cpu)."),
+    no_4bit: bool = typer.Option(False, help="Disable bitsandbytes 4-bit (use fp16)."),
+) -> None:
+    """Probe: extract the train audit sample, report rate + full-corpus ETA + VRAM (T6.2)."""
+    from ecvol.features.llm.extract import build_llm, total_sections
+    from ecvol.features.llm.reading import sample_train_calls
+
+    call_ids = sample_train_calls(root, dataset, n_probe, seed)
+    res = build_llm(
+        root,
+        dataset,
+        model_id=model_id,
+        revision=revision or None,
+        engine="transformers",
+        device=device,
+        call_ids=call_ids,
+        load_in_4bit=not no_4bit,
+    )
+    total = total_sections(root, ("fincall", "maec"))
+    typer.echo(
+        f"{dataset}: probed {res.n_new} new ({res.n_rows} total) sections in {res.secs:.1f}s"
+    )
+    typer.echo(f"  features: {res.out_path}")
+    if res.n_new and res.secs > 0:
+        rate = res.n_new / res.secs
+        eta_h = total / rate / 3600
+        typer.echo(f"  throughput: {rate:.3f} sections/s ({rate * 3600:.0f}/h)")
+        typer.echo(
+            f"  full-corpus ETA (~{total} sections, fincall+maec): ~{eta_h:.1f}h "
+            f"on this GPU with {model_id} 4-bit"
+        )
+        typer.echo("  RULE: >20h here → route the corpus to OSC (cloud/osc/, DECISIONS spend gate)")
+    try:
+        import torch
+
+        if torch.cuda.is_available():
+            peak = torch.cuda.max_memory_allocated() / 1e9
+            typer.echo(f"  peak VRAM: {peak:.1f} GB")
+    except Exception:  # noqa: BLE001 - VRAM read is best-effort
+        pass
+
+
+@featurize_app.command("llm")
+def featurize_llm(
+    dataset: str = typer.Option("fincall", help="Dataset: fincall | maec."),
+    root: Path = typer.Option(Path("data"), help="Data root directory."),  # noqa: B008
+    model_id: str = typer.Option("Qwen/Qwen2.5-7B-Instruct", help="HF model id."),
+    revision: str = typer.Option("", help="Pinned HF commit (recommended; DESIGN §12)."),
+    engine: str = typer.Option("transformers", help="Inference engine: transformers | vllm."),
+    device: str = typer.Option("cuda", help="torch device (transformers engine)."),
+    limit: int = typer.Option(0, help="Process only the first N calls (0 = full corpus)."),
+    no_4bit: bool = typer.Option(False, help="Disable bitsandbytes 4-bit (transformers engine)."),
+) -> None:
+    """Constrained LLM structured-feature extraction → llm_features__{model}.parquet (T6.2)."""
+    from ecvol.features.llm.extract import build_llm
+
+    kwargs = {}
+    if engine == "transformers":
+        kwargs = {"device": device, "load_in_4bit": not no_4bit}
+    res = build_llm(
+        root,
+        dataset,
+        model_id=model_id,
+        revision=revision or None,
+        engine=engine,
+        limit=(limit or None),
+        **kwargs,
+    )
+    typer.echo(f"{dataset}: {res.n_new} new sections, {res.n_rows} total in {res.secs:.1f}s")
+    typer.echo(f"  features: {res.out_path}")
+
+
 audio_app = typer.Typer(no_args_is_help=True, help="Audio QC + features (Phase 4).")
 app.add_typer(audio_app, name="audio")
 
@@ -646,3 +743,18 @@ def report(
         md4, tex4 = write_reports4(root)
         typer.echo(f"Table 4 markdown: {md4}")
         typer.echo(f"Table 4 latex:    {tex4}")
+
+
+@app.command("llm-kappa")
+def llm_kappa(
+    sheet: Path = typer.Option(..., help="Filled labeling sheet CSV (from llm-audit-sample)."),  # noqa: B008
+    features: Path = typer.Option(..., help="llm_features__{model}.parquet to score."),  # noqa: B008
+) -> None:
+    """κ-audit: per-field model-vs-human agreement; gate κ>0.6 before corpus scale (T6.2)."""
+    from ecvol.features.llm.audit import compute_kappa, passes_gate
+
+    k = compute_kappa(sheet, features)
+    for field, v in k.items():
+        kv = "n/a" if v["kappa"] is None else f"{v['kappa']:.3f}"
+        typer.echo(f"  {field:18s} κ={kv:>6s}  (n={v['n']})")
+    typer.echo(f"GATE κ>0.6: {'PASS' if passes_gate(k) else 'FAIL'}")

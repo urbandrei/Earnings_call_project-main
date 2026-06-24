@@ -286,15 +286,15 @@
   - [x] Prompt drafts (`features/llm/prompts.py`) — section-aware, `PROMPT_VERSION="v1"`
 - **Notes:** 2026-06-24 — v1 scaffolding committed (engineering); field set is the pre-registered one. **Blocked:** acceptance test is human (two-pass agreement over 10 calls) → blank labeling sheet `data/coverage/fincall_llm_label_sheet.csv` (one row per call×section, leakage-safe train-only sample). User reads + labels + signs off (or requests rubric edits) before T6.2 extraction is built against the frozen schema+prompt. DECISIONS 2026-06-24.
 
-### T6.2 Constrained extraction + human-audit gate — `[ ]`
+### T6.2 Constrained extraction + human-audit gate — `[~]` *(pipeline built; ETA probe + κ-gate pending)*
 - **Goal:** reliable corpus-scale extraction on consumer GPU.
 - **End result:** Qwen2.5-7B-Instruct (4-bit) + Outlines pipeline; vLLM if VRAM allows, llama.cpp fallback; extracted features for the full corpus, cached with prompt+model version keys.
 - **Acceptance test:** 100% schema-valid outputs (constrained decoding guarantees shape; the gate is on content): **human audit on 50 calls, κ > 0.6 on categorical fields vs. rubric labels — scaling to corpus is blocked until passed**; throughput ETA recorded.
 - **Subtasks:**
-  - [ ] `extract.py` (Outlines, batched, resumable)
-  - [ ] Audit tooling (`audit.py`) + labeling sheet
-  - [ ] Batch runner with resume
-- **Notes:** —
+  - [x] `extract.py` (Outlines 1.3 constrained decoding, resumable, deterministic, model-suffixed parquet) — engine-agnostic: `transformers`+bitsandbytes-4bit (Windows local) / `vllm` (OSC Linux)
+  - [x] Audit tooling (`audit.py` — per-field κ + gate + model-vs-model matrix; `ecvol llm-kappa`) + 50-call labeling sheet (`featurize llm-audit-sample`, train-only)
+  - [x] Batch runner with resume (`ecvol featurize llm`) + ETA probe (`featurize llm-eta`)
+- **Notes:** 2026-06-24 — engineering done + gated (242 tests). Plan: multi-model panel on **OSC** (exploration: does scale → signal?) if local ETA >20h; `cloud/osc/` package + DECISIONS spend entry. **Pending:** (1) local ETA probe result, (2) frozen schema (T6.1 sign-off), (3) per-model **κ>0.6** human audit before corpus scale. See DECISIONS 2026-06-24, HANDOFF.
 
 ### T6.3 Stage-5 results + masking ablation → Result Table 5 — `[ ]`
 - **Goal:** RQ3 answered; lookahead leakage estimated.
