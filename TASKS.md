@@ -261,15 +261,16 @@
   - [x] Hyperparameter ranges fixed (reuses heads.py MLP/ridge configs; no post-hoc sweeps) — `eval/stage4.py` + `ecvol evaluate-fusion`
 - **Notes:** **DONE 2026-06-24.** All modalities (text BGE + WavLM + emotion2vec+ + eGeMAPS) + past-vol; covariates {in, out}; DM vs persistence/Stage-1/Stage-2/Stage-3. **Cross-attention omitted** (one pooled vector per modality → 2–3-token attention ≈ gated fusion; DECISIONS 2026-06-24). **`result_table_4_fusion.csv` = 288 rows, 0 NaN.** **RQ2 finding: multimodal is NOT > best unimodal** — only 1/48 Δv-test cells beats all of Stage-1/2/3 DM-significantly (gated τ7 r2 +0.019, negligible); best fusion (stack ticker-disjoint τ3 r2 +0.436) is **not** DM-sig vs Stage-1 (p=0.13). Fusion ≈ best unimodal ≈ past-vol → consistent with provisional Path B. sklearn/CPU (CI-torch-free). 5 new tests; ruff clean. FinCall-only. Journal: 2026-06-24 T5.1 entry.
 
-### T5.2 Full ablation grid → Result Table 4 (main table) — `[ ]`
+### T5.2 Full ablation grid → Result Table 4 (main table) — `[x]` *(done 2026-06-24 — completes Phase 5)*
 - **Goal:** the DESIGN.md §7.6 grid, populated.
 - **End result:** **Result Table 4** — modality × covariates × split × target × horizon, with significance annotations; per-year breakdown appendix table.
 - **Acceptance test:** every confirmatory comparison from §7.5 has a Holm-corrected p-value; `ecvol report` regenerates the whole grid from artifacts.
 - **Subtasks:**
-  - [ ] Grid runner (config templating)
-  - [ ] Compute-budget check
-  - [ ] Appendix tables
-- **Notes:** —
+  - [x] Grid runner — `eval/grid.py` + `ecvol grid`: consolidates the **pre-registered canonical model per stage** (persistence/HAR/GBDT/ridge-text/ridge-audio/fusion-stack — all **ridge/structural, no MLP**) → `result_table_4.csv` (720 rows)
+  - [x] Holm correction — confirmatory Stage-k-vs-Stage-1 DM on Δv, across 4 horizons per (stage, split); `holm_p_vs_stage1` column
+  - [x] Appendix tables — `report.py write_reports4` → `result_table_4.{md,tex}` (committed-artifact CI guard) + per-year breakdown `result_table_4_peryear.csv`
+- **Notes:** **DONE 2026-06-24 — Phase 5 COMPLETE.** Acceptance met: Holm-corrected Δv p-values; byte-identical `ecvol report` regen (CI-guarded) + byte-identical grid rebuild. **Canonical models are ridge/structural by design — the main table deliberately avoids the seed-unreliable MLP heads flagged below.** Findings: 15 Δv-test cells Holm-sig vs Stage-1, but the 7 favorable ones are all on the **ticker-disjoint** split (identity/past-vol-confounded per T3.4/T4.4 shuffle); on the regime-honest **temporal** split text/fusion are Holm-sig *worse* than Stage-1. Per-year: FinCall temporal test = entirely 2021; there every content model underperforms persistence (level-v R²_OOS HAR −0.29 / GBDT −0.82 / text −1.09 / audio −1.66 / fusion −1.02). Reinforces provisional Path B. 3 new tests; ruff clean. Journal: 2026-06-24 T5.2 entry.
+- **Notes (future-work):** **Future-work (from 2026-06-24 validation/gut-check):** the **shallow MLP heads are unreliable** — across-seed `seed_std` reaches 1.07 mean / 3.36 max R² units (`mlp_egemaps_audio_pastvol`, Table 3), so the catastrophic negative R²s (−26 Table 2, −77 Table 3) are seed-driven divergence, not signal (features are StandardScaler'd; ridge/structural heads are deterministic, GBDT MSE-std ~0.005). When building the unified grid, **report the MLP as median-over-seeds (or IQR), retune (higher `MLP_ALPHA`/lower capacity), or demote it to a robustness check** so the main table isn't read off divergent seeds. Also note the **"past-vol" covariate block (`stage2.py` `PASTVOL = [v_pre, rv_daily, rv_weekly, rv_monthly]`, standardized, val-selected α) is NOT the same estimator as Table-1 HAR** (untuned OLS on the 3 RV terms) — it tanks to −2.0 on temporal τ=15 where HAR is +0.21 (regime-robustness gap; they agree on ticker-disjoint). Keep them labeled distinctly in the grid.
 
 ---
 
@@ -354,7 +355,7 @@
   - [ ] Figures notebooks
   - [ ] Venue selection memo
   - [ ] arXiv submission
-- **Notes:** —
+- **Notes:** **Limitations to draft (from 2026-06-24 validation/gut-check):** (1) **MLP-head instability** — across-seed R² `seed_std` up to ~3.4 units; report median/IQR, not divergent-seed means (see T5.2 note). (2) **Past-vol baseline is not HAR** — the Stage-2/3 `[v_pre, rv_daily, rv_weekly, rv_monthly]` ridge (standardized, val-tuned α) overfits the temporal/COVID regime (−2.0 at τ=15) where the rigid OLS-HAR is robust (+0.21); arguably a small *finding* (structural HAR > unconstrained ridge under regime shift) worth a sentence, but at minimum the two must be labeled distinctly. (3) **Short-horizon R²_OOS is inflated by a noisy persistence baseline** (persistence MSE τ=3=1.17 vs τ=7=0.42) — frame short-τ gains honestly. **Validation assets available:** `notebooks/validate_results.py` independently reproduces all 9,696 targets to 1e-15, confirms leakage-free splits and clean features, and emits `data/results/figures/*.png` (R² heatmaps, identity gap, target dists, feature sanity) + `target_handcheck.csv` — feed these into the figures-notebook subtask (matplotlib still needs pinning into the lockfile at this phase).
 
 ### T8.3 (Conditional) Stage-6 cloud experiments — `[ ]`
 - **Goal:** QLoRA fine-tuning / audio-LLM experiments, only if the DESIGN.md §6 Stage-6 gate passed.

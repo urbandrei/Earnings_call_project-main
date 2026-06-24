@@ -585,11 +585,34 @@ def evaluate_fusion(
 
 
 @app.command()
+def grid(
+    root: Path = typer.Option(Path("data"), help="Data root directory."),  # noqa: B008
+) -> None:
+    """Consolidate Stages 0-4 → Result Table 4 (main grid, Holm-corrected) + per-year (T5.2)."""
+    from ecvol.eval.grid import run_grid
+
+    table, peryear = run_grid(root)
+    typer.echo(f"Result Table 4: {len(table)} rows → data/results/result_table_4.csv")
+    sig = table[
+        (table["target"] == "dv")
+        & (table["segment"] == "test")
+        & (table["holm_p_vs_stage1"] < 0.05)
+    ]
+    typer.echo(f"Δv test cells Holm-significant vs Stage-1: {len(sig)}")
+    typer.echo(f"per-year breakdown: {len(peryear)} rows → data/results/result_table_4_peryear.csv")
+
+
+@app.command()
 def report(
     root: Path = typer.Option(Path("data"), help="Data root directory."),  # noqa: B008
 ) -> None:
-    """Render result tables (Markdown + LaTeX) from run artifacts (T2.3, T3.3, T4.4)."""
-    from ecvol.eval.report import write_reports, write_reports2, write_reports3
+    """Render result tables (Markdown + LaTeX) from run artifacts (T2.3, T3.3, T4.4, T5.2)."""
+    from ecvol.eval.report import (
+        write_reports,
+        write_reports2,
+        write_reports3,
+        write_reports4,
+    )
 
     md_path, tex_path = write_reports(root)
     typer.echo(f"Table 1 markdown: {md_path}")
@@ -602,3 +625,7 @@ def report(
         md3, tex3 = write_reports3(root)
         typer.echo(f"Table 3 markdown: {md3}")
         typer.echo(f"Table 3 latex:    {tex3}")
+    if (root / "results" / "result_table_4.csv").is_file():
+        md4, tex4 = write_reports4(root)
+        typer.echo(f"Table 4 markdown: {md4}")
+        typer.echo(f"Table 4 latex:    {tex4}")

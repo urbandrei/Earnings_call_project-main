@@ -11,16 +11,18 @@ Each entry: date · task ID · what the user must do · what unblocks when it's 
 
 ## Active (action needed to unblock a task)
 
-- **2026-06-24 · PHASE-4 BOUNDARY CHECKPOINT (gate policy) — push + confirm CI.** Phase 4
-  (T4.1–T4.4, audio ladder) is complete; the loop **pauses here** until you push the local commits
-  (~20 since the last push: Phase-3 + all of Phase 4 + the `paper/` scaffold) and confirm GitHub
-  Actions is green. Then reply "CI green, continue" and the loop starts **Phase 5 (fusion +
-  full ablation grid → Result Table 4, the main paper table)**. *Note:* CI installs only the `dev`
-  group, so the new `gpu`/`audio` deps (torch/funasr/opensmile) are **not** in CI — the audio/GPU
-  tests skip there by design; confirm the suite still goes green.
-  - *Untracked, left for you:* `setup.md` (a generic project-governance bootstrap doc from a
-    parallel session) is uncommitted at the repo root — commit it or move it out as you see fit;
-    it's unrelated to the ecvol pipeline.
+- **2026-06-24 · PHASE-5 BOUNDARY CHECKPOINT (gate policy) — push + confirm CI.** Phase 5
+  (T5.1 fusion + T5.2 Result Table 4) is complete; the loop **pauses here** until you push the
+  local commits (Phase 5: fusion, grid, the two parallel-session commits paper/ + validate_results)
+  and confirm GitHub Actions is green. Then reply "CI green, continue" and the loop starts
+  **Phase 6 — LLM structured features**.
+  - **⚠️ Heads-up — Phase 6 carries the first hard human-labor blocker:** T6.2 (and exploration
+    TX1) require a **50-call human audit with κ>0.6** before corpus-scale LLM extraction, and T6.1
+    needs you to read ~20 calls to co-design the feature schema. I'll build all the labeling tooling
+    and pre-fill what I can, but the agreement numbers are yours — budget for a labeling session.
+    T6.2 may also want a **local LLM** (Qwen2.5-7B-Instruct 4-bit via the GPU stack) — no new key,
+    but a model download + a VRAM/throughput ETA gate like the audio runs.
+  - *(Phase-4 checkpoint cleared: CI was confirmed green; `setup.md` is now gitignored.)*
 
 ### Resolved
 - **2026-06-19 · T3.1 section audit — DONE (30/30 correct).** Both operator-handoff and

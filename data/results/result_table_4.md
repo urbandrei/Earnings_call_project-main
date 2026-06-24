@@ -1,0 +1,180 @@
+# Result Table 4 — consolidated ablation grid (canonical model per stage)
+
+`*` = Holm-significant vs Stage-1 (Δv family, across horizons per stage×split).
+
+## fincall — temporal split — level-v — R²_OOS vs persistence (test) (n=481)
+
+| Stage | τ=3 | τ=7 | τ=15 | τ=30 |
+| --- | --- | --- | --- | --- |
+| Persistence | 0.000 | 0.000 | 0.000 | 0.000 |
+| HAR-RV | 0.464 | 0.410 | 0.207 | -0.287 |
+| GBDT (ticker FE) | 0.354 | 0.262 | -0.040 | -0.839 |
+| Text (BGE+vol) | 0.448 | 0.328 | 0.045 | -1.091 |
+| Audio (WavLM+eG+vol) | 0.338 | 0.221 | -0.139 | -1.661 |
+| Fusion (stack) | 0.448 | 0.370 | 0.125 | -1.015 |
+
+## fincall — ticker_disjoint split — level-v — R²_OOS vs persistence (test) (n=484)
+
+| Stage | τ=3 | τ=7 | τ=15 | τ=30 |
+| --- | --- | --- | --- | --- |
+| Persistence | 0.000 | 0.000 | 0.000 | 0.000 |
+| HAR-RV | 0.495 | 0.357 | 0.211 | 0.229 |
+| GBDT (ticker FE) | 0.412 | 0.278 | 0.078 | 0.116 |
+| Text (BGE+vol) | 0.418 | 0.211 | -0.006 | 0.139 |
+| Audio (WavLM+eG+vol) | 0.400 | 0.137 | 0.073 | 0.144 |
+| Fusion (stack) | 0.450 | 0.264 | 0.050 | 0.171 |
+
+## fincall — temporal split — Δv — R²_OOS vs persistence (test) (n=481)
+
+| Stage | τ=3 | τ=7 | τ=15 | τ=30 |
+| --- | --- | --- | --- | --- |
+| Persistence | 0.000 | 0.000 | 0.000 | 0.000 |
+| HAR-RV | 0.464 | 0.410 | 0.207 | -0.287 |
+| GBDT (ticker FE) | 0.344 | 0.248 | -0.057 | -0.904 |
+| Text (BGE+vol) | -1.678 | -3.076 | -3.586 | -0.468 |
+| Audio (WavLM+eG+vol) | 0.214 | -1.099 | -3.706 | -0.548 |
+| Fusion (stack) | 0.232 | -0.326 | -1.828 | -0.010* |
+
+## fincall — ticker_disjoint split — Δv — R²_OOS vs persistence (test) (n=484)
+
+| Stage | τ=3 | τ=7 | τ=15 | τ=30 |
+| --- | --- | --- | --- | --- |
+| Persistence | 0.000 | 0.000 | 0.000 | 0.000 |
+| HAR-RV | 0.495 | 0.357 | 0.211 | 0.229 |
+| GBDT (ticker FE) | 0.407 | 0.275 | 0.089 | 0.108 |
+| Text (BGE+vol) | 0.223* | 0.129* | 0.094 | 0.236 |
+| Audio (WavLM+eG+vol) | 0.304* | 0.147* | 0.044 | 0.209 |
+| Fusion (stack) | 0.436 | 0.292 | 0.133 | 0.244* |
+
+## maec — temporal split — level-v — R²_OOS vs persistence (test) (n=507)
+
+| Stage | τ=3 | τ=7 | τ=15 | τ=30 |
+| --- | --- | --- | --- | --- |
+| Persistence | 0.000 | 0.000 | 0.000 | 0.000 |
+| HAR-RV | 0.507 | 0.392 | 0.306 | 0.206 |
+| GBDT (ticker FE) | 0.397 | 0.333 | 0.217 | 0.131 |
+| Text (BGE+vol) | 0.482 | 0.279 | 0.132 | -0.013 |
+| Audio (WavLM+eG+vol) | — | — | — | — |
+| Fusion (stack) | — | — | — | — |
+
+## maec — ticker_disjoint split — level-v — R²_OOS vs persistence (test) (n=514)
+
+| Stage | τ=3 | τ=7 | τ=15 | τ=30 |
+| --- | --- | --- | --- | --- |
+| Persistence | 0.000 | 0.000 | 0.000 | 0.000 |
+| HAR-RV | 0.474 | 0.379 | 0.311 | 0.225 |
+| GBDT (ticker FE) | 0.395 | 0.306 | 0.236 | 0.221 |
+| Text (BGE+vol) | 0.451 | 0.299 | 0.186 | 0.090 |
+| Audio (WavLM+eG+vol) | — | — | — | — |
+| Fusion (stack) | — | — | — | — |
+
+## maec — temporal split — Δv — R²_OOS vs persistence (test) (n=507)
+
+| Stage | τ=3 | τ=7 | τ=15 | τ=30 |
+| --- | --- | --- | --- | --- |
+| Persistence | 0.000 | 0.000 | 0.000 | 0.000 |
+| HAR-RV | 0.507 | 0.392 | 0.306 | 0.206 |
+| GBDT (ticker FE) | 0.407 | 0.340 | 0.213 | 0.186 |
+| Text (BGE+vol) | -0.005* | -0.142* | 0.211 | 0.138 |
+| Audio (WavLM+eG+vol) | — | — | — | — |
+| Fusion (stack) | — | — | — | — |
+
+## maec — ticker_disjoint split — Δv — R²_OOS vs persistence (test) (n=514)
+
+| Stage | τ=3 | τ=7 | τ=15 | τ=30 |
+| --- | --- | --- | --- | --- |
+| Persistence | 0.000 | 0.000 | 0.000 | 0.000 |
+| HAR-RV | 0.474 | 0.379 | 0.311 | 0.225 |
+| GBDT (ticker FE) | 0.394 | 0.285 | 0.227 | 0.233 |
+| Text (BGE+vol) | 0.330 | 0.142* | 0.204 | 0.163 |
+| Audio (WavLM+eG+vol) | — | — | — | — |
+| Fusion (stack) | — | — | — | — |
+
+## fincall — temporal split — level-v — MSE (test) (n=481)
+
+| Stage | τ=3 | τ=7 | τ=15 | τ=30 |
+| --- | --- | --- | --- | --- |
+| Persistence | 1.174 | 0.419 | 0.208 | 0.111 |
+| HAR-RV | 0.630 | 0.247 | 0.165 | 0.143 |
+| GBDT (ticker FE) | 0.758 | 0.309 | 0.216 | 0.205 |
+| Text (BGE+vol) | 0.648 | 0.281 | 0.199 | 0.233 |
+| Audio (WavLM+eG+vol) | 0.777 | 0.326 | 0.237 | 0.296 |
+| Fusion (stack) | 0.649 | 0.264 | 0.182 | 0.225 |
+
+## fincall — ticker_disjoint split — level-v — MSE (test) (n=484)
+
+| Stage | τ=3 | τ=7 | τ=15 | τ=30 |
+| --- | --- | --- | --- | --- |
+| Persistence | 1.142 | 0.386 | 0.214 | 0.233 |
+| HAR-RV | 0.577 | 0.248 | 0.169 | 0.180 |
+| GBDT (ticker FE) | 0.672 | 0.278 | 0.197 | 0.206 |
+| Text (BGE+vol) | 0.665 | 0.304 | 0.215 | 0.201 |
+| Audio (WavLM+eG+vol) | 0.686 | 0.333 | 0.198 | 0.200 |
+| Fusion (stack) | 0.628 | 0.284 | 0.203 | 0.193 |
+
+## fincall — temporal split — Δv — MSE (test) (n=481)
+
+| Stage | τ=3 | τ=7 | τ=15 | τ=30 |
+| --- | --- | --- | --- | --- |
+| Persistence | 1.174 | 0.419 | 0.208 | 0.111 |
+| HAR-RV | 0.630 | 0.247 | 0.165 | 0.143 |
+| GBDT (ticker FE) | 0.771 | 0.315 | 0.220 | 0.212 |
+| Text (BGE+vol) | 3.145 | 1.706 | 0.954 | 0.164 |
+| Audio (WavLM+eG+vol) | 0.923 | 0.879 | 0.979 | 0.172 |
+| Fusion (stack) | 0.902 | 0.555 | 0.588 | 0.113* |
+
+## fincall — ticker_disjoint split — Δv — MSE (test) (n=484)
+
+| Stage | τ=3 | τ=7 | τ=15 | τ=30 |
+| --- | --- | --- | --- | --- |
+| Persistence | 1.142 | 0.386 | 0.214 | 0.233 |
+| HAR-RV | 0.577 | 0.248 | 0.169 | 0.180 |
+| GBDT (ticker FE) | 0.678 | 0.279 | 0.195 | 0.208 |
+| Text (BGE+vol) | 0.888* | 0.336* | 0.194 | 0.178 |
+| Audio (WavLM+eG+vol) | 0.795* | 0.329* | 0.204 | 0.184 |
+| Fusion (stack) | 0.644 | 0.273 | 0.185 | 0.176* |
+
+## maec — temporal split — level-v — MSE (test) (n=507)
+
+| Stage | τ=3 | τ=7 | τ=15 | τ=30 |
+| --- | --- | --- | --- | --- |
+| Persistence | 1.383 | 0.571 | 0.318 | 0.189 |
+| HAR-RV | 0.682 | 0.347 | 0.221 | 0.150 |
+| GBDT (ticker FE) | 0.834 | 0.381 | 0.249 | 0.164 |
+| Text (BGE+vol) | 0.716 | 0.412 | 0.276 | 0.191 |
+| Audio (WavLM+eG+vol) | — | — | — | — |
+| Fusion (stack) | — | — | — | — |
+
+## maec — ticker_disjoint split — level-v — MSE (test) (n=514)
+
+| Stage | τ=3 | τ=7 | τ=15 | τ=30 |
+| --- | --- | --- | --- | --- |
+| Persistence | 1.268 | 0.492 | 0.302 | 0.184 |
+| HAR-RV | 0.667 | 0.306 | 0.208 | 0.142 |
+| GBDT (ticker FE) | 0.767 | 0.342 | 0.230 | 0.143 |
+| Text (BGE+vol) | 0.695 | 0.345 | 0.246 | 0.167 |
+| Audio (WavLM+eG+vol) | — | — | — | — |
+| Fusion (stack) | — | — | — | — |
+
+## maec — temporal split — Δv — MSE (test) (n=507)
+
+| Stage | τ=3 | τ=7 | τ=15 | τ=30 |
+| --- | --- | --- | --- | --- |
+| Persistence | 1.383 | 0.571 | 0.318 | 0.189 |
+| HAR-RV | 0.682 | 0.347 | 0.221 | 0.150 |
+| GBDT (ticker FE) | 0.820 | 0.377 | 0.250 | 0.154 |
+| Text (BGE+vol) | 1.390* | 0.653* | 0.251 | 0.163 |
+| Audio (WavLM+eG+vol) | — | — | — | — |
+| Fusion (stack) | — | — | — | — |
+
+## maec — ticker_disjoint split — Δv — MSE (test) (n=514)
+
+| Stage | τ=3 | τ=7 | τ=15 | τ=30 |
+| --- | --- | --- | --- | --- |
+| Persistence | 1.268 | 0.492 | 0.302 | 0.184 |
+| HAR-RV | 0.667 | 0.306 | 0.208 | 0.142 |
+| GBDT (ticker FE) | 0.769 | 0.352 | 0.233 | 0.141 |
+| Text (BGE+vol) | 0.850 | 0.422* | 0.240 | 0.154 |
+| Audio (WavLM+eG+vol) | — | — | — | — |
+| Fusion (stack) | — | — | — | — |
+
