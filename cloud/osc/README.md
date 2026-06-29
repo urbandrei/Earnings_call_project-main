@@ -119,7 +119,8 @@ set (T6.3); the rest are exploratory comparisons.
   (~2.6k FinCall + MAEC calls × 2 sections, long-context prefill-bound) in a handful of
   GPU-hours per model — the full panel should land **well under budget**; cost is not the
   binding constraint, the local >20h convenience rule is.
-- Get a real per-model number with a short sample job first: `--export=...,MODEL_ID=...` plus a
-  temporary `--limit` (add to the sbatch) before committing the full panel.
+- Get a real per-model number with a short sample job first — pass `LIMIT=3` in the `--export`
+  (e.g. `--export=ALL,MODEL_ID=...,DATASET=fincall,LIMIT=3`) before committing the full panel.
+  This also validates the YaRN/vLLM path on a long section cheaply.
 - **No paid job runs until the DECISIONS spend entry is approved** (it is — see the 2026-06-24
   entry — within the $1000 envelope; log any overage as a new entry).
