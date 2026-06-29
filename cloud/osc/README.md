@@ -37,6 +37,15 @@ from here without re-auditing the 32B.
 
 The package is cluster-agnostic; only `--account` and `--gpus-per-node` may need tweaking.
 
+## Context policy — >32k sections (already wired)
+
+FinCall's longest sections reach ~61k tokens, past Qwen2.5's 32k native context. Policy
+(DECISIONS 2026-06-29): **extend, don't truncate** — `extract.sbatch` runs with
+`MAX_MODEL_LEN=65536` + `YARN=1` (vLLM YaRN rope-scaling) by default, so every section is
+processed whole. To override per submission, pass `--export=...,MAX_MODEL_LEN=...,YARN=0`. The
+policy must be identical for a model's κ-audit and its corpus run — since the 50 audit calls are
+a FinCall subset extracted by the same job, this holds automatically.
+
 ## Workflow
 
 ```bash
@@ -61,8 +70,11 @@ done
 # 4. outputs land in the bind-mounted repo: data/{dataset}/llm_features__{model}.parquet
 #    rsync them back to your workstation.
 
-# 5. κ-audit each model LOCALLY against the filled human sheet (the content gate):
-#    ecvol llm-kappa --sheet data/coverage/fincall_llm_label_sheet.csv \
+# 5. κ-audit each model LOCALLY against the filled human sheet (the content gate).
+#    The corpus run already extracted the 50 audit calls (they're a FinCall subset), so the
+#    same container+model covers them — no separate audit job (reproducibility rule above).
+#    Gate is on the confirmatory core; weak/exploratory fields are reported only.
+#    ecvol llm-kappa --sheet data/coverage/fincall_llm_labels_rater1.csv \
 #                    --features data/fincall/llm_features__Qwen__Qwen2.5-32B-Instruct.parquet
 ```
 

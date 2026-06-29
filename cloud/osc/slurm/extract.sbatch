@@ -22,6 +22,8 @@ set -euo pipefail
 MODEL_ID="${MODEL_ID:-Qwen/Qwen2.5-7B-Instruct}"
 REVISION="${REVISION:-}"            # pin a HF commit for reproducibility (DESIGN §12)
 DATASET="${DATASET:-fincall}"
+MAX_MODEL_LEN="${MAX_MODEL_LEN:-65536}"   # context policy: extend to 64k (covers the 61k tail)
+YARN="${YARN:-1}"                          # 1 = YaRN rope-scaling on (the chosen >32k policy)
 PROJECT="${SLURM_SUBMIT_DIR:-$PWD}"
 SIF="$PROJECT/cloud/osc/ecvol-llm.sif"
 
@@ -44,6 +46,8 @@ apptainer exec --nv \
         --model-id "$MODEL_ID" \
         ${REVISION:+--revision "$REVISION"} \
         --engine vllm \
+        --max-model-len "$MAX_MODEL_LEN" \
+        $([ "$YARN" = "1" ] && echo --yarn) \
         --root /workspace/data
 
 echo "done; features at data/$DATASET/llm_features__$(echo "$MODEL_ID" | tr '/' '_')*.parquet"

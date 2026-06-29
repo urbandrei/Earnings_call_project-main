@@ -49,6 +49,26 @@ def model_slug(model_id: str) -> str:
     return model_id.replace("/", "__").replace(":", "_")
 
 
+QWEN25_NATIVE_CONTEXT = 32768  # Qwen2.5 native max_position_embeddings
+
+
+def yarn_rope_scaling(max_model_len: int, native: int = QWEN25_NATIVE_CONTEXT) -> dict:
+    """YaRN rope-scaling config to extend a model's context to ``max_model_len``.
+
+    The corpus has a tail of sections longer than Qwen2.5's 32k native context (FinCall max
+    ~61k); the chosen policy (DECISIONS 2026-06-29) is to **extend, not truncate**, so every
+    section is processed whole. Static YaRN slightly degrades short-context quality — accepted
+    given the coverage gain. ``factor`` is the extension ratio over the native window.
+    """
+    if max_model_len <= native:
+        raise ValueError(f"max_model_len {max_model_len} <= native {native}; YaRN not needed")
+    return {
+        "rope_type": "yarn",
+        "factor": max_model_len / native,
+        "original_max_position_embeddings": native,
+    }
+
+
 def iter_section_inputs(
     root: str | Path,
     dataset: str,
@@ -138,10 +158,23 @@ class TransformersOutlinesEngine:
 class VLLMEngine:
     """Cloud engine (OSC, Linux): vLLM offline + Outlines constrained decoding."""
 
-    def __init__(self, model_id: str, *, revision: str | None = None, **llm_kwargs) -> None:
+    def __init__(
+        self,
+        model_id: str,
+        *,
+        revision: str | None = None,
+        rope_scaling: dict | None = None,
+        **llm_kwargs,
+    ) -> None:
         import outlines
         from vllm import LLM
 
+        if rope_scaling:
+            # vLLM ≥0.6 takes HF model-config overrides (incl. YaRN rope scaling) via
+            # ``hf_overrides``; older builds accepted a direct ``rope_scaling=`` arg. The OSC
+            # container pins vllm-openai:latest → hf_overrides. ``max_model_len`` flows via
+            # llm_kwargs (LLM accepts it natively).
+            llm_kwargs.setdefault("hf_overrides", {})["rope_scaling"] = rope_scaling
         llm = LLM(model=model_id, revision=revision, **llm_kwargs)
         self.tokenizer = llm.get_tokenizer()
         self.model = outlines.from_vllm_offline(llm)

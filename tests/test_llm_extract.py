@@ -130,3 +130,16 @@ def test_sample_train_calls_train_only_and_deterministic(tmp_path):
 def test_build_engine_rejects_unknown():
     with pytest.raises(ValueError):
         E.build_engine("x/y", engine="nonsense")
+
+
+def test_yarn_rope_scaling_config():
+    # 64k over Qwen2.5's 32k native → factor 2.0, YaRN type, native recorded
+    cfg = E.yarn_rope_scaling(65536)
+    assert cfg == {
+        "rope_type": "yarn",
+        "factor": 2.0,
+        "original_max_position_embeddings": 32768,
+    }
+    # not needed when the target is within native context → loud failure, not a silent no-op
+    with pytest.raises(ValueError):
+        E.yarn_rope_scaling(16384)

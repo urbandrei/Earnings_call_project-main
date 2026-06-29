@@ -485,15 +485,28 @@ def featurize_llm(
     max_model_len: int = typer.Option(
         0, help="vLLM context window (0 = model default; set ~65536 to cover the >32k tail)."
     ),
+    yarn: bool = typer.Option(
+        False,
+        help="vLLM: enable YaRN rope-scaling to reach --max-model-len beyond the model's native "
+        "context (the chosen >32k policy; DECISIONS 2026-06-29). Requires --max-model-len.",
+    ),
+    yarn_native: int = typer.Option(
+        32768, help="Model native max context for the YaRN factor (Qwen2.5 = 32768)."
+    ),
 ) -> None:
     """Constrained LLM structured-feature extraction → llm_features__{model}.parquet (T6.2)."""
-    from ecvol.features.llm.extract import build_llm
+    from ecvol.features.llm.extract import build_llm, yarn_rope_scaling
 
     kwargs = {}
     if engine == "transformers":
         kwargs = {"device": device, "load_in_4bit": not no_4bit}
-    elif engine == "vllm" and max_model_len:
-        kwargs = {"max_model_len": max_model_len}
+    elif engine == "vllm":
+        if max_model_len:
+            kwargs["max_model_len"] = max_model_len
+        if yarn:
+            if not max_model_len:
+                raise typer.BadParameter("--yarn requires --max-model-len (e.g. 65536)")
+            kwargs["rope_scaling"] = yarn_rope_scaling(max_model_len, native=yarn_native)
     res = build_llm(
         root,
         dataset,

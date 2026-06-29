@@ -28,13 +28,13 @@ order of **a couple GPU-hours for the 7B**, scaling ~linearly with model size fo
 (32B ≈ 3–4×). Output is tiny (constrained decode). The full panel lands **well under the $1000
 budget**; get an exact per-model number from a short `--limit` sample job on OSC first.
 
-## Open design call — the >32k-token section tail
+## >32k-token section tail — RESOLVED (2026-06-29): extend via YaRN
 
 Qwen2.5's native context is 32k; the FinCall max section is 61k tokens (only the extreme ~tail
-exceeds 32k). Before the cloud run, decide:
-- **Truncate** sections to the model context (e.g. `--max-input-tokens`/char cap), logging the
-  affected count — simplest, negligible info loss on a handful of sections; or
-- **Extend context** to ~64k via vLLM `--max-model-len 65536` + YaRN rope scaling — covers all,
-  but long-context can slightly degrade quality.
-
-(Whatever is chosen must be identical for a model's κ-audit sample and its corpus run.)
+exceeds 32k). **Decision (user, DECISIONS 2026-06-29): extend, don't truncate** — process every
+section whole. Wired as `ecvol featurize llm --engine vllm --max-model-len 65536 --yarn` (YaRN
+rope-scaling, factor 2.0 over the 32768 native window; passed to vLLM via `hf_overrides`). The
+OSC Slurm job (`cloud/osc/slurm/extract.sbatch`) sets this by default (`MAX_MODEL_LEN=65536`,
+`YARN=1`). The same config covers a model's κ-audit sample (the 50 audit calls are extracted in
+the corpus run), satisfying the audit-matches-corpus rule. Accepted tradeoff: static YaRN
+slightly degrades short-context quality on the ~99% of sections under 12k (p99).

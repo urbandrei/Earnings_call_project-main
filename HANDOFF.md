@@ -25,20 +25,24 @@ Each entry: date · task ID · what the user must do · what unblocks when it's 
   - **What unblocks:** the content gate (`ecvol llm-kappa`) the instant OSC extraction lands; no
     further labeling is needed for the go/no-go.
 
-- **2026-06-24 · T6.2 — the corpus run goes to OSC (local OOM'd); needs OSC access + a context-policy call.**
-  The local ETA probe proved the 16 GB GPU **can't** run extraction at full context (CUDA OOM on
-  long-section prefill; see `data/coverage/llm_probe_report.md`). Everything for the cloud burst is
-  built (`cloud/osc/`) and the $1000 spend is approved (DECISIONS 2026-06-24). To proceed:
+- **2026-06-29 · T6.2 — the corpus run goes to OSC; package is turnkey, only OSC access + the operational steps remain.**
+  Local can't run extraction (16 GB OOMs at full context; `data/coverage/llm_probe_report.md`).
+  Everything for the cloud burst is built (`cloud/osc/`), the $1000 spend is approved (DECISIONS
+  2026-06-24), the schema is frozen at v2 (signed off), and the **>32k context policy is resolved**
+  (YaRN-extend to 65536, wired into `extract.sbatch` by default — DECISIONS 2026-06-29). Remaining is
+  operational, all on OSC:
   1. **Confirm your OSC allocation** — project/account code (`PASxxxx`) + cluster (recommend **Ascend
-     A100-80GB** or **Cardinal H100**). Put the account in `cloud/osc/slurm/extract.sbatch`.
-  2. **Build + stage on a login node:** `apptainer build cloud/osc/ecvol-llm.sif …` then
-     `bash cloud/osc/stage.sh Qwen/Qwen2.5-7B-Instruct Qwen/Qwen2.5-32B-Instruct` (README has the
-     full workflow). rsync the gitignored `data/{fincall,maec}/{calls,chunks}.parquet` + `data/splits/`.
-  3. **Decide the >32k-token section policy** (design call): truncate-to-context vs YaRN-extend to
-     ~64k (FinCall max section = 61k tokens). Must match between a model's κ-audit and its corpus run.
-  - **What unblocks:** per-model corpus extraction (panel: 7B → 32B, cross-validated) → `ecvol
-    llm-kappa` per model → T6.3. The κ-audit's 50-call extraction runs on OSC too (audit must match
-    corpus), so the human labeling (below) can proceed in parallel.
+     A100-80GB** or **Cardinal H100**). Put the account in `cloud/osc/slurm/extract.sbatch` (line 13).
+  2. **Get code+data on OSC + build:** clone the repo; rsync the gitignored
+     `data/{fincall,maec}/{calls,chunks}.parquet` + `data/splits/`; `module load apptainer` then
+     `apptainer build cloud/osc/ecvol-llm.sif cloud/osc/apptainer/ecvol-llm.def`.
+  3. **Stage weights + smoke-test + submit:** `bash cloud/osc/stage.sh Qwen/Qwen2.5-7B-Instruct
+     Qwen/Qwen2.5-32B-Instruct`; run ONE `--limit` job first for a real ETA/cost; then the full panel
+     (loop in README step 3b). (If you add gated Llama-3.1 to the panel: `huggingface-cli login` on the
+     login node first. Qwen models are ungated.)
+  - **What unblocks:** per-model corpus extraction (panel: 7B → 32B) → `ecvol llm-kappa --sheet
+    data/coverage/fincall_llm_labels_rater1.csv --features …` per model (gate on confirmatory core) →
+    T6.3. The κ-audit's 50 calls are extracted in the same corpus job (audit matches corpus).
 
 ### Resolved
 - **2026-06-29 · T6.1 — v2 schema SIGNED OFF (user).** Schema + rubric + `PROMPT_VERSION="v2"`
