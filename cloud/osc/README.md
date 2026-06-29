@@ -49,9 +49,12 @@ a FinCall subset extracted by the same job, this holds automatically.
 ## Workflow
 
 ```bash
-# 0. clone the repo + rsync the data payloads (gitignored) onto OSC:
-#    rsync -av data/fincall/{calls,chunks}.parquet data/maec/{calls,chunks}.parquet \
-#             data/splits/ <osc>:~/Earnings_call_project-main/data/...
+# 0. clone the repo on OSC, then transfer the gitignored payloads `featurize llm` READS.
+#    Extraction reads ONLY chunks.parquet (calls.parquet is gitignored too but NOT needed;
+#    data/splits/*.csv are git-tracked and arrive with the clone). So only two files move:
+#    rsync -avPR data/fincall/chunks.parquet data/maec/chunks.parquet \
+#                <osc_user>@ascend.osc.edu:~/Earnings_call_project-main/
+#    (scp alternative — Windows-native, no rsync: see the Data transfer section below)
 
 # 1. build the image (login node with internet; ~10 min)
 module load apptainer
@@ -77,6 +80,30 @@ done
 #    ecvol llm-kappa --sheet data/coverage/fincall_llm_labels_rater1.csv \
 #                    --features data/fincall/llm_features__Qwen__Qwen2.5-32B-Instruct.parquet
 ```
+
+## Data transfer (from Windows)
+
+Only two gitignored files move: `data/fincall/chunks.parquet` (138 MB) +
+`data/maec/chunks.parquet` (46 MB). `--account` is the **project** code (`PAS0541`); the
+ssh/scp login uses your **personal OSC username**, not the project code.
+
+```powershell
+# run from the project root. Clone the repo on OSC FIRST (the data/ dirs need to exist).
+# OSC will prompt for your password + Duo MFA.
+
+# scp — built into Windows 10/11, no rsync needed:
+ssh <osc_user>@ascend.osc.edu "mkdir -p ~/Earnings_call_project-main/data/fincall ~/Earnings_call_project-main/data/maec"
+scp data/fincall/chunks.parquet <osc_user>@ascend.osc.edu:~/Earnings_call_project-main/data/fincall/
+scp data/maec/chunks.parquet    <osc_user>@ascend.osc.edu:~/Earnings_call_project-main/data/maec/
+```
+
+- **Resumable alternative (rsync):** needs WSL or Git-Bash-with-rsync (Windows has no native
+  rsync). From a WSL/Git-Bash shell in the project root:
+  `rsync -avPR data/fincall/chunks.parquet data/maec/chunks.parquet <osc_user>@ascend.osc.edu:~/Earnings_call_project-main/`
+  (`-R` recreates the `data/fincall/…` path + dirs; `-P` resumes a partial transfer.)
+- **No-CLI alternative:** OSC OnDemand (`ondemand.osc.edu`) → Files → navigate to
+  `~/Earnings_call_project-main/data/fincall/` → drag-drop `chunks.parquet`; repeat for `maec`.
+- After transfer, sanity-check on OSC: `ls -la ~/Earnings_call_project-main/data/{fincall,maec}/chunks.parquet`.
 
 ## Model panel
 

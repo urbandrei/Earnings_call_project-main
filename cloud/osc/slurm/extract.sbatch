@@ -10,7 +10,7 @@
 #   sbatch --export=ALL,MODEL_ID=Qwen/Qwen2.5-32B-Instruct,DATASET=maec   cloud/osc/slurm/extract.sbatch
 
 #SBATCH --job-name=ecvol-llm
-#SBATCH --account=PASXXXX           # <-- FILL IN your OSC project code
+#SBATCH --account=PAS0541           # OSC project code
 #SBATCH --nodes=1
 #SBATCH --gpus-per-node=1           # Ascend=A100-80GB, Cardinal=H100; one GPU is plenty for <=32B
 #SBATCH --cpus-per-task=8
