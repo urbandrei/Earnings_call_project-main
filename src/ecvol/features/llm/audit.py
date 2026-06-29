@@ -23,6 +23,7 @@ from sklearn.metrics import cohen_kappa_score
 
 from .schema import (
     CATEGORICAL_FIELDS,
+    CONFIRMATORY_FIELDS,
     COUNT_FIELDS,
     LABEL_FIELDS,
     ORDINAL_FIELDS,
@@ -83,9 +84,20 @@ def compute_kappa(sheet_csv: str | Path, features_parquet: str | Path) -> dict[s
     return out
 
 
-def passes_gate(kappas: dict[str, dict], thr: float = KAPPA_THRESHOLD) -> bool:
-    """True iff every scored field clears ``thr`` (unscored fields — too few labels — ignored)."""
-    vals = [v["kappa"] for v in kappas.values() if v["kappa"] is not None]
+def passes_gate(
+    kappas: dict[str, dict],
+    thr: float = KAPPA_THRESHOLD,
+    fields: tuple[str, ...] = CONFIRMATORY_FIELDS,
+) -> bool:
+    """True iff every scored **confirmatory** field clears ``thr``.
+
+    The corpus-scale gate is evaluated on the confirmatory core only (``fields``), fixed
+    pre-extraction from label variance + rater feedback (DECISIONS 2026-06-29). Weak labeled
+    fields (qa_evasiveness, analyst_tone) and unlabeled exploratory fields are reported by
+    ``compute_kappa`` but do not block. Unscored confirmatory fields (too few labels) are
+    ignored; the gate fails only on a scored field below ``thr``.
+    """
+    vals = [kappas[f]["kappa"] for f in fields if f in kappas and kappas[f]["kappa"] is not None]
     return bool(vals) and all(k >= thr for k in vals)
 
 

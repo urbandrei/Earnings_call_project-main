@@ -1,8 +1,22 @@
 # LLM structured-feature rubric (T6.1)
 
-**Status: DRAFT v1 — pending the T6.1 human reading of 20 calls + schema sign-off.**
+**Status: v2 — pending schema sign-off.** v2 adds two **exploratory** fields
+(`management_optimism`, `quantitative_specificity`) driven by rater-1 feedback + the
+numeral-aware literature (DESIGN §3 R30/R31/R32), and narrows the corpus-scale κ-gate to a
+pre-registered **confirmatory core**. See DECISIONS 2026-06-29.
 This is the contract the T6.2 human κ-audit scores model output against. Every field
 has a written rubric with anchors so two raters (and the model) apply it the same way.
+
+**Field roles:**
+- **Confirmatory core** (κ>0.6 gate blocks the corpus run): `guidance_direction`,
+  `hedging_intensity`, `surprise_mentions`. Fixed pre-extraction from label variance + rater
+  applicability feedback, *not* from any model κ score.
+- **Reported (labeled, weak):** `qa_evasiveness`, `analyst_tone`. Rater 1 flagged these as
+  low-variance here (management rarely evasive — if anything over-answers; analysts mostly
+  agreeable except on big bad news). Scored + reported with their κ, but do **not** block.
+- **Exploratory (v2, unlabeled):** `management_optimism`, `quantitative_specificity`.
+  Extracted in the same OSC pass; no κ-gate until a rater labels them (then promotable per the
+  DESIGN exploration policy).
 
 - **Extraction unit:** one `(call, section)` pair. Sections come from T3.1 sectioning
   (`prepared_remarks`, `qa`).
@@ -57,6 +71,21 @@ Aggregate stance of the **analysts** asking questions (not management).
 - Judge from question framing ("congrats on a great quarter" → high; "why did margins
   collapse" → low). Neutral/factual questions → 2.
 
+### `management_optimism` — ordinal 0–4 *(v2 exploratory, both sections)*
+How much management *oversells / self-promotes* versus giving a balanced account. Captures
+the "trying to sound too good" axis rater 1 observed (distinct from evasiveness — companies
+that over-answer to look strong score high here, low on evasiveness).
+- **0** measured/balanced — acknowledges negatives and risks plainly.
+- **1** mildly upbeat. **2** clearly positive. **3** strongly promotional.
+- **4** relentlessly self-congratulatory — almost no acknowledgement of any negative.
+
+### `quantitative_specificity` — ordinal 0–4 *(v2 exploratory, both sections)*
+Density of *concrete quantitative disclosure* (specific figures, ranges, growth rates,
+segment numbers) versus vague qualitative claims. Motivated by the numeral-aware volatility
+literature (DESIGN §3: NAM/ECNum [R30], NumHTML [R31], GNAVol [R32]).
+- **0** none/vague — no hard numbers. **1** a few numbers. **2** moderate.
+- **3** heavily quantified. **4** dense hard figures throughout.
+
 ### `evidence` — free text
 Verbatim quoted span(s) from the section that justify the ratings above. For auditability
 only; not scored by κ.
@@ -68,9 +97,13 @@ only; not scored by κ.
 - **T6.1 (schema applicability):** two human passes over **10 calls** agree the schema is
   applicable and every field has a usable rubric. Disagreements drive rubric edits before
   T6.2.
-- **T6.2 (content gate):** human audit on **50 calls**; **κ > 0.6** on categorical fields
-  (Cohen's κ for `guidance_direction`; linearly-weighted κ for the ordinals; `surprise`
-  binarized present/absent) of **model vs. rubric labels** before any corpus-scale run.
+- **T6.2 (content gate):** human audit on **50 calls**; **κ > 0.6 on the confirmatory core**
+  (`guidance_direction` Cohen's κ; `hedging_intensity` linearly-weighted κ; `surprise_mentions`
+  binarized present/absent) of **model vs. rubric labels** before any corpus-scale run. The
+  reported weak fields (`qa_evasiveness`, `analyst_tone`) and the exploratory v2 fields are
+  scored/extracted but do not gate. A **borderline core result (κ≈0.45–0.6) re-blocks on a
+  second rater** before any Stage-5/RQ3 claim (single-annotator κ can't disambiguate
+  model-fault from task-ambiguity — DECISIONS 2026-06-29).
 - **Leakage guard:** the reading/audit samples are drawn from the **train split only**
   (`ecvol featurize llm-reading-pack`) so no val/test call informs the schema or taxonomy
   (mirrors TASKS.md TX1).

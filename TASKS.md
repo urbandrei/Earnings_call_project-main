@@ -276,15 +276,17 @@
 
 ## Phase 6 — LLM structured features (~2 weeks)
 
-### T6.1 Feature schema design — `[!]` *(scaffolding done; blocked on human reading + sign-off)*
+### T6.1 Feature schema design — `[x]` *(v2 schema signed off 2026-06-29)*
 - **Goal:** an auditable semantic feature set, grounded in actual calls.
 - **End result:** pydantic JSON schema (per-section): guidance direction {raise/maintain/lower/none}, hedging intensity (0–4), Q&A evasiveness (0–4), surprise mentions, analyst-tone (0–4), plus free-text evidence spans for auditability. Designed from manual reading of 20 calls.
 - **Acceptance test:** two human passes over 10 calls agree on the schema's applicability; every field has a written rubric.
 - **Subtasks:**
-  - [~] Manual reading notes (20 calls) — *tooling built (`ecvol featurize llm-reading-pack`); 20 train-split calls rendered to `data/fincall/llm_reading/*.md`; **human reading + notes pending** (HANDOFF)*
-  - [x] Schema + rubric doc — `features/llm/schema.py` (`SectionFeatures`, v1) + `docs/llm_feature_rubric.md` (per-field anchors, applicability, κ protocol)
-  - [x] Prompt drafts (`features/llm/prompts.py`) — section-aware, `PROMPT_VERSION="v1"`
+  - [x] Manual reading notes — *rater 1 read + labeled the 50-call audit sample (`ingest/Ratings_1.xlsx`); qualitative feedback (relayed by user) drove the v2 schema revision*
+  - [x] Schema + rubric doc — `features/llm/schema.py` (`SectionFeatures`, **v2**) + `docs/llm_feature_rubric.md` (per-field anchors, applicability, field roles, κ protocol)
+  - [x] Prompt drafts (`features/llm/prompts.py`) — section-aware, `PROMPT_VERSION="v2"`
 - **Notes:** 2026-06-24 — v1 scaffolding committed (engineering); field set is the pre-registered one. **Blocked:** acceptance test is human (two-pass agreement over 10 calls) → blank labeling sheet `data/coverage/fincall_llm_label_sheet.csv` (one row per call×section, leakage-safe train-only sample). User reads + labels + signs off (or requests rubric edits) before T6.2 extraction is built against the frozen schema+prompt. DECISIONS 2026-06-24.
+  - 2026-06-29 — **schema → v2 (superset)** per rater-1 feedback + numeral-aware literature (DESIGN §3 R30/R31/R32). Added two **exploratory** fields (`management_optimism`, `quantitative_specificity`, both sections, unlabeled → no κ-gate); **confirmatory core** for the gate = `guidance_direction`/`hedging_intensity`/`surprise_mentions` (fixed pre-extraction on label variance, not model κ); weak labeled fields (`qa_evasiveness`, `analyst_tone`) reported-not-gated. `PROMPT_VERSION` v1→v2. 29 LLM tests green. DECISIONS 2026-06-29.
+  - 2026-06-29 — **v2 SIGNED OFF (user).** Schema + rubric + `PROMPT_VERSION="v2"` frozen; OSC extraction may build against it. Acceptance met via **single careful rater + user sign-off** (the literal two-pass-IAA test deferred to pre-publication per DECISIONS 2026-06-29 — same single-rater stance as the κ-gate). T6.2 corpus extraction is now unblocked on the schema side (remaining blockers: OSC access + >32k-token context policy, HANDOFF).
 
 ### T6.2 Constrained extraction + human-audit gate — `[~]` *(pipeline built; ETA probe + κ-gate pending)*
 - **Goal:** reliable corpus-scale extraction on consumer GPU.
@@ -294,7 +296,9 @@
   - [x] `extract.py` (Outlines 1.3 constrained decoding, resumable, deterministic, model-suffixed parquet) — engine-agnostic: `transformers`+bitsandbytes-4bit (Windows local) / `vllm` (OSC Linux)
   - [x] Audit tooling (`audit.py` — per-field κ + gate + model-vs-model matrix; `ecvol llm-kappa`) + 50-call labeling sheet (`featurize llm-audit-sample`, train-only)
   - [x] Batch runner with resume (`ecvol featurize llm`) + ETA probe (`featurize llm-eta`)
+  - [x] Rater-workbook ingest (`ecvol featurize llm-ingest-ratings` → `features/llm/ratings.py`): stdlib xlsx parse → canonical label CSV, validated vs. the frozen sample + schema ranges; 6 tests
 - **Notes:** 2026-06-24 — engineering done + gated (242 tests). Plan: multi-model panel on **OSC** (exploration: does scale → signal?) if local ETA >20h; `cloud/osc/` package + DECISIONS spend entry. **Pending:** (1) local ETA probe result, (2) frozen schema (T6.1 sign-off), (3) per-model **κ>0.6** human audit before corpus scale. See DECISIONS 2026-06-24, HANDOFF.
+  - 2026-06-29 — **rater 1 labels ingested** → `data/coverage/fincall_llm_labels_rater1.csv` (97 rows / 50 calls, exact key match, all in range). Per DECISIONS 2026-06-29 the **κ-gate runs on this single rater for the OSC go/no-go**; second rater's IAA deferred to pre-publication (not a compute blocker). **A borderline result (κ≈0.45–0.6) re-blocks on rater 2** before any Stage-5/RQ3/Path-B claim. Any κ reported = "single-annotator; IAA pending". 248 tests green.
 
 ### T6.3 Stage-5 results + masking ablation → Result Table 5 — `[ ]`
 - **Goal:** RQ3 answered; lookahead leakage estimated.

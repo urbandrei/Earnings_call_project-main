@@ -79,6 +79,19 @@ def test_disagreement_fails_gate(tmp_path):
     assert not passes_gate(k)
 
 
+def test_gate_ignores_weak_reported_fields_outside_confirmatory_core(tmp_path):
+    # analyst_tone (a reported, non-confirmatory field) disagreeing must NOT fail the gate
+    # as long as the confirmatory core (guidance/hedging/surprise) still clears κ>0.6.
+    _write_sheet(tmp_path / "sheet.csv")
+    _write_features(
+        tmp_path / "feat.parquet",
+        mutate=lambda df: df.__setitem__("analyst_tone", 0),  # wreck a reported field only
+    )
+    k = compute_kappa(tmp_path / "sheet.csv", tmp_path / "feat.parquet")
+    assert k["analyst_tone"]["kappa"] < 0.6  # the weak field is scored + reported...
+    assert passes_gate(k)  # ...but the confirmatory core still passes the gate
+
+
 def test_qa_only_fields_scored_on_qa_rows_only(tmp_path):
     _write_sheet(tmp_path / "sheet.csv")
     _write_features(tmp_path / "feat.parquet")

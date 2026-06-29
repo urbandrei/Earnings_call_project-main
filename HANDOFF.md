@@ -11,6 +11,20 @@ Each entry: date · task ID · what the user must do · what unblocks when it's 
 
 ## Active (action needed to unblock a task)
 
+- **2026-06-29 · T6.2 — rater 1 labels are in and ingested; the κ-gate is unblocked on the labels side. Second rater is now PAPER-STAGE, not an OSC blocker.**
+  You delivered `ingest/Ratings_1.xlsx` (50-call audit set). It is ingested + validated →
+  `data/coverage/fincall_llm_labels_rater1.csv` (97 rows, exact match to the frozen sample, all in
+  range). Per DECISIONS 2026-06-29, the **κ>0.6 go/no-go for the OSC corpus run uses this single
+  rater** — the second set buys inter-annotator agreement (a reviewer-expected, paper-stage number),
+  not the compute decision. To finish the loop's side: nothing — `ecvol llm-kappa --sheet
+  data/coverage/fincall_llm_labels_rater1.csv --features <model>.parquet` runs the moment OSC returns
+  features. **Your remaining items:** (1) collect the **second rating set** when convenient (for IAA
+  in the paper); (2) **a borderline model κ (≈0.45–0.6) re-blocks on rater 2** before any Stage-5/RQ3
+  claim — only a clean pass makes rater 2 non-critical for the go/no-go; (3) the workbook's **Schema
+  Feedback** sheet is the input to the T6.1 sign-off below — review it and either sign off v1 or list edits.
+  - **What unblocks:** the content gate (`ecvol llm-kappa`) the instant OSC extraction lands; no
+    further labeling is needed for the go/no-go.
+
 - **2026-06-24 · T6.2 — the corpus run goes to OSC (local OOM'd); needs OSC access + a context-policy call.**
   The local ETA probe proved the 16 GB GPU **can't** run extraction at full context (CUDA OOM on
   long-section prefill; see `data/coverage/llm_probe_report.md`). Everything for the cloud burst is
@@ -26,25 +40,16 @@ Each entry: date · task ID · what the user must do · what unblocks when it's 
     llm-kappa` per model → T6.3. The κ-audit's 50-call extraction runs on OSC too (audit must match
     corpus), so the human labeling (below) can proceed in parallel.
 
-- **2026-06-24 · T6.1 — read 20 calls + fill the labeling sheet, then sign off the schema.**
-  The v1 LLM feature schema + rubric + prompts + reading tooling are built and committed; T6.1's
-  acceptance test is **human** (two passes over 10 calls agree the schema applies), so the loop
-  **pauses here**. To unblock:
-  1. The pack is already generated at the **50-call audit size** (aligned with the κ-audit set):
-     read the transcripts in `data/fincall/llm_reading/*.md` (regenerate any time with
-     `ecvol featurize llm-audit-sample --dataset fincall --n 50 --seed 0`).
-  2. Read the rubric `docs/llm_feature_rubric.md` and fill `data/coverage/fincall_llm_label_sheet.csv`
-     (one row per call×section; "NA" cells are Q&A-only fields that don't apply to prepared remarks).
-     For two-pass agreement, a second rater fills a copy of the 10-call subset.
-  3. **Either sign off the v1 schema** ("schema signed off, continue") **or list rubric/field edits**
-     you want — I'll revise and bump `PROMPT_VERSION` before extraction.
-  - **What unblocks:** extraction runs against the **frozen** schema + prompt version on OSC (see
-    the T6.2 entry above — local OOM'd); the filled sheet then feeds `ecvol llm-kappa` per model for
-    the **κ>0.6** gate. Labeling can proceed in parallel with the OSC setup.
-  - **Note:** all of Phase 6 (T6.2/T6.3) and Phase 7 T7.1 (API key) are human-gated, so the loop
-    has no unblocked task to skip to — it genuinely waits on these.
-
 ### Resolved
+- **2026-06-29 · T6.1 — v2 schema SIGNED OFF (user).** Schema + rubric + `PROMPT_VERSION="v2"`
+  frozen; T6.1 → `[x]`. v2 added two exploratory fields (`management_optimism`,
+  `quantitative_specificity`) from the rater's feedback + numeral-aware literature, and narrowed
+  the κ-gate to the confirmatory core. OSC extraction may now build against the frozen schema.
+  (DECISIONS 2026-06-29.) Remaining T6.2 blockers are operational only — see the active entries.
+- **2026-06-29 · T6.2 — rater-1 labels ingested + validated** → `data/coverage/fincall_llm_labels_rater1.csv`
+  (97 rows, exact match to the frozen sample). The κ-gate go/no-go runs on this single rater;
+  second-rater IAA deferred to pre-publication (DECISIONS 2026-06-29). No further labeling needed
+  for the OSC go/no-go.
 - **2026-06-24 · PHASE-5 BOUNDARY CHECKPOINT — DONE (CI green).** Phase 5 (T5.1 fusion + T5.2
   Result Table 4) pushed; user confirmed GitHub Actions green. Loop advanced to Phase 6.
 - **2026-06-19 · T3.1 section audit — DONE (30/30 correct).** Both operator-handoff and

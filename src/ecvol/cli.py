@@ -392,6 +392,36 @@ def featurize_llm_audit_sample(
     typer.echo("  fill this sheet, then `ecvol llm-kappa` once features are extracted")
 
 
+@featurize_app.command("llm-ingest-ratings")
+def featurize_llm_ingest_ratings(
+    xlsx: Path = typer.Option(..., help="Rater workbook (.xlsx) with a filled 'Ratings' sheet."),  # noqa: B008
+    rater: str = typer.Option(..., help="Rater id (names the output, e.g. 'rater1')."),
+    dataset: str = typer.Option("fincall", help="Dataset: fincall | maec."),
+    root: Path = typer.Option(Path("data"), help="Data root directory."),  # noqa: B008
+    sheet_name: str = typer.Option("Ratings", help="Worksheet name holding the ratings."),
+) -> None:
+    """Ingest a human rater workbook → canonical κ-audit label CSV (validated vs. the sample)."""
+    from ecvol.features.llm.ratings import ingest_ratings
+
+    reference = root / "coverage" / f"{dataset}_llm_label_sheet.csv"
+    out_path = root / "coverage" / f"{dataset}_llm_labels_{rater}.csv"
+    res = ingest_ratings(
+        xlsx,
+        out_path,
+        rater=rater,
+        reference_sheet=reference if reference.exists() else None,
+    )
+    typer.echo(f"{dataset}: ingested {res.n_rows} rows / {res.n_calls} calls from rater {rater!r}")
+    typer.echo(f"  labels: {res.out_path}")
+    if reference.exists():
+        typer.echo(f"  validated against frozen audit sample: {reference}")
+    else:
+        typer.echo("  WARNING: reference sample sheet not found — alignment NOT validated")
+    typer.echo(
+        f"  next: `ecvol llm-kappa --sheet {res.out_path} --features <llm_features.parquet>`"
+    )
+
+
 @featurize_app.command("llm-eta")
 def featurize_llm_eta(
     dataset: str = typer.Option("fincall", help="Dataset whose train audit sample to probe."),
@@ -757,9 +787,11 @@ def llm_kappa(
 ) -> None:
     """κ-audit: per-field model-vs-human agreement; gate κ>0.6 before corpus scale (T6.2)."""
     from ecvol.features.llm.audit import compute_kappa, passes_gate
+    from ecvol.features.llm.schema import CONFIRMATORY_FIELDS
 
     k = compute_kappa(sheet, features)
     for field, v in k.items():
         kv = "n/a" if v["kappa"] is None else f"{v['kappa']:.3f}"
-        typer.echo(f"  {field:18s} κ={kv:>6s}  (n={v['n']})")
-    typer.echo(f"GATE κ>0.6: {'PASS' if passes_gate(k) else 'FAIL'}")
+        tag = "  [confirmatory]" if field in CONFIRMATORY_FIELDS else "  [reported]"
+        typer.echo(f"  {field:24s} κ={kv:>6s}  (n={v['n']}){tag}")
+    typer.echo(f"GATE κ>0.6 (confirmatory core only): {'PASS' if passes_gate(k) else 'FAIL'}")

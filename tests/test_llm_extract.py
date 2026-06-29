@@ -10,7 +10,7 @@ import pytest
 
 from ecvol.features.llm import extract as E
 from ecvol.features.llm.reading import sample_train_calls
-from ecvol.features.llm.schema import LABEL_FIELDS
+from ecvol.features.llm.schema import EXTRACTED_FIELDS
 
 
 class _FakeEngine:
@@ -27,6 +27,8 @@ class _FakeEngine:
             "qa_evasiveness": 0,
             "surprise_mentions": 0,
             "analyst_tone": 2,
+            "management_optimism": 3,
+            "quantitative_specificity": 2,
             "evidence": "x",
         }
 
@@ -86,8 +88,10 @@ def test_build_llm_writes_and_is_resumable(tmp_path):
     assert res.out_path.exists()
 
     df = pd.read_parquet(res.out_path)
-    expected = {"call_id", "section", "model_id", "prompt_version", *LABEL_FIELDS}
+    expected = {"call_id", "section", "model_id", "prompt_version", *EXTRACTED_FIELDS}
     assert expected.issubset(df.columns)
+    # v2 exploratory fields are extracted into the parquet alongside the labeled ones
+    assert {"management_optimism", "quantitative_specificity"}.issubset(df.columns)
     assert (df["model_id"] == "test/m").all()
     first_bytes = res.out_path.read_bytes()
 

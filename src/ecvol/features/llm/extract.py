@@ -27,12 +27,12 @@ from ecvol.data.manifests import make_entry, write_manifest
 from ecvol.features.text._common import write_feature_parquet
 
 from .prompts import PROMPT_VERSION, SYSTEM_PROMPT, build_user_prompt
-from .schema import LABEL_FIELDS, SectionFeatures
+from .schema import EXTRACTED_FIELDS, SectionFeatures
 
 CHUNK = 50  # flush the output parquet every N new rows (resumable checkpoint)
 MAX_NEW_TOKENS = 640  # SectionFeatures incl. a ~2000-char evidence span fits comfortably
 _SECTION_ORDER = {"prepared_remarks": 0, "qa": 1}
-_OUTPUT_FIELDS = ["call_id", "section", "model_id", "revision", "prompt_version", *LABEL_FIELDS]
+_OUTPUT_FIELDS = ["call_id", "section", "model_id", "revision", "prompt_version", *EXTRACTED_FIELDS]
 _OUTPUT_FIELDS.append("evidence")
 
 
@@ -180,7 +180,7 @@ def _row(call_id: str, section: str, model_id: str, revision: str, feat: dict) -
         "prompt_version": PROMPT_VERSION,
         "evidence": feat.get("evidence", ""),
     }
-    for f in LABEL_FIELDS:
+    for f in EXTRACTED_FIELDS:
         row[f] = feat[f]
     return row
 

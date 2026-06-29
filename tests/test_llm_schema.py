@@ -63,11 +63,56 @@ def test_applicable_fields_qa_only_excluded_in_prepared():
         S.applicable_fields("nonsense")
 
 
+def test_v2_exploratory_fields_extracted_both_sections_not_audited():
+    # the v2 additions apply to both sections (extracted) but are NOT in the labeled/audited set
+    assert set(S.EXPLORATORY_FIELDS) == {"management_optimism", "quantitative_specificity"}
+    assert set(S.EXPLORATORY_FIELDS) & set(S.LABEL_FIELDS) == set()
+    assert set(S.EXTRACTED_FIELDS) == set(S.LABEL_FIELDS) | set(S.EXPLORATORY_FIELDS)
+    for sec in ("prepared_remarks", "qa"):
+        assert set(S.EXPLORATORY_FIELDS) <= set(S.extracted_fields(sec))
+    with pytest.raises(ValueError):
+        S.extracted_fields("nonsense")
+
+
+def test_confirmatory_core_is_the_strong_labeled_subset():
+    # the κ-gate core excludes the rater-flagged weak fields, and is all labeled
+    assert set(S.CONFIRMATORY_FIELDS) == {
+        "guidance_direction",
+        "hedging_intensity",
+        "surprise_mentions",
+    }
+    assert set(S.CONFIRMATORY_FIELDS) <= set(S.LABEL_FIELDS)
+    assert "qa_evasiveness" not in S.CONFIRMATORY_FIELDS
+    assert "analyst_tone" not in S.CONFIRMATORY_FIELDS
+
+
+def test_new_fields_have_bounds_and_default():
+    base = dict(
+        guidance_direction="none",
+        hedging_intensity=0,
+        qa_evasiveness=0,
+        surprise_mentions=0,
+        analyst_tone=0,
+    )
+    # default 0 when omitted (so prepared-remarks extraction needn't special-case them)
+    assert S.SectionFeatures(**base).management_optimism == 0
+    for bad in ({"management_optimism": 5}, {"quantitative_specificity": -1}):
+        with pytest.raises(ValidationError):
+            S.SectionFeatures(**{**base, **bad})
+
+
 # --- prompts -----------------------------------------------------------------
 
 
 def test_prompt_version_is_pinned():
     assert isinstance(P.PROMPT_VERSION, str) and P.PROMPT_VERSION
+
+
+def test_v2_exploratory_anchors_in_both_section_prompts():
+    for section in ("prepared_remarks", "qa"):
+        prompt = P.build_user_prompt(section, "text")
+        assert "oversells / self-promotes" in prompt  # management_optimism anchor
+        assert "quantitative disclosure" in prompt  # quantitative_specificity anchor
 
 
 def test_prepared_prompt_omits_qa_only_anchors_and_flags_na():

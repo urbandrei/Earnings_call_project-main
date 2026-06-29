@@ -301,3 +301,19 @@ Keep entries factual and compact. Decisions that change the design belong in [DE
 - **Sources:** outlines 1.3 API (`from_transformers`, `Generator`); Qwen2.5 context (32k native / 128k YaRN); existing T3.1 chunks + T0.2 splits; resumable audio extractor pattern (`features/audio/wavlm.py`).
 - **Gate:** ruff clean · 242 pytest pass · 3 local commits (pipeline 23320ae, cloud+spend 5014209, + this governance commit).
 - **Next (loop paused — human + Phase-6 boundary):** (1) **OSC access** — confirm allocation/account code + cluster (Ascend A100 / Cardinal H100), build the sif, `stage.sh` the panel weights; (2) **T6.1 schema sign-off + 50-call human labels** (the κ gate; extraction for the audit-50 runs on OSC alongside the corpus); (3) resolve the >32k context policy. Then per-model corpus extraction → `ecvol llm-kappa` per model → T6.3 (Stage-5 eval per model, masking ablation, Result Table 5). Phase-6 push/CI checkpoint pending too.
+
+
+## 2026-06-29 — T6.1 v2 schema sign-off + rater-1 κ-audit ingest (T6.1/T6.2)
+
+- **Scope:** processed the first human rating set (`ingest/Ratings_1.xlsx`), revised the LLM feature schema to v2 from rater feedback + literature, and signed off the frozen schema for the OSC corpus run. User on an OSC time crunch; one rating set in hand, second still pending.
+- **Done:**
+  - **Rater-1 ingest (reproducible):** new `ecvol featurize llm-ingest-ratings` (`features/llm/ratings.py`, stdlib `zipfile`+`xml` xlsx parse — no new dep) → `data/coverage/fincall_llm_labels_rater1.csv`. Validates against the frozen 50-call audit sample (exact `(call_id, section)` match) + schema ranges. Ran clean: 97 rows / 50 calls, all in range. 6 tests.
+  - **Single-rater go/no-go (decision):** the κ>0.6 OSC gate runs on this one rater; second-rater IAA deferred to pre-publication. Borderline κ (≈0.45–0.6) re-blocks on rater 2. DECISIONS 2026-06-29.
+  - **Schema → v2 (superset):** added two **exploratory** fields — `management_optimism` (over-selling axis the rater flagged) + `quantitative_specificity` (numeral intensity) — extracted in the same OSC pass, no κ-gate until labeled. κ-gate narrowed to a **confirmatory core** (`guidance_direction`/`hedging_intensity`/`surprise_mentions`), fixed pre-extraction on label variance (not model κ). Weak labeled fields (`qa_evasiveness`, `analyst_tone`) reported-not-gated. `PROMPT_VERSION` v1→v2. Threaded through schema/prompts/extract/audit/cli + rubric.
+  - **v2 signed off** (user); T6.1 → `[x]`, schema frozen.
+- **Found:**
+  - Rater left the workbook's **Schema Feedback sheet blank**, but gave verbal feedback (via user): management rarely evasive — over-answers to look good; analysts mostly agreeable except on big bad news. Matches the label distributions: `qa_evasiveness` ∈ {0–2} (near-degenerate), `analyst_tone` compressed to 2–3. → the two v1 Q&A-only fields are the weak ones; the interesting variance is a promotional/optimism axis.
+  - **Literature (answer to "why not domain-specific features?"):** the open-data principle excludes guidance-vs-consensus surprise (needs licensed IBES); but the numeral-aware line — NAM/ECNum [R30], NumHTML [R31], GNAVol [R32] — shows quantitative content carries volatility signal and is text-only + auditable → motivates `quantitative_specificity`. Counterweight: "Same Company, Same Signal" [R14] + this project's own inert-beyond-past-vol results temper expectations.
+- **Sources:** DESIGN §3 lineage + §13 refs (R8 ECC Analyzer, R30/R31/R32 numeral-aware, R14 identity); rater-1 workbook; existing audit/extract scaffolding.
+- **Gate:** ruff clean · ruff format clean · **253 pytest pass** (+11 this session). Not yet pushed (local main).
+- **Next:** T6.2 corpus extraction on OSC against frozen v2 (remaining blockers operational: OSC allocation + >32k-token context policy, HANDOFF). Then `ecvol llm-kappa` (confirmatory core) per model → T6.3. Second rater → pre-publication IAA.

@@ -11,7 +11,7 @@ Drafts only — finalized after the T6.1 human reading of 20 calls (HANDOFF).
 
 from __future__ import annotations
 
-PROMPT_VERSION = "v1"
+PROMPT_VERSION = "v2"
 
 SYSTEM_PROMPT = (
     "You are a meticulous financial-analyst annotator. You read one section of an "
@@ -46,17 +46,37 @@ _ANCHORS = {
         "analyst_tone (0-4) — aggregate stance of the analysts asking questions: "
         "0 hostile/critical, 1 skeptical, 2 neutral, 3 positive, 4 enthusiastic."
     ),
+    "management_optimism": (
+        "management_optimism (0-4) — how much management oversells / self-promotes vs. gives a "
+        "balanced account: 0 measured/balanced (acknowledges negatives), 1 mildly upbeat, "
+        "2 clearly positive, 3 strongly promotional, 4 relentlessly self-congratulatory."
+    ),
+    "quantitative_specificity": (
+        "quantitative_specificity (0-4) — density of concrete quantitative disclosure (specific "
+        "figures, ranges, growth rates, segment numbers) vs. vague qualitative claims: 0 none/"
+        "vague, 1 a few numbers, 2 moderate, 3 heavily quantified, 4 dense hard figures throughout."
+    ),
 }
 
 # Imported lazily-safe: kept here to avoid a hard schema import at module load in CI paths.
+# Mirrors schema.SECTION_EXTRACTED (labeled + v2 exploratory). The exploratory fields
+# (management_optimism, quantitative_specificity) apply to BOTH sections.
 _SECTION_FIELDS = {
-    "prepared_remarks": ("guidance_direction", "hedging_intensity", "surprise_mentions"),
+    "prepared_remarks": (
+        "guidance_direction",
+        "hedging_intensity",
+        "surprise_mentions",
+        "management_optimism",
+        "quantitative_specificity",
+    ),
     "qa": (
         "guidance_direction",
         "hedging_intensity",
         "qa_evasiveness",
         "surprise_mentions",
         "analyst_tone",
+        "management_optimism",
+        "quantitative_specificity",
     ),
 }
 

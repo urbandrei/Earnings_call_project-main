@@ -62,6 +62,22 @@ class SectionFeatures(BaseModel):
         description="Aggregate analyst stance toward the company (0 hostile .. 2 neutral .. "
         "4 enthusiastic). Q&A-only; 0 in prepared remarks (N/A).",
     )
+    management_optimism: int = Field(
+        ge=0,
+        le=4,
+        default=0,
+        description="How much management oversells / self-promotes vs. balanced (0 measured/"
+        "balanced, includes negatives .. 4 relentlessly promotional). Both sections. "
+        "[v2 exploratory — not yet human-labeled, no κ-gate].",
+    )
+    quantitative_specificity: int = Field(
+        ge=0,
+        le=4,
+        default=0,
+        description="Density of concrete quantitative disclosure — specific figures / ranges / "
+        "growth rates vs. vague qualitative claims (0 none/vague .. 4 dense hard numbers). Both "
+        "sections. [v2 exploratory — not yet human-labeled, no κ-gate].",
+    )
     evidence: str = Field(
         default="",
         max_length=2000,
@@ -72,15 +88,53 @@ class SectionFeatures(BaseModel):
 # Field groupings drive the κ-audit (T6.2): categorical via Cohen's κ, ordinals via
 # linearly-weighted κ, the count binarized to present/absent. ``evidence`` is not scored.
 CATEGORICAL_FIELDS = ("guidance_direction",)
-ORDINAL_FIELDS = ("hedging_intensity", "qa_evasiveness", "analyst_tone")
+ORDINAL_FIELDS = (
+    "hedging_intensity",
+    "qa_evasiveness",
+    "analyst_tone",
+    "management_optimism",
+    "quantitative_specificity",
+)
 COUNT_FIELDS = ("surprise_mentions",)
-LABEL_FIELDS = CATEGORICAL_FIELDS + ORDINAL_FIELDS + COUNT_FIELDS
 
-# Which fields are applicable (audited / prompted for) per section. Q&A-only fields are
-# set to the N/A floor in prepared remarks and excluded from κ there.
+# Fields covered by the human rater sheets → the κ-audit operates on exactly these. (Kept
+# explicit, NOT derived from the type tuples, so the v2 exploratory ordinals below can carry
+# a κ type without becoming audited fields.)
+LABEL_FIELDS = (
+    "guidance_direction",
+    "hedging_intensity",
+    "qa_evasiveness",
+    "analyst_tone",
+    "surprise_mentions",
+)
+
+# v2 exploratory additions (DECISIONS 2026-06-29): extracted in the same OSC pass but not yet
+# human-labeled — reported, never κ-gated, until a rater labels them. management_optimism
+# captures the "over-selling" axis the rater flagged; quantitative_specificity the numeral-
+# intensity signal from the numeral-aware literature (DESIGN §3 R30/R31/R32).
+EXPLORATORY_FIELDS = ("management_optimism", "quantitative_specificity")
+
+# Everything the model emits as a rating: drives the extraction output columns + prompt anchors.
+EXTRACTED_FIELDS = LABEL_FIELDS + EXPLORATORY_FIELDS
+
+# The confirmatory core the κ>0.6 corpus-scale gate is evaluated on — fixed here PRE-extraction
+# from label variance + rater applicability feedback (NOT from any model κ score). The weak
+# labeled fields (qa_evasiveness near-degenerate, analyst_tone event-driven) are still scored
+# and reported, but do not block the corpus run. (DECISIONS 2026-06-29.)
+CONFIRMATORY_FIELDS = ("guidance_direction", "hedging_intensity", "surprise_mentions")
+
+# Labeled-field applicability per section (drives the κ-audit + the human labeling sheet).
+# Q&A-only labeled fields are set to the N/A floor in prepared remarks and excluded from κ there.
 SECTION_FIELDS = {
     "prepared_remarks": ("guidance_direction", "hedging_intensity", "surprise_mentions"),
     "qa": LABEL_FIELDS,
+}
+
+# Extracted-field applicability per section (drives the prompt anchors / what the model rates).
+# Superset of SECTION_FIELDS with the v2 exploratory fields, which apply to BOTH sections.
+SECTION_EXTRACTED = {
+    "prepared_remarks": SECTION_FIELDS["prepared_remarks"] + EXPLORATORY_FIELDS,
+    "qa": EXTRACTED_FIELDS,
 }
 
 
@@ -89,3 +143,10 @@ def applicable_fields(section: str) -> tuple[str, ...]:
     if section not in SECTION_FIELDS:
         raise ValueError(f"unknown section {section!r}; expected one of {SECTIONS}")
     return SECTION_FIELDS[section]
+
+
+def extracted_fields(section: str) -> tuple[str, ...]:
+    """Fields the model rates for a section (labeled + v2 exploratory)."""
+    if section not in SECTION_EXTRACTED:
+        raise ValueError(f"unknown section {section!r}; expected one of {SECTIONS}")
+    return SECTION_EXTRACTED[section]
