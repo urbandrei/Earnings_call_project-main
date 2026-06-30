@@ -19,9 +19,9 @@ project with a **GPU allocation on the specific cluster** you use.
 # on the cluster's login node — lists every account/partition you may submit to:
 sacctmgr -nP show assoc user=$USER format=cluster,account,partition,qos | sort -u
 ```
-- **Non-empty** (e.g. `ascend|PAS0541|gpu|...`) → you can submit here; note the partition name.
+- **Non-empty** (e.g. `ascend|PAS3453|gpu|...`) → you can submit here; note the partition name.
 - **Empty** → you have **no** submit rights on this cluster (this is what happened on Cardinal).
-  Try another cluster or check my.osc.edu → Projects → PAS0541 → Allocations.
+  Try another cluster or check my.osc.edu → Projects → PAS3453 → Allocations.
 
 **Recommended cluster: Ascend (A100-80GB).** The package targets it; 7B and 32B each fit on one
 GPU. Use Cardinal (H100) only if `sacctmgr` shows you an association there. **Do every step
@@ -84,7 +84,7 @@ OSC defines no `$SCRATCH`; set it to your project scratch. `stage.sh` already (a
 `$SCRATCH` and (b) unsets the image's offline flag and uses `python3` for the download.
 
 ```bash
-export SCRATCH=/fs/scratch/PAS0541/$USER && mkdir -p "$SCRATCH"
+export SCRATCH=/fs/scratch/PAS3453/$USER && mkdir -p "$SCRATCH"
 bash cloud/osc/stage.sh Qwen/Qwen2.5-7B-Instruct          # ~15 GB; start with just 7B
 # later, once the 7B run is validated:
 bash cloud/osc/stage.sh Qwen/Qwen2.5-32B-Instruct         # ~65 GB
@@ -106,10 +106,10 @@ cat cloud/osc/logs/ecvol-llm-*.out
   from §0 to the job: edit `#SBATCH --partition=<name>` into `cloud/osc/slurm/extract.sbatch`
   (or `--partition=<name>` on the `sbatch` line).
 - **Interactive alternative** (sidesteps batch routing entirely): grab a GPU node
-  (`salloc -A PAS0541 --gpus-per-node=1 -t 1:00:00`, or OnDemand Desktop), then run the
+  (`salloc -A PAS3453 --gpus-per-node=1 -t 1:00:00`, or OnDemand Desktop), then run the
   extraction in the foreground:
   ```bash
-  export SCRATCH=/fs/scratch/PAS0541/$USER
+  export SCRATCH=/fs/scratch/PAS3453/$USER
   apptainer exec --nv -B "$PWD:/workspace" -B "$SCRATCH:$SCRATCH" \
     --env HF_HOME=$SCRATCH/ecvol_hf --env HF_HUB_OFFLINE=1 \
     cloud/osc/ecvol-llm.sif \
@@ -162,7 +162,7 @@ ecvol llm-kappa --sheet data/coverage/fincall_llm_labels_rater1.csv `
 | Symptom | Cause | Fix (already in the scripts) |
 |---|---|---|
 | `module: apptainer unknown` | Apptainer isn't a module on OSC | Don't `module load`; it's on PATH |
-| `SCRATCH: unbound variable` | OSC defines no `$SCRATCH` | scripts default it to `/fs/scratch/PAS0541/$USER` |
+| `SCRATCH: unbound variable` | OSC defines no `$SCRATCH` | scripts default it to `/fs/scratch/PAS3453/$USER` |
 | `python: not found` | image has `python3`, not `python` | scripts use `python3` |
 | `OfflineModeIsEnabled` on download | image bakes `HF_HUB_OFFLINE=1` (right for compute) | `stage.sh` unsets it for the login-node download |
 | `Invalid account or account/partition` | no GPU association on that cluster | use a cluster where `sacctmgr` is non-empty (§0); add `--partition` if needed |

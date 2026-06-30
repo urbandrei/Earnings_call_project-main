@@ -84,7 +84,7 @@ done
 ## Data transfer (from Windows)
 
 Only two gitignored files move: `data/fincall/chunks.parquet` (138 MB) +
-`data/maec/chunks.parquet` (46 MB). `--account` is the **project** code (`PAS0541`); the
+`data/maec/chunks.parquet` (46 MB). `--account` is the **project** code (`PAS3453`); the
 ssh/scp login uses your **personal OSC username**, not the project code.
 
 ```powershell

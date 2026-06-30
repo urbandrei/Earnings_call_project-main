@@ -13,7 +13,7 @@
 #     sbatch --export=ALL,MODEL_ID=Qwen/Qwen2.5-32B-Instruct,DATASET=maec   cloud/osc/slurm/extract.sbatch
 
 #SBATCH --job-name=ecvol-llm
-#SBATCH --account=PAS0541           # OSC project code
+#SBATCH --account=PAS3453           # OSC project code
 #SBATCH --nodes=1
 #SBATCH --gpus-per-node=1           # Ascend=A100-80GB, Cardinal=H100; one GPU is plenty for <=32B
 #SBATCH --cpus-per-task=8
@@ -31,7 +31,7 @@ LIMIT="${LIMIT:-0}"                         # 0 = full corpus; set e.g. 3 for a 
 PROJECT="${SLURM_SUBMIT_DIR:-$PWD}"
 SIF="$PROJECT/cloud/osc/ecvol-llm.sif"
 # OSC defines no $SCRATCH; default to the project scratch (override by exporting SCRATCH).
-: "${SCRATCH:=/fs/scratch/PAS0541/$USER}"
+: "${SCRATCH:=/fs/scratch/PAS3453/$USER}"
 
 export HF_HOME="${HF_HOME:-$SCRATCH/ecvol_hf}"   # weights pre-staged here by stage.sh
 export APPTAINERENV_HF_HOME="$HF_HOME"

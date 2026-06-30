@@ -10,7 +10,7 @@ set -euo pipefail
 PROJECT="${PWD}"
 SIF="$PROJECT/cloud/osc/ecvol-llm.sif"
 # OSC defines no $SCRATCH; default to the project scratch (override by exporting SCRATCH).
-: "${SCRATCH:=/fs/scratch/PAS0541/$USER}"
+: "${SCRATCH:=/fs/scratch/PAS3453/$USER}"
 mkdir -p "$SCRATCH"
 export HF_HOME="${HF_HOME:-$SCRATCH/ecvol_hf}"
 mkdir -p "$HF_HOME"
