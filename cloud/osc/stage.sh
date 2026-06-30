@@ -24,7 +24,7 @@ fi
 for MODEL_ID in "$@"; do
     echo ">>> pre-downloading $MODEL_ID into $HF_HOME"
     APPTAINERENV_HF_HOME="$HF_HOME" apptainer exec --nv -B "$SCRATCH:$SCRATCH" "$SIF" \
-        python -c "from huggingface_hub import snapshot_download; snapshot_download('$MODEL_ID')"
+        python3 -c "from huggingface_hub import snapshot_download; snapshot_download('$MODEL_ID')"
 done
 
 echo "staged. confirm data parquets are present under data/{fincall,maec}/ and data/splits/."
