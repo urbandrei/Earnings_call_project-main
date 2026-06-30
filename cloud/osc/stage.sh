@@ -23,8 +23,12 @@ fi
 
 for MODEL_ID in "$@"; do
     echo ">>> pre-downloading $MODEL_ID into $HF_HOME"
-    APPTAINERENV_HF_HOME="$HF_HOME" apptainer exec --nv -B "$SCRATCH:$SCRATCH" "$SIF" \
-        python3 -c "from huggingface_hub import snapshot_download; snapshot_download('$MODEL_ID')"
+    # HF_HUB_OFFLINE=1 is baked into the image for the offline compute nodes; unset it here
+    # (login node has internet) so the download can reach the Hub. Model id is passed via env
+    # to avoid nested-quote hell. The `unset` runs after %environment, so order doesn't matter.
+    APPTAINERENV_HF_HOME="$HF_HOME" APPTAINERENV_ECVOL_MODEL="$MODEL_ID" \
+        apptainer exec --nv -B "$SCRATCH:$SCRATCH" "$SIF" \
+        bash -c 'unset HF_HUB_OFFLINE; python3 -c "import os; from huggingface_hub import snapshot_download; snapshot_download(os.environ[\"ECVOL_MODEL\"])"'
 done
 
 echo "staged. confirm data parquets are present under data/{fincall,maec}/ and data/splits/."
