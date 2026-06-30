@@ -30,6 +30,8 @@ YARN="${YARN:-1}"                          # 1 = YaRN rope-scaling on (the chose
 LIMIT="${LIMIT:-0}"                         # 0 = full corpus; set e.g. 3 for a smoke-test job
 PROJECT="${SLURM_SUBMIT_DIR:-$PWD}"
 SIF="$PROJECT/cloud/osc/ecvol-llm.sif"
+# OSC defines no $SCRATCH; default to the project scratch (override by exporting SCRATCH).
+: "${SCRATCH:=/fs/scratch/PAS0541/$USER}"
 
 export HF_HOME="${HF_HOME:-$SCRATCH/ecvol_hf}"   # weights pre-staged here by stage.sh
 export APPTAINERENV_HF_HOME="$HF_HOME"
