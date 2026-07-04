@@ -127,6 +127,27 @@ def test_sample_train_calls_train_only_and_deterministic(tmp_path):
         sample_train_calls(tmp_path, "fincall", 99, 0)
 
 
+def test_build_llm_audit_sample_restricts_to_sample(tmp_path):
+    # The CLI's --audit-sample path: extract exactly the seeded audit calls (the κ-gate set)
+    # through whatever engine runs the corpus (audit-matches-corpus rule), not the first-N calls.
+    _seed_data(tmp_path)
+    sample = sample_train_calls(tmp_path, "fincall", 3, 0)
+    fake = _FakeEngine()
+    res = E.build_llm(tmp_path, "fincall", model_id="test/m", engine_obj=fake, call_ids=sample)
+    df = pd.read_parquet(res.out_path)
+    assert set(df["call_id"]) == set(sample)  # only the sampled calls, both sections each
+    assert res.n_new == len(sample) * 2 and fake.calls == len(sample) * 2
+
+
+def test_featurize_llm_audit_sample_and_limit_mutually_exclusive():
+    from typer.testing import CliRunner
+
+    from ecvol.cli import app
+
+    result = CliRunner().invoke(app, ["featurize", "llm", "--audit-sample", "--limit", "3"])
+    assert result.exit_code != 0  # BadParameter before any model load
+
+
 def test_build_engine_rejects_unknown():
     with pytest.raises(ValueError):
         E.build_engine("x/y", engine="nonsense")

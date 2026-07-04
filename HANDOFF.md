@@ -14,37 +14,45 @@ Each entry: date · task ID · what the user must do · what unblocks when it's 
 - **2026-06-29 · T6.2 — rater 1 labels are in and ingested; the κ-gate is unblocked on the labels side. Second rater is now PAPER-STAGE, not an OSC blocker.**
   You delivered `ingest/Ratings_1.xlsx` (50-call audit set). It is ingested + validated →
   `data/coverage/fincall_llm_labels_rater1.csv` (97 rows, exact match to the frozen sample, all in
-  range). Per DECISIONS 2026-06-29, the **κ>0.6 go/no-go for the OSC corpus run uses this single
+  range). Per DECISIONS 2026-06-29, the **κ>0.6 go/no-go for the corpus run uses this single
   rater** — the second set buys inter-annotator agreement (a reviewer-expected, paper-stage number),
   not the compute decision. To finish the loop's side: nothing — `ecvol llm-kappa --sheet
-  data/coverage/fincall_llm_labels_rater1.csv --features <model>.parquet` runs the moment OSC returns
-  features. **Your remaining items:** (1) collect the **second rating set** when convenient (for IAA
+  data/coverage/fincall_llm_labels_rater1.csv --features <model>.parquet` runs the moment Colab
+  returns features (compute rerouted OSC → Colab Pro+, 2026-07-04 — see the entry below). **Your remaining items:** (1) collect the **second rating set** when convenient (for IAA
   in the paper); (2) **a borderline model κ (≈0.45–0.6) re-blocks on rater 2** before any Stage-5/RQ3
   claim — only a clean pass makes rater 2 non-critical for the go/no-go; (3) the workbook's **Schema
   Feedback** sheet is the input to the T6.1 sign-off below — review it and either sign off v1 or list edits.
   - **What unblocks:** the content gate (`ecvol llm-kappa`) the instant OSC extraction lands; no
     further labeling is needed for the go/no-go.
 
-- **2026-06-29 · T6.2 — the corpus run goes to OSC; package is turnkey, only OSC access + the operational steps remain.**
-  Local can't run extraction (16 GB OOMs at full context; `data/coverage/llm_probe_report.md`).
-  Everything for the cloud burst is built (`cloud/osc/`), the $1000 spend is approved (DECISIONS
-  2026-06-24), the schema is frozen at v2 (signed off), and the **>32k context policy is resolved**
-  (YaRN-extend to 65536, wired into `extract.sbatch` by default — DECISIONS 2026-06-29). Remaining is
-  operational, all on OSC:
-  1. **Confirm your OSC allocation** — project/account code (`PASxxxx`) + cluster (recommend **Ascend
-     A100-80GB** or **Cardinal H100**). Put the account in `cloud/osc/slurm/extract.sbatch` (line 13).
-  2. **Get code+data on OSC + build:** clone the repo; rsync the gitignored
-     `data/{fincall,maec}/{calls,chunks}.parquet` + `data/splits/`; `module load apptainer` then
-     `apptainer build cloud/osc/ecvol-llm.sif cloud/osc/apptainer/ecvol-llm.def`.
-  3. **Stage weights + smoke-test + submit:** `bash cloud/osc/stage.sh Qwen/Qwen2.5-7B-Instruct
-     Qwen/Qwen2.5-32B-Instruct`; run ONE `--limit` job first for a real ETA/cost; then the full panel
-     (loop in README step 3b). (If you add gated Llama-3.1 to the panel: `huggingface-cli login` on the
-     login node first. Qwen models are ungated.)
-  - **What unblocks:** per-model corpus extraction (panel: 7B → 32B) → `ecvol llm-kappa --sheet
-    data/coverage/fincall_llm_labels_rater1.csv --features …` per model (gate on confirmatory core) →
-    T6.3. The κ-audit's 50 calls are extracted in the same corpus job (audit matches corpus).
+- **2026-07-04 · T6.2 — corpus run REROUTED to Google Colab Pro+ (OSC access + funds lapsed); package is turnkey, only the Colab operational steps remain.**
+  OSC is gone (deadline passed, funds unavailable), so the run moves to your **Colab Pro+**
+  subscription — same vLLM + Outlines + YaRN engine, just on a Colab GPU (DECISIONS 2026-07-04,
+  superseding the 2026-06-24 $1000 OSC spend, which was never used). Everything is built:
+  `cloud/colab/` (README + RUNBOOK + `setup.sh` + `run.ipynb`), the `--audit-sample` gate flag, the
+  frozen v2 schema, and the >32k YaRN policy. Remaining is operational, all on Colab:
+  1. **Put the repo on Drive** at `MyDrive/ecvol/Earnings_call_project-main` (git-clone with a PAT,
+     or upload a zip), and stage the **two gitignored payloads** it reads —
+     `data/fincall/chunks.parquet` (138 MB) + `data/maec/chunks.parquet` (46 MB) — under its `data/`
+     (drag-drop via drive.google.com or the Colab file browser). Splits + rater labels are git-tracked
+     and arrive with the repo.
+  2. **Attach a GPU runtime** (Runtime → Change runtime type → **A100**, fall back to L4; a T4 is too
+     small — see RUNBOOK §0), then open `cloud/colab/run.ipynb` and run cells 1–2 (mount Drive +
+     `setup.sh`).
+  3. **Smoke → κ-gate → corpus** (notebook cells 4–6): a 3-call smoke test, then `--audit-sample` +
+     `ecvol llm-kappa` (must PASS κ>0.6 before the corpus), then the full FinCall+MAEC run. Resumable
+     across session timeouts (outputs on Drive). For the panel, use an **AWQ** 32B checkpoint on the
+     40 GB GPU; 72B is dropped. (Gated Llama-3.1 needs `huggingface-cli login`; Qwen is ungated.)
+  - **What unblocks:** per-model corpus extraction (panel: 7B → 32B-AWQ → Llama-3.1-8B) → `ecvol
+    llm-kappa --sheet data/coverage/fincall_llm_labels_rater1.csv --features …` per model (gate on
+    confirmatory core) → T6.3. `--audit-sample` extracts the κ-audit calls through the same engine as
+    the corpus (audit matches corpus).
 
 ### Resolved
+- **2026-07-04 · T6.2 — OSC route SUPERSEDED by Colab Pro+.** The OSC allocation + funds lapsed;
+  the corpus compute moved to Colab Pro+ (DECISIONS 2026-07-04). The 2026-06-24 $1000 OSC spend
+  approval is void (never used — no money spent). `cloud/osc/` is kept as reference; the live path
+  is `cloud/colab/` (see the Active entry above). No OSC action is needed from you.
 - **2026-06-29 · T6.1 — v2 schema SIGNED OFF (user).** Schema + rubric + `PROMPT_VERSION="v2"`
   frozen; T6.1 → `[x]`. v2 added two exploratory fields (`management_optimism`,
   `quantitative_specificity`) from the rater's feedback + numeral-aware literature, and narrowed
@@ -87,6 +95,7 @@ These come from the backlog scan; the loop will move each into **Active** when i
   emotion2vec, BGE/GTE, FinBERT, Qwen) are ungated — no action needed for those.
 - **Phase 4 · T4.3 / Phase 8 · T8.3** — possible/definite **cloud burst**: needs a budget +
   your go-ahead (DECISIONS.md entry). Definite for the Stage-6 QLoRA / audio-LLM experiments.
+  *(T6.2's compute now runs on Colab Pro+, not a paid burst — DECISIONS 2026-07-04.)*
 - **Phase 6 · T6.1 / T6.2 (and exploration TX1)** — **human reading + labeling**: design the
   LLM feature schema from ~20 calls, then a **50-call audit with κ>0.6** that blocks
   corpus-scale extraction. The loop builds the labeling tooling; the agreement numbers are yours.

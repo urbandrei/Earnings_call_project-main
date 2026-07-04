@@ -481,6 +481,15 @@ def featurize_llm(
     engine: str = typer.Option("transformers", help="Inference engine: transformers | vllm."),
     device: str = typer.Option("cuda", help="torch device (transformers engine)."),
     limit: int = typer.Option(0, help="Process only the first N calls (0 = full corpus)."),
+    audit_sample: bool = typer.Option(
+        False,
+        help="Restrict to the 50-call train-only audit sample (the κ-gate calls) instead of the "
+        "corpus. Engine-agnostic, so the SAME engine that runs the corpus scores the gate "
+        "(audit-matches-corpus rule, DECISIONS 2026-06-24). Run this + `ecvol llm-kappa` and "
+        "clear κ>0.6 before the full run. Mutually exclusive with --limit.",
+    ),
+    audit_n: int = typer.Option(50, help="Audit-sample size (must match the labeling sheet)."),
+    audit_seed: int = typer.Option(0, help="Audit-sample seed (must match llm-audit-sample)."),
     no_4bit: bool = typer.Option(False, help="Disable bitsandbytes 4-bit (transformers engine)."),
     max_model_len: int = typer.Option(
         0, help="vLLM context window (0 = model default; set ~65536 to cover the >32k tail)."
@@ -496,6 +505,15 @@ def featurize_llm(
 ) -> None:
     """Constrained LLM structured-feature extraction → llm_features__{model}.parquet (T6.2)."""
     from ecvol.features.llm.extract import build_llm, yarn_rope_scaling
+
+    if audit_sample and limit:
+        raise typer.BadParameter("--audit-sample and --limit are mutually exclusive")
+    call_ids = None
+    if audit_sample:
+        from ecvol.features.llm.reading import sample_train_calls
+
+        call_ids = sample_train_calls(root, dataset, audit_n, audit_seed)
+        typer.echo(f"audit sample: {len(call_ids)} train-only calls (seed={audit_seed}) — κ-gate")
 
     kwargs = {}
     if engine == "transformers":
@@ -513,6 +531,7 @@ def featurize_llm(
         model_id=model_id,
         revision=revision or None,
         engine=engine,
+        call_ids=call_ids,
         limit=(limit or None),
         **kwargs,
     )

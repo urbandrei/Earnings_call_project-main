@@ -317,3 +317,19 @@ Keep entries factual and compact. Decisions that change the design belong in [DE
 - **Sources:** DESIGN §3 lineage + §13 refs (R8 ECC Analyzer, R30/R31/R32 numeral-aware, R14 identity); rater-1 workbook; existing audit/extract scaffolding.
 - **Gate:** ruff clean · ruff format clean · **253 pytest pass** (+11 this session). Not yet pushed (local main).
 - **Next:** T6.2 corpus extraction on OSC against frozen v2 (remaining blockers operational: OSC allocation + >32k-token context policy, HANDOFF). Then `ecvol llm-kappa` (confirmatory core) per model → T6.3. Second rater → pre-publication IAA.
+
+
+## 2026-07-04 — T6.2 compute rerouted OSC → Colab Pro+ (T6.2)
+
+- **Scope:** the booked OSC allocation lapsed (deadline passed) and its funds are gone, so the corpus-extraction compute was rerouted. Did a pro/con of paid inference API vs Colab; user chose **Colab Pro+** (flat subscription, no paid-API budget, max monthly compute units, no deadline). Prepared the pipeline for testing on that route.
+- **Done:**
+  - **Route decision + log:** DECISIONS 2026-07-04 — reroute to Colab Pro+; the 2026-06-24 $1000 OSC spend approval is **superseded/void (never used, $0 spent)**. Same `--engine vllm` + Outlines + YaRN-to-65536 engine (Colab, like OSC, is Linux+CUDA where vLLM runs), so the pipeline barely changes.
+  - **Only new code:** `featurize llm --audit-sample` (+ `--audit-n`/`--audit-seed`) restricts a run to the 50 train-only κ-gate calls via `sample_train_calls`, mutually exclusive with `--limit`. This makes the audit-matches-corpus rule (DECISIONS 2026-06-24) hold on *any* engine — the κ-gate is now extracted through the same vLLM engine as the corpus, not just because the audit calls happen to be a FinCall subset. 2 tests (`test_build_llm_audit_sample_restricts_to_sample`, CLI mutual-exclusivity guard).
+  - **`cloud/colab/` package** (mirrors `cloud/osc/`): `README.md`, `RUNBOOK.md` (from-scratch + Colab gotcha index), idempotent `setup.sh` (per-session vLLM+Outlines+ecvol install, no container/offline-staging since the Colab VM has internet), `run.ipynb` (mount Drive → setup → smoke → κ-gate → corpus). `cloud/osc/` retained as reference.
+  - **Docs:** TASKS T6.2 note; HANDOFF (OSC Active entry → Resolved/superseded, new Colab Active entry with the operational steps, rater-1 entry de-OSC'd, cloud-burst FYI annotated); this journal entry.
+- **Found:**
+  - Corpus scale reconfirmed for costing: **9,443 (call,section) units**, ~38M input tokens (`llm_probe_report.md`) — trivially small, which is why a paid open-weights API would have been ~$30–80 for the full panel; rejected only because it reintroduces a paid budget the user declined (design was already open-weights-clean since the served weights are open).
+  - **Colab realities handled:** (1) VM disk is ephemeral → repo + `data/` outputs live on Drive; the per-model parquet resume store makes session timeouts a non-issue. (2) GPU class not guaranteed — A100-**40GB** (vs OSC 80GB) fits 7B/8B-fp16 @65k; **32B must be AWQ 4-bit**; **72B dropped** on Colab. Never silently lower `--max-model-len` (would desync audit from corpus).
+- **Sources:** measured corpus stats from `data/{fincall,maec}/chunks.parquet`; `cloud/osc/` package (mirrored); Colab Pro+ GPU tiers (A100-40/L4-24/T4-16); vLLM/Outlines/YaRN paths already built (DECISIONS 2026-06-24/29).
+- **Gate:** ruff check · ruff format · pytest — see the commit; `cloud/` is docs+scripts (not import-tested), the CLI change is covered by the 2 new tests.
+- **Next (human, on Colab):** put the repo + the two `chunks.parquet` on Drive; attach an A100/L4 runtime; run `cloud/colab/run.ipynb` — smoke (3 calls) → `--audit-sample` + `ecvol llm-kappa` (must clear κ>0.6) → full FinCall+MAEC corpus (panel: 7B → 32B-AWQ → Llama-3.1-8B). Then per-model κ → T6.3 (Result Table 5). Phase-6 push/CI checkpoint still pending.
