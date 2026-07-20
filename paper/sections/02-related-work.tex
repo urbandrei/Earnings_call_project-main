@@ -20,7 +20,7 @@ Numeral-aware variants (NumHTML \citep{yang2022numhtml}, NAM/ECNum
 \citep{ye2020mraqa} target specific aspects of call language.
 
 \paragraph{Audio and prosody.}
-\citet{soundofrisk2024} report that physics-informed acoustic features explain up to
+\citet{soundofrisk2025} report that physics-informed acoustic features explain up to
 43.8\% of 30-day realised-volatility variance, motivating an audio ladder; the
 FinAudio benchmark \citep{cao2025finaudio} cautions that audio-LLMs struggle on long
 financial audio, informing our preference for frozen pooled features over end-to-end
@@ -31,8 +31,8 @@ Our design is organised around four documented failure modes.
 \emph{(1) Ticker-identity leakage} \citep{scss2024} is the central threat to
 validity (\S\ref{sec:intro}); we respond with identity-robust targets (\dv,
 HAR-residual), a ticker-fixed-effect baseline, and an identity-control suite
-(\S\ref{sec:experiments}). \emph{(2) LLM lookahead bias} \citep{lookahead2024,
-datedgpt2025}: a 2024-cutoff model ``predicting'' 2019--2021 outcomes it has
+(\S\ref{sec:experiments}). \emph{(2) LLM lookahead bias} \citep{lookahead2025,
+datedgpt2026}: a 2024-cutoff model ``predicting'' 2019--2021 outcomes it has
 effectively seen; we respond with a planned post-cutoff test set and a
 prompt-masking ablation. \emph{(3) Weak baselines}: much prior work omits
 persistence, GARCH(1,1), and HAR-RV \citep{corsi2009har}, which are hard to beat at

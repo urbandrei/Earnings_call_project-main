@@ -26,7 +26,7 @@ multimodal performance is identity plus metadata.
 
 \paragraph{Stage 2 --- frozen text content.}
 We segment each transcript into prepared-remarks vs.\ Q\&A and speaker turns, then
-extract three feature blocks: BGE-M3 \citep{bge2023} section-pooled sentence
+extract three feature blocks: BGE-M3 \citep{bge2024} section-pooled sentence
 embeddings (1024-d), FinBERT \citep{finbert} sentiment aggregates per
 scope$\times$role, and surface statistics. Heads are ridge (with the $\alpha$ grid
 selected on validation, \emph{no} retrain on train$+$val) and a shallow MLP

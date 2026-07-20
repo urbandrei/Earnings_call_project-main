@@ -87,7 +87,7 @@ A condensed, annotated map. Full citations with URLs in [§13](#13-references).
 | RiskLabs [R9] | 2024 (arXiv) | LLM fusion of calls + news + market time series | |
 | ECHO-GL [R10] | AAAI 2024 | Heterogeneous graphs from call semantics (movement prediction) | |
 | AT-FinGPT [R11] | Finance Research Letters 2025 | Audio-text LLM for risk prediction | |
-| "The Sound of Risk" [R12] | 2024 (arXiv) | Physics-informed acoustics; paralinguistics explain up to 43.8% of 30-day RV variance | Motivates the audio ladder |
+| "The Sound of Risk" [R12] | 2025 (arXiv) | Physics-informed acoustics; paralinguistics explain up to 43.8% of 30-day RV variance | Motivates the audio ladder |
 | FinAudio benchmark [R13] | 2025 (arXiv) | Audio-LLMs struggle on long financial audio | Caution for Stage 6 audio-LLM plans |
 
 ### 3.1 Pitfall: ticker-identity leakage — **the central threat to validity**
@@ -400,7 +400,7 @@ What ships with the paper (tracked against [R18]'s failure causes):
 - [R1] Qin & Yang, "What You Say and How You Say It Matters: Predicting Stock Volatility Using Verbal and Vocal Cues," ACL 2019. https://aclanthology.org/P19-1038/
 - [R2] Li et al., "MAEC: A Multimodal Aligned Earnings Conference Call Dataset for Financial Risk Prediction," CIKM 2020. https://dl.acm.org/doi/10.1145/3340531.3412879
 - [R3] Yang et al., "HTML: Hierarchical Transformer-based Multi-task Learning for Volatility Prediction," WWW 2020. https://github.com/YangLinyi/HTML-Hierarchical-Transformer-based-Multi-task-Learning-for-Volatility-Prediction
-- [R4] Sawhney et al., "VolTAGE: Volatility Forecasting via Text-Audio Fusion with Graph Convolution Networks," EMNLP 2020. https://aclanthology.org/2020.emnlp-main.643/
+- [R4] Sawhney et al., "VolTAGE: Volatility Forecasting via Text Audio Fusion with Graph Convolution Networks for Earnings Calls," EMNLP 2020. https://aclanthology.org/2020.emnlp-main.643/
 - [R5] Sang & Bao, "DialogueGAT: A Graph Attention Network for Financial Risk Prediction by Modeling the Dialogues in Earnings Conference Calls," Findings of EMNLP 2022. https://aclanthology.org/2022.findings-emnlp.117/
 - [R6] Niu et al., "KeFVP: Knowledge-enhanced Financial Volatility Prediction," Findings of EMNLP 2023. https://aclanthology.org/2023.findings-emnlp.770/ · code: https://github.com/hankniu01/KeFVP
 - [R7] Wang et al., "AMA-LSTM: Pioneering Robust and Fair Financial Audio Analysis for Stock Volatility Prediction," NAACL 2024 Industry. https://arxiv.org/abs/2407.18324
@@ -408,14 +408,14 @@ What ships with the paper (tracked against [R18]'s failure causes):
 - [R9] Cao et al., "RiskLabs: Predicting Financial Risk Using Large Language Model based on Multimodal and Multi-Sources Data," 2024. https://arxiv.org/abs/2404.07452
 - [R10] Liu et al., "ECHO-GL: Earnings Calls-Driven Heterogeneous Graph Learning for Stock Movement Prediction," AAAI 2024. https://ojs.aaai.org/index.php/AAAI/article/view/29305
 - [R11] "AT-FinGPT: Financial risk prediction via an audio-text large language model," Finance Research Letters, 2025. https://www.sciencedirect.com/science/article/abs/pii/S1544612325002314
-- [R12] Chen et al., "The Sound of Risk: A Multimodal Physics-Informed Acoustic Model for Forecasting Market Volatility," 2024. https://arxiv.org/abs/2508.18653
+- [R12] Chen et al., "The Sound of Risk: A Multimodal Physics-Informed Acoustic Model for Forecasting Market Volatility and Enhancing Market Interpretability," 2025. https://arxiv.org/abs/2508.18653
 - [R13] Cao et al., "FinAudio: A Benchmark for Audio Large Language Models in Financial Applications," 2025. https://arxiv.org/abs/2503.20990
 
 ### Papers — pitfalls & methodology
 
 - [R14] "Same Company, Same Signal: The Role of Identity in Earnings Call Transcripts," 2024. https://arxiv.org/abs/2412.18029 — *central threat-to-validity reference*
-- [R15] Gao, Jiang & Yan, "A Test of Lookahead Bias in LLM Forecasts," 2024. https://arxiv.org/abs/2512.23847
-- [R16] "DatedGPT: Preventing Lookahead Bias in Large Language Models with Time-Aware Pretraining," 2025. https://arxiv.org/abs/2603.11838
+- [R15] Gao, Jiang & Yan, "Detecting Lookahead Bias in LLM Forecasts," 2025. https://arxiv.org/abs/2512.23847
+- [R16] "DatedGPT: Preventing Lookahead Bias in Large Language Models with Time-Aware Pretraining," 2026. https://arxiv.org/abs/2603.11838
 - [R17] Corsi, "A Simple Approximate Long-Memory Model of Realized Volatility" (HAR-RV), Journal of Financial Econometrics, 2009. https://doi.org/10.1093/jjfinec/nbp001
 - [R18] "Language Modeling for the Future of Finance: A Survey into Metrics, Tasks, and Data Opportunities," 2025. https://arxiv.org/abs/2504.07274 — *14% exact-reproduction finding*
 - [R19] "Emo-bias: A Large Scale Evaluation of Social Bias on Speech Emotion Recognition," 2024. https://arxiv.org/abs/2406.05065
