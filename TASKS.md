@@ -335,7 +335,7 @@
   - [ ] Frozen-eval runner
   - [ ] Degradation metrics with bootstrap CIs
   - [ ] Write-up
-- **Notes:** —
+- **Notes:** **Novelty scan 2026-07-19** (`paper/novelty_scan_2026-07.md`): claim scoped to *first frozen-pipeline post-cutoff evaluation in the earnings-call volatility literature* (nearest precedent: ECB-presser rates-vol check [R38]); optional comparison arm = chronologically consistent LLM [R39]; the lookahead line is active (R15/R16/R33/R34/R37) — time-sensitive, execute and post promptly.
 
 ---
 
@@ -361,7 +361,7 @@
   - [ ] Figures notebooks
   - [ ] Venue selection memo
   - [ ] arXiv submission
-- **Notes:** **Limitations to draft (from 2026-06-24 validation/gut-check):** (1) **MLP-head instability** — across-seed R² `seed_std` up to ~3.4 units; report median/IQR, not divergent-seed means (see T5.2 note). (2) **Past-vol baseline is not HAR** — the Stage-2/3 `[v_pre, rv_daily, rv_weekly, rv_monthly]` ridge (standardized, val-tuned α) overfits the temporal/COVID regime (−2.0 at τ=15) where the rigid OLS-HAR is robust (+0.21); arguably a small *finding* (structural HAR > unconstrained ridge under regime shift) worth a sentence, but at minimum the two must be labeled distinctly. (3) **Short-horizon R²_OOS is inflated by a noisy persistence baseline** (persistence MSE τ=3=1.17 vs τ=7=0.42) — frame short-τ gains honestly. **Validation assets available:** `notebooks/validate_results.py` independently reproduces all 9,696 targets to 1e-15, confirms leakage-free splits and clean features, and emits `data/results/figures/*.png` (R² heatmaps, identity gap, target dists, feature sanity) + `target_handcheck.csv` — feed these into the figures-notebook subtask (matplotlib still needs pinning into the lockfile at this phase).
+- **Notes:** **Limitations to draft (from 2026-06-24 validation/gut-check):** (1) **MLP-head instability** — across-seed R² `seed_std` up to ~3.4 units; report median/IQR, not divergent-seed means (see T5.2 note). (2) **Past-vol baseline is not HAR** — the Stage-2/3 `[v_pre, rv_daily, rv_weekly, rv_monthly]` ridge (standardized, val-tuned α) overfits the temporal/COVID regime (−2.0 at τ=15) where the rigid OLS-HAR is robust (+0.21); arguably a small *finding* (structural HAR > unconstrained ridge under regime shift) worth a sentence, but at minimum the two must be labeled distinctly. (3) **Short-horizon R²_OOS is inflated by a noisy persistence baseline** (persistence MSE τ=3=1.17 vs τ=7=0.42) — frame short-τ gains honestly. **Validation assets available:** `notebooks/validate_results.py` independently reproduces all 9,696 targets to 1e-15, confirms leakage-free splits and clean features, and emits `data/results/figures/*.png` (R² heatmaps, identity gap, target dists, feature sanity) + `target_handcheck.csv` — feed these into the figures-notebook subtask (matplotlib still needs pinning into the lockfile at this phase). **Pre-submission (2026-07-19):** re-run the novelty scan (`paper/novelty_scan_2026-07.md`) shortly before submission — workshop proceedings and SSRN are under-indexed; must-cites R33–R40 already folded into refs.bib + related work; engage The Sound of Risk [R12] head-on in the discussion (done in draft: no identity controls there, our shuffle predicts its gains vanish).
 
 ### T8.3 (Conditional) Stage-6 cloud experiments — `[ ]`
 - **Goal:** QLoRA fine-tuning / audio-LLM experiments, only if the DESIGN.md §6 Stage-6 gate passed.

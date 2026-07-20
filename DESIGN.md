@@ -87,12 +87,14 @@ A condensed, annotated map. Full citations with URLs in [§13](#13-references).
 | RiskLabs [R9] | 2024 (arXiv) | LLM fusion of calls + news + market time series | |
 | ECHO-GL [R10] | AAAI 2024 | Heterogeneous graphs from call semantics (movement prediction) | |
 | AT-FinGPT [R11] | Finance Research Letters 2025 | Audio-text LLM for risk prediction | |
-| "The Sound of Risk" [R12] | 2025 (arXiv) | Physics-informed acoustics; paralinguistics explain up to 43.8% of 30-day RV variance | Motivates the audio ladder |
+| "The Sound of Risk" [R12] | 2025 (arXiv) | Physics-informed acoustics; paralinguistics explain up to 43.8% of 30-day RV variance | Motivates the audio ladder; reports **no identity controls** — our primary empirical comparison target (novelty scan 2026-07) |
 | FinAudio benchmark [R13] | 2025 (arXiv) | Audio-LLMs struggle on long financial audio | Caution for Stage 6 audio-LLM plans |
 
 ### 3.1 Pitfall: ticker-identity leakage — **the central threat to validity**
 
 **"Same Company, Same Signal" [R14]** (arXiv 2412.18029) shows that transcript representations used across this literature predominantly encode *company identity*, not content: same-ticker transcripts cluster tightly, and **training-free baselines built on each company's past volatility patterns beat all transcript-based models** on their evaluation. Since volatility is strongly autocorrelated and company-specific, a model that memorizes "which company is this" inherits most of the apparent skill.
+
+*Independent corroboration (added 2026-07-19):* [R33] shows GPT-4o deanonymizes entity-neutered earnings-call transcripts with near-perfect accuracy (100% firm / 95.2% year on Apple) — identity leaks even under explicit masking, so masking alone is not a defense.
 
 **Design response:** (a) the Δv / HAR-residual target variants, which subtract the company's own past volatility (§5.3); (b) a ticker-fixed-effect baseline in every table (Stage 1); (c) the identity-control suite — ticker-only model, same-ticker transcript shuffle, identity probes, ticker-disjoint splits (§7.3).
 
@@ -100,7 +102,9 @@ A condensed, annotated map. Full citations with URLs in [§13](#13-references).
 
 LLMs whose training data covers the evaluation period can "predict" outcomes they have effectively seen ([R15], arXiv 2512.23847; DatedGPT [R16]). Any Stage-5 result on 2019–2021 calls processed by a 2024-cutoff model is suspect by default.
 
-**Design response:** (a) Phase 7 acquires a 2025–2026 post-knowledge-cutoff test set and re-evaluates the frozen pipeline; (b) a prompt-masking ablation (company names, tickers, dates removed) quantifies identity-based leakage in LLM features (§7.4).
+*Frontier update (2026-07-19 novelty scan):* this line is now active — diagnostics [R15], cutoff-bounded pretraining [R16][R39], workflow benchmarking that finds significant bias in Llama-3.1 (a family in our panel) [R34], and memorization measurement/filtering [R33][R37]. Nearest precedent: a post-cutoff validation of an LLM disagreement measure against ECB *rates* volatility [R38]. None runs a frozen pipeline on post-cutoff earnings calls, so the Phase-7 claim is scoped to: **first frozen-pipeline post-cutoff evaluation in the earnings-call volatility literature**. Time-sensitive — execute and post promptly.
+
+**Design response:** (a) Phase 7 acquires a 2025–2026 post-knowledge-cutoff test set and re-evaluates the frozen pipeline; (b) a prompt-masking ablation (company names, tickers, dates removed) quantifies identity-based leakage in LLM features (§7.4); (c) *optional comparison arm:* a chronologically consistent open LLM [R39] run over the same calls.
 
 ### 3.3 Pitfall: weak baselines
 
@@ -439,6 +443,17 @@ What ships with the paper (tracked against [R18]'s failure causes):
 - [R31] Yang et al., "NumHTML: Numeric-Oriented Hierarchical Transformer Model for Multi-task Financial Forecasting," AAAI 2022. https://arxiv.org/abs/2201.01770
 - [R32] Shi et al., "Enhancing Volatility Forecasting in Financial Markets: A General Numeral Attachment Dataset for Understanding Earnings Calls" (GNAVol), IJCNLP-AACL 2023. https://aclanthology.org/2023.ijcnlp-short.5/
 - *Deferred:* DeFVP (ICME 2024, differentiable sentence-selection for volatility) — surfaced by the review but no canonical URL verified as of 2026-06-14; add when confirmed.
+
+### Papers — identity & lookahead frontier (surfaced by the 2026-07-19 novelty scan; evidence in paper/novelty_scan_2026-07.md, added via DECISIONS.md)
+
+- [R33] Lopez-Lira, Tang & Zhu, "The Memorization Problem: Can We Trust LLMs' Economic Forecasts?," 2025. https://arxiv.org/abs/2504.14765 — *GPT-4o deanonymizes entity-neutered earnings-call transcripts (100% firm acc. on Apple); identity leaks even under masking — corroborates §3.1, bridges to §3.2*
+- [R34] Benhenda, "Look-Ahead-Bench: a Standardized Benchmark of Look-ahead Bias in Point-in-Time LLMs for Finance," 2026. https://arxiv.org/abs/2601.13770 — *finds significant lookahead bias in Llama-3.1-8B/70B (a family in our T6.2 panel); caveat: single-author, vendor-affiliated (Pitinf results vendor-reported)*
+- [R35] Ma, Lin & Yang, "EvasionBench: A Large-Scale Benchmark for Detecting Managerial Evasion in Earnings Call Q&A," 2026. https://arxiv.org/abs/2601.09142 — *LLM-consensus evasion labels at scale; its κ=0.835 is inter-LLM-annotator agreement, NOT a human audit — never cite as κ-gate prior art*
+- [R36] Aavang et al., "Effective Performance Measurement: Challenges and Opportunities in KPI Extraction from Earnings Calls," ACL 2026 Industry. https://arxiv.org/abs/2605.03147 — *open-weight LLM structured extraction + human verification; no market prediction*
+- [R37] Roy & Roy, "MemGuard-Alpha: Detecting and Filtering Memorization-Contaminated Signals in LLM-Based Financial Forecasting via Membership Inference and Cross-Model Disagreement," 2026. https://arxiv.org/abs/2603.26797
+- [R38] Collodel, "Interpreting the Interpreter: Can We Model post-ECB Conferences Volatility with LLM Agents?," 2025. https://arxiv.org/abs/2508.13635 — *nearest post-cutoff-validation precedent (ECB pressers → rates vol, n=30) — scopes the Phase-7 uniqueness claim to earnings-call volatility*
+- [R39] He, Lv, Manela & Wu, "Chronologically Consistent Large Language Models," 2025. https://arxiv.org/abs/2502.21206 — *candidate point-in-time comparison arm for Phase 7*
+- [R40] Ghosh, Maji & Naskar, "MiMIC: Multi-Modal Indian Earnings Calls Dataset to Predict Stock Prices," 2025. https://arxiv.org/abs/2504.09257 — *explicitly could not collect call audio — documents the gap the modern-corpus stretch goal fills*
 
 ### Datasets
 

@@ -363,3 +363,9 @@ Keep entries factual and compact. Decisions that change the design belong in [DE
 - **Key comparison target:** The Sound of Risk (R12) claims 43.8% OOS RV variance from text+acoustics with no identity controls — the strongest recent positive result our controls challenge; engage directly in the discussion.
 - **Refuted claim worth remembering:** EvasionBench's κ=0.835 is inter-LLM-annotator agreement, NOT a human audit — never cite it as kappa-gate prior art.
 - **Next:** fold the 6 must-cites into DESIGN §13/refs.bib during Phase-8 writing; re-scan before submission; keep the 4-week timeline (stage-(b) novelty is time-sensitive).
+
+## 2026-07-19 (later still 3) — Novelty scan folded into contract + paper
+
+- **Scope:** user directed folding the scan into the project. All new-reference titles/authors re-verified against live arXiv pages first (audit discipline).
+- **Done:** DESIGN §13 + [R33]–[R40]; §3.1 masking-doesn't-help corroboration (R33); §3.2 frontier update + Phase-7 claim scoped to earnings-call-volatility literature + optional point-in-time-LLM arm (R39); §3.0 R12 marked primary comparison target. refs.bib +7 entries (memorization2025, lookaheadbench2026, evasionbench2026, kpi2026, memguard2026, ecbvol2025, chronollm2025); related-work pitfalls paragraph rewritten around the now-active lookahead line; structured-extraction neighbors (EvasionBench, KPI paper) added to the lineage paragraph; discussion engages Sound of Risk's 43.8% claim directly. TASKS T7.2/T8.2 notes. DECISIONS 2026-07-19 entry.
+- **Next:** unchanged — Colab extraction launch; pre-submission re-scan reminder now lives in T8.2.
