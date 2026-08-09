@@ -1,0 +1,9 @@
+[
+  {
+    "license": "derived",
+    "path": "fincall/llm_features__bartowski__Qwen2.5-7B-Instruct-GGUF_Q4_K_M.parquet",
+    "retrieved_at": "2026-08-09T05:11:15+00:00",
+    "sha256": "7e1398068e3a1e10f0bdb61cd76d9f005e83ce6ddd47153698aac05c0169d907",
+    "source_url": "derived: ecvol featurize llm (T6.2) model=bartowski/Qwen2.5-7B-Instruct-GGUF:Q4_K_M@8911e8a47f92bac19d6f5c64a2e2095bd2f7d031 prompt=v2"
+  }
+]

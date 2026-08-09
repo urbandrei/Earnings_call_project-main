@@ -48,6 +48,44 @@ Each entry: date · task ID · what the user must do · what unblocks when it's 
     confirmatory core) → T6.3. `--audit-sample` extracts the κ-audit calls through the same engine as
     the corpus (audit matches corpus).
 
+- **2026-08-09 · T6.2 — the κ>0.6 CONTENT GATE FAILED on Qwen2.5-7B-Q4_K_M; corpus extraction is blocked pending YOUR decision.**
+  Good news first: **local extraction works.** The June "local is infeasible" verdict was about the
+  `transformers`+bitsandbytes engine, not the card — a new `--engine llamacpp` runs the 7B over whole
+  65k-token sections on your 16 GB GPU at **4.63 s/section** (FinCall ~6.6 h, both datasets ~12 h), and
+  progress is resumable on Colab by running the identical GGUF. Three real defects were found and fixed
+  on the way, two of which are **latent in the Colab/vLLM path as well** (see TASKS T6.2).
+  Bad news: on the 50-call audit set the confirmatory core scored **guidance_direction κ=0.165,
+  hedging_intensity κ=−0.050, surprise_mentions κ=0.222** — a clear fail, not a borderline one. I verified
+  it is not a join bug, not a section-text bug, and not a scale offset, then **stopped and left the GPU
+  idle** as you instructed. Full diagnosis: `data/coverage/llm_kappa_gate_report.md`.
+  - **I ran two controls on the otherwise-idle GPU so this decision isn't a guess. Both came back negative:**
+    - *Prompt anchoring?* **No.** A variant with sharpened anchors aimed at the exact failures moved
+      κ by +0.01/+0.04/0.00 — nothing. Rewording the prompt will not fix this.
+    - *4-bit quantization?* **No.** Q8_0 (near-lossless, and it fits locally at 13.5/16.3 GB) scored
+      0.187 / −0.003 / 0.308 — better, but that closes ~10% of the gap to 0.6, not the gap.
+  - **What I need from you — my recommendation is (1) first:**
+    1. **A second rater on the same 50 calls.** This was deferred to paper stage assuming the gate
+       would pass; a κ≈0 result promotes it to *the* diagnostic. It settles the only question the
+       controls left open: if two humans agree with each other far better than the model agrees with
+       either, the model is the problem and a bigger model is the fix; if two humans disagree
+       comparably, the schema is the problem and **no model fixes it**. Every other option is a guess
+       until this is answered.
+    2. **Bigger model** (32B-AWQ on Colab, or Llama-3.1-8B locally) — justified once (1) says humans agree.
+    3. **Rubric revisit (T6.1 → v3)** — justified once (1) says they don't. Note this means changing
+       the anchors' *definitions*, not their wording; wording was already tested and did nothing.
+  - **The concrete thing I'd look at first:** the rater marked 85 of 97 sections as hedging 0–1
+    ("essentially no hedging") while the model saw moderate hedging almost everywhere. The rubric says
+    "density of hedging language" without saying density *relative to what*. If a second rater also
+    reads it as "almost no hedging in earnings calls", the anchor is fine and the model is wrong; if
+    they read it the other way, the anchor is the bug.
+  - **Also needs doing before the Colab route runs:** two of the three defects I fixed are in the
+    *schema*, not my engine, so the vLLM/Outlines path still has them — most seriously, optional
+    fields let the model skip `evidence` entirely and turn a skipped exploratory field into a silent
+    `0` *rating*. I did not patch the vLLM path because there is no vLLM here to verify against.
+    Details + the exact fix: `data/coverage/llm_kappa_gate_report.md`.
+  - **What unblocks:** your pick → `featurize llm --audit-sample` + `ecvol llm-kappa` (~10 min per
+    model on this machine) → on a pass, the corpus run is one command and finishes overnight (~12 h).
+
 ### Resolved
 - **2026-07-04 · T6.2 — OSC route SUPERSEDED by Colab Pro+.** The OSC allocation + funds lapsed;
   the corpus compute moved to Colab Pro+ (DECISIONS 2026-07-04). The 2026-06-24 $1000 OSC spend
