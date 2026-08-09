@@ -107,19 +107,23 @@ rater-1 labels); κ is scored only on the **held-out 40 calls / 77 sections**, a
 arm is re-scored on those same rows so the comparison is like-for-like.
 Regenerate: `notebooks/llm_fewshot_calibration.py`.
 
-| field | zero-shot v2 | few-shot | Δ |
-|---|---|---|---|
-| guidance_direction | 0.177 | 0.242 | +0.065 |
-| hedging_intensity | −0.006 | 0.089 | +0.095 |
-| surprise_mentions | 0.155 | 0.156 | +0.001 |
-| analyst_tone | −0.036 | −0.020 | +0.016 |
-| qa_evasiveness | 0.106 | 0.117 | +0.011 |
+| field | zero-shot v2 | few-shot | Δ [95% CI] | verdict |
+|---|---|---|---|---|
+| guidance_direction | 0.177 | 0.242 | +0.062 [−0.097, +0.221] | noise |
+| **hedging_intensity** | −0.006 | 0.089 | **+0.092 [+0.029, +0.181]** | **distinguishable** |
+| surprise_mentions | 0.155 | 0.156 | +0.005 [−0.184, +0.201] | noise |
+| analyst_tone | −0.036 | −0.020 | +0.015 [+0.000, +0.055] | noise |
+| qa_evasiveness | 0.106 | 0.117 | +0.010 [−0.298, +0.313] | noise |
 
-Worked examples move `hedging_intensity` from below-chance to slightly positive — a bigger gain
-than instruction anchoring managed, and consistent with the "the rater's baseline is unstated"
-reading, since exemplars communicate a baseline that prose cannot. But the ceiling reached is
-**0.242**, and the two fields that fail by *non-discrimination* (`analyst_tone`,
-`surprise_mentions`) barely move.
+**This is the one non-null result in the whole diagnostic set, and it lands exactly where the
+instrument hypothesis predicts.** `hedging_intensity` is the field whose rubric anchor is
+ambiguous about density *relative to what* (see below), and it is the only field that responds
+when the model is shown the rater's baseline instead of having it described. Worked examples
+communicate a baseline that prose demonstrably could not — control 1 changed the wording and
+moved nothing.
+
+The effect is real but small: it lifts hedging from below-chance to ≈0.09, about a fifth of the
+distance to the bar, and the fields that fail by *non-discrimination* do not move at all.
 
 **Caveat that must travel with this number:** exemplars come from rater 1 and the gate scores
 against rater 1, so few-shot partly fits this annotator's idiosyncrasy. That is legitimate for a
@@ -127,21 +131,70 @@ deployable configuration — the same exemplars would ship with the corpus run �
 resulting features a better measure of *this rater* rather than of the construct, which is the
 opposite of what "auditable semantics" is supposed to buy.
 
+### Control 4 — is it model capability? **No — 2× scale changes nothing measurable.**
+
+Qwen2.5-**14B** vs Qwen2.5-**7B**, same family (so prompt-fit is held constant), same quant,
+same prompt, same audit sample. 14B cannot fit the frozen 65 536 config on a 16 GB card
+(~9.0 GB weights + ~12.9 GB fp16 KV), and every workaround — quantized KV, shorter context —
+would differ from the 7B's config and confound scale with that difference. So **both** models
+were re-run under one identical reduced-context config (20 480, YaRN off), which truncates
+nothing (the longest audit section is ~15.7k tokens) and makes only the 7B↔14B *difference*
+interpretable. These absolute numbers are therefore **not** the gate; the gate remains the
+65k+YaRN 7B run. Regenerate: `notebooks/llm_model_scale_probe.py`.
+
+| field | 7B | 14B | difference [95% CI] |
+|---|---|---|---|
+| guidance_direction | 0.244 | 0.153 | −0.086 [−0.217, +0.046] |
+| hedging_intensity | −0.006 | 0.006 | +0.010 [−0.070, +0.080] |
+| surprise_mentions | 0.159 | 0.297 | +0.142 [−0.042, +0.323] |
+| qa_evasiveness | 0.249 | 0.101 | −0.146 [−0.360, +0.069] |
+| analyst_tone | −0.015 | 0.124 | +0.135 [−0.040, +0.331] |
+
+**Every CI spans zero.** Scale does not help; it reshuffles which fields happen to score better,
+which is what noise looks like. 14B also fails the gate on its own terms (confirmatory upper
+bounds 0.263 / 0.030 / 0.456). If capability were the binding constraint, a 2× model should have
+improved broadly and did not — so "go bigger" is the *least* supported of the options below.
+(A 32B model would be a larger step, but nothing in this pattern suggests the gap to 0.6 is a
+scale gap; it should not be bought on the strength of these numbers.)
+
+*Incidental, and worth a proper test later:* the 7B scored higher at 20 480/no-YaRN than at
+65 536/YaRN on guidance (0.244 vs 0.165) and evasiveness (0.249 vs 0.108), while dropping on
+surprise. Since every audit section fits whole in both, the only functional difference for these
+rows is YaRN rope scaling — which DESIGN accepted as "slightly degrades short-context quality".
+These differences are the same size as the ones the bootstrap calls noise, so this is
+**suggestive only, not a finding**. But if it holds up on a larger sample it would mean the
+frozen ">32k = extend, don't truncate" policy (DECISIONS 2026-06-29) is paying for the rare long
+tail with quality on the ~99% of sections that are short — worth testing before the corpus run.
+
 ### What the controls jointly rule out
 
-No cheap model-side lever comes close. Prompt wording: nothing. Quantization: ~+0.02–0.09.
-Worked examples: ~+0.07–0.10 on two fields, nothing on the rest. Even assuming these stacked
-additively — which they will not — the best confirmatory field would reach roughly 0.3 against a
-0.6 bar. Combined with the plumbing checks, that leaves a capability-vs-validity question:
-either Qwen2.5-7B cannot reproduce this rater's judgments on this rubric, or the rubric/labels
-are not reproducible in the first place.
+Four independent interventions against a gap of ~0.4 κ, and **exactly one measurable effect
+between them**:
 
-Those two are distinguishable, and cheaply: **a second rater settles it.** If two humans agree
-with each other far better than the model agrees with either, the model is the problem and scale
-is the fix. If two humans disagree comparably, the schema is the problem and no model fixes it.
-Note that the controls have already made the *pure* capability story less likely: two of the
-five fields fail by emitting near-constant values, which is a symptom of an ill-posed question
-more than of insufficient capability. See also the scale probe below.
+| control | effect | verdict |
+|---|---|---|
+| 1. prompt wording (better anchors, described) | +0.010 … +0.037 | nothing |
+| 2. quantization (Q8_0 vs Q4_K_M) | all CIs span 0 | nothing |
+| 3. worked examples (few-shot) | **hedging +0.092 [+0.029, +0.181]**; rest span 0 | one field |
+| 4. model scale (14B vs 7B) | all CIs span 0 | nothing |
+
+The pattern is itself diagnostic, in two ways. First, capability levers do nothing: doubling
+parameters and improving quantization both produce differences indistinguishable from zero, and
+scale *reshuffles* which fields score better rather than lifting them — which is what noise looks
+like, not what a capability constraint looks like. Second, the single thing that does work is
+showing the model the rater's *baseline*, and it works on precisely the field whose written
+anchor fails to specify that baseline.
+
+Two of the five fields additionally fail by emitting near-constant values, which is what a model
+does when asked a question that is not answerable as posed. Combined with the anchor-ambiguity
+analysis above, the weight of evidence sits on the **instrument**, not the model.
+
+What remains untested is the other half of the instrument: the labels. **A second rater settles
+it**, and is the only remaining cheap experiment. If two humans agree with each other far better
+than the model agrees with either, the model is the problem after all (and the fix is something
+larger than 14B, bought deliberately). If two humans disagree comparably, the rubric is
+underdetermined and no model size fixes it — the fix is a T6.1 redesign toward behaviourally
+anchored, coarser scales.
 
 ## Uncertainty — how much of the above arithmetic is real?
 
@@ -265,21 +318,35 @@ valuable output.
 
 The gate blocks corpus scale until it passes. Ordered by what the controls actually support:
 
-1. **Second rater (recommended first — it is the diagnostic, not just an IAA nicety).** ~50 calls
-   of labeling settles whether this is a model problem or a schema problem, and every other option
-   is a guess until it is answered. It was deferred to paper stage on the assumption the gate would
-   pass; a κ≈0 result promotes it to the critical path. DECISIONS 2026-06-29 already says a
-   borderline κ re-blocks on rater 2 — this is worse than borderline.
-2. **Go bigger** — 32B-AWQ (or Llama-3.1-8B) on Colab, audited as its own quant. Justified *if*
-   rater 2 shows humans agree with each other. Note the local box can now run this class of
-   experiment for 8B-scale models directly.
-3. **Revisit the rubric (T6.1 → `v3`)** — indicated if rater 2 shows humans *don't* agree, which
-   would mean the anchors are underspecified. Note control 1 showed that better prompt *wording*
-   alone does not move κ, so this means changing the rubric's definitions, not its phrasing.
+1. **Second rater (recommended, and now the only informative cheap experiment left).** ~50 calls
+   of blinded labeling decides model-vs-instrument, and after four null controls every other
+   option is a guess until it is answered. It was deferred to paper stage assuming the gate would
+   pass; this promotes it to the critical path. DECISIONS 2026-06-29 says a borderline κ re-blocks
+   on rater 2 — this is worse than borderline. Materials are ready: `ingest/Ratings_2.xlsx` (or
+   `Ratings_2_selfrerate20.xlsx` for a blinded intra-rater ceiling), transcripts in
+   `data/fincall/llm_reading/`, generated by `ecvol featurize llm-rating-workbook`.
+   *Report the model κ relative to the human–human κ, not against an absolute 0.6.*
+2. **Rubric redesign (T6.1 → `v3`)** — the option the evidence currently favours if rater 2 shows
+   humans also disagree. Concretely: behaviourally anchored scales (hedge phrases per 1000 words,
+   binned at empirical quantiles) instead of "density" adjectives; coarser scales (0–4 → 3 levels
+   or binary) where fine gradation isn't reliably distinguishable; and retiring or re-scoping
+   `analyst_tone`, which asks for one number over many heterogeneous analysts. Note control 1
+   showed better prompt *wording* does nothing — this means changing the anchors' *definitions*.
+3. **Go bigger** — the *least* supported option: 2× scale produced no measurable change (control
+   4), so a 32B purchase should not be made on the strength of these numbers. Revisit only if
+   rater 2 shows humans agree well with each other.
 4. **Narrow the confirmatory core** — only defensible on *label* grounds, recorded before
    re-extraction. Doing it because a model scored badly would be fitting the gate to the result,
-   which the pre-registration in DECISIONS 2026-06-29 exists to prevent. Flagged only to name it
-   as off-limits without a fresh pre-registration.
+   which the pre-registration in DECISIONS 2026-06-29 exists to prevent. Named here only to mark
+   it off-limits without a fresh pre-registration.
 
-Nothing here is blocked on compute: the local machine can run an audit + gate for any 7–8B-class
-model in ~10 minutes, and the full corpus in ~12 h once something passes.
+A fifth path exists and is a decision, not an experiment: **accept the gate failure as the
+result**, run the corpus anyway, and report the features as exploratory with their validity κ
+attached — making extraction invalidity a headline finding rather than a blocker. That is
+defensible precisely because the paper's thesis is honest evaluation, but it changes RQ3's claim
+from "auditable semantics help" to "auditable semantics do not survive audit", and it requires a
+DECISIONS entry. It should not be taken before rater 2, which costs little and would tell us
+which of the two stories to write.
+
+Nothing here is blocked on compute: the local machine runs an audit + gate for any 7–14B model in
+~10–20 minutes, and the full corpus in ~12 h once something passes.

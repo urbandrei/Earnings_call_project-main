@@ -15,6 +15,7 @@ Read-only, CPU-only. Usage:
 from __future__ import annotations
 
 import sys
+from pathlib import Path
 
 import numpy as np
 import pandas as pd
@@ -93,7 +94,7 @@ def main() -> None:
     if not paths:
         base = "data/fincall/llm_features__bartowski__Qwen2.5-7B-Instruct-GGUF"
         paths = [f"{base}_Q4_K_M.parquet", f"{base}_Q8_0.parquet"]
-    frames = {p.split("__")[-1].replace(".parquet", ""): _merged(p) for p in paths}
+    frames = {Path(p).stem.split("__")[-1]: _merged(p) for p in paths}
     bootstrap(frames)
 
 
