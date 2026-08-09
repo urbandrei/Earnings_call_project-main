@@ -4,6 +4,8 @@ Every verb is a stub until its task lands (see TASKS.md). The CLI contract
 (idempotent, resumable, config-driven) is DESIGN.md §8.2.
 """
 
+import time
+from datetime import datetime, timedelta
 from pathlib import Path
 
 import typer
@@ -12,6 +14,20 @@ app = typer.Typer(
     no_args_is_help=True,
     help="Earnings-call volatility prediction pipeline.",
 )
+
+
+def _parse_stop_at(hhmm: str) -> float:
+    """``"19:30"`` → the next local-time epoch at that clock time (today, else tomorrow)."""
+    try:
+        hh, mm = (int(p) for p in hhmm.split(":"))
+    except ValueError as exc:
+        raise typer.BadParameter(f"--stop-at must be HH:MM, got {hhmm!r}") from exc
+    now = datetime.now()
+    stop = now.replace(hour=hh, minute=mm, second=0, microsecond=0)
+    if stop <= now:
+        stop += timedelta(days=1)
+    return stop.timestamp()
+
 
 data_app = typer.Typer(no_args_is_help=True, help="Data acquisition & provenance (T0.3, T1.1).")
 app.add_typer(data_app, name="data")
@@ -478,8 +494,22 @@ def featurize_llm(
     root: Path = typer.Option(Path("data"), help="Data root directory."),  # noqa: B008
     model_id: str = typer.Option("Qwen/Qwen2.5-7B-Instruct", help="HF model id."),
     revision: str = typer.Option("", help="Pinned HF commit (recommended; DESIGN §12)."),
-    engine: str = typer.Option("transformers", help="Inference engine: transformers | vllm."),
+    engine: str = typer.Option(
+        "transformers", help="Inference engine: transformers | llamacpp | vllm."
+    ),
     device: str = typer.Option("cuda", help="torch device (transformers engine)."),
+    gguf_path: Path = typer.Option(  # noqa: B008
+        None, help="llamacpp: path to the GGUF weights file (required for --engine llamacpp)."
+    ),
+    server_bin: Path = typer.Option(  # noqa: B008
+        None, help="llamacpp: path to llama-server.exe."
+    ),
+    n_gpu_layers: int = typer.Option(99, help="llamacpp: layers offloaded to VRAM (99 = all)."),
+    stop_at: str = typer.Option(
+        "",
+        help="Stop cleanly at this local wall-clock time (HH:MM, today; next day if already "
+        "past). The current section finishes, the parquet is flushed, the engine is released.",
+    ),
     limit: int = typer.Option(0, help="Process only the first N calls (0 = full corpus)."),
     audit_sample: bool = typer.Option(
         False,
@@ -518,13 +548,27 @@ def featurize_llm(
     kwargs = {}
     if engine == "transformers":
         kwargs = {"device": device, "load_in_4bit": not no_4bit}
-    elif engine == "vllm":
+    elif engine in ("vllm", "llamacpp"):
         if max_model_len:
             kwargs["max_model_len"] = max_model_len
         if yarn:
             if not max_model_len:
                 raise typer.BadParameter("--yarn requires --max-model-len (e.g. 65536)")
             kwargs["rope_scaling"] = yarn_rope_scaling(max_model_len, native=yarn_native)
+        if engine == "llamacpp":
+            if not gguf_path or not server_bin:
+                raise typer.BadParameter("--engine llamacpp requires --gguf-path and --server-bin")
+            kwargs |= {
+                "gguf_path": gguf_path,
+                "server_bin": server_bin,
+                "n_gpu_layers": n_gpu_layers,
+            }
+
+    deadline = None
+    if stop_at:
+        deadline = _parse_stop_at(stop_at)
+        typer.echo(f"stop-at: {time.strftime('%Y-%m-%d %H:%M %Z', time.localtime(deadline))}")
+
     res = build_llm(
         root,
         dataset,
@@ -533,6 +577,7 @@ def featurize_llm(
         engine=engine,
         call_ids=call_ids,
         limit=(limit or None),
+        deadline=deadline,
         **kwargs,
     )
     typer.echo(f"{dataset}: {res.n_new} new sections, {res.n_rows} total in {res.secs:.1f}s")

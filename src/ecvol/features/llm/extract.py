@@ -16,7 +16,11 @@ transformers, outlines) are imported lazily so the module + tests load without a
 
 from __future__ import annotations
 
+import json
+import subprocess
 import time
+import urllib.error
+import urllib.request
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -192,13 +196,183 @@ class VLLMEngine:
         return SectionFeatures.model_validate_json(out).model_dump()
 
 
+def grammar_json_schema() -> dict:
+    """``SectionFeatures`` JSON Schema rewritten to compile to a small GBNF grammar.
+
+    llama.cpp converts a JSON Schema to a grammar, and two pydantic constructs compile badly:
+    ``maxLength`` on a string becomes an N-way repetition rule (``evidence`` → 2000 of them),
+    and integer ``minimum``/``maximum`` bounds have patchy converter support. Both are rewritten
+    to *exactly equivalent* forms — a bounded int becomes an explicit enum of its allowed values,
+    and ``maxLength`` is dropped here and enforced instead by `SectionFeatures` validation on the
+    way back in (`_truncate_evidence`). The decoded object therefore satisfies the same contract
+    as the Outlines engines; only the grammar's size changes.
+    """
+    schema = SectionFeatures.model_json_schema()
+    for prop in schema.get("properties", {}).values():
+        if prop.get("type") == "integer" and "minimum" in prop and "maximum" in prop:
+            prop["enum"] = list(range(prop.pop("minimum"), prop.pop("maximum") + 1))
+        prop.pop("maxLength", None)
+    return schema
+
+
+def _truncate_evidence(obj: dict) -> dict:
+    """Clip ``evidence`` to the schema's declared max so validation can't fail on length alone."""
+    max_len = SectionFeatures.model_fields["evidence"].metadata[0].max_length
+    if isinstance(obj.get("evidence"), str) and len(obj["evidence"]) > max_len:
+        obj["evidence"] = obj["evidence"][:max_len]
+    return obj
+
+
+class LlamaCppServerEngine:
+    """Local engine: llama.cpp ``llama-server`` (GGUF) + JSON-schema-constrained decoding.
+
+    The transformers+bitsandbytes engine CUDA-OOMs on this project's long sections on a 16 GB
+    card (`data/coverage/llm_probe_report.md`), so the *local* corpus path is llama.cpp, which
+    chunks the prefill (``--ubatch-size``) and has a CUDA flash-attention kernel on Windows.
+    The server is driven over HTTP rather than through Python bindings so no CUDA toolchain is
+    needed to build anything (DECISIONS 2026-08-09).
+
+    The engine owns the server process: it starts it, waits for ``/health``, and — because this
+    runs unattended overnight — restarts it and retries once if the process dies mid-corpus.
+    ``model_id`` is a provenance label only (``repo:QUANT``); the weights come from ``gguf_path``.
+    """
+
+    def __init__(
+        self,
+        model_id: str,
+        *,
+        gguf_path: str | Path,
+        server_bin: str | Path,
+        revision: str | None = None,
+        max_model_len: int = 65536,
+        rope_scaling: dict | None = None,
+        n_gpu_layers: int = 99,
+        ubatch: int = 512,
+        host: str = "127.0.0.1",
+        port: int = 8080,
+        startup_timeout: float = 900.0,
+        request_timeout: float = 3600.0,
+    ) -> None:
+        self.model_id = model_id
+        self.gguf_path = Path(gguf_path)
+        self.server_bin = Path(server_bin)
+        self.max_model_len = max_model_len
+        self.rope_scaling = rope_scaling
+        self.n_gpu_layers = n_gpu_layers
+        self.ubatch = ubatch
+        self.url = f"http://{host}:{port}"
+        self.startup_timeout = startup_timeout
+        self.request_timeout = request_timeout
+        self.schema = grammar_json_schema()
+        self.proc: subprocess.Popen | None = None
+        self._start()
+
+    # --- server lifecycle ---
+
+    def _cmd(self) -> list[str]:
+        cmd = [
+            str(self.server_bin),
+            "--model", str(self.gguf_path),
+            "--ctx-size", str(self.max_model_len),
+            "--n-gpu-layers", str(self.n_gpu_layers),
+            "--ubatch-size", str(self.ubatch),
+            "--parallel", "1",
+            "--flash-attn", "on",
+            "--seed", "0",
+            "--no-webui",
+            "--host", self.url.split("//")[1].split(":")[0],
+            "--port", self.url.rsplit(":", 1)[1],
+        ]  # fmt: skip
+        if self.rope_scaling:
+            # Same >32k policy as the vLLM engine (extend, don't truncate; DECISIONS 2026-06-29),
+            # expressed in llama.cpp's flags instead of HF rope_scaling keys.
+            cmd += [
+                "--rope-scaling", "yarn",
+                "--rope-scale", str(self.rope_scaling["factor"]),
+                "--yarn-orig-ctx", str(self.rope_scaling["original_max_position_embeddings"]),
+            ]  # fmt: skip
+        return cmd
+
+    def _start(self) -> None:
+        self.proc = subprocess.Popen(
+            self._cmd(),
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+            cwd=str(self.server_bin.parent),
+        )
+        deadline = time.monotonic() + self.startup_timeout
+        while time.monotonic() < deadline:
+            if self.proc.poll() is not None:
+                raise RuntimeError(f"llama-server exited with code {self.proc.returncode}")
+            try:
+                with urllib.request.urlopen(f"{self.url}/health", timeout=5) as r:  # noqa: S310
+                    if r.status == 200:
+                        return
+            except (urllib.error.URLError, OSError, TimeoutError):
+                time.sleep(2.0)
+        self.close()
+        raise RuntimeError(f"llama-server not healthy within {self.startup_timeout}s")
+
+    def _restart(self) -> None:
+        self.close()
+        time.sleep(5.0)
+        self._start()
+
+    def close(self) -> None:
+        if self.proc is not None and self.proc.poll() is None:
+            self.proc.terminate()
+            try:
+                self.proc.wait(timeout=60)
+            except subprocess.TimeoutExpired:
+                self.proc.kill()
+        self.proc = None
+
+    # --- inference ---
+
+    def _post(self, system: str, user: str) -> str:
+        payload = {
+            "messages": [
+                {"role": "system", "content": system},
+                {"role": "user", "content": user},
+            ],
+            "max_tokens": MAX_NEW_TOKENS,
+            "temperature": 0.0,
+            "top_k": 1,
+            "seed": 0,
+            "response_format": {
+                "type": "json_schema",
+                "json_schema": {"name": "SectionFeatures", "schema": self.schema, "strict": True},
+            },
+        }
+        req = urllib.request.Request(  # noqa: S310
+            f"{self.url}/v1/chat/completions",
+            data=json.dumps(payload).encode(),
+            headers={"Content-Type": "application/json"},
+        )
+        with urllib.request.urlopen(req, timeout=self.request_timeout) as r:  # noqa: S310
+            body = json.load(r)
+        return body["choices"][0]["message"]["content"]
+
+    def generate(self, system: str, user: str) -> dict:
+        try:
+            out = self._post(system, user)
+        except (urllib.error.URLError, OSError, TimeoutError, KeyError):
+            # Server died or stalled (OOM on a pathological section, driver hiccup). One clean
+            # restart + retry keeps an unattended overnight run alive; a second failure is real.
+            self._restart()
+            out = self._post(system, user)
+        return SectionFeatures.model_validate(_truncate_evidence(json.loads(out))).model_dump()
+
+
 def build_engine(model_id: str, *, engine: str = "transformers", **kwargs):
-    """Construct the named engine. ``transformers`` (local) | ``vllm`` (cloud)."""
+    """Construct the named engine. ``transformers`` | ``llamacpp`` (local) | ``vllm`` (cloud)."""
     if engine == "transformers":
         return TransformersOutlinesEngine(model_id, **kwargs)
+    if engine == "llamacpp":
+        return LlamaCppServerEngine(model_id, **kwargs)
     if engine == "vllm":
         return VLLMEngine(model_id, **kwargs)
-    raise ValueError(f"unknown engine {engine!r}; expected 'transformers' or 'vllm'")
+    raise ValueError(f"unknown engine {engine!r}; expected 'transformers', 'llamacpp' or 'vllm'")
 
 
 # --- driver ------------------------------------------------------------------
@@ -234,6 +408,7 @@ def build_llm(
     call_ids: list[str] | None = None,
     limit: int | None = None,
     engine_obj=None,
+    deadline: float | None = None,
     **engine_kwargs,
 ) -> BuildResult:
     """Extract ``SectionFeatures`` for the requested calls; resumable, deterministic.
@@ -241,6 +416,10 @@ def build_llm(
     The per-model parquet is the resume store: ``(call_id, section)`` rows already present are
     skipped. ``engine_obj`` injects a pre-built (or fake, for tests) engine; otherwise one is
     built lazily via ``build_engine`` (loads the model — GPU). Returns a ``BuildResult``.
+
+    ``deadline`` (a ``time.time()`` epoch) stops the run cleanly at a wall-clock time: the loop
+    finishes its current section, flushes, and returns. That is how a run that must release the
+    GPU at a fixed hour ends without losing the rows extracted since the last periodic flush.
     """
     root = Path(root)
     rev = revision or ""
@@ -268,12 +447,20 @@ def build_llm(
 
     t0 = time.perf_counter()
     n_new = 0
-    for call_id, section, text in pending:
-        feat = eng.generate(SYSTEM_PROMPT, build_user_prompt(section, text))
-        rows.append(_row(call_id, section, model_id, rev, feat))
-        n_new += 1
-        if n_new % CHUNK == 0:
-            _flush(rows, out_path)
+    try:
+        for call_id, section, text in pending:
+            if deadline is not None and time.time() >= deadline:
+                break
+            feat = eng.generate(SYSTEM_PROMPT, build_user_prompt(section, text))
+            rows.append(_row(call_id, section, model_id, rev, feat))
+            n_new += 1
+            if n_new % CHUNK == 0:
+                _flush(rows, out_path)
+    except KeyboardInterrupt:
+        pass  # flush what we have below, then re-raise nothing — the parquet stays resumable
+    finally:
+        if engine_obj is None and hasattr(eng, "close"):
+            eng.close()  # engines we built, we release (frees VRAM / kills the server process)
     secs = time.perf_counter() - t0
 
     _flush(rows, out_path)

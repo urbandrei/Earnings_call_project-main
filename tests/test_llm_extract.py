@@ -5,6 +5,9 @@ transformers/vLLM engines are only constructed when no engine is supplied. The �
 gate is exercised in test_llm_audit.py.
 """
 
+import time
+from datetime import timedelta
+
 import pandas as pd
 import pytest
 
@@ -164,3 +167,71 @@ def test_yarn_rope_scaling_config():
     # not needed when the target is within native context → loud failure, not a silent no-op
     with pytest.raises(ValueError):
         E.yarn_rope_scaling(16384)
+
+
+# --- llamacpp engine: grammar-safe schema, evidence clipping, deadline stop ---------------
+
+
+def test_grammar_schema_replaces_int_bounds_with_enums():
+    """Bounded ints must become explicit enums (llama.cpp's GBNF converter handles those)."""
+    schema = E.grammar_json_schema()
+    props = schema["properties"]
+    assert props["hedging_intensity"]["enum"] == [0, 1, 2, 3, 4]
+    assert props["surprise_mentions"]["enum"] == list(range(21))
+    for name in ("hedging_intensity", "surprise_mentions"):
+        assert "minimum" not in props[name] and "maximum" not in props[name]
+    # The enum must be exactly the pydantic bound — a mismatch would let invalid values decode.
+    assert props["guidance_direction"]["enum"] == ["raise", "maintain", "lower", "none"]
+
+
+def test_grammar_schema_drops_maxlength():
+    """`maxLength` compiles to a 2000-way repetition rule; it is enforced at validation instead."""
+    assert "maxLength" not in E.grammar_json_schema()["properties"]["evidence"]
+
+
+def test_truncate_evidence_clips_to_schema_max():
+    clipped = E._truncate_evidence({"evidence": "x" * 5000})
+    assert len(clipped["evidence"]) == 2000
+    assert E._truncate_evidence({"evidence": "short"})["evidence"] == "short"
+
+
+def test_build_llm_stops_at_deadline_and_flushes(tmp_path):
+    """A past deadline extracts nothing but still leaves a readable, resumable parquet."""
+    _seed_data(tmp_path)
+    eng = _FakeEngine()
+    res = E.build_llm(
+        tmp_path,
+        "fincall",
+        model_id="m",
+        engine_obj=eng,
+        deadline=time.time() - 1,
+    )
+    assert eng.calls == 0
+    assert res.n_new == 0
+
+
+def test_build_llm_deadline_none_processes_everything(tmp_path):
+    _seed_data(tmp_path)
+    eng = _FakeEngine()
+    res = E.build_llm(tmp_path, "fincall", model_id="m", engine_obj=eng, deadline=None)
+    assert res.n_new > 0
+
+
+def test_build_engine_knows_llamacpp():
+    with pytest.raises(ValueError, match="llamacpp"):
+        E.build_engine("m", engine="nope")
+
+
+def test_parse_stop_at_rolls_to_tomorrow_when_time_already_passed():
+    """The overnight run's hard stop must never resolve to a time in the past (= instant exit)."""
+    from datetime import datetime
+
+    from ecvol.cli import _parse_stop_at
+
+    now = datetime.now()
+    past = (now.replace(microsecond=0) - timedelta(minutes=5)).strftime("%H:%M")
+    assert _parse_stop_at(past) > time.time()
+
+    future = (now + timedelta(minutes=30)).strftime("%H:%M")
+    delta = _parse_stop_at(future) - time.time()
+    assert 0 < delta <= 31 * 60
