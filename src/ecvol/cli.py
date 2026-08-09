@@ -4,11 +4,20 @@ Every verb is a stub until its task lands (see TASKS.md). The CLI contract
 (idempotent, resumable, config-driven) is DESIGN.md §8.2.
 """
 
+import sys
 import time
 from datetime import datetime, timedelta
 from pathlib import Path
 
 import typer
+
+# Several commands print non-ASCII (κ, em dashes). Python uses the console encoding for a
+# terminal but falls back to the locale codepage (cp1252 here) when stdout is redirected to a
+# file or pipe, where those characters raise UnicodeEncodeError — which killed an unattended
+# run that logged to a file. Force UTF-8 on both streams.
+for _stream in (sys.stdout, sys.stderr):
+    if hasattr(_stream, "reconfigure"):
+        _stream.reconfigure(encoding="utf-8")
 
 app = typer.Typer(
     no_args_is_help=True,
