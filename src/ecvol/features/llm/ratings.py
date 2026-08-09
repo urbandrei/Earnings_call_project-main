@@ -166,12 +166,18 @@ def ingest_ratings(
     rater: str,
     reference_sheet: str | Path | None = None,
     sheet_name: str = "Ratings",
+    allow_subset: bool = False,
 ) -> RatingsResult:
     """Convert a rater workbook → canonical label CSV, validating against the frozen sample.
 
     ``reference_sheet`` (the blank sheet from ``llm-audit-sample``) freezes which
     ``(call_id, section)`` rows the audit covers. When given, the rated set must match it
     exactly — missing/extra rows are reported and raise.
+
+    ``allow_subset`` permits a *strict subset* of the frozen rows, for a partial second pass
+    (e.g. a blinded 20-call re-rate to estimate the annotator ceiling). Missing rows then
+    become an unenforced note; **extra rows stay fatal either way**, because a row outside the
+    frozen sample would score something the audit never sampled.
     """
     with zipfile.ZipFile(xlsx_path) as z:
         sst = _read_shared_strings(z)
@@ -189,11 +195,12 @@ def ingest_ratings(
         rated = {(r["call_id"], r["section"]) for r in rows}
         missing = sorted(ref - rated)
         extra = sorted(rated - ref)
-        if missing or extra:
+        if extra or (missing and not allow_subset):
             raise ValueError(
                 f"rated rows do not match frozen audit sample: "
                 f"{len(missing)} missing, {len(extra)} extra (first missing={missing[:3]}, "
                 f"first extra={extra[:3]})"
+                + (" — pass allow_subset=True for a deliberate partial re-rate" if missing else "")
             )
 
     out_path = Path(out_path)

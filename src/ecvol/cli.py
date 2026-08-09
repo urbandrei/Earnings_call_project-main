@@ -417,6 +417,48 @@ def featurize_llm_audit_sample(
     typer.echo("  fill this sheet, then `ecvol llm-kappa` once features are extracted")
 
 
+@featurize_app.command("llm-rating-workbook")
+def featurize_llm_rating_workbook(
+    dataset: str = typer.Option("fincall", help="Dataset: fincall | maec."),
+    root: Path = typer.Option(Path("data"), help="Data root directory."),  # noqa: B008
+    out: Path = typer.Option(  # noqa: B008
+        Path("ingest/Ratings_2.xlsx"), help="Workbook to write (hand this to the rater)."
+    ),
+    n_calls: int = typer.Option(
+        0, help="Rate only N calls (0 = all). A partial pass needs --allow-subset on ingest."
+    ),
+    seed: int = typer.Option(0, help="Seed for the call-order shuffle / subset."),
+    no_shuffle: bool = typer.Option(
+        False,
+        help="Keep the frozen sheet's call order. Default shuffles it: a second pass by the "
+        "same rater must not walk the original sequence or it measures recall, not reliability.",
+    ),
+    sheet_name: str = typer.Option("Ratings", help="Worksheet name (ingest expects 'Ratings')."),
+) -> None:
+    """Blank rater workbook (.xlsx) from the frozen label sheet — the human deliverable (T6.2)."""
+    from ecvol.features.llm.reading import build_rating_workbook
+
+    sheet_csv = root / "coverage" / f"{dataset}_llm_label_sheet.csv"
+    if not sheet_csv.is_file():
+        raise typer.BadParameter(f"frozen label sheet not found: {sheet_csv}")
+    res = build_rating_workbook(
+        sheet_csv,
+        out,
+        n_calls=(n_calls or None),
+        seed=seed,
+        shuffle=not no_shuffle,
+        sheet_name=sheet_name,
+    )
+    typer.echo(f"workbook: {res.out_path}  ({res.n_rows} rows / {res.n_calls} calls)")
+    typer.echo(f"  sheet: {res.sheet_name!r}; transcripts: {root / dataset / 'llm_reading'}")
+    typer.echo("  rubric: docs/llm_feature_rubric.md")
+    typer.echo("  BLIND: do not open the other raters' label CSVs or llm_features__*.parquet")
+    typer.echo(
+        f"  next: `ecvol featurize llm-ingest-ratings --xlsx {res.out_path} --rater rater2`"
+        + (" --allow-subset" if n_calls else "")
+    )
+
+
 @featurize_app.command("llm-ingest-ratings")
 def featurize_llm_ingest_ratings(
     xlsx: Path = typer.Option(..., help="Rater workbook (.xlsx) with a filled 'Ratings' sheet."),  # noqa: B008
@@ -424,6 +466,11 @@ def featurize_llm_ingest_ratings(
     dataset: str = typer.Option("fincall", help="Dataset: fincall | maec."),
     root: Path = typer.Option(Path("data"), help="Data root directory."),  # noqa: B008
     sheet_name: str = typer.Option("Ratings", help="Worksheet name holding the ratings."),
+    allow_subset: bool = typer.Option(
+        False,
+        help="Accept a strict subset of the frozen audit rows (a deliberate partial re-rate, "
+        "e.g. a blinded 20-call annotator-ceiling pass). Extra rows remain fatal.",
+    ),
 ) -> None:
     """Ingest a human rater workbook → canonical κ-audit label CSV (validated vs. the sample)."""
     from ecvol.features.llm.ratings import ingest_ratings
@@ -435,6 +482,8 @@ def featurize_llm_ingest_ratings(
         out_path,
         rater=rater,
         reference_sheet=reference if reference.exists() else None,
+        sheet_name=sheet_name,
+        allow_subset=allow_subset,
     )
     typer.echo(f"{dataset}: ingested {res.n_rows} rows / {res.n_calls} calls from rater {rater!r}")
     typer.echo(f"  labels: {res.out_path}")

@@ -149,3 +149,166 @@ def test_unknown_sheet_name_raises(tmp_path):
     _build_xlsx(xlsx, [_HEADER, *_DATA], sheet_name="Ratings")
     with pytest.raises(ValueError, match="not found"):
         ingest_ratings(xlsx, tmp_path / "out.csv", rater="r1", sheet_name="Nope")
+
+
+# --- rater workbook (the human deliverable) ----------------------------------
+
+
+def _blank_sheet(tmp_path):
+    """A frozen label sheet like `llm-audit-sample` writes: NA marks Q&A-only fields."""
+    p = tmp_path / "fincall_llm_label_sheet.csv"
+    p.write_text(
+        "call_id,ticker,section,guidance_direction,hedging_intensity,qa_evasiveness,"
+        "analyst_tone,surprise_mentions\n"
+        "c1,AAA,prepared_remarks,,,NA,NA,\n"
+        "c1,AAA,qa,,,,,\n"
+        "c2,BBB,prepared_remarks,,,NA,NA,\n"
+        "c2,BBB,qa,,,,,\n"
+        "c3,CCC,qa,,,,,\n",
+        encoding="utf-8",
+    )
+    return p
+
+
+def test_rating_workbook_round_trips_through_the_real_ingester(tmp_path):
+    """The whole point: what we hand a rater must come back through `ingest_ratings`."""
+    from ecvol.features.llm.reading import build_rating_workbook
+
+    sheet = _blank_sheet(tmp_path)
+    xlsx = tmp_path / "Ratings_2.xlsx"
+    res = build_rating_workbook(sheet, xlsx)
+    assert res.n_rows == 5 and res.n_calls == 3
+
+    # Fill it the way a rater would, then ingest with the frozen sheet as reference.
+    filled = _fill_workbook(xlsx)
+    out = ingest_ratings(filled, tmp_path / "labels.csv", rater="rater2", reference_sheet=sheet)
+    assert out.n_rows == 5 and out.n_calls == 3 and not out.missing and not out.extra
+
+
+def test_rating_workbook_uses_human_section_labels(tmp_path):
+    """A raw CSV->xlsx export fails ingest: 'prepared_remarks' is not a label it maps."""
+    from ecvol.features.llm.reading import build_rating_workbook
+
+    xlsx = tmp_path / "wb.xlsx"
+    build_rating_workbook(_blank_sheet(tmp_path), xlsx)
+    text = zipfile.ZipFile(xlsx).read("xl/worksheets/sheet1.xml").decode()
+    assert "Prepared Remarks" in text and "Q&amp;A" in text
+    assert "prepared_remarks" not in text
+
+
+def test_rating_workbook_preserves_na_markers(tmp_path):
+    from ecvol.features.llm.reading import build_rating_workbook
+
+    xlsx = tmp_path / "wb.xlsx"
+    build_rating_workbook(_blank_sheet(tmp_path), xlsx)
+    rows = _sheet_rows(xlsx)
+    prepared = [r for r in rows if r["section"] == "Prepared Remarks"]
+    assert prepared and all(r["qa_evasiveness"] == "NA" for r in prepared)
+
+
+def test_rating_workbook_shuffles_calls_but_keeps_sections_together(tmp_path):
+    """Blinding: a re-rate must not walk the original order, but a call's rows stay adjacent."""
+    from ecvol.features.llm.reading import build_rating_workbook
+
+    sheet = _blank_sheet(tmp_path)
+    xlsx = tmp_path / "wb.xlsx"
+    build_rating_workbook(sheet, xlsx, seed=3)
+    order = [r["call_id"] for r in _sheet_rows(xlsx)]
+    # each call's rows are contiguous
+    for cid in set(order):
+        idx = [i for i, c in enumerate(order) if c == cid]
+        assert idx == list(range(idx[0], idx[0] + len(idx)))
+    # deterministic for a given seed
+    xlsx2 = tmp_path / "wb2.xlsx"
+    build_rating_workbook(sheet, xlsx2, seed=3)
+    assert [r["call_id"] for r in _sheet_rows(xlsx2)] == order
+
+
+def test_rating_workbook_subset_and_partial_ingest(tmp_path):
+    """A blinded partial re-rate must be ingestable — but only when asked for explicitly."""
+    from ecvol.features.llm.reading import build_rating_workbook
+
+    sheet = _blank_sheet(tmp_path)
+    xlsx = tmp_path / "partial.xlsx"
+    res = build_rating_workbook(sheet, xlsx, n_calls=2)
+    assert res.n_calls == 2
+    filled = _fill_workbook(xlsx)
+
+    with pytest.raises(ValueError, match="allow_subset"):
+        ingest_ratings(filled, tmp_path / "a.csv", rater="r2", reference_sheet=sheet)
+
+    out = ingest_ratings(
+        filled, tmp_path / "b.csv", rater="r2", reference_sheet=sheet, allow_subset=True
+    )
+    assert out.n_calls == 2 and out.missing and not out.extra
+
+
+def test_ingest_still_rejects_extra_rows_even_with_allow_subset(tmp_path):
+    """A row outside the frozen sample scores something never sampled — always fatal."""
+    from ecvol.features.llm.reading import build_rating_workbook
+
+    sheet = _blank_sheet(tmp_path)
+    xlsx = tmp_path / "wb.xlsx"
+    build_rating_workbook(sheet, xlsx)
+    filled = _fill_workbook(xlsx, extra_call="c9")
+    with pytest.raises(ValueError, match="extra"):
+        ingest_ratings(
+            filled, tmp_path / "c.csv", rater="r2", reference_sheet=sheet, allow_subset=True
+        )
+
+
+_MAIN = "{http://schemas.openxmlformats.org/spreadsheetml/2006/main}"
+
+
+def _sheet_rows(xlsx):
+    """Header-keyed rows from a generated workbook (cells matched by column letter, as the
+    real reader does — the writer omits empty cells, so position alone would misalign)."""
+    root = ET.fromstring(zipfile.ZipFile(xlsx).read("xl/worksheets/sheet1.xml"))
+    header, out = None, []
+    for row in root.iter(_MAIN + "row"):
+        by_col = {
+            "".join(ch for ch in c.get("r") if ch.isalpha()): "".join(
+                t.text or "" for t in c.iter(_MAIN + "t")
+            )
+            for c in row.findall(_MAIN + "c")
+        }
+        if header is None:
+            header = {col: v for col, v in by_col.items() if v.strip()}
+            continue
+        out.append({h: by_col.get(col, "") for col, h in header.items()})
+    return out
+
+
+def _fill_workbook(xlsx, extra_call=None):
+    """Fill a blank workbook the way a rater would, keeping NA where the field doesn't apply."""
+    from ecvol.features.llm.reading import _write_xlsx
+
+    header = [
+        "call_id",
+        "ticker",
+        "section",
+        "guidance_direction",
+        "hedging_intensity",
+        "qa_evasiveness",
+        "analyst_tone",
+        "surprise_mentions",
+    ]
+    values = {
+        "guidance_direction": "maintain",
+        "hedging_intensity": "1",
+        "qa_evasiveness": "1",
+        "analyst_tone": "2",
+        "surprise_mentions": "0",
+    }
+    data = [header]
+    for r in _sheet_rows(xlsx):
+        row = dict(r)
+        for field, val in values.items():
+            if row.get(field) != "NA":
+                row[field] = val
+        data.append([row[h] for h in header])
+    if extra_call:
+        data.append([extra_call, "ZZZ", "Q&A", "none", "0", "0", "2", "0"])
+    out = xlsx.with_name(xlsx.stem + "_filled.xlsx")
+    _write_xlsx(out, "Ratings", data)
+    return out
