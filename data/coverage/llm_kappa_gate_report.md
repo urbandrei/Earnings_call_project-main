@@ -92,19 +92,89 @@ Q4_K_M), so this is a control the project can keep using.
 | qa_evasiveness | 0.108 | 0.180 | +0.072 |
 | analyst_tone | −0.040 | −0.040 | 0.000 |
 
-Q8_0 is uniformly a little better, which is the expected direction and confirms the quantization
-is not free — but it closes ~10% of the gap to 0.6, not the gap. **4-bit quantization is not the
-cause of the failure.** It also means the Q4_K_M artifact is not the thing to blame or discard.
+Q8_0 is nominally higher on four of five fields, but **a paired call-level bootstrap says every
+one of these differences is indistinguishable from zero** (all 95% CIs span 0; see
+"Uncertainty" below). The honest statement is therefore stronger than "quantization costs a
+little": **quantization has no measurable effect on this gate at all**, and the Q4_K_M artifact
+is not the thing to blame or discard.
 
-### What the two controls jointly rule out
+### Control 3 — is it *example-based* calibration? Best lever so far, still far short.
 
-Neither of the two cheap explanations survives: it is **not** the prompt anchoring and it is
-**not** the quantization. Combined with the plumbing checks, what remains is a genuine
-capability/validity question — either Qwen2.5-7B cannot reproduce this rater's judgments on this
-rubric, or the rubric/labels are not reproducible in the first place. Those two are
-distinguishable, and cheaply: **a second rater settles it.** If two humans agree with each other
-far better than the model agrees with either, the model is the problem and scale is the fix. If
-two humans disagree comparably, the schema is the problem and no model fixes it.
+Control 1 tested whether *describing* the scale better helps (it didn't). This tests whether
+*showing worked examples* of the rater's own scale use helps — usually far more effective for
+aligning ordinal judgments. 10 of the 50 audit calls became in-prompt exemplars (short excerpt +
+rater-1 labels); κ is scored only on the **held-out 40 calls / 77 sections**, and the zero-shot
+arm is re-scored on those same rows so the comparison is like-for-like.
+Regenerate: `notebooks/llm_fewshot_calibration.py`.
+
+| field | zero-shot v2 | few-shot | Δ |
+|---|---|---|---|
+| guidance_direction | 0.177 | 0.242 | +0.065 |
+| hedging_intensity | −0.006 | 0.089 | +0.095 |
+| surprise_mentions | 0.155 | 0.156 | +0.001 |
+| analyst_tone | −0.036 | −0.020 | +0.016 |
+| qa_evasiveness | 0.106 | 0.117 | +0.011 |
+
+Worked examples move `hedging_intensity` from below-chance to slightly positive — a bigger gain
+than instruction anchoring managed, and consistent with the "the rater's baseline is unstated"
+reading, since exemplars communicate a baseline that prose cannot. But the ceiling reached is
+**0.242**, and the two fields that fail by *non-discrimination* (`analyst_tone`,
+`surprise_mentions`) barely move.
+
+**Caveat that must travel with this number:** exemplars come from rater 1 and the gate scores
+against rater 1, so few-shot partly fits this annotator's idiosyncrasy. That is legitimate for a
+deployable configuration — the same exemplars would ship with the corpus run — but it makes the
+resulting features a better measure of *this rater* rather than of the construct, which is the
+opposite of what "auditable semantics" is supposed to buy.
+
+### What the controls jointly rule out
+
+No cheap model-side lever comes close. Prompt wording: nothing. Quantization: ~+0.02–0.09.
+Worked examples: ~+0.07–0.10 on two fields, nothing on the rest. Even assuming these stacked
+additively — which they will not — the best confirmatory field would reach roughly 0.3 against a
+0.6 bar. Combined with the plumbing checks, that leaves a capability-vs-validity question:
+either Qwen2.5-7B cannot reproduce this rater's judgments on this rubric, or the rubric/labels
+are not reproducible in the first place.
+
+Those two are distinguishable, and cheaply: **a second rater settles it.** If two humans agree
+with each other far better than the model agrees with either, the model is the problem and scale
+is the fix. If two humans disagree comparably, the schema is the problem and no model fixes it.
+Note that the controls have already made the *pure* capability story less likely: two of the
+five fields fail by emitting near-constant values, which is a symptom of an ill-posed question
+more than of insufficient capability. See also the scale probe below.
+
+## Uncertainty — how much of the above arithmetic is real?
+
+Every κ here is estimated from 97 rows (50 for the Q&A-only fields), where the standard error is
+around 0.1. Differences between point estimates at that size are not interpretable by eye, so
+they are bootstrapped: 2000 resamples of **calls** (not rows — a call's two sections are
+correlated), paired so the same resampled calls score every arm.
+Regenerate: `notebooks/llm_kappa_uncertainty.py`.
+
+**The gate result is robust.** Every confirmatory field's 95% upper bound sits far below 0.6:
+
+| confirmatory field | κ (Q4_K_M) | 95% CI |
+|---|---|---|
+| guidance_direction | 0.165 | [0.064, **0.271**] |
+| hedging_intensity | −0.050 | [−0.124, **0.033**] |
+| surprise_mentions | 0.222 | [0.054, **0.378**] |
+
+So the failure is not a small-sample accident — κ>0.6 can be ruled out at 95% confidence for all
+three. This is the claim to make in the paper, rather than the bare point estimates.
+
+**The control deltas are not.** Q8_0 − Q4_K_M, paired bootstrap: guidance +0.021 [−0.048,
++0.096]; hedging +0.045 [−0.028, +0.129]; surprise +0.090 [−0.037, +0.235]; evasiveness +0.068
+[−0.071, +0.202]. **Every CI spans zero.** The same caution applies to the anchoring and few-shot
+deltas above, which are of similar magnitude on similar sample sizes: they are reported because
+they are informative about *direction of effort*, but none of them should be described as a
+demonstrated improvement. Treat the earlier "best lever so far" language for few-shot as a
+statement about point estimates only.
+
+The practical consequence is uncomfortable but useful: **this audit sample is too small to
+distinguish interventions of the size any of these levers produce.** Detecting a real +0.1 shift
+with confidence would need substantially more than 50 calls. Anything that must be *chosen*
+between on the basis of a ~0.05–0.1 κ difference cannot be chosen on this evidence — which is a
+further argument for fixing the instrument rather than shopping for a model.
 
 ## Carried defect — the Colab/vLLM path is still exposed (fix before running it)
 

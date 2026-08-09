@@ -25,6 +25,7 @@ from __future__ import annotations
 
 import json
 import sys
+from pathlib import Path
 
 import pandas as pd
 from sklearn.metrics import cohen_kappa_score
@@ -113,6 +114,11 @@ def main() -> None:
         max_model_len=65536,
         rope_scaling=yarn_rope_scaling(65536),
     )
+    # Predictions are persisted so the arms can be compared with a paired call-level bootstrap
+    # (notebooks/llm_kappa_uncertainty.py). At n≈77 the SE on κ is ~0.1, so a bare delta between
+    # point estimates cannot be called an improvement.
+    out_dir = Path("artifacts/diagnostics/fewshot")
+    out_dir.mkdir(parents=True, exist_ok=True)
     try:
         results = {}
         for tag, system in (("ZERO-SHOT v2", SYSTEM_PROMPT), ("FEW-SHOT    ", fewshot_system)):
@@ -122,9 +128,13 @@ def main() -> None:
                 rows.append({"call_id": cid, "section": sec, **feat})
                 if i % 25 == 0:
                     print(f"  {tag}: {i}/{len(heldout)}", flush=True)
-            results[tag] = score(pd.DataFrame(rows), heldout_labels, tag)
+            frame = pd.DataFrame(rows)
+            frame.to_parquet(out_dir / f"{tag.strip().replace(' ', '_')}.parquet")
+            results[tag] = score(frame, heldout_labels, tag)
         a, b = results["ZERO-SHOT v2"], results["FEW-SHOT    "]
-        print("\ndelta:", {k: round(b[k] - a[k], 3) for k in a})
+        print("\ndelta (point estimates only — bootstrap before calling any of these real):")
+        print(json.dumps({k: round(b[k] - a[k], 3) for k in a}))
+        print(f"predictions kept in {out_dir}")
     finally:
         eng.close()
 
