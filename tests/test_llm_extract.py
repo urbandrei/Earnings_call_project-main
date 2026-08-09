@@ -13,7 +13,7 @@ import pytest
 
 from ecvol.features.llm import extract as E
 from ecvol.features.llm.reading import sample_train_calls
-from ecvol.features.llm.schema import EXTRACTED_FIELDS
+from ecvol.features.llm.schema import EXTRACTED_FIELDS, SectionFeatures
 
 
 class _FakeEngine:
@@ -184,9 +184,29 @@ def test_grammar_schema_replaces_int_bounds_with_enums():
     assert props["guidance_direction"]["enum"] == ["raise", "maintain", "lower", "none"]
 
 
-def test_grammar_schema_drops_maxlength():
-    """`maxLength` compiles to a 2000-way repetition rule; it is enforced at validation instead."""
-    assert "maxLength" not in E.grammar_json_schema()["properties"]["evidence"]
+def test_grammar_schema_bounds_evidence_with_anchored_pattern():
+    """llama.cpp rejects `maxLength` and needs '^...$'; an unbounded string decodes past the
+    token budget and yields invalid JSON mid-string, so the bound must survive refactors."""
+    ev = E.grammar_json_schema()["properties"]["evidence"]
+    assert "maxLength" not in ev
+    assert ev["pattern"].startswith("^") and ev["pattern"].endswith("$")
+    assert f"{{0,{E.EVIDENCE_GRAMMAR_CHARS}}}" in ev["pattern"]
+
+
+def test_evidence_grammar_bound_fits_schema_and_token_budget():
+    """The grammar cap must stay inside the schema's own limit (else rows fail validation)."""
+    schema_max = SectionFeatures.model_fields["evidence"].metadata[0].max_length
+    assert E.EVIDENCE_GRAMMAR_CHARS <= schema_max
+    # ~4 chars/token for English prose, plus the ratings and JSON scaffolding.
+    assert E.EVIDENCE_GRAMMAR_CHARS / 4 + 100 < E.MAX_NEW_TOKENS
+
+
+def test_grammar_schema_requires_every_field():
+    """A defaulted field omitted by the model would silently become a rating (e.g. optimism=0)."""
+    schema = E.grammar_json_schema()
+    assert set(schema["required"]) == set(schema["properties"])
+    for name in ("evidence", "management_optimism", "quantitative_specificity"):
+        assert name in schema["required"]
 
 
 def test_truncate_evidence_clips_to_schema_max():

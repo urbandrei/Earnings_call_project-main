@@ -34,7 +34,10 @@ from .prompts import PROMPT_VERSION, SYSTEM_PROMPT, build_user_prompt
 from .schema import EXTRACTED_FIELDS, SectionFeatures
 
 CHUNK = 50  # flush the output parquet every N new rows (resumable checkpoint)
-MAX_NEW_TOKENS = 640  # SectionFeatures incl. a ~2000-char evidence span fits comfortably
+# SectionFeatures + a full-length evidence span. The schema allows 2000 chars of quoted
+# transcript, which is ~700 tokens on its own; with the ratings and JSON scaffolding, the old
+# 640 truncated mid-string and the response failed to parse (observed 2026-08-09).
+MAX_NEW_TOKENS = 1024
 _SECTION_ORDER = {"prepared_remarks": 0, "qa": 1}
 _OUTPUT_FIELDS = ["call_id", "section", "model_id", "revision", "prompt_version", *EXTRACTED_FIELDS]
 _OUTPUT_FIELDS.append("evidence")
@@ -196,6 +199,17 @@ class VLLMEngine:
         return SectionFeatures.model_validate_json(out).model_dump()
 
 
+# Grammar-level cap on the evidence quote, in characters. The schema allows 2000, but
+# llama.cpp cannot compile a 2000-long bounded repetition (the grammar fails to parse), and an
+# *unbounded* string lets the model quote until it hits the token budget and emits invalid JSON
+# mid-string (observed on a long Q&A section, 2026-08-09). 600 chars (~100 words) is a solid
+# audit excerpt, is well inside the schema's own limit so every row still validates, and — since
+# evidence dominates decode time and is NOT a scored field (`audit.py` scores ratings only) —
+# roughly triples corpus throughput.
+EVIDENCE_GRAMMAR_CHARS = 600
+_JSON_STRING_BODY = '[^"\\\\\\u0000-\\u001f]'  # no bare quote, backslash, or control char
+
+
 def grammar_json_schema() -> dict:
     """``SectionFeatures`` JSON Schema rewritten to compile to a small GBNF grammar.
 
@@ -212,6 +226,19 @@ def grammar_json_schema() -> dict:
         if prop.get("type") == "integer" and "minimum" in prop and "maximum" in prop:
             prop["enum"] = list(range(prop.pop("minimum"), prop.pop("maximum") + 1))
         prop.pop("maxLength", None)
+    # llama.cpp rejects `maxLength` outright, so the length bound is expressed as an anchored
+    # regex (which its converter does compile) — see EVIDENCE_GRAMMAR_CHARS.
+    schema["properties"]["evidence"] = {
+        "type": "string",
+        "pattern": f"^{_JSON_STRING_BODY}{{0,{EVIDENCE_GRAMMAR_CHARS}}}$",
+    }
+    # Every field is REQUIRED in the grammar. pydantic omits defaulted fields from ``required``,
+    # which lets the grammar close the object early — observed live: the model skipped the
+    # trailing ``evidence`` on every section, and a skipped ``management_optimism`` would have
+    # been filled by its default 0, i.e. a *non-rating* silently indistinguishable from a rated 0.
+    # Requiring them changes no field, range, or rubric; it only forces the model to actually
+    # answer what the prompt already asks for.
+    schema["required"] = list(schema.get("properties", {}))
     return schema
 
 
@@ -443,7 +470,11 @@ def build_llm(
             _flush(rows, out_path)
         return BuildResult(len(rows), 0, 0.0, out_path)
 
-    eng = engine_obj or build_engine(model_id, engine=engine, device=device, **engine_kwargs)
+    # ``device`` is a torch concept — only the transformers engine takes it (vLLM and the
+    # llama.cpp server manage placement themselves).
+    if engine == "transformers":
+        engine_kwargs["device"] = device
+    eng = engine_obj or build_engine(model_id, engine=engine, **engine_kwargs)
 
     t0 = time.perf_counter()
     n_new = 0
