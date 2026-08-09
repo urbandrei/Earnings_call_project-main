@@ -128,14 +128,68 @@ here because there is no vLLM on this machine to verify it against, and shipping
 change to the cloud path would be worse than a documented one. **Verify this on Colab before
 trusting any vLLM-produced parquet** — check that `evidence` is non-empty across rows.
 
-## Reading the rater's labels
+## Is this "just disagreement"? Decomposing the number
 
-Worth the user's attention when deciding: the rater marked 85 of 97 sections as hedging 0–1,
-i.e. "essentially no hedging" on most earnings calls, while the model saw moderate hedging
-nearly everywhere. Earnings calls are conventionally described as heavily hedged, so this may be
-an anchor-definition gap between rater and rubric rather than a pure model error — the rubric
-says "density of hedging/uncertainty language" without saying density *relative to what*. That
-ambiguity is a schema/rubric question (T6.1), not something a bigger model necessarily fixes.
+"κ ≈ 0.2" is hiding three different phenomena, which need three different fixes.
+
+**(a) Anchor-baseline ambiguity — an instrument defect, not a model defect.** The rubric
+(`docs/llm_feature_rubric.md`) defines hedging as `0` = "none — crisp, definite statements" and
+`2` = "moderate — hedging recurs but specifics still given". At this project's extraction unit —
+a whole section, median 25k characters — *"hedging recurs" is trivially true of nearly every
+Q&A section*. The model rating **2** is arguably obeying the rubric as literally written, while
+rater 1 applied an unstated "relative to a typical earnings call" baseline (85 of 97 sections
+marked 0–1). Both readings are defensible, which means the instrument is underdetermined: the
+rubric never says density *relative to what*, and at section length that omission decides the
+rating. No increase in model scale fixes an ambiguous anchor.
+
+**(b) Metric behaviour under skewed marginals — real, but a partial excuse at best.** For
+`surprise_mentions` the raw agreement is **68.0%** while κ = 0.222, because prevalence is
+lopsided (human 37.1% "present", model 15.5%); PABAK on the same table is **+0.361**. This is
+the familiar κ-paradox regime. It should not be leaned on, though: the model still misses **26
+of 36** human positives, a 72% false-negative rate on the positive class, which is a genuine
+detection failure no metric choice repairs.
+
+**(c) Genuine non-discrimination — not disagreement in any sense.** `analyst_tone`: the model
+emits only {0, 2} and rates 47 of 50 Q&A sections exactly "2". A near-constant rater has no
+discriminative power by construction. `hedging` is *statistically independent* of the human
+label: when the human says 0 the model says "2" in 20/39 cases; when the human says 1 it says
+"2" in 20/46 — the same distribution either way.
+
+**The structural problem: the gate never measured its own ceiling.** κ against a single
+unvalidated rater has an unknown maximum. Subjective ordinal annotation routinely sits at
+human–human κ of 0.4–0.6; if rater 1's ceiling is in that band, a 0.6 model bar **was never
+attainable by any model**, and "FAIL" would have been the outcome regardless. The 0.6 threshold
+traces to the Landis–Koch "substantial" convention (DESIGN §6, §10) — a rule of thumb for
+reliability studies, adopted here without ever estimating the annotator ceiling it implies.
+This is why the second rater is diagnostic rather than cosmetic, and why the honest reporting
+unit is model κ *relative to* human–human κ, not against an absolute bar.
+
+## How this sits against the literature
+
+The sub-literature this stage engages does not measure extraction validity at all:
+
+- **ECC Analyzer** (R8, ICAIF '24) is the closest prior and the stated model for Stage 5. The
+  July novelty scan verified in full text: "no typed schema, no evidence spans, **no human
+  validation of extraction quality (no kappa anywhere)**" — while reporting a 27.7% MSE
+  reduction from LLM-extracted semantics.
+- **EvasionBench** (R35) reports κ=0.835, but DESIGN §13 already flags that this is *inter-LLM
+  annotator* agreement, **not** a human audit — explicitly "never cite as κ-gate prior art".
+
+So this is not a bar the field clears and we missed. We are the only ones measuring it, and the
+measurement came back bad. That makes the result a **finding**, and it is the natural third leg
+of the project's existing thesis: text signal is ticker identity (Phase 3), audio is inert
+beyond past volatility (Phase 4), and LLM "semantic" features do not reproduce human judgment
+(Phase 6) — while prior work consumes exactly such features as if they were validated
+measurements. DESIGN §10 risk #5 pre-registered "LLM extraction quality poor / unreliable" with
+this gate as the mitigation, so the risk register worked as designed.
+
+**What this forecloses.** RQ3 asks whether *auditable* structured features beat opaque
+embeddings, and DESIGN §6 sells Stage 5 as "explicit, **auditable** semantics" — auditability is
+constitutive of the contribution, not decoration. A column that fails its audit may appear in a
+results table as "LLM-rated hedging (validity κ=−0.05)", but it may not be called *hedging*.
+Note also that Phases 2–5 found text, audio and fusion all inert beyond past-vol + identity, so
+the expected *predictive* payoff of Stage 5 was low regardless; the validity result is the more
+valuable output.
 
 ## Decision owed (user)
 

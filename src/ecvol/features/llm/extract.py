@@ -22,6 +22,7 @@ import time
 import urllib.error
 import urllib.request
 from dataclasses import dataclass
+from datetime import UTC, datetime
 from pathlib import Path
 
 import pandas as pd
@@ -419,6 +420,74 @@ def _row(call_id: str, section: str, model_id: str, revision: str, feat: dict) -
     return row
 
 
+def run_config(model_id: str, revision: str, engine: str, engine_kwargs: dict) -> dict:
+    """The decoding configuration that determines a row's content.
+
+    The feature rows themselves record only ``model_id``/``revision``/``prompt_version``, so two
+    runs differing in context window, YaRN, decode budget or evidence bound would be
+    indistinguishable in the parquet — and this project changed exactly those mid-development.
+    Captured here (and digested) so a parquet can be shown to be internally consistent.
+    """
+    cfg = {
+        "model_id": model_id,
+        "revision": revision,
+        "prompt_version": PROMPT_VERSION,
+        "engine": engine,
+        "max_new_tokens": MAX_NEW_TOKENS,
+        "evidence_grammar_chars": EVIDENCE_GRAMMAR_CHARS,
+        "greedy": True,
+        "max_model_len": engine_kwargs.get("max_model_len"),
+        "rope_scaling": engine_kwargs.get("rope_scaling"),
+        "n_gpu_layers": engine_kwargs.get("n_gpu_layers"),
+        "load_in_4bit": engine_kwargs.get("load_in_4bit"),
+        # basename only: the absolute path is machine-specific, the weights file is not
+        "weights_file": (
+            Path(engine_kwargs["gguf_path"]).name if engine_kwargs.get("gguf_path") else None
+        ),
+    }
+    return {k: v for k, v in cfg.items() if v is not None}
+
+
+def config_digest(cfg: dict) -> str:
+    """Stable short hash of a run config — differing digests in one parquet = mixed rows."""
+    import hashlib
+
+    payload = json.dumps(cfg, sort_keys=True, default=str).encode()
+    return hashlib.sha256(payload).hexdigest()[:12]
+
+
+def _append_run_sidecar(out_path: Path, cfg: dict, n_new: int, n_rows: int, secs: float) -> Path:
+    """Append this invocation to ``<features>.run.json`` (provenance for the parquet).
+
+    A list, not a single record, because the parquet is a resume store built over many
+    invocations: only the full list can show that every row was produced under one config.
+    """
+    from ecvol.tracking import env_fingerprint, git_info
+
+    side = out_path.with_suffix(".run.json")
+    runs = json.loads(side.read_text(encoding="utf-8")) if side.exists() else []
+    runs.append(
+        {
+            "created_at": datetime.now(UTC).isoformat(timespec="seconds"),
+            "config": cfg,
+            "config_digest": config_digest(cfg),
+            "n_new_rows": n_new,
+            "n_rows_after": n_rows,
+            "seconds": round(secs, 1),
+            "git": git_info(),
+            "env": env_fingerprint(),
+        }
+    )
+    side.write_text(json.dumps(runs, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    return side
+
+
+def mixed_config_digests(sidecar: str | Path) -> list[str]:
+    """Distinct config digests in a sidecar. >1 means the parquet mixes configurations."""
+    runs = json.loads(Path(sidecar).read_text(encoding="utf-8"))
+    return sorted({r["config_digest"] for r in runs})
+
+
 def _flush(rows: list[dict], out_path: Path) -> None:
     df = pd.DataFrame(rows, columns=_OUTPUT_FIELDS)
     write_feature_parquet(df, out_path, id_type=pa.string(), sort_cols=["call_id", "section"])
@@ -495,6 +564,17 @@ def build_llm(
     secs = time.perf_counter() - t0
 
     _flush(rows, out_path)
+    cfg = run_config(model_id, rev, engine, engine_kwargs)
+    side = _append_run_sidecar(out_path, cfg, n_new, len(rows), secs)
+    digests = mixed_config_digests(side)
+    if len(digests) > 1:
+        # Loud, not fatal: a config change mid-parquet is sometimes legitimate (resuming after
+        # a bug fix), but rows produced under different decoding settings must never be
+        # silently pooled into one feature table.
+        print(
+            f"WARNING: {out_path.name} now mixes {len(digests)} decoding configs "
+            f"({', '.join(digests)}); see {side.name} — re-extract before using it as one table."
+        )
     src = f"derived: ecvol featurize llm (T6.2) model={model_id}@{rev} prompt={PROMPT_VERSION}"
     entry = make_entry(out_path, root, source_url=src, license="derived")
     (root / "manifests").mkdir(parents=True, exist_ok=True)

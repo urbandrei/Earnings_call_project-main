@@ -5,6 +5,7 @@ transformers/vLLM engines are only constructed when no engine is supplied. The �
 gate is exercised in test_llm_audit.py.
 """
 
+import json
 import time
 from datetime import timedelta
 
@@ -12,6 +13,7 @@ import pandas as pd
 import pytest
 
 from ecvol.features.llm import extract as E
+from ecvol.features.llm.prompts import PROMPT_VERSION
 from ecvol.features.llm.reading import sample_train_calls
 from ecvol.features.llm.schema import EXTRACTED_FIELDS, SectionFeatures
 
@@ -255,3 +257,54 @@ def test_parse_stop_at_rolls_to_tomorrow_when_time_already_passed():
     future = (now + timedelta(minutes=30)).strftime("%H:%M")
     delta = _parse_stop_at(future) - time.time()
     assert 0 < delta <= 31 * 60
+
+
+# --- run provenance sidecar --------------------------------------------------
+
+
+def test_run_config_captures_decoding_settings():
+    """Rows record only model/revision/prompt — the settings that change content live here."""
+    cfg = E.run_config(
+        "m",
+        "rev1",
+        "llamacpp",
+        {"max_model_len": 65536, "rope_scaling": {"factor": 2.0}, "gguf_path": r"D:\x\W.gguf"},
+    )
+    assert cfg["max_model_len"] == 65536
+    assert cfg["max_new_tokens"] == E.MAX_NEW_TOKENS
+    assert cfg["evidence_grammar_chars"] == E.EVIDENCE_GRAMMAR_CHARS
+    assert cfg["prompt_version"] == PROMPT_VERSION
+    # machine-specific absolute paths must not leak into provenance
+    assert cfg["weights_file"] == "W.gguf" and "D:" not in json.dumps(cfg)
+
+
+def test_config_digest_changes_with_decoding_settings():
+    base = E.run_config("m", "r", "llamacpp", {"max_model_len": 65536})
+    same = E.run_config("m", "r", "llamacpp", {"max_model_len": 65536})
+    diff = E.run_config("m", "r", "llamacpp", {"max_model_len": 32768})
+    assert E.config_digest(base) == E.config_digest(same)
+    assert E.config_digest(base) != E.config_digest(diff)
+
+
+def test_sidecar_written_and_appends_across_resumes(tmp_path):
+    _seed_data(tmp_path)
+    E.build_llm(tmp_path, "fincall", model_id="test/m", engine_obj=_FakeEngine(), limit=2)
+    res = E.build_llm(tmp_path, "fincall", model_id="test/m", engine_obj=_FakeEngine(), limit=4)
+    side = res.out_path.with_suffix(".run.json")
+    runs = json.loads(side.read_text())
+    assert len(runs) == 2  # one record per invocation, so the parquet's history is auditable
+    assert runs[0]["n_new_rows"] == 4 and runs[1]["n_new_rows"] == 4
+    assert runs[-1]["n_rows_after"] == 8
+    assert "git" in runs[0] and "env" in runs[0]
+    assert E.mixed_config_digests(side) == [runs[0]["config_digest"]]  # one config → one digest
+
+
+def test_mixed_config_digests_flags_a_parquet_built_under_two_configs(tmp_path):
+    """The failure this exists to catch: rows pooled from different decoding settings."""
+    _seed_data(tmp_path)
+    res = E.build_llm(tmp_path, "fincall", model_id="test/m", engine_obj=_FakeEngine(), limit=2)
+    side = res.out_path.with_suffix(".run.json")
+    runs = json.loads(side.read_text())
+    runs.append({**runs[0], "config_digest": "deadbeef0000"})
+    side.write_text(json.dumps(runs))
+    assert len(E.mixed_config_digests(side)) == 2
