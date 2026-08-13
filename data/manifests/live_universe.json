@@ -1,0 +1,16 @@
+[
+  {
+    "license": "CC-BY-SA-4.0",
+    "path": "raw/live/wiki_sp400.html",
+    "retrieved_at": "2026-08-13T11:50:27+00:00",
+    "sha256": "a1e1b338ab363765e7aa445b475ab5d07334bc455644481ec54b1830be5512a4",
+    "source_url": "https://en.wikipedia.org/wiki/List_of_S%26P_400_companies"
+  },
+  {
+    "license": "CC-BY-SA-4.0",
+    "path": "raw/live/wiki_sp500.html",
+    "retrieved_at": "2026-08-13T11:50:26+00:00",
+    "sha256": "722649a4ce47ae5d749fd111744f602f359a2fec8d369dc816e18c2f98677c8c",
+    "source_url": "https://en.wikipedia.org/wiki/List_of_S%26P_500_companies"
+  }
+]

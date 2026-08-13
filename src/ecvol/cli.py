@@ -930,3 +930,49 @@ def llm_kappa(
         tag = "  [confirmatory]" if field in CONFIRMATORY_FIELDS else "  [reported]"
         typer.echo(f"  {field:24s} κ={kv:>6s}  (n={v['n']}){tag}")
     typer.echo(f"GATE κ>0.6 (confirmatory core only): {'PASS' if passes_gate(k) else 'FAIL'}")
+
+
+collect_app = typer.Typer(no_args_is_help=True, help="ecvol-live forward collection (TX4 pilot).")
+app.add_typer(collect_app, name="collect")
+
+
+@collect_app.command("discover")
+def collect_discover(
+    start: str = typer.Option(..., help="Calendar sweep start, YYYY-MM-DD."),
+    end: str = typer.Option(..., help="Calendar sweep end, YYYY-MM-DD (inclusive)."),
+    root: Path = typer.Option(Path("data"), help="Data root directory."),  # noqa: B008
+) -> None:
+    """Universe snapshot x earnings calendar -> live/discovery.csv (cached, resumable)."""
+    from datetime import date as date_type
+
+    from ecvol.collect.discovery import build_discovery, build_universe
+
+    universe = build_universe(root)
+    counts = universe.index_membership.value_counts()
+    missing_cik = int(universe.cik.isna().sum())
+    typer.echo(f"universe: {len(universe)} ({counts.to_dict()}); cik missing: {missing_cik}")
+    discovery = build_discovery(root, date_type.fromisoformat(start), date_type.fromisoformat(end))
+    typer.echo(f"discovery: {len(discovery)} candidate calls -> {root / 'live' / 'discovery.csv'}")
+    typer.echo(f"  by index: {discovery.index_membership.value_counts().to_dict()}")
+    typer.echo(f"  by timing: {discovery.timing.value_counts().to_dict()}")
+
+
+@collect_app.command("sample")
+def collect_sample(
+    n_sp500: int = typer.Option(35, help="Pilot draws from the S&P 500 stratum."),
+    n_sp400: int = typer.Option(15, help="Pilot draws from the S&P 400 stratum."),
+    seed: int = typer.Option(20260813, help="Draw seed (recorded in the output)."),
+    root: Path = typer.Option(Path("data"), help="Data root directory."),  # noqa: B008
+) -> None:
+    """Seeded stratified pilot sample from live/discovery.csv -> live/pilot_sample.csv."""
+    import pandas as pd
+
+    from ecvol.collect.discovery import sample_pilot
+
+    discovery = pd.read_csv(root / "live" / "discovery.csv", dtype={"cik": str})
+    sample = sample_pilot(discovery, n_sp500=n_sp500, n_sp400=n_sp400, seed=seed)
+    sample["sample_seed"] = seed
+    out = root / "live" / "pilot_sample.csv"
+    sample.to_csv(out, index=False)
+    typer.echo(f"pilot sample: {len(sample)} calls -> {out}")
+    typer.echo(f"  dates {sample.call_date.min()} .. {sample.call_date.max()}")

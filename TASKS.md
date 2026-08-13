@@ -415,8 +415,8 @@ Adopted from this team's prior multimodal-volatility work (see `ingest/ingest.md
 - **End result:** captured replay audio + at-collection-time metadata (ticker/CIK/company/fiscal period/call datetime+TZ/replay URL) for up to 50 Q2-2026 calls (~35 S&P 500 / ~15 S&P 400), every non-captured attempt reason-coded; then local Whisper+pyannote transcripts and T1.3 target joins; a pilot report with the three go/no-go numbers: automation coverage (% direct-MP3 / HLS / walled), per-call human minutes for the walled remainder, ASR WER vs Earnings25 overlaps.
 - **Acceptance test:** pilot report exists with all three numbers **measured, not estimated**; every attempted call has either bytes-on-disk with SHA-256 manifest or a reason code; zero cash spent; no DESIGN.md change without a further DECISIONS.md entry.
 - **Subtasks:**
-  - [ ] Discovery: universe snapshot (S&P 500 + S&P 400, sourced+dated) × Q2-2026 earnings calendar → candidate list with call dates
-  - [ ] Stratified 50-call sample (~35/15, seeded) + replay-URL location per call
+  - [x] Discovery: universe snapshot (S&P 500 + S&P 400, sourced+dated) × Q2-2026 earnings calendar → candidate list with call dates *(2026-08-13: 903 tickers, 806 candidates Jul 1–Aug 13)*
+  - [ ] Stratified 50-call sample (~35/15, seeded) + replay-URL location per call *(sample drawn 2026-08-13, seed 20260813, dates Jul 16–Aug 12; URL location pending)*
   - [ ] Capture: direct-MP3 and HLS routes (polite rates); reason-code the walled remainder
   - [ ] Normalize to the T4.1 store format (16 kHz mono FLAC + SHA-256, original bytes kept)
   - [ ] Transcribe + diarize (may lag capture; 50-call ETA gate applies)
