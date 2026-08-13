@@ -409,3 +409,17 @@ Adopted from this team's prior multimodal-volatility work (see `ingest/ingest.md
   - [ ] Apply §7.3 controls + Δv target
   - [ ] Write-up (signal vs. identity) → feeds the §4 framing-gate evidence
 - **Notes:** their setup reuses KeFVP's released labels (conflicts with §5.3 computed targets). DECISIONS.md 2026-06-14.
+
+### TX4 — ecvol-live 50-call capture pilot — `[~]` *(green-lit 2026-08-13; time-sensitive: Q2 2026 replay window closing)*
+- **Goal:** measure the feasibility numbers for the ecvol-live forward-collection design (`docs/fincall_methodology_and_successor.md` §4–5) on 50 current-season calls.
+- **End result:** captured replay audio + at-collection-time metadata (ticker/CIK/company/fiscal period/call datetime+TZ/replay URL) for up to 50 Q2-2026 calls (~35 S&P 500 / ~15 S&P 400), every non-captured attempt reason-coded; then local Whisper+pyannote transcripts and T1.3 target joins; a pilot report with the three go/no-go numbers: automation coverage (% direct-MP3 / HLS / walled), per-call human minutes for the walled remainder, ASR WER vs Earnings25 overlaps.
+- **Acceptance test:** pilot report exists with all three numbers **measured, not estimated**; every attempted call has either bytes-on-disk with SHA-256 manifest or a reason code; zero cash spent; no DESIGN.md change without a further DECISIONS.md entry.
+- **Subtasks:**
+  - [ ] Discovery: universe snapshot (S&P 500 + S&P 400, sourced+dated) × Q2-2026 earnings calendar → candidate list with call dates
+  - [ ] Stratified 50-call sample (~35/15, seeded) + replay-URL location per call
+  - [ ] Capture: direct-MP3 and HLS routes (polite rates); reason-code the walled remainder
+  - [ ] Normalize to the T4.1 store format (16 kHz mono FLAC + SHA-256, original bytes kept)
+  - [ ] Transcribe + diarize (may lag capture; 50-call ETA gate applies)
+  - [ ] Target join via the T1.3 pipeline (real timestamps — after-hours rule finally applicable)
+  - [ ] Pilot report → season-scale go/no-go
+- **Notes:** DECISIONS 2026-08-13. Capture-first: bytes decay, everything downstream can wait. Scripts land in `src/ecvol` (they are the release deliverable, not scratch).
