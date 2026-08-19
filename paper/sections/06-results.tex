@@ -7,7 +7,9 @@ We report results factually and defer the headline framing to
 \dv, \Rtwo{} and MSE, all splits and horizons) is in
 Appendix~\ref{app:complete}. Stars denote Diebold--Mariano significance
 ($p<0.05$): in Table~\ref{tab:baselines} vs.\ persistence, and in
-Table~\ref{tab:text} vs.\ the Stage-1 ticker-FE GBDT.
+Tables~\ref{tab:text} and~\ref{tab:audio} vs.\ the Stage-1 ticker-FE GBDT; in the
+consolidated grid (Table~\ref{tab:grid}) markers are Holm-corrected across horizons
+and signed ($*$ better / \dag{} worse than Stage-1).
 
 \subsection{Baselines (Stages 0--1)}
 Table~\ref{tab:baselines} shows the econometric floor. HAR-RV is strong at short and
@@ -47,12 +49,87 @@ This is the in-corpus confirmation of \citet{scss2024} and the reason RQ4 is cen
 
 \input{tables/controls}
 
-\subsection{Audio, fusion, LLM, and lookahead (pending)}
-\pending{Stage 3 audio (Result Table~3): WavLM-Large and emotion2vec+ full-corpus
-extraction and heads; eGeMAPS (88-d) already extracted for all 2{,}671 calls.}
-\pending{Stage 4 fusion (Result Table~4): the main \S\ref{sec:experiments} ablation
-grid.}
-\pending{Stage 5 LLM structured features (Result Table~5) and the masking ablation.}
-\pending{Phase 7 post-cutoff lookahead evaluation on 2025--2026 calls.}
-Each lands as its phase completes; the framing gate (\S\ref{sec:discussion}) is
-re-evaluated when the audio results are in.
+\subsection{Audio content (Stage 3)}
+Table~\ref{tab:audio} extends the same design to audio. Audio-\emph{only} heads
+(eGeMAPS, WavLM-Large, emotion2vec+, ridge or MLP) sit at \Rtwo{} zero on every
+split and horizon ($-0.06$ to $+0.03$): frozen audio content alone carries no
+measurable \dv{} signal. Adding past-volatility covariates reproduces the Stage-2
+pattern---the only DM-significant wins over Stage-1 are past-vol-augmented heads on
+the \tickerdisjoint{} split. The audio-shuffle control (bottom block) is decisive:
+replacing each test call's audio with a random \emph{other company's} call leaves
+most of those gains intact ($\tau{=}3$: $0.337\!\to\!0.318$; $\tau{=}30$:
+$0.212\!\to\!0.100$), so the audio features are inert and past volatility carries
+the signal. Identity is nonetheless encoded: a linear probe recovers the ticker from
+per-call WavLM embeddings at 76.3\% (271$\times$ chance; emotion2vec+ 29.4\%,
+105$\times$). An exploratory gender-confound check (eGeMAPS-F0 dominant-speaker
+proxy, 100\% coverage) finds near-identical per-group test MSE (0.241 low-pitch
+vs.\ 0.242 high-pitch) and a 0.03 correlation between speaker F0 and squared error:
+with inert audio features, no large gender disparity is detectable (see the Ethics
+Statement for caveats).
+
+\input{tables/audio}
+
+\subsection{Fusion and the consolidated grid (Stage 4)}
+Gated fusion and late-fusion stacking over all frozen modalities answer RQ2 in the
+negative: \emph{multimodal is not better than the best unimodal model}. Only one of
+48 \dv{} test cells beats Stages 1--3 DM-significantly (gated fusion, temporal
+$\tau{=}7$, $\Rtwo{=}+0.019$---negligible), and the best fusion cell overall
+(stacking, \tickerdisjoint{} $\tau{=}3$, $\Rtwo{=}0.436$) is not significant
+vs.\ Stage-1 ($p{=}0.13$). Table~\ref{tab:grid} consolidates the ladder with one
+pre-registered canonical model per stage and Holm-corrected confirmatory tests. Two
+facts summarise it. On the regime-honest \emph{temporal} split, no content stage
+beats the econometric floor at any horizon; where a content model is
+Holm-significantly better than Stage-1 (fusion at $\tau{=}30$) it merely beats a
+collapsed GBDT while remaining below persistence. On the \emph{\tickerdisjoint}
+split the favorable cells are exactly the past-vol-augmented ones that the shuffle
+controls (Tables~\ref{tab:controls} and~\ref{tab:audio}) show to be
+identity/past-vol-confounded. The per-year breakdown sharpens the regime point: the
+FinCall temporal test year is entirely 2021, and there every content model
+underperforms persistence on level-$v$ (HAR $-0.29$, GBDT $-0.82$, text $-1.09$,
+audio $-1.66$, fusion $-1.02$).
+
+\input{tables/grid}
+
+\subsection{LLM structured features (Stage 5): the extraction fails its audit}
+\label{sec:results-llm}
+Stage 5 was pre-registered with a validity gate: corpus-scale extraction of the
+structured features is blocked until the model's labels reach $\kappa>0.6$ against
+human rubric labels on a frozen 50-call train-only audit sample, extracted through
+the \emph{same} engine and configuration as the corpus run would use. The gate
+failed decisively (Table~\ref{tab:llmkappa}): the three confirmatory fields score
+$\kappa$ of 0.165 (guidance direction), $-0.050$ (hedging intensity---worse than
+chance), and 0.222 (surprise mentions), with call-level-bootstrap 95\% upper bounds
+all far below 0.6. Every output was 100\% schema-valid, so this is precisely the
+gap between \emph{form} and \emph{content} validity: constrained decoding
+guarantees parseable JSON, not meaningful measurements.
+
+\input{tables/llm}
+
+Four controls make the diagnosis actionable, and all four capability levers are
+null. Sharpened prompt anchors move $\kappa$ by at most $+0.04$; near-lossless
+Q8\_0 quantization (vs.\ 4-bit) and a 2$\times$ larger model (Qwen2.5-14B) both
+produce differences whose bootstrap CIs all span zero (the 14B also fails the gate
+on its own terms); the single measurable effect in the whole diagnostic set is
+few-shot exemplars of the rater's own labels, which lift hedging from below chance
+to $\kappa\approx0.09$ ($+0.092$ $[+0.029, +0.181]$)---a fifth of the distance to
+the bar, on exactly the field whose written anchor omits a baseline. The failure
+modes are structural rather than noisy: the model rates 47 of 50 Q\&A sections
+exactly ``2'' on analyst tone (near-constant output), its hedging ratings are
+statistically independent of the human's, and it misses 26 of 36 human-positive
+surprise rows. Per the pre-registered rule, corpus-scale extraction was therefore
+\emph{not} run: there is no Result Table 5, and RQ3 is answered at the validity
+stage---the ``auditable semantics'' this sub-literature consumes did not survive
+their audit. Notably, the closest prior system \citep{cao2024ecc} reports a 27.7\%
+MSE reduction from LLM-extracted semantics with no human validation of extraction
+quality at all, and the highest published agreement figure in this space
+\citep{evasionbench2026} is inter-LLM, not human, agreement. Two caveats travel
+with this finding: the gate scored a single careful rater (inter-annotator
+agreement pending), and the 0.6 bar's implicit human--human ceiling was never
+measured---subjective ordinal annotation routinely sits at human--human
+$\kappa$ of 0.4--0.6, so the honest reporting unit going forward is model
+$\kappa$ \emph{relative to} human--human $\kappa$ (see Limitations).
+
+\subsection{Post-cutoff lookahead (pending)}
+\pending{Phase 7: the frozen-pipeline evaluation on 2025--2026 post-cutoff calls. A
+50-call capture pilot (replay audio with native identity and exact timestamps) is
+in progress.}

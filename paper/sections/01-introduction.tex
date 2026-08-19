@@ -51,9 +51,11 @@ Concretely, we ask four research questions:
 The study is pre-registered so that no single outcome strands the work: a clean
 negative or mixed answer to RQ1/RQ4 is itself a publishable contribution. The
 paper's framing is decided by the data at a pre-registered gate
-(\S\ref{sec:discussion}), not retro-fitted to it; this draft is written
-\emph{framing-neutral} while the audio, fusion, LLM, and lookahead experiments
-are completed.
+(\S\ref{sec:discussion}), not retro-fitted to it. That gate has now been tested at
+the text, audio, and fusion stages and missed at each; it is provisionally resolved
+toward rigorous re-examination, with the post-cutoff lookahead experiment
+(in progress) providing final confirmation. This draft keeps a framing-neutral
+tone pending that last result.
 
 \paragraph{Contributions.}
 \begin{enumerate}
@@ -66,9 +68,11 @@ are completed.
     and target variant---the comparison most prior work omits.
   \item \textbf{A modern open-model feature ladder on consumer hardware}:
     financial embeddings, FinBERT, WavLM / emotion2vec+ / eGeMAPS audio features,
-    fusion heads, and LLM-extracted structured features---all runnable on a single
+    fusion heads, and grammar-constrained LLM extraction---all runnable on a single
     16--24\,GB GPU.
   \item \textbf{A diagnostic suite} for this task family: identity probes,
-    transcript-shuffle controls, \tickerdisjoint{} evaluation, lookahead-bias tests
-    on post-cutoff data, and a gender-confound analysis.
+    transcript- and audio-shuffle controls, \tickerdisjoint{} evaluation, a
+    human-validity ($\kappa$) gate on LLM feature extraction---to our knowledge the
+    first in this literature, and it fails---plus lookahead-bias tests on
+    post-cutoff data and a gender-confound analysis.
 \end{enumerate}

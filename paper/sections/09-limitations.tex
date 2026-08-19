@@ -1,17 +1,34 @@
 \section*{Limitations}
 \addcontentsline{toc}{section}{Limitations}
 
-\textbf{Scope of current evidence.} The negative finding is established on the text
-ladder only; audio (Stage~3), fusion (Stage~4), and LLM-structured features
-(Stage~5) are not yet complete, so claims about \emph{multimodal} content are
-deferred. \textbf{Timestamps.} Fewer than 4\% of calls carry usable timestamps, so
-we apply an after-hours rule; mis-dated calls would add noise to short-horizon
-targets. \textbf{Regime sensitivity.} FinCall-Surprise spans COVID; the temporal
-$\tau{=}30$ baseline failure shows long-horizon level forecasts are regime-sensitive,
-which is why we emphasise the identity-robust \dv{} target and report per-year
-breakdowns. \textbf{MAEC coverage.} The 75.4\% price-join rate (2015--2018
-delistings) makes MAEC a secondary, comparability corpus. \textbf{Lookahead.}
-LLM-feature results on 2019--2021 calls are suspect by default until the Phase~7
-post-cutoff evaluation and masking ablation quantify contamination. \textbf{No
-diarisation in v1.} Audio uses per-call pooling, not speaker-resolved features.
-\TODO{Revisit and tighten as later phases land.}
+\textbf{Lookahead still pending.} The Phase-7 frozen-pipeline evaluation on
+post-cutoff 2025--2026 calls and the prompt-masking ablation are in progress; until
+they land, LLM-adjacent results on 2019--2021 calls carry contamination risk by
+default, and the framing-gate resolution remains provisional. \textbf{MLP-head
+instability.} The shallow-MLP heads are seed-unstable (across-seed \Rtwo{} std up to
+$\approx$3.4), which is why the consolidated grid uses deterministic ridge/structural
+canonicals; MLP cells in the appendix should be read as seed means with that caveat.
+\textbf{The past-vol covariate block is not HAR.} The learned
+$[v_{\mathrm{pre}}, \mathrm{RV}_{1/5/22}]$ ridge used inside Stage-2--4 heads
+overfits the COVID regime shift on the temporal split ($\Rtwo{-}2.0$ at $\tau{=}15$)
+where the rigid OLS HAR-RV stays robust ($+0.21$); the two are labelled distinctly
+throughout, and the gap is itself a small finding about structural vs.\
+unconstrained conditioning under regime shift. \textbf{Short-horizon \Rtwo{}
+inflation.} The persistence denominator is noisiest at $\tau{=}3$ (its MSE is
+$\sim$2.8$\times$ the $\tau{=}7$ one), so short-horizon \Rtwo{} gains are easier to
+show and should be read accordingly. \textbf{Timestamps.} Fewer than 4\% of calls
+carry usable timestamps, so we apply a flagged after-hours rule; mis-dated calls add
+noise to short-horizon targets. \textbf{Regime sensitivity.} FinCall-Surprise spans
+COVID; the temporal $\tau{=}30$ baseline failure shows long-horizon level forecasts
+are regime-sensitive, which is why we emphasise the identity-robust \dv{} target and
+report per-year breakdowns. \textbf{MAEC coverage.} The 75.4\% price-join rate
+(2015--2018 delistings) makes MAEC a secondary, comparability corpus; it also ships
+no raw audio, so the audio ladder is FinCall-only. \textbf{No diarisation in v1.}
+Audio uses per-call pooling, not speaker-resolved features; the gender analysis
+correspondingly uses a dominant-speaker F0 proxy. \textbf{The $\kappa$ gate scored a
+single rater.} Inter-annotator agreement is pending, and the 0.6 bar's implicit
+human--human ceiling was never measured; the extraction-failure claim is robust (all
+confirmatory 95\% upper bounds $\ll$0.6), but whether the fault lies with the model
+or the rubric awaits a second rater. \textbf{No corpus-scale LLM features exist.}
+Blocking extraction at the validity gate means RQ3's predictive half (do valid
+structured features beat embeddings?) is unanswered, not answered negatively.

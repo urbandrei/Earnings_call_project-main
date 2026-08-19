@@ -1,14 +1,16 @@
 # Paper — `ecvol` multimodal earnings-call volatility prediction
 
-A **living manuscript scaffold**. Phases 0–3 (data, baselines, text ladder,
-identity controls) are written with real numbers; audio / fusion / LLM / lookahead
-sections are stubs marked with `\TODO{}` / `\pending{}` and fill in as those phases
-land.
+A **living manuscript scaffold**. Phases 0–6 are written with real numbers: data,
+baselines, text ladder + identity controls, audio ladder + shuffle/gender controls,
+fusion + the consolidated grid (Result Tables 1–4), and the Stage-5 LLM
+extraction-validity (κ-gate) failure. Only the Phase-7 post-cutoff lookahead
+remains a `\pending{}` stub (capture pilot in progress).
 
 - **Format:** self-contained two-column (ACL/EMNLP-style), compiles with a stock TeX
   distribution — no external style files required.
-- **Framing:** deliberately framing-neutral (the Path-A / Path-B gate, DESIGN.md §4,
-  is resolved after the audio results).
+- **Framing:** the Path-A / Path-B gate (DESIGN.md §4) is **provisionally resolved to
+  Path B** (missed at text, audio, and fusion; Stage 5 blocked at validity); the
+  prose keeps a framing-neutral tone until the Phase-7 lookahead confirms it.
 
 ## Build
 
@@ -43,10 +45,11 @@ pdflatex main && bibtex main && pdflatex main && pdflatex main
 | `figures/` | `pipeline.tex` — TikZ stage-ladder schematic |
 
 The **appendix** `\input`s the auto-generated grids
-`../data/results/result_table_{1,2}.tex` (emitted by `ecvol report`, byte-identical
-and CI-guarded). The curated `tables/baselines.tex` and `tables/text.tex` copy
-selected cells from those files; if you re-run `ecvol report` and numbers change,
-update the curated tables to match.
+`../data/results/result_table_{1,2,3,4}.tex` (emitted by `ecvol report`,
+byte-identical and CI-guarded). The curated `tables/{baselines,text,audio,grid}.tex`
+copy selected cells from those files (`tables/llm.tex` from
+`data/coverage/llm_kappa_gate_report.md`); if you re-run `ecvol report` and numbers
+change, update the curated tables to match.
 
 ## Drafting conventions
 

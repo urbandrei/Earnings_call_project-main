@@ -11,11 +11,27 @@ splits at all horizons.
 % Paths are relative to this file (paper/sections/). The generated .tex files live
 % in the repo's data/results/ tree. If your TeX setup restricts \input to the
 % project tree, copy them into paper/tables/ instead and update these two lines.
+% \clearpage between the generated files flushes each batch of deferred floats;
+% without it ~56 consecutive floats deadlock the two-column output routine.
 \subsection{Stage-0/1 baselines (Result Table 1)}
 \input{../data/results/result_table_1}
+\clearpage
 
 \subsection{Stage-2 text heads (Result Table 2)}
 \input{../data/results/result_table_2}
+\clearpage
 
-\TODO{Add Result Tables 3 (audio), 4 (fusion), 5 (LLM) here as phases complete;
-they will be emitted by \texttt{ecvol report} in the same format.}
+\subsection{Stage-3 audio heads (Result Table 3)}
+FinCall-Surprise only (MAEC ships no raw audio).
+\input{../data/results/result_table_3}
+\clearpage
+
+\subsection{Consolidated ablation grid (Result Table 4)}
+One pre-registered canonical model per stage; $*$ marks Holm-corrected significance
+vs.\ Stage-1 within the \dv{} confirmatory family (two-sided---read direction from
+the value).
+\input{../data/results/result_table_4}
+
+\paragraph{On the absence of a Result Table 5.} The Stage-5 LLM feature extraction
+was blocked at its pre-registered validity gate (\S\ref{sec:results-llm},
+Table~\ref{tab:llmkappa}); no corpus-scale LLM features were produced, by design.

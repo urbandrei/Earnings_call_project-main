@@ -3,11 +3,17 @@
 
 We revisit multimodal earnings-call volatility prediction with modern open-weight
 models, strong econometric baselines, leakage-proof splits, and an explicit
-identity-control suite, released as the \ecvol{} benchmark. On the completed text
-ladder, frozen content does not cleanly beat past-volatility and identity baselines,
-and identity probes plus transcript-shuffle controls show that call embeddings
-encode \emph{which company} is speaking more than \emph{what} is said. The audio,
-fusion, LLM, and post-cutoff-lookahead experiments are in progress and will resolve
-the pre-registered framing gate; this draft reports the current evidence
-framing-neutral.
-\TODO{Finalise the conclusion's verdict after the framing gate is resolved.}
+identity-control suite, released as the \ecvol{} benchmark. Across the completed
+ladder the evidence is consistent and negative: frozen text content reads company
+identity rather than call content (89.5\% ticker-probe accuracy; within-ticker
+shuffles leave performance unchanged); frozen audio content is inert beyond past
+volatility (its apparent gains survive a global audio shuffle); fusion never
+significantly beats the best unimodal model; and LLM-extracted ``auditable''
+semantic features fail their pre-registered human-validity audit
+($\kappa\le0.222$ vs.\ a 0.6 gate), so were never scaled to the corpus. The
+pre-registered framing gate is provisionally resolved to rigorous re-examination:
+what the leaderboard literature measures as content signal is, under honest
+controls, overwhelmingly company identity plus past volatility---and the semantic
+features it increasingly consumes are not validated measurements. The post-cutoff
+lookahead evaluation (in progress) completes the diagnostic suite.
+\TODO{Fold in the Phase-7 lookahead result and finalise the verdict.}

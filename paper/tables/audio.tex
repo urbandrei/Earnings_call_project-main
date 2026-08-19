@@ -1,0 +1,38 @@
+% Curated headline: Stage-3 audio heads, FinCall, Delta-v, R^2_OOS vs persistence
+% (test). Values copied from data/results/result_table_3.csv (temporal n=481;
+% ticker-disjoint n=484) and data/results/audio_shuffle.csv.
+% * = DM-significant vs Stage-1 ticker-FE GBDT (p<0.05; direction from the value).
+\begin{table}[t]
+\centering
+\small
+\begin{tabular}{lrrrr}
+\toprule
+Model & $\tau$=3 & $\tau$=7 & $\tau$=15 & $\tau$=30 \\
+\midrule
+\multicolumn{5}{l}{\textit{Temporal split ($n{=}481$)}}\\
+Ridge (eGeMAPS)        & -0.000* & -0.007* & -0.015 & -0.007* \\
+Ridge (WavLM)          & -0.005* & -0.007* & -0.045 & -0.031* \\
+Ridge (emotion2vec+)   & -0.018* & -0.028* & -0.056 & -0.060* \\
+Ridge (WavLM+past-vol) & 0.265 & -1.026 & -2.032 & -0.561 \\
+\midrule
+\multicolumn{5}{l}{\textit{Ticker-disjoint split ($n{=}484$)}}\\
+Ridge (eGeMAPS)        & -0.011* & -0.013* & -0.002 & 0.002 \\
+Ridge (WavLM)          & -0.038* & -0.035* & -0.027* & 0.024 \\
+Ridge (emotion2vec+)   & -0.002* & -0.003* & 0.011 & 0.002 \\
+Ridge (WavLM+past-vol) & 0.337* & 0.171* & 0.111 & 0.212* \\
+\midrule
+\multicolumn{5}{l}{\textit{Audio-shuffle control of WavLM+past-vol (\tickerdisjoint)}}\\
+Real audio            & 0.337 & 0.171 & 0.111 & 0.212 \\
+Within-ticker shuffle & 0.317 & 0.144 & 0.097 & 0.170 \\
+Global shuffle        & 0.318 & 0.115 & 0.093 & 0.100 \\
+\bottomrule
+\end{tabular}
+\caption{\textbf{Audio content (Stage 3).} \Rtwo{} vs.\ persistence on the \dv{}
+target, FinCall-Surprise (test). Audio-only heads sit at zero everywhere; the
+apparent gains of the past-vol-augmented head survive replacing every test call's
+audio with a \emph{random other company's} call (global shuffle, bottom block), so
+past volatility, not audio content, carries them. $*$: Diebold--Mariano significant
+vs.\ the Stage-1 ticker-FE GBDT ($p<0.05$; read direction from the value). Full head
+set in Appendix~\ref{app:complete}.}
+\label{tab:audio}
+\end{table}

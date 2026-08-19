@@ -1,0 +1,30 @@
+% Curated headline: Stage-5 LLM extraction validity audit (kappa-gate, 2026-08-09).
+% Values from data/coverage/llm_kappa_gate_report.md: Qwen2.5-7B-Instruct Q4_K_M,
+% llama.cpp grammar-constrained decoding, YaRN-65536 context, frozen v2 schema/prompt,
+% scored against rater-1 labels on the frozen 50-call train-only audit sample
+% (97 call-section rows; Q&A-only fields n=50). CIs: 2000-resample call-level bootstrap.
+\begin{table}[t]
+\centering
+\small
+\begin{tabular}{llrr}
+\toprule
+Field & Role & $\kappa$ & 95\% CI \\
+\midrule
+Guidance direction & confirmatory & 0.165 & [0.064, 0.271] \\
+Hedging intensity  & confirmatory & -0.050 & [-0.124, 0.033] \\
+Surprise mentions  & confirmatory & 0.222 & [0.054, 0.378] \\
+Q\&A evasiveness   & reported     & 0.108 & --- \\
+Analyst tone       & reported     & -0.040 & --- \\
+\bottomrule
+\end{tabular}
+\caption{\textbf{LLM extraction validity (Stage 5).} Cohen's $\kappa$ between
+constrained-decoded Qwen2.5-7B-Instruct outputs and a human rater on the frozen
+50-call audit sample (97 call-section rows; Q\&A-only fields $n{=}50$). The
+pre-registered gate requires $\kappa>0.6$ on the confirmatory core before
+corpus-scale extraction; every confirmatory field's 95\% \emph{upper} bound sits far
+below it, so the failure is not a small-sample accident. All outputs were 100\%
+schema-valid---constrained decoding guarantees \emph{form}, not \emph{content}
+validity. Corpus-scale extraction was therefore not run (single rater;
+inter-annotator agreement pending, see \S\ref{sec:results}).}
+\label{tab:llmkappa}
+\end{table}

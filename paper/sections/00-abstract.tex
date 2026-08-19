@@ -15,7 +15,18 @@ HAR-RV, GARCH(1,1), and ticker-fixed-effect baselines, we evaluate a ladder of
 frozen-representation content models (financial sentence embeddings, FinBERT,
 self-supervised and prosodic audio features) with light heads, under
 significance testing (Diebold--Mariano, cluster bootstrap, Holm correction) and
-identity controls (linear identity probes and same-ticker transcript shuffles).
-\TODO{Finalise headline numbers and the one-sentence verdict once Phases 4--7
-land; current evidence is reported framing-neutral in \S\ref{sec:results}.}
+identity controls (linear identity probes and same-ticker content shuffles).
+The evidence is consistent and negative: text embeddings encode \emph{which
+company} is speaking (89.5\% ticker-probe accuracy; within-ticker transcript
+shuffles leave performance unchanged); frozen audio content is inert beyond past
+volatility (its apparent gains survive even a global audio shuffle); fusion never
+significantly beats the best unimodal model; and LLM-extracted ``auditable''
+semantic features fail a pre-registered human-validity audit ($\kappa\le0.222$
+on every confirmatory field vs.\ a 0.6 gate, with prompt, quantization, and
+model-scale interventions all measurably null)---so, unlike prior work that
+consumes such features unvalidated, we do not scale them to the corpus. Under
+honest controls, apparent content signal in this task family is overwhelmingly
+company identity plus past volatility.
+\pending{A frozen-pipeline lookahead evaluation on post-LLM-cutoff 2025--2026
+calls completes the diagnostic suite.}
 We release all code, configs, manifests, and result tables.
