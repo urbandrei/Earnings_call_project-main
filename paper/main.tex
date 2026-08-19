@@ -50,6 +50,12 @@
 \usepackage[colorlinks=true,allcolors=blue!55!black,breaklinks=true]{hyperref}
 \usepackage{url}
 
+% --- Line numbers (peer-review draft) ----------------------------------------
+% Unobtrusive gray line numbers on both columns so reviewers can reference
+% specific lines. Remove (or comment \linenumbers below) for camera-ready.
+\usepackage{lineno}
+\renewcommand{\linenumberfont}{\normalfont\tiny\color{gray}}
+
 % --- Draft/TODO machinery ---------------------------------------------------
 % Set \draftmode to false (or pass \drafttrue->false) to hide TODOs for a clean
 % camera-ready render. While drafting, TODOs are visible and greppable.
@@ -69,16 +75,17 @@
 % ============================================================================
 \title{Modern, Honest, and Open Multimodal Prediction of\\
        Post-Earnings-Call Volatility\\
-       \large\textit{(working title --- living draft, framing-neutral)}}
+       \large\textit{(anonymized working draft for comments --- please do not
+       cite or circulate)}}
 
 \author{
   Anonymous Author(s)\\
-  \texttt{path-agnostic placeholder}\\
 }
 \date{Draft compiled \today}
 
 % ============================================================================
 \begin{document}
+\linenumbers
 \maketitle
 \begin{abstract}
 \input{sections/00-abstract}

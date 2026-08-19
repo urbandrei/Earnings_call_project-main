@@ -23,7 +23,13 @@ COVID; the temporal $\tau{=}30$ baseline failure shows long-horizon level foreca
 are regime-sensitive, which is why we emphasise the identity-robust \dv{} target and
 report per-year breakdowns. \textbf{MAEC coverage.} The 75.4\% price-join rate
 (2015--2018 delistings) makes MAEC a secondary, comparability corpus; it also ships
-no raw audio, so the audio ladder is FinCall-only. \textbf{No diarisation in v1.}
+no raw audio, so the audio ladder is FinCall-only. \textbf{Source audio quality.}
+Every FinCall audio file is a uniform 40\,kbps MP3 transcode (eight source sample
+rates; 14 calls at telephone-grade 8\,kHz), so aggressive lossy compression
+underlies all acoustic features. The audio-inert finding is therefore established
+on compression-damaged audio and may not transfer to studio-quality recordings---a
+caveat that applies equally to prior positive claims built on the same corpora.
+\textbf{No diarisation in v1.}
 Audio uses per-call pooling, not speaker-resolved features; the gender analysis
 correspondingly uses a dominant-speaker F0 proxy. \textbf{The $\kappa$ gate scored a
 single rater.} Inter-annotator agreement is pending, and the 0.6 bar's implicit

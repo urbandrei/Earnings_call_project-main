@@ -421,3 +421,10 @@ Keep entries factual and compact. Decisions that change the design belong in [DE
 - **Found — build bug:** with 56 consecutive generated floats the two-column output routine hits `Output loop—100 consecutive dead cycles` (the old 32-float appendix built fine; `\extrafloats{120}` alone doesn't save it). Fix: `\clearpage` between the four generated-table `\input`s. Also: `\dag` must stay text-mode (was `$\dag$` in captions).
 - **Gate:** ruff clean, 281 tests green; `paper/build.sh` → 20 pp, 0 undefined refs/citations, bibliography resolves. TASKS T8.2 → `[~]` with a dated note.
 - **Next:** the draft's only stub is Phase-7 lookahead; TX4 capture (oldest-first, replay decay) and the T6.2 rater-2 decision remain the open fronts.
+
+## 2026-08-19 (later) — T8.2: peer-review render of the draft
+
+- **Scope:** user asked for a shareable version of the PDF for peers. Choices confirmed via Q&A: keep the author anonymous; keep the `\pending{}`/`\TODO{}` markers visible; add line numbers for feedback.
+- **Done:** `lineno` (gray, tiny) on both columns; subtitle → "anonymized working draft for comments — please do not cite or circulate"; removed the placeholder author line. Applied two content fixes from this session's project review before sharing: (1) data-section erratum — 92.9% is the *overall* identity-resolution rate, 95.3% is the earnings-cohort rate (was mislabeled); (2) the **40 kbps source-audio caveat** (from `docs/fincall_methodology_and_successor.md` §2.3) added to Limitations and as a clause on the Sound-of-Risk rebuttal — the audio-inert finding is established on compression-damaged audio. Also fixed 4 author-less refs.bib entries that rendered as key fragments ("scs (2024)", "(fin, 2025)"): first authors taken from the verified `paper/reference_audit.md` (Yu/SCSS, Tatarinov/survey, Liu/AT-FinGPT, Lin/emo-bias) + "and others".
+- **Gate:** paper-only change; build clean (20 pp, 0 undefined refs), pages 1 and 5 visually verified.
+- **Next:** unchanged from the review — TX4 capture (decaying), rater-2 decision, Phase 7 (Earnings-25 option), push + CI.
