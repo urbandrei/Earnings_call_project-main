@@ -8,8 +8,10 @@ excised from the paper entirely (DECISIONS 2026-08-26 §1).
 
 Owed results are marked `\pending{}` (orange): the substrate audit (Table 5R,
 T6R.1), the reproduction study (Table 6R, T6R.2), the calendar-day recomputation
-(T9.1), the timestamp retrofit (T9.2), per-run artifacts (T9.3), the Earnings25
-clean-audio re-run (T9.4), and the post-cutoff lookahead (Phase 7).
+(T9.1), the timestamp retrofit (T9.2), the Earnings25 clean-audio re-run (T9.4),
+and the post-cutoff lookahead (Phase 7). Run manifests (T9.3) landed 2026-08-26:
+every result CSV is verified against `artifacts/runs/*/run.json` by `ecvol report`
+and CI.
 
 - **Format:** self-contained two-column (ACL/EMNLP-style), compiles with a stock TeX
   distribution — no external style files required. Target venue: ACL via ARR.
