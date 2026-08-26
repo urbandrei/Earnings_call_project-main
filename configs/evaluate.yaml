@@ -1,0 +1,5 @@
+# Committed command config (T9.3; DESIGN §8.2). `ecvol evaluate` loads this by
+# default; `--seeds` overrides. The run manifest under artifacts/runs/ records the
+# resolved values and the SHA-256 of results/result_table_1.csv.
+command: evaluate
+seeds: [0, 1, 2, 3, 4] # GBDT (ticker-FE) baseline seeds

@@ -1,0 +1,5 @@
+# Committed command config (T9.3; DESIGN §8.2). `ecvol evaluate-audio` loads this
+# by default; `--seeds` overrides. Manifest records results/result_table_3.csv,
+# audio_probe.csv, audio_gender.csv, audio_shuffle.csv.
+command: evaluate-audio
+seeds: [0, 1, 2, 3, 4] # Stage-3 head seeds

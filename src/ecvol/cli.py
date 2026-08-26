@@ -748,6 +748,11 @@ def audio_emotion2vec(
         )
 
 
+# Shared `--config` option for the result-producing commands (T9.3): the committed
+# configs/<command>.yaml is the default; a module-level singleton keeps ruff B008 quiet.
+_CONFIG_OPT = typer.Option(None, help="Command config YAML (default: configs/<command>.yaml).")
+
+
 @app.command()
 def train() -> None:
     """Train a model from a validated YAML config (Phases 2-5)."""
@@ -757,13 +762,15 @@ def train() -> None:
 @app.command()
 def evaluate(
     root: Path = typer.Option(Path("data"), help="Data root directory."),  # noqa: B008
-    seeds: str = typer.Option("0,1,2,3,4", help="Comma-separated seeds for the GBDT baseline."),
+    seeds: str | None = typer.Option(None, help="Comma-separated seeds; overrides the config."),
+    config: Path | None = _CONFIG_OPT,
 ) -> None:
     """Run Stage-0/1 baselines → Result Table 1 + sanity gates (T2.2)."""
     from ecvol.eval.evaluate import run_evaluate
+    from ecvol.tracking import resolve_command_config, write_command_run
 
-    seed_tuple = tuple(int(s) for s in seeds.split(",") if s.strip())
-    s = run_evaluate(root, seeds=seed_tuple)
+    cfg = resolve_command_config("evaluate", config, seeds)
+    s = run_evaluate(root, seeds=tuple(cfg.seeds))
     for ds, frac in s.garch_convergence.items():
         flag = "OK" if frac > 0.95 else "BELOW 95% gate"
         typer.echo(f"GARCH convergence {ds}: {frac:.1%} [{flag}]")
@@ -779,6 +786,7 @@ def evaluate(
             "ticker-disjoint + MAEC temporal; DECISIONS 2026-06-18)"
         )
     typer.echo("Result Table 1: data/results/result_table_1.csv")
+    typer.echo(f"run artifact: {write_command_run(cfg, root)}")
     if not s.gate_passed:
         typer.echo("gate FAILED — halt and debug targets (DESIGN §6 Stage 0)", err=True)
         raise typer.Exit(code=1)
@@ -787,13 +795,15 @@ def evaluate(
 @app.command(name="evaluate-text")
 def evaluate_text(
     root: Path = typer.Option(Path("data"), help="Data root directory."),  # noqa: B008
-    seeds: str = typer.Option("0,1,2,3,4", help="Comma-separated seeds for the heads."),
+    seeds: str | None = typer.Option(None, help="Comma-separated seeds; overrides the config."),
+    config: Path | None = _CONFIG_OPT,
 ) -> None:
     """Run Stage-2 content heads (ridge + MLP on text features) → Result Table 2 (T3.3)."""
     from ecvol.eval.stage2 import run_stage2
+    from ecvol.tracking import resolve_command_config, write_command_run
 
-    seed_tuple = tuple(int(s) for s in seeds.split(",") if s.strip())
-    table = run_stage2(root, seeds=seed_tuple)
+    cfg = resolve_command_config("evaluate-text", config, seeds)
+    table = run_stage2(root, seeds=tuple(cfg.seeds))
     typer.echo(f"Result Table 2: {len(table)} rows → data/results/result_table_2.csv")
     head = table[(table["target"] == "dv") & (table["segment"] == "test")]
     sig = head[head["dm_p_vs_stage1"] < 0.05]
@@ -801,18 +811,21 @@ def evaluate_text(
         f"Δv test cells: {len(head)}; DM-significant vs Stage-1 (p<0.05): {len(sig)} "
         "(see `ecvol report` for the rendered tables)"
     )
+    typer.echo(f"run artifact: {write_command_run(cfg, root)}")
 
 
 @app.command()
 def controls(
     root: Path = typer.Option(Path("data"), help="Data root directory."),  # noqa: B008
-    seeds: str = typer.Option("0,1,2,3,4", help="Comma-separated seeds for the heads."),
+    seeds: str | None = typer.Option(None, help="Comma-separated seeds; overrides the config."),
+    config: Path | None = _CONFIG_OPT,
 ) -> None:
     """Run the §7.3 identity-control suite (ticker-only, shuffle, probe) → control tables (T3.4)."""
     from ecvol.eval.controls import run_controls
+    from ecvol.tracking import resolve_command_config, write_command_run
 
-    seed_tuple = tuple(int(s) for s in seeds.split(",") if s.strip())
-    ctrl, probe = run_controls(root, seeds=seed_tuple)
+    cfg = resolve_command_config("controls", config, seeds)
+    ctrl, probe = run_controls(root, seeds=tuple(cfg.seeds))
     typer.echo(f"Result Controls: {len(ctrl)} rows → data/results/result_controls.csv")
     for r in probe.itertuples():
         typer.echo(
@@ -820,19 +833,22 @@ def controls(
             f"vs chance {r.chance:.4f} ({r.accuracy_over_chance:.0f}x), "
             f"{r.n_tickers} tickers / {r.n_calls} calls"
         )
+    typer.echo(f"run artifact: {write_command_run(cfg, root)}")
 
 
 @app.command(name="evaluate-audio")
 def evaluate_audio(
     root: Path = typer.Option(Path("data"), help="Data root directory."),  # noqa: B008
-    seeds: str = typer.Option("0,1,2,3,4", help="Comma-separated seeds for the heads."),
+    seeds: str | None = typer.Option(None, help="Comma-separated seeds; overrides the config."),
+    config: Path | None = _CONFIG_OPT,
 ) -> None:
     """Stage-3 audio heads → Result Table 3 + identity probe + §3.5 gender analysis (T4.4)."""
     from ecvol.eval.audio_eval import run_audio_eval
     from ecvol.eval.stage3 import run_stage3
+    from ecvol.tracking import resolve_command_config, write_command_run
 
-    seed_tuple = tuple(int(s) for s in seeds.split(",") if s.strip())
-    table = run_stage3(root, seeds=seed_tuple)
+    cfg = resolve_command_config("evaluate-audio", config, seeds)
+    table = run_stage3(root, seeds=tuple(cfg.seeds))
     typer.echo(f"Result Table 3: {len(table)} rows → data/results/result_table_3.csv")
     probe, gender, shuffle = run_audio_eval(root)
     for r in probe.itertuples():
@@ -850,31 +866,38 @@ def evaluate_audio(
         f"audio shuffle: {len(shuffle)} cells (real vs within/global) → "
         "data/results/audio_shuffle.csv"
     )
+    typer.echo(f"run artifact: {write_command_run(cfg, root)}")
 
 
 @app.command(name="evaluate-fusion")
 def evaluate_fusion(
     root: Path = typer.Option(Path("data"), help="Data root directory."),  # noqa: B008
-    seeds: str = typer.Option("0,1,2,3,4", help="Comma-separated seeds for the heads."),
+    seeds: str | None = typer.Option(None, help="Comma-separated seeds; overrides the config."),
+    config: Path | None = _CONFIG_OPT,
 ) -> None:
     """Stage-4 fusion heads (gated + late-fusion stack) → fusion rows for Result Table 4 (T5.1)."""
     from ecvol.eval.stage4 import run_stage4
+    from ecvol.tracking import resolve_command_config, write_command_run
 
-    seed_tuple = tuple(int(s) for s in seeds.split(",") if s.strip())
-    table = run_stage4(root, seeds=seed_tuple)
+    cfg = resolve_command_config("evaluate-fusion", config, seeds)
+    table = run_stage4(root, seeds=tuple(cfg.seeds))
     typer.echo(f"Stage-4 fusion: {len(table)} rows → data/results/result_table_4_fusion.csv")
     head = table[(table["target"] == "dv") & (table["segment"] == "test")]
     beat = head[(head["r2_oos"] > 0) & (head["dm_p_vs_stage1"] < 0.05)]
     typer.echo(f"Δv test cells beating Stage-1 (r2>0 & DM p<0.05): {len(beat)} of {len(head)}")
+    typer.echo(f"run artifact: {write_command_run(cfg, root)}")
 
 
 @app.command()
 def grid(
     root: Path = typer.Option(Path("data"), help="Data root directory."),  # noqa: B008
+    config: Path | None = _CONFIG_OPT,
 ) -> None:
     """Consolidate Stages 0-4 → Result Table 4 (main grid, Holm-corrected) + per-year (T5.2)."""
     from ecvol.eval.grid import run_grid
+    from ecvol.tracking import resolve_command_config, write_command_run
 
+    cfg = resolve_command_config("grid", config)
     table, peryear = run_grid(root)
     typer.echo(f"Result Table 4: {len(table)} rows → data/results/result_table_4.csv")
     sig = table[
@@ -884,19 +907,34 @@ def grid(
     ]
     typer.echo(f"Δv test cells Holm-significant vs Stage-1: {len(sig)}")
     typer.echo(f"per-year breakdown: {len(peryear)} rows → data/results/result_table_4_peryear.csv")
+    typer.echo(f"run artifact: {write_command_run(cfg, root)}")
 
 
 @app.command()
 def report(
     root: Path = typer.Option(Path("data"), help="Data root directory."),  # noqa: B008
 ) -> None:
-    """Render result tables (Markdown + LaTeX) from run artifacts (T2.3, T3.3, T4.4, T5.2)."""
+    """Render result tables (Markdown + LaTeX) from provenance-verified CSVs (T2.3-T5.2, T9.3)."""
     from ecvol.eval.report import (
         write_reports,
         write_reports2,
         write_reports3,
         write_reports4,
     )
+    from ecvol.tracking import ProvenanceError, verify_outputs
+
+    present = [
+        f"results/result_table_{i}.csv"
+        for i in (1, 2, 3, 4)
+        if (root / "results" / f"result_table_{i}.csv").is_file()
+    ]
+    try:
+        matched = verify_outputs(root, present)
+    except ProvenanceError as exc:
+        typer.echo(f"provenance check FAILED: {exc}", err=True)
+        raise typer.Exit(code=1) from None
+    for rel, meta in matched.items():
+        typer.echo(f"provenance OK: {rel} ← {meta['run_id']} ({meta['provenance']})")
 
     md_path, tex_path = write_reports(root)
     typer.echo(f"Table 1 markdown: {md_path}")
@@ -913,6 +951,57 @@ def report(
         md4, tex4 = write_reports4(root)
         typer.echo(f"Table 4 markdown: {md4}")
         typer.echo(f"Table 4 latex:    {tex4}")
+
+
+runs_app = typer.Typer(no_args_is_help=True, help="Run manifests for result CSVs (T9.3).")
+app.add_typer(runs_app, name="runs")
+
+
+@runs_app.command("verify")
+def runs_verify(
+    root: Path = typer.Option(Path("data"), help="Data root directory."),  # noqa: B008
+) -> None:
+    """Check every present result CSV against artifacts/runs/*/run.json (exit 1 on mismatch)."""
+    from ecvol.tracking import COMMAND_OUTPUTS, ProvenanceError, verify_outputs
+
+    present = [rel for outs in COMMAND_OUTPUTS.values() for rel in outs if (root / rel).is_file()]
+    try:
+        matched = verify_outputs(root, present)
+    except ProvenanceError as exc:
+        typer.echo(f"provenance check FAILED: {exc}", err=True)
+        raise typer.Exit(code=1) from None
+    for rel, meta in matched.items():
+        typer.echo(f"OK  {rel} ← {meta['run_id']} ({meta['provenance']})")
+    typer.echo(f"{len(matched)} result file(s) verified")
+
+
+@runs_app.command("backfill")
+def runs_backfill(
+    root: Path = typer.Option(Path("data"), help="Data root directory."),  # noqa: B008
+) -> None:
+    """Write provenance="backfill" manifests for result CSVs produced before T9.3 (one-off)."""
+    from ecvol.tracking import (
+        COMMAND_OUTPUTS,
+        find_manifest,
+        resolve_command_config,
+        sha256_file,
+        write_command_run,
+    )
+
+    n = 0
+    for command, outs in COMMAND_OUTPUTS.items():
+        present = [rel for rel in outs if (root / rel).is_file()]
+        if not present:
+            typer.echo(f"skip {command}: no outputs present")
+            continue
+        if all(find_manifest(rel, sha256_file(root / rel)) is not None for rel in present):
+            typer.echo(f"skip {command}: already manifested")
+            continue
+        cfg = resolve_command_config(command)
+        run_dir = write_command_run(cfg, root, present, provenance="backfill")
+        typer.echo(f"backfilled {command}: {len(present)} file(s) → {run_dir}")
+        n += 1
+    typer.echo(f"{n} manifest(s) written")
 
 
 @app.command("llm-kappa")

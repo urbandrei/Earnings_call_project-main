@@ -1,0 +1,5 @@
+# Committed command config (T9.3; DESIGN §8.2). `ecvol controls` loads this by
+# default; `--seeds` overrides. Manifest records results/result_controls.csv and
+# results/controls_probe.csv.
+command: controls
+seeds: [0, 1, 2, 3, 4] # identity-control head + shuffle seeds

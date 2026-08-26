@@ -13,7 +13,11 @@
 !/data/results/
 
 # Run outputs
-/artifacts/
+/artifacts/*
+# Run manifests (artifacts/runs/<run_id>/run.json) ARE committed — CI verifies every
+# result CSV against them (T9.3). Anything heavier written there stays out.
+!/artifacts/runs/
+/artifacts/runs/**/*.parquet
 
 # Legacy bulk binaries (see DECISIONS.md 2026-06-12): third-party literature PDFs
 # and slides are not redistributable; notebooks/README/Paper.pdf ARE tracked.

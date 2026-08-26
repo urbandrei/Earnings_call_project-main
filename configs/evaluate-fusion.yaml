@@ -1,0 +1,5 @@
+# Committed command config (T9.3; DESIGN §8.2). `ecvol evaluate-fusion` loads
+# this by default; `--seeds` overrides. Manifest records
+# results/result_table_4_fusion.csv.
+command: evaluate-fusion
+seeds: [0, 1, 2, 3, 4] # Stage-4 fusion head seeds

@@ -1,0 +1,4 @@
+# Committed command config (T9.3; DESIGN §8.2). `ecvol evaluate-text` loads this
+# by default; `--seeds` overrides. Manifest records results/result_table_2.csv.
+command: evaluate-text
+seeds: [0, 1, 2, 3, 4] # Stage-2 head seeds (ridge is deterministic; MLP uses them)

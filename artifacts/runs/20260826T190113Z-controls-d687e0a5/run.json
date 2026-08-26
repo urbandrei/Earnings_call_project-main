@@ -1,0 +1,46 @@
+{
+  "command": "controls",
+  "config": {
+    "command": "controls",
+    "seeds": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ]
+  },
+  "config_hash": "d687e0a55e234bce68ef5b5a57883c0512949b6c13618ad81398f0607aa7809b",
+  "created_at": "2026-08-26T19:01:13+00:00",
+  "env": {
+    "gpus": [
+      "NVIDIA GeForce RTX 5060 Ti, 591.86"
+    ],
+    "lockfile_sha256": "827d6e8e585a892361fe4cedf07eae6cf970be3513a8dfd8a7a46ce1b434a0f3",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "python": "3.12.8"
+  },
+  "git": {
+    "dirty": true,
+    "sha": "59d8978d276bdfe812c951d5ddda0fc00367fb63"
+  },
+  "outputs": {
+    "results/controls_probe.csv": {
+      "bytes": 219,
+      "sha256": "09080108e1b92a688bd86ff96f55c5b256b7a37e2202ccbebe1b8c4299d4372d"
+    },
+    "results/result_controls.csv": {
+      "bytes": 134874,
+      "sha256": "a5089f64df04f43e5b917ab24ed6c3ba51db0ca6c1913fc0c7c4b998f6c71a9c"
+    }
+  },
+  "provenance": "backfill",
+  "run_id": "20260826T190113Z-controls-d687e0a5",
+  "seeds": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ]
+}

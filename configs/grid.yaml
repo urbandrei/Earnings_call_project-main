@@ -1,0 +1,6 @@
+# Committed command config (T9.3; DESIGN §8.2). `ecvol grid` consolidates the
+# existing result tables deterministically — seeds are unused, kept for the
+# common schema. Manifest records results/result_table_4.csv and
+# results/result_table_4_peryear.csv.
+command: grid
+seeds: [0]

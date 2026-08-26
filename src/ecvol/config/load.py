@@ -11,9 +11,9 @@ import json
 from pathlib import Path
 
 import yaml
-from pydantic import ValidationError
+from pydantic import BaseModel, ValidationError
 
-from ecvol.config.schema import ExperimentConfig
+from ecvol.config.schema import CommandConfig, ExperimentConfig
 
 
 class ConfigError(ValueError):
@@ -36,6 +36,26 @@ def load_config(path: str | Path) -> ExperimentConfig:
         raise ConfigError(f"{path}: invalid config:\n{_format_errors(exc)}") from exc
 
 
+def load_command_config(path: str | Path, command: str | None = None) -> CommandConfig:
+    """Load a per-command config (T9.3); optionally assert it is for `command`."""
+    path = Path(path)
+    try:
+        raw = yaml.safe_load(path.read_text(encoding="utf-8"))
+    except FileNotFoundError:
+        raise ConfigError(f"command config not found: {path}") from None
+    except yaml.YAMLError as exc:
+        raise ConfigError(f"{path}: not valid YAML: {exc}") from exc
+    if not isinstance(raw, dict):
+        raise ConfigError(f"{path}: top level must be a mapping, got {type(raw).__name__}")
+    try:
+        cfg = CommandConfig.model_validate(raw)
+    except ValidationError as exc:
+        raise ConfigError(f"{path}: invalid config:\n{_format_errors(exc)}") from exc
+    if command is not None and cfg.command != command:
+        raise ConfigError(f"{path}: config is for {cfg.command!r}, not {command!r}")
+    return cfg
+
+
 def _format_errors(exc: ValidationError) -> str:
     lines = []
     for err in exc.errors():
@@ -44,12 +64,12 @@ def _format_errors(exc: ValidationError) -> str:
     return "\n".join(lines)
 
 
-def dump_config(cfg: ExperimentConfig) -> str:
+def dump_config(cfg: BaseModel) -> str:
     """Resolved config as deterministic YAML (defaults filled, keys sorted)."""
     return yaml.safe_dump(cfg.model_dump(mode="json"), sort_keys=True)
 
 
-def config_hash(cfg: ExperimentConfig) -> str:
+def config_hash(cfg: BaseModel) -> str:
     """SHA-256 hex digest of the canonicalized resolved config."""
     canonical = json.dumps(cfg.model_dump(mode="json"), sort_keys=True, separators=(",", ":"))
     return hashlib.sha256(canonical.encode("utf-8")).hexdigest()

@@ -1,8 +1,15 @@
 """Pydantic config schemas, loader, and hash (T0.2)."""
 
-from ecvol.config.load import ConfigError, config_hash, dump_config, load_config
+from ecvol.config.load import (
+    ConfigError,
+    config_hash,
+    dump_config,
+    load_command_config,
+    load_config,
+)
 from ecvol.config.schema import (
     ALLOWED_HORIZONS,
+    CommandConfig,
     DataConfig,
     EvalConfig,
     ExperimentConfig,
@@ -14,6 +21,7 @@ from ecvol.config.schema import (
 
 __all__ = [
     "ALLOWED_HORIZONS",
+    "CommandConfig",
     "ConfigError",
     "DataConfig",
     "EvalConfig",
@@ -24,5 +32,6 @@ __all__ = [
     "TargetConfig",
     "config_hash",
     "dump_config",
+    "load_command_config",
     "load_config",
 ]

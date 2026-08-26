@@ -96,3 +96,24 @@ class ExperimentConfig(StrictModel):
                     f"the split boundary (DESIGN.md §5.4) — set it to at least {longest}"
                 )
         return self
+
+
+class CommandConfig(StrictModel):
+    """One committed config per result-producing CLI command (DESIGN §8.2; T9.3).
+
+    The evaluate-family commands are option-driven and each writes several
+    ``data/results/*.csv`` files, so the unit of provenance is the command
+    invocation, not one ExperimentConfig per model (DECISIONS 2026-08-26).
+    """
+
+    command: Literal[
+        "evaluate", "evaluate-text", "controls", "evaluate-audio", "evaluate-fusion", "grid"
+    ]
+    seeds: list[int] = Field(default=[0, 1, 2, 3, 4], min_length=1)
+
+    @field_validator("seeds")
+    @classmethod
+    def _unique_seeds(cls, v: list[int]) -> list[int]:
+        if len(set(v)) != len(v):
+            raise ValueError("seeds must be unique")
+        return v
