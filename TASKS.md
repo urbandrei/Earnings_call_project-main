@@ -367,15 +367,15 @@
   - [ ] EDGAR 8-K Item 2.02 retrofit for the remainder, piloted on 50 calls before any bulk pull
 - **Notes:** DECISIONS 2026-08-23 §8. No call time-of-day exists anywhere today (only 3.4% of transcripts mention a clock time); 32.4% of recovered *dates* come from slide-PDF creation stamps.
 
-### T9.3 Reproducibility-debt closure — `[~]` *(started 2026-08-26)*
+### T9.3 Reproducibility-debt closure — `[x]` *(2026-08-26; per-command run manifests, CI-guarded; Table 1 re-run live → byte-identical)*
 - **Goal:** make DESIGN §8.2/§12 true rather than aspirational, since the artifact is now the contribution.
 - **End result:** every result-producing run writes `artifacts/runs/<run_id>/`; one committed config per experiment under `configs/`; `ecvol report` regenerates every paper table byte-identically from artifacts.
-- **Acceptance test:** clean-machine regeneration of Result Table 1 byte-identical from artifacts alone; CI asserts it.
+- **Acceptance test:** *(amended 2026-08-26 — DECISIONS 2026-08-26 (later) §2)* every committed result CSV matches a committed run manifest byte-for-byte and the md/tex tables re-render byte-identically, both asserted in CI (`tests/test_runs.py`, `tests/test_report.py`); every result-producing command has a loadable committed config; clean-machine regeneration of Result Table 1 is executed and recorded under T8.1.
 - **Subtasks:**
   - [x] Determine whether `ecvol report` currently sources `artifacts/` or `data/results/` — **`data/results/` (2026-08-26):** the `evaluate*` commands write `data/results/*.csv` directly (git-tracked); `report` renders from them; `tracking.write_run` (T0.3) is never called by any command and `artifacts/runs/` does not exist
-  - [ ] Backfill run artifacts + per-experiment configs
-  - [ ] CI assertion
-- **Notes:** DECISIONS 2026-08-23 §9. Today `artifacts/` holds 8 diagnostic files and no run payload; `configs/` holds only `example.yaml`.
+  - [x] Backfill run artifacts + per-experiment configs — `configs/{evaluate,evaluate-text,controls,evaluate-audio,evaluate-fusion,grid}.yaml` (`CommandConfig`); `ecvol runs backfill` manifested all 11 result CSVs (`provenance: backfill`, commit e223815); `ecvol evaluate` then re-run live → `result_table_1.csv` **byte-identical** to the committed file, manifest `20260826T190559Z-evaluate-cbe08bbd` (`provenance: run`, same config hash as the backfill)
+  - [x] CI assertion — `tests/test_runs.py::test_committed_results_have_matching_manifests` (+ config loadability, + the existing md/tex re-render guard)
+- **Notes:** DECISIONS 2026-08-23 §9; design + acceptance amendment DECISIONS 2026-08-26 (later). Before: `artifacts/` held 8 diagnostic files and no run payload, `configs/` only `example.yaml`, `tracking.write_run` never called. After: `ecvol report` renders only provenance-verified CSVs; `ecvol runs verify` checks all eleven. **Still `backfill`:** Tables 2/3/4, controls, audio, fusion — re-run their commands (GPU features are cached) to upgrade them to `provenance: run`; the MLP-head seed instability (T5.2 caveat) may make some of those *not* byte-identical, which would itself be a finding to record. Curated `paper/tables/*.tex` remain hand-copied cells → T8.1.
 
 ### T9.4 Earnings25 clean-audio ladder re-run — `[ ]`
 - **Goal:** test whether "audio is inert" survives on audio that is not a 40 kbps transcode.
