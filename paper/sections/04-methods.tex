@@ -1,18 +1,18 @@
-\section{Methods}
+\section{Models}
 \label{sec:methods}
 
-We organise models as a ladder (Stages~0--5; Figure~\ref{fig:pipeline}). Two
-invariants make the comparison honest. First, from Stage~2 upward every learned
+We organise our own models as a ladder (Stages~0--4; Figure~\ref{fig:pipeline}).
+Two invariants make the comparison honest. First, from Stage~2 upward every learned
 model includes past-volatility covariates ($v_{\mathrm{pre}}$ at all horizons plus
 the HAR-RV forecast) and is \emph{also} reported with them ablated, baking the
 persistence control into every comparison. Second, given the small-data regime
 ($10^3$--$10^4$ samples) we use frozen representations with light heads (ridge,
 shallow MLP, LightGBM) and per-horizon models by default; fine-tuning is gated to
-Stage~6 and a shared multi-task head is an ablation, not the headline. Because the
-shallow-MLP heads proved seed-unstable (across-seed \Rtwo{} std up to $\approx$3.4;
-see Limitations), the consolidated grid (Table~\ref{tab:grid}) uses one
-pre-registered deterministic ridge/structural canonical model per stage; MLP heads
-appear in the appendix only.
+a conditional later stage and a shared multi-task head is an ablation, not the
+headline. Because the shallow-MLP heads proved seed-unstable (across-seed \Rtwo{}
+std up to $\approx$3.4; see Limitations), the consolidated grid
+(Table~\ref{tab:grid}) uses one pre-registered deterministic ridge/structural
+canonical model per stage; MLP heads appear in the appendix only.
 
 \input{figures/pipeline}
 
@@ -54,15 +54,17 @@ whether multimodal beats the best unimodal model (RQ2). Cross-attention is omitt
 with one pooled vector per modality, attention over 2--3 tokens reduces to gated
 fusion. All fusion heads are $<$5M parameters.
 
-\paragraph{Stage 5 --- LLM-extracted structured features.}
-Qwen2.5-7B-Instruct \citep{qwen25} (4-bit) with grammar-constrained JSON decoding
-(JSON-schema grammar via \texttt{llama.cpp}; Outlines \citep{outlines} on the
-GPU-server path) extracts auditable per-section features (guidance direction,
-hedging intensity, Q\&A evasiveness, surprise mentions, analyst tone) against a
-frozen, human-signed-off schema and rubric, with YaRN-extended 65{,}536-token
-context so whole sections are never truncated. A pre-registered human-audit gate
-governs the stage: corpus-scale extraction is blocked until the model reaches
-$\kappa>0.6$ against human rubric labels on 50 frozen train-only calls, extracted
-through the \emph{same} engine and configuration as the corpus run (RQ3). As
-\S\ref{sec:results-llm} reports, the gate failed and corpus extraction was not
-performed.
+\paragraph{Reproduced prior models.}
+\label{sec:repro-protocol}
+Of $\sim$20 papers in the lineage of \S\ref{sec:related}, five release code that
+still runs: HTML \citep{yang2020html}, Same-Company-Same-Signal \citep{scss2024},
+KeFVP \citep{niu2023kefvp}, DialogueGAT \citep{sang2022dialoguegat}, and VolTAGE
+\citep{sawhney2020voltage}. We re-run each \emph{on its own original dataset}, first
+reproducing the published-split number within a stated tolerance, then evaluating
+the same model under an embargoed and a \tickerdisjoint{} split of that dataset,
+so that ``the model fails'' cannot be confused with ``the model does not
+transfer'' (RQ3). The remaining fifteen---among them the strongest recent positive
+claims \citep{cao2024ecc,soundofrisk2025}---have no code, empty or unpushed
+repositories, closed-API dependencies, or a stated inability to run; we tabulate
+each with the evidence \pending{Phase 6R; Table~\ref{tab:repro} and the
+code-availability audit table in the appendix}.

@@ -3,9 +3,10 @@
 
 \paragraph{The benchmark lineage.}
 \citet{qin2019what} introduced text$+$audio volatility prediction and the 572-call
-EarningsCall dataset, establishing the 3/7/15/30-trading-day log-realised-volatility
-target family that the field still uses. MAEC \citep{li2020maec} scaled this to
-$\sim$3{,}443 sentence-aligned multimodal calls over the S\&P~1500. HTML
+EarningsCall dataset, establishing the 3/7/15/30-day log-realised-volatility target
+family that the field still uses (defined over \emph{calendar} days in the original,
+a detail that matters in \S\ref{sec:substrate}). MAEC \citep{li2020maec} scaled this
+to $\sim$3{,}443 sentence-aligned multimodal calls over the S\&P~1500. HTML
 \citep{yang2020html} introduced a hierarchical transformer with multi-task learning
 across horizons; VolTAGE \citep{sawhney2020voltage} added graph convolution over
 inter-stock relations with text/audio fusion; DialogueGAT \citep{sang2022dialoguegat}
@@ -17,12 +18,18 @@ LLMs: ECC Analyzer \citep{cao2024ecc} uses hierarchical LLM summarisation with a
 with news and market series; AT-FinGPT \citep{atfingpt2025} is an audio-text LLM.
 Numeral-aware variants (NumHTML \citep{yang2022numhtml}, NAM/ECNum
 \citep{chen2021nam}, GNAVol \citep{shi2023gnavol}) and Q\&A-structure models
-\citep{ye2020mraqa} target specific aspects of call language. Closest to our
-structured-feature stage, recent work labels managerial evasion in call Q\&A at
-scale via LLM consensus \citep{evasionbench2026} and extracts KPIs with open-weight
-LLMs under human verification \citep{kpi2026}; neither predicts a market outcome,
-and no prior system combines schema-constrained extraction, a human-agreement gate,
-and volatility prediction under identity controls.
+\citep{ye2020mraqa} target specific aspects of call language. Of these, only a
+minority release code that still runs; \S\ref{sec:repro-protocol} audits which.
+
+\paragraph{The shared substrate.}
+Nearly every paper above evaluates on label and split files derived from
+\citet{qin2019what} and redistributed by successors (VolTAGE, KeFVP), rather than
+recomputing targets from prices. \citet{scss2024} are the first to report that
+training-free baselines built on a company's own past volatility beat every
+transcript model on these files, and release augmented earnings histories that make
+such baselines easy to build. No prior work audits the files themselves---embargo,
+train/test company overlap, label integrity, or the horizon convention---which is
+the gap \S\ref{sec:substrate} fills.
 
 \paragraph{Audio and prosody.}
 \citet{soundofrisk2025} report that physics-informed acoustic features explain up to
@@ -46,7 +53,7 @@ in open model families we use \citep{lookaheadbench2026}, and memorization
 filtering \citep{memguard2026}; the nearest precedent validates an LLM
 disagreement measure post-cutoff on ECB press conferences \citep{ecbvol2025}.
 None evaluates a frozen earnings-call pipeline on post-cutoff calls; we respond
-with exactly that, plus a prompt-masking ablation. \emph{(3) Weak baselines}: much prior work omits
+with exactly that. \emph{(3) Weak baselines}: much prior work omits
 persistence, GARCH(1,1), and HAR-RV \citep{corsi2009har}, which are hard to beat at
 long horizons; we compute these first and use persistence as the denominator of our
 headline metric \citep{gukellyxiu2020}. \emph{(4) Gender bias in audio features}

@@ -2,7 +2,7 @@
 \label{sec:discussion}
 
 \paragraph{What the evidence shows.}
-On the completed ladder (Stages 0--5), five statements hold. (i)~Strong econometric
+On the completed ladder (Stages 0--4), four statements hold. (i)~Strong econometric
 baselines are hard to beat, and the headline metric (\Rtwo{} vs.\ persistence)
 exposes a long-horizon regime failure (FinCall temporal $\tau{=}30$) that raw MSE
 would obscure. (ii)~Frozen text content does not cleanly add signal over
@@ -15,62 +15,56 @@ unchanged---an in-corpus replication of the ``Same Company, Same Signal'' effect
 survive a \emph{global} audio shuffle, and WavLM embeddings still encode the
 speaker's company at 76.3\% probe accuracy---identity without predictive content.
 (iv)~Fusion does not rescue the modalities it fuses: multimodal never significantly
-beats the best unimodal model (RQ2 negative). (v)~LLM-extracted ``auditable''
-semantic features fail their own audit: constrained decoding delivers 100\%
-schema-valid output whose content agrees with a human rater at $\kappa\le0.222$ on
-every confirmatory field, far below the pre-registered 0.6 gate, with capability
-levers (prompt anchors, quantization, 2$\times$ scale) all measurably null.
-Together these form one coherent finding: \emph{in this task family, what looks
-like content signal is overwhelmingly company identity plus past volatility, and
-the semantic features the recent literature consumes are not validated
-measurements.}
+beats the best unimodal model (RQ2 negative). Together these form one coherent
+finding: \emph{in this task family, what looks like content signal is
+overwhelmingly company identity plus past volatility.}
+
+\paragraph{Why this is a benchmark paper.}
+Every one of those statements depends on apparatus the shared substrate does not
+have. The identity probe and the shuffle controls need a ticker per call, which
+FinCall-Surprise does not ship; the \tickerdisjoint{} rows need a split the lineage
+never reports; the regime finding needs per-year breakdowns over recomputed
+targets rather than inherited label files; and the embargo makes the temporal
+numbers honest at all (\S\ref{sec:substrate}). A field that evaluates on files with
+a zero-day embargo, majority company overlap, and an unstated horizon convention
+cannot distinguish a model from a memory of which company it is looking at.
+\ecvol-bench is the repair, and the negative results above are what the repaired
+substrate reports for the modern representations we could run. The reproduction
+study (\S\ref{sec:results-repro}) is the same test applied to the field's own
+models on the field's own data; it is the part of the argument this draft still
+owes.
 
 \paragraph{Engaging the strongest positive claims.}
 The strongest recent positive claim---up to 43.8\% of 30-day realised-volatility
 variance from text$+$acoustic features \citep{soundofrisk2025}---reports no
-identity controls. Prosody was the modality most plausibly carrying content
-orthogonal to identity; our modern audio ladder (WavLM, emotion2vec+, eGeMAPS)
-finds it inert once past volatility is controlled---albeit on the corpus's
-40\,kbps source audio (see Limitations)---and our shuffle controls predict
-such gains would not survive a within-ticker (let alone global) shuffle---a check
-we encourage and that our released suite makes cheap. Likewise, ECC Analyzer
-\citep{cao2024ecc} reports large MSE reductions from LLM-extracted semantics with
-no human validation of extraction quality; our Stage-5 gate is exactly that
-validation, and it failed for every confirmatory field.
+identity controls, no released code, and a proprietary corpus. Prosody was the
+modality most plausibly carrying content orthogonal to identity; our modern audio
+ladder (WavLM, emotion2vec+, eGeMAPS) finds it inert once past volatility is
+controlled---albeit on the corpus's 40\,kbps source audio (see Limitations and
+\S\ref{sec:results-clean-audio})---and our shuffle controls predict such gains
+would not survive a within-ticker (let alone global) shuffle, a check the released
+suite makes cheap. Likewise, ECC Analyzer \citep{cao2024ecc} reports large MSE
+reductions from LLM-extracted semantics with closed-API components and no released
+code; it cannot be reproduced, and we say so in the code-availability audit rather
+than argue with it.
 
-\paragraph{The framing gate (pre-registered; provisionally resolved).}
-The paper's spine is decided at a pre-registered gate, not retro-fitted. \emph{Path
-A (positive showcase)} is adopted only if content-bearing models beat the Stage-0/1
-floor on \dv{} or HAR-residual with DM-significant improvements that survive the
-identity-control suite on at least two of four horizons. \emph{Path B (rigorous
-re-examination)} is adopted otherwise. The Path-A criterion has now been tested and
-missed at Stage~2 (text), Stage~3 (audio), and Stage~4 (fusion), and Stage~5 was
-blocked at validity; the gate is therefore \emph{provisionally resolved to Path~B}
-(recorded in the project decision log), with final confirmation deferred to the
-post-cutoff lookahead test (Phase~7). This draft remains framing-neutral in tone
-pending that last experiment.
-\TODO{Finalise the headline once the Phase-7 lookahead evaluation lands.}
+\paragraph{The pre-registered framing gate.}
+The study was pre-registered with a framing gate: a ``positive showcase'' spine was
+to be adopted only if content-bearing models beat the Stage-0/1 floor on \dv{} or
+HAR-residual with DM-significant improvements that survived the identity-control
+suite on at least two of four horizons. The criterion was tested and missed at
+Stage~2 (text), Stage~3 (audio), and Stage~4 (fusion), and the gate was recorded as
+resolved toward re-examination in the project's decision log before the benchmark
+framing was adopted. We report this so that the framing of this paper can be
+audited against what the data said and when.
 
-\paragraph{Instrument, not model.}
-The Stage-5 failure decomposes informatively (\S\ref{sec:results-llm}). Part is
-instrument defect: the rubric's ``hedging recurs'' anchor is trivially true of any
-25k-character Q\&A section, so the model's constant ``moderate'' is arguably
-rubric-compliant while the human applied an unstated relative baseline---an
-ambiguity no model scale fixes, and consistent with the one non-null control
-(rater-baseline exemplars helping exactly that field). Part is genuine
-non-discrimination (near-constant analyst-tone output). And part is structural to
-the gate itself: $\kappa>0.6$ against a single unvalidated rater has an unmeasured
-human--human ceiling, and subjective ordinal annotation routinely ceilings at
-0.4--0.6. The constructive programme is therefore behaviourally anchored, coarser
-rubrics plus a measured annotator ceiling---not larger models.
-
-\paragraph{Why the contribution holds either way.}
-Independent of the gate, \ecvol{} contributes an open, identity-controlled,
-leakage-proof multimodal benchmark with honest baselines and a reusable diagnostic
-suite---identity probes, shuffle controls, and an extraction-validity gate---
-precisely the apparatus the field has lacked. A negative or mixed answer to
-RQ1--RQ4 is a publishable result that the existing literature does not provide.
-Beyond the lookahead test, the natural next step is data rather than models: a
-forward-collected corpus with native identity and exact call timestamps (a capture
-pilot is underway) removes the reconstruction and after-hours-assumption caveats
-that this generation of corpora imposes.
+\paragraph{What a clean answer would need.}
+Independent of any model, two facts about the corpora limit every result in this
+literature and are addressed only by new data: the uniform 40\,kbps transcode
+underlying all FinCall-Surprise acoustics, and the absence of any measured call
+time of day. The first is why the Earnings25 clean-audio re-run
+(\S\ref{sec:results-clean-audio}) is the single most informative pending
+experiment---it either makes the audio-inert finding near-unassailable or
+overturns it; the second is why the timestamp retrofit (\S\ref{sec:timing}) is
+part of the benchmark rather than a footnote.
+\TODO{Finalise this section once Phase 6R, T9.1, T9.4, and Phase 7 land.}

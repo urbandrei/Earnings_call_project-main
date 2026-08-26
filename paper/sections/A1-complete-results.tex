@@ -6,7 +6,8 @@ committed result CSVs (\texttt{data/results/}) and are the source of truth for t
 curated tables in \S\ref{sec:results}; the curated tables copy selected cells from
 them. They span both corpora (FinCall-Surprise, MAEC), the level-$v$ and \dv{}
 targets, both the \Rtwo{} and MSE metrics, and the temporal and \tickerdisjoint{}
-splits at all horizons.
+splits at all horizons, under the trading-day convention
+\pending{calendar-day columns, T9.1}.
 
 % Paths are relative to this file (paper/sections/). The generated .tex files live
 % in the repo's data/results/ tree. If your TeX setup restricts \input to the
@@ -31,7 +32,17 @@ One pre-registered canonical model per stage; $*$ marks Holm-corrected significa
 vs.\ Stage-1 within the \dv{} confirmatory family (two-sided---read direction from
 the value).
 \input{../data/results/result_table_4}
+\clearpage
 
-\paragraph{On the absence of a Result Table 5.} The Stage-5 LLM feature extraction
-was blocked at its pre-registered validity gate (\S\ref{sec:results-llm},
-Table~\ref{tab:llmkappa}); no corpus-scale LLM features were produced, by design.
+\subsection{Substrate audit (Result Table 5R)}
+\pending{T6R.1: the full per-file audit behind Table~\ref{tab:substrate}---SHA-256
+manifests of the fetched VolTAGE/KeFVP/HTML label and split files, boundary dates
+and call counts, overlap by cohort, the sentinel-zero cells, the interleaved-column
+schema hazard, and the diff of the shipped labels against our recomputed targets
+(MAEC join verified at 99.4\%).}
+
+\subsection{Reproductions and code-availability audit (Result Table 6R)}
+\pending{T6R.2: the complete reproduction grid behind Table~\ref{tab:repro}, and
+the audit of the fifteen non-runnable papers---repository URL, HTTP status and
+date, and the reason code (no code; empty or unpushed repository; closed-API
+dependency; stated inability to run; paywalled).}

@@ -1,13 +1,21 @@
 \section*{Limitations}
 \addcontentsline{toc}{section}{Limitations}
 
-\textbf{Lookahead still pending.} The Phase-7 frozen-pipeline evaluation on
-post-cutoff 2025--2026 calls and the prompt-masking ablation are in progress; until
-they land, LLM-adjacent results on 2019--2021 calls carry contamination risk by
-default, and the framing-gate resolution remains provisional. \textbf{MLP-head
-instability.} The shallow-MLP heads are seed-unstable (across-seed \Rtwo{} std up to
-$\approx$3.4), which is why the consolidated grid uses deterministic ridge/structural
-canonicals; MLP cells in the appendix should be read as seed means with that caveat.
+\textbf{Pending results.} The substrate-audit numbers in \S\ref{sec:substrate} were
+established in a one-off audit and await regeneration by \texttt{ecvol audit
+substrate}; the reproduction study (\S\ref{sec:results-repro}), the calendar-day
+recomputation (\S\ref{sec:results-convention}), the clean-audio re-run
+(\S\ref{sec:results-clean-audio}), and the post-cutoff lookahead
+(\S\ref{sec:results-lookahead}) are owed. Until the lookahead lands, results on
+2019--2021 calls from models with later training cutoffs carry contamination risk
+by default. \textbf{Reproductions run on their own data.} Each prior model is
+re-evaluated on its original dataset, not on \ecvol-bench, to keep ``the model
+fails'' separable from ``the model does not transfer''; two reproductions carry
+known costs (KeFVP's MAEC embeddings are unavailable upstream; DialogueGAT stops at
+$\tau{=}15$ and requires a corpus rebuild). \textbf{MLP-head instability.} The
+shallow-MLP heads are seed-unstable (across-seed \Rtwo{} std up to $\approx$3.4),
+which is why the consolidated grid uses deterministic ridge/structural canonicals;
+MLP cells in the appendix should be read as seed means with that caveat.
 \textbf{The past-vol covariate block is not HAR.} The learned
 $[v_{\mathrm{pre}}, \mathrm{RV}_{1/5/22}]$ ridge used inside Stage-2--4 heads
 overfits the COVID regime shift on the temporal split ($\Rtwo{-}2.0$ at $\tau{=}15$)
@@ -16,11 +24,13 @@ throughout, and the gap is itself a small finding about structural vs.\
 unconstrained conditioning under regime shift. \textbf{Short-horizon \Rtwo{}
 inflation.} The persistence denominator is noisiest at $\tau{=}3$ (its MSE is
 $\sim$2.8$\times$ the $\tau{=}7$ one), so short-horizon \Rtwo{} gains are easier to
-show and should be read accordingly. \textbf{Timestamps.} Fewer than 4\% of calls
-carry usable timestamps, so we apply a flagged after-hours rule; mis-dated calls add
-noise to short-horizon targets. \textbf{Regime sensitivity.} FinCall-Surprise spans
-COVID; the temporal $\tau{=}30$ baseline failure shows long-horizon level forecasts
-are regime-sensitive, which is why we emphasise the identity-robust \dv{} target and
+show and should be read accordingly. \textbf{Timestamps.} No call in either corpus
+carries a measured time of day, so every target rests on a flagged after-hours
+rule; mis-dated calls add noise to short-horizon targets, and the sensitivity of
+the results to that rule is unmeasured until the retrofit of \S\ref{sec:timing}
+lands. \textbf{Regime sensitivity.} FinCall-Surprise spans COVID; the temporal
+$\tau{=}30$ baseline failure shows long-horizon level forecasts are
+regime-sensitive, which is why we emphasise the identity-robust \dv{} target and
 report per-year breakdowns. \textbf{MAEC coverage.} The 75.4\% price-join rate
 (2015--2018 delistings) makes MAEC a secondary, comparability corpus; it also ships
 no raw audio, so the audio ladder is FinCall-only. \textbf{Source audio quality.}
@@ -28,13 +38,10 @@ Every FinCall audio file is a uniform 40\,kbps MP3 transcode (eight source sampl
 rates; 14 calls at telephone-grade 8\,kHz), so aggressive lossy compression
 underlies all acoustic features. The audio-inert finding is therefore established
 on compression-damaged audio and may not transfer to studio-quality recordings---a
-caveat that applies equally to prior positive claims built on the same corpora.
-\textbf{No diarisation in v1.}
-Audio uses per-call pooling, not speaker-resolved features; the gender analysis
-correspondingly uses a dominant-speaker F0 proxy. \textbf{The $\kappa$ gate scored a
-single rater.} Inter-annotator agreement is pending, and the 0.6 bar's implicit
-human--human ceiling was never measured; the extraction-failure claim is robust (all
-confirmatory 95\% upper bounds $\ll$0.6), but whether the fault lies with the model
-or the rubric awaits a second rater. \textbf{No corpus-scale LLM features exist.}
-Blocking extraction at the validity gate means RQ3's predictive half (do valid
-structured features beat embeddings?) is unanswered, not answered negatively.
+caveat that applies equally to prior positive claims built on the same corpora,
+and the reason for the Earnings25 re-run. \textbf{No diarisation in v1.} Audio uses
+per-call pooling, not speaker-resolved features; the gender analysis
+correspondingly uses a dominant-speaker F0 proxy. \textbf{Identity reconstruction
+is imperfect.} 7.1\% of FinCall-Surprise calls (4.7\% of earnings calls) remain
+unresolved and are excluded with a reason code; the released override table
+records every manual decision.

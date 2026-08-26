@@ -1,10 +1,10 @@
 \section{Results}
 \label{sec:results}
 
-We report results factually and defer the headline framing to
-\S\ref{sec:discussion}. Curated headline tables appear here on the identity-robust
-\dv{} target for FinCall-Surprise; the complete grid (both corpora, level-$v$ and
-\dv, \Rtwo{} and MSE, all splits and horizons) is in
+We report results factually and defer interpretation to \S\ref{sec:discussion}.
+Curated headline tables appear here on the identity-robust \dv{} target for
+FinCall-Surprise under the trading-day convention; the complete grid (both corpora,
+level-$v$ and \dv, \Rtwo{} and MSE, all splits and horizons) is in
 Appendix~\ref{app:complete}. Stars denote Diebold--Mariano significance
 ($p<0.05$): in Table~\ref{tab:baselines} vs.\ persistence, and in
 Tables~\ref{tab:text} and~\ref{tab:audio} vs.\ the Stage-1 ticker-FE GBDT; in the
@@ -45,7 +45,9 @@ ticker from frozen call embeddings at 89.5\% on FinCall (319$\times$ chance) and
 shuffle is decisive---replacing each test call's transcript with a \emph{different
 call from the same ticker} barely changes \Rtwo, whereas a global shuffle degrades
 it. The heads are reading \emph{which company} is speaking, not \emph{what} is said.
-This is the in-corpus confirmation of \citet{scss2024} and the reason RQ4 is central.
+This is the in-corpus confirmation of \citet{scss2024} and the reason RQ4 is
+central---and it is only measurable because the benchmark reconstructed the
+identity the corpus omits (\S\ref{sec:corpora}).
 
 \input{tables/controls}
 
@@ -65,7 +67,8 @@ per-call WavLM embeddings at 76.3\% (271$\times$ chance; emotion2vec+ 29.4\%,
 proxy, 100\% coverage) finds near-identical per-group test MSE (0.241 low-pitch
 vs.\ 0.242 high-pitch) and a 0.03 correlation between speaker F0 and squared error:
 with inert audio features, no large gender disparity is detectable (see the Ethics
-Statement for caveats).
+Statement for caveats). All of this rests on FinCall-Surprise's 40\,kbps source
+audio; \S\ref{sec:results-clean-audio} is the test of whether it transfers.
 
 \input{tables/audio}
 
@@ -90,46 +93,39 @@ audio $-1.66$, fusion $-1.02$).
 
 \input{tables/grid}
 
-\subsection{LLM structured features (Stage 5): the extraction fails its audit}
-\label{sec:results-llm}
-Stage 5 was pre-registered with a validity gate: corpus-scale extraction of the
-structured features is blocked until the model's labels reach $\kappa>0.6$ against
-human rubric labels on a frozen 50-call train-only audit sample, extracted through
-the \emph{same} engine and configuration as the corpus run would use. The gate
-failed decisively (Table~\ref{tab:llmkappa}): the three confirmatory fields score
-$\kappa$ of 0.165 (guidance direction), $-0.050$ (hedging intensity---worse than
-chance), and 0.222 (surprise mentions), with call-level-bootstrap 95\% upper bounds
-all far below 0.6. Every output was 100\% schema-valid, so this is precisely the
-gap between \emph{form} and \emph{content} validity: constrained decoding
-guarantees parseable JSON, not meaningful measurements.
+\subsection{Horizon convention: calendar vs.\ trading days}
+\label{sec:results-convention}
+\pending{T9.1: every table above recomputed under the calendar-day convention of
+\citet{qin2019what}; the between-convention delta per stage, split, and horizon,
+reported as a finding about how much the published leaderboard depends on an
+undocumented convention.}
 
-\input{tables/llm}
+\subsection{Prior models under the new controls (Stage R)}
+\label{sec:results-repro}
+\pending{Phase 6R, Result Table 6R (Table~\ref{tab:repro}): for each of HTML,
+Same-Company-Same-Signal, KeFVP, DialogueGAT, and VolTAGE on its own dataset---the
+published-split number as reported, our reproduction of it with tolerance, and the
+same model under an embargoed and a \tickerdisjoint{} split, with the identity
+probe and shuffle controls attached. Every model gets either both split conditions
+or a documented reason code.}
 
-Four controls make the diagnosis actionable, and all four capability levers are
-null. Sharpened prompt anchors move $\kappa$ by at most $+0.04$; near-lossless
-Q8\_0 quantization (vs.\ 4-bit) and a 2$\times$ larger model (Qwen2.5-14B) both
-produce differences whose bootstrap CIs all span zero (the 14B also fails the gate
-on its own terms); the single measurable effect in the whole diagnostic set is
-few-shot exemplars of the rater's own labels, which lift hedging from below chance
-to $\kappa\approx0.09$ ($+0.092$ $[+0.029, +0.181]$)---a fifth of the distance to
-the bar, on exactly the field whose written anchor omits a baseline. The failure
-modes are structural rather than noisy: the model rates 47 of 50 Q\&A sections
-exactly ``2'' on analyst tone (near-constant output), its hedging ratings are
-statistically independent of the human's, and it misses 26 of 36 human-positive
-surprise rows. Per the pre-registered rule, corpus-scale extraction was therefore
-\emph{not} run: there is no Result Table 5, and RQ3 is answered at the validity
-stage---the ``auditable semantics'' this sub-literature consumes did not survive
-their audit. Notably, the closest prior system \citep{cao2024ecc} reports a 27.7\%
-MSE reduction from LLM-extracted semantics with no human validation of extraction
-quality at all, and the highest published agreement figure in this space
-\citep{evasionbench2026} is inter-LLM, not human, agreement. Two caveats travel
-with this finding: the gate scored a single careful rater (inter-annotator
-agreement pending), and the 0.6 bar's implicit human--human ceiling was never
-measured---subjective ordinal annotation routinely sits at human--human
-$\kappa$ of 0.4--0.6, so the honest reporting unit going forward is model
-$\kappa$ \emph{relative to} human--human $\kappa$ (see Limitations).
+\begin{table}[t]
+\centering\small
+\pending{Result Table 6R.}
+\caption{\textbf{Reproduced prior models under leakage-proof evaluation.} Each
+model on its own original dataset; published vs.\ reproduced vs.\ embargoed vs.\
+\tickerdisjoint{}.}
+\label{tab:repro}
+\end{table}
 
-\subsection{Post-cutoff lookahead (pending)}
-\pending{Phase 7: the frozen-pipeline evaluation on 2025--2026 post-cutoff calls. A
-50-call capture pilot (replay audio with native identity and exact timestamps) is
-in progress.}
+\subsection{Clean audio: the Stage-3 ladder on Earnings25}
+\label{sec:results-clean-audio}
+\pending{T9.4: the frozen eGeMAPS / WavLM / emotion2vec+ ladder with the same heads
+and controls as Table~\ref{tab:audio}, on source-quality 2025 audio; real vs.\
+shuffle reported; any divergence from the FinCall result stated with the
+audio-quality difference as the candidate cause.}
+
+\subsection{Post-cutoff lookahead}
+\label{sec:results-lookahead}
+\pending{Phase 7: the frozen-pipeline evaluation on Earnings25's post-cutoff
+calls, no retraining, rule fixed in advance.}

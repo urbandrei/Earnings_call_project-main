@@ -1,19 +1,22 @@
 \section{Conclusion}
 \label{sec:conclusion}
 
-We revisit multimodal earnings-call volatility prediction with modern open-weight
-models, strong econometric baselines, leakage-proof splits, and an explicit
-identity-control suite, released as the \ecvol{} benchmark. Across the completed
-ladder the evidence is consistent and negative: frozen text content reads company
+We audited the evaluation substrate that a decade of multimodal earnings-call
+volatility prediction shares---inherited label files with a zero-day embargo
+against 30-day targets, majority company overlap between training and test, no
+reported \tickerdisjoint{} condition, degenerate label cells, and a horizon
+convention that downstream work misattributes---and released \ecvol-bench to
+replace it: reconstructed identity and dates for the one corpus with open audio,
+targets under both horizon conventions, embargoed and \tickerdisjoint{} splits,
+strong econometric baselines, and an identity-control suite, all regenerable from
+one command line. Run over modern open-weight text and audio representations, the
+benchmark's answer is consistent and negative: frozen text content reads company
 identity rather than call content (89.5\% ticker-probe accuracy; within-ticker
 shuffles leave performance unchanged); frozen audio content is inert beyond past
-volatility (its apparent gains survive a global audio shuffle); fusion never
-significantly beats the best unimodal model; and LLM-extracted ``auditable''
-semantic features fail their pre-registered human-validity audit
-($\kappa\le0.222$ vs.\ a 0.6 gate), so were never scaled to the corpus. The
-pre-registered framing gate is provisionally resolved to rigorous re-examination:
-what the leaderboard literature measures as content signal is, under honest
-controls, overwhelmingly company identity plus past volatility---and the semantic
-features it increasingly consumes are not validated measurements. The post-cutoff
-lookahead evaluation (in progress) completes the diagnostic suite.
-\TODO{Fold in the Phase-7 lookahead result and finalise the verdict.}
+volatility (its apparent gains survive a global audio shuffle); and fusion never
+significantly beats the best unimodal model. What the leaderboard literature
+measures as content signal is, under honest controls, overwhelmingly company
+identity plus past volatility.
+\pending{The reproduction study, the calendar-day recomputation, the clean-audio
+re-run, and the post-cutoff lookahead complete the argument.}
+\TODO{Finalise the verdict once the pending results land.}
