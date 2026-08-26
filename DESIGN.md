@@ -32,9 +32,11 @@ Earnings conference calls are one of the few recurring events where management s
 
 This project reworks an abandoned 2024 university study in that lineage, from the ground up, with three goals:
 
-1. **Modernize** — replace 2019-era components (GloVe, Praat-only audio, hand-rolled hierarchical transformers) with current open-source models: instruction-tuned LLMs with constrained decoding, financial sentence embeddings, self-supervised speech representations, and audio emotion models.
+1. **Modernize** — replace 2019-era components (GloVe, Praat-only audio, hand-rolled hierarchical transformers) with current open-source models: financial sentence embeddings, self-supervised speech representations, and audio emotion models. *(Instruction-tuned LLMs with constrained decoding were part of this goal until 2026-08-23 — dropped, DECISIONS 2026-08-23 §11.)*
 2. **Open & reproduce** — use only openly licensed data and open-weight models, release everything needed to rebuild the study, and pin the environment. The financial-NLP literature has a documented reproducibility crisis (see §3.4); this project is designed against it.
 3. **Evaluate honestly** — recent work shows much of the published leaderboard may be an artifact of ticker-identity memorization and weak baselines (see §3.1, §3.3). Every model here is measured against strong econometric baselines under identity-aware controls.
+
+> **Reframed 2026-08-23 (DECISIONS 2026-08-23 §1):** this is a **benchmark/resource paper**. ecvol-bench (§4, contribution #1) is the headline contribution; the three goals above and the Phase 2–5 results are the evidence for *why* the benchmark is needed. Target venue: ACL via ARR (§4).
 
 ### Research questions
 
@@ -42,7 +44,7 @@ This project reworks an abandoned 2024 university study in that lineage, from th
 |----|----------|----------------|
 | **RQ1** | Does earnings-call *content* (text and/or audio) add predictive signal for post-call volatility beyond past-volatility persistence (HAR-RV, GARCH)? | Stages 0–2 vs. ladder; Δv target |
 | **RQ2** | Is multimodal (audio + text) better than the best unimodal model, after controlling for past volatility? | Stage 4 ablations |
-| **RQ3** | Do LLM-extracted *structured, auditable* features (guidance, hedging, evasiveness…) outperform opaque dense embeddings? | Stage 5 vs. Stage 2/4 |
+| **RQ3** | *(Re-filled 2026-08-26 — the original LLM-features question was withdrawn with Phase 6; DECISIONS 2026-08-23 §11, 2026-08-26 §2.)* Do the published models of this lineage, re-run on their own data, retain their reported advantage under embargoed, ticker-disjoint evaluation? | Phase 6R: Result Table 5R (substrate audit) + 6R (reproductions) |
 | **RQ4** | Do any positive results survive (a) ticker-identity controls, (b) ticker-disjoint splits, (c) evaluation on post-LLM-knowledge-cutoff calls? | Control suite (§7.3) + Phase 7 |
 
 A clean negative or mixed answer to RQ1/RQ4 is a publishable result (see §4); the study is designed so that no single outcome strands the work.
@@ -134,9 +136,9 @@ Agentic trading systems (MarketSenseAI 2.0 [R21], P1GPT [R22], AlphaAgents [R23]
 
 ### Planned contributions
 
-1. **An open multimodal benchmark** ("ecvol-bench"): standardized volatility targets (level, Δ, HAR-residual), leakage-proof temporal + ticker-disjoint splits with embargo, SHA-256 data manifests, and an evaluation harness — built over FinCall-Surprise (primary) and MAEC (secondary), plus a fresh post-cutoff test set acquired via released scripts.
+1. **An open multimodal benchmark** ("ecvol-bench") — **the headline contribution (DECISIONS 2026-08-23 §1)**: identity/date reconstruction for FinCall-Surprise (the metadata the corpus omits), standardized volatility targets (level, Δ, HAR-residual) under **both** the calendar-day and trading-day horizon conventions (§5.3), leakage-proof temporal + ticker-disjoint splits with embargo, measured call timestamps where recoverable (T9.2), SHA-256 data manifests, and an evaluation harness — built over FinCall-Surprise (primary) and MAEC (secondary), plus Earnings25 as the post-cutoff test set (Phase 7). Released in full (DECISIONS 2026-08-23 §10). It ships with a **substrate audit** of the benchmarks the prior literature shares (split overlap, embargo, label defects — Result Table 5R) and a **reproduction study** of the field's runnable models under the new controls (Result Table 6R).
 2. **Honest baselines everywhere**: persistence, EWMA, HAR-RV, GARCH(1,1), and ticker-fixed-effect models reported for every horizon, split, and target variant — the comparison most prior work omits.
-3. **A modern open-model feature ladder on consumer hardware**: financial sentence embeddings, FinBERT, WavLM/emotion2vec+/eGeMAPS audio features, gated fusion, and LLM-extracted structured features via constrained decoding — all runnable on a single 16–24 GB GPU, fully open weights.
+3. **A modern open-model feature ladder on consumer hardware**: financial sentence embeddings, FinBERT, WavLM/emotion2vec+/eGeMAPS audio features, and gated fusion — all runnable on a single 16–24 GB GPU, fully open weights. *(LLM-extracted structured features dropped 2026-08-23.)*
 4. **A diagnostic suite** for this task family: identity probes, transcript-shuffle controls, ticker-disjoint evaluation, lookahead-bias tests on post-cutoff data, and gender-confound analysis.
 
 ### Pre-registered dual framing (decision gate after Phase 2/3)
@@ -146,6 +148,7 @@ The paper's spine is decided by the data, at a pre-registered gate, not retro-fi
 - **Path A — "Positive showcase":** *adopted if* content-bearing models (Stage ≥2) beat the Stage-0/1 floor on the **Δv or HAR-residual target** with DM-significant improvements (p < 0.05) that survive the identity-control suite on at least 2 of 4 horizons. Story: "modern open LLM + audio models extract real incremental signal from earnings calls — here is an open, reproducible system."
 - **Path B — "Rigorous re-examination":** *adopted otherwise.* Story: "we re-examined the premise of a decade of multimodal earnings-call prediction with modern models, strong baselines, and identity controls — here is the honest answer and an open benchmark for the field." [R14] demonstrates venues accept this.
 - The gate is evaluated after Phase 3 (text ladder + early controls); the framing choice is recorded in the Decision Log. Confirmatory vs. exploratory analyses are labeled in §7.5 *now*, before any model result exists.
+- **Superseded 2026-08-23 (DECISIONS 2026-08-23 §1):** the Path-A/Path-B gate is no longer the paper's organising axis — the benchmark is. The gate's outcome (Path B, provisional; missed at text, audio, and fusion) stands as evidence and is reported as such.
 
 ### Candidate venues (decide in Phase 8, results in hand)
 
@@ -154,6 +157,7 @@ The paper's spine is decided by the data, at a pre-registered gate, not retro-fi
 - **ACL/EMNLP Findings** — if the identity/lookahead diagnostic suite produces field-level insights (Path B strong form).
 - **Finance Research Letters / applied finance journals** — if results skew econometric.
 - arXiv preprint precedes any submission.
+- **Decided 2026-08-23 (DECISIONS 2026-08-23 §2): ACL, via ACL Rolling Review** (Resources and Evaluation track fit; [R14] precedent at Findings of ACL 2025). Open: ARR cycle dates unverified; the preprint-first rule above may conflict with ARR anonymity policy — check before any preprint goes out (HANDOFF).
 
 ---
 
@@ -183,13 +187,13 @@ First implementation act of Phase 1: download, checksum, and locally mirror data
 
 Let `P_t` be the **adjusted close** on trading day `t`, with `t = 0` the last trading day **before** the call's information is public, defined by the **after-hours rule**: if the call begins at or after 16:00 ET (or timestamp is missing but the call is marked "after market close"), day `t = 1` is the next trading day; if before 09:30 ET, the call's own date is day 1; intraday calls (rare) are treated as after-hours and flagged. Daily simple return: `r_t = (P_t − P_{t−1}) / P_{t−1}`.
 
-**Primary target — log realized volatility** over horizon τ ∈ {3, 7, 15, 30} *trading* days (Qin & Yang convention, for comparability):
+**Primary target — log realized volatility** over horizon τ ∈ {3, 7, 15, 30}, shipped under **both** horizon conventions (DECISIONS 2026-08-23 §3): *trading* days (the validated T1.3 set — sessions 1..τ) and *calendar* days (the Qin & Yang convention, verified in the source PDF — "3, 7, 15, 30 calendar days" — and inherited by every downstream paper's released labels; ≈21 vs ≈30 sessions at τ=30). Every result table carries the convention as a column, and the delta between them is reported (T9.1). *(Until 2026-08-23 this section misattributed the trading-day convention to Qin & Yang; the targets were always internally valid, the comparability claim was not.)*
 
 ```
 v_post(τ) = ln( sqrt( (1/τ) · Σ_{t=1..τ} (r_t − r̄)² ) ),   r̄ = mean(r_1..r_τ)
 ```
 
-**Pre-call volatility** `v_pre(τ)`: same formula over the τ trading days ending at day 0.
+**Pre-call volatility** `v_pre(τ)`: same formula over the τ trading days (or calendar days, under that convention) ending at day 0.
 
 **Headline variants (identity-robust):**
 - **Volatility change:** `Δv(τ) = v_post(τ) − v_pre(τ)` — subtracts the company's own level; a model must predict *how this call changes things*.
@@ -229,7 +233,7 @@ Edge rules (encode in `targets.py`, unit-tested): non-trading-day call dates rol
 | **2** | Frozen text: BGE-large / GTE sentence embeddings (section-pooled), FinBERT sentiment aggregates per section, surface statistics → ridge / shallow MLP | "Does transcript *content* add signal beyond Stage 1?" (RQ1-text) | If no DM-significant gain over Stage 1 on Δv on any horizon → run §7.3 controls early and trigger the framing gate (§4) | GPU inference only |
 | **3** | Frozen audio: **eGeMAPS first** (openSMILE, CPU-cheap, interpretable), then WavLM-Large pooled chunks + emotion2vec+ → same heads. Speaker-turn pooling via pyannote 3.1 (flag-gated). **No per-sentence alignment.** | "Does prosody add signal beyond text + past-vol?" (RQ1-audio) + gender-confound check | Full-corpus extraction ETA measured on a 50-call sample before committing the GPU-weeks | GPU, throughput-bound |
 | **4** | Fusion: gated fusion and cross-attention heads over frozen modality embeddings; late-fusion stacking with the Stage-1 GBDT | "Is multimodal > best unimodal, or just noise ensembling?" (RQ2) | Main paper table regardless of outcome | GPU, light training |
-| **5** | **LLM-extracted structured features:** Qwen2.5-7B-Instruct (4-bit) + Outlines-constrained JSON per call section — guidance direction, hedging/uncertainty intensity, Q&A evasiveness, surprise mentions, analyst tone — fed into the Stage-1 GBDT alongside covariates | "Do explicit, auditable semantics beat opaque embeddings?" (RQ3) — ECC Analyzer's idea with open weights and no RAG | Human-audit gate: κ > 0.6 vs. human labels on 50 calls for categorical fields *before* scaling to the corpus | 16–24 GB GPU, slow batch |
+| **5** | **DROPPED 2026-08-23 (DECISIONS 2026-08-23 §11; the slot is taken by the Phase-6R reproduction study).** *Original spec, retained for the record:* LLM-extracted structured features: Qwen2.5-7B-Instruct (4-bit) + Outlines-constrained JSON per call section — guidance direction, hedging/uncertainty intensity, Q&A evasiveness, surprise mentions, analyst tone — fed into the Stage-1 GBDT alongside covariates | "Do explicit, auditable semantics beat opaque embeddings?" (RQ3) — ECC Analyzer's idea with open weights and no RAG | Human-audit gate: κ > 0.6 vs. human labels on 50 calls for categorical fields *before* scaling to the corpus | 16–24 GB GPU, slow batch |
 | **6** *(optional, cloud, gated)* | QLoRA fine-tune of Qwen2.5-7B on transcripts; audio-LLM scoring (Qwen2.5-Omni / Qwen2-Audio); per-sentence alignment revisit | "Does end-to-end adaptation beat frozen features in this small-data regime?" | Only if Stages 2–5 show DM-significant signal; requires a Decision-Log entry with budget | Cloud A100s |
 
 Model/version pins (exact HF revisions recorded in configs at implementation time): `BAAI/bge-large-en-v1.5` (or current best financial-domain embedding on MTEB at Phase-3 start — pinned then), `ProsusAI/finbert`, `microsoft/wavlm-large`, `emotion2vec/emotion2vec_plus_large`, `openai/whisper-large-v3-turbo` (ASR/QC only), `pyannote/speaker-diarization-3.1`, `Qwen/Qwen2.5-7B-Instruct`.
@@ -339,7 +343,7 @@ Components run sequentially, never co-resident; eGeMAPS (openSMILE) is CPU-only 
 
 ## 9. Phase plan
 
-**The full task breakdown — every task with goal, end result, acceptance test, and subtasks — lives in [TASKS.md](TASKS.md)**, the living tracker and operational document for execution status. Task IDs (T0.1–T8.3) are stable identifiers shared between the two documents; adding or materially changing a task requires an entry in [DECISIONS.md](DECISIONS.md).
+**The full task breakdown — every task with goal, end result, acceptance test, and subtasks — lives in [TASKS.md](TASKS.md)**, the living tracker and operational document for execution status. Task IDs (T0.1–T9.4) are stable identifiers shared between the two documents; adding or materially changing a task requires an entry in [DECISIONS.md](DECISIONS.md).
 
 **Sequencing principles:** (1) eval harness + baselines before any deep learning; (2) data risk retired before model risk; (3) every phase ends with a committed, regenerable artifact (result table or report); (4) identity controls run *early* (Phase 3), not as a paper-writing afterthought.
 
@@ -351,9 +355,11 @@ Components run sequentially, never co-resident; eGeMAPS (openSMILE) is CPU-only 
 | 3 | Text ladder (~1–2 wks) | Sectioning, frozen text features, **Result Table 2**, early identity controls | §4 framing gate triggered by control outcomes |
 | 4 | Audio ladder (~2 wks) | Audio QC, eGeMAPS, WavLM/emotion2vec+, **Result Table 3**, gender analysis | 50-call ETA measurement before full extraction |
 | 5 | Fusion + ablations (~1 wk) | Fusion heads; **Result Table 4** (main table, full §7.6 grid) | All confirmatory comparisons Holm-corrected |
-| 6 | LLM structured features (~2 wks) | Schema, constrained extraction, **Result Table 5**, masking ablation | Human-audit κ > 0.6 before corpus-scale runs |
-| 7 | Post-cutoff lookahead study (~2 wks) | Fresh 2025–26 acquisition scripts; frozen-pipeline evaluation | No retraining after first look (pre-registered) |
-| 8 | Paper + repro package (~2–3 wks) | REPRODUCE.md, feature release, manuscript, venue choice | Clean-machine reproduction of Table 1 |
+| 6 | ~~LLM structured features~~ **DROPPED 2026-08-23** (DECISIONS 2026-08-23 §11) | κ-gate measured and failed (2026-08-09); corpus run never executed; schema/engine retained as released artifacts; no Result Table 5 | — |
+| 6R | Reproduction & audit study (~3–4 wks) — *replaces Phase 6* | `ecvol audit substrate` → **Result Table 5R**; five reproductions (HTML, SCSS, KeFVP, DialogueGAT, Sawhney) each on its own data under our controls → **Result Table 6R**; code-availability audit | Published-split numbers reproduced within a stated tolerance before any controlled number is claimed |
+| 7 | Post-cutoff lookahead study (~2 wks) | Earnings25 ingestion (DECISIONS 2026-08-23 §6; self-collection deferred); frozen-pipeline evaluation | No retraining after first look (pre-registered) |
+| 8 | Paper + repro package (~2–3 wks) | REPRODUCE.md, feature release, manuscript (benchmark-first), ACL/ARR submission | Clean-machine reproduction of Table 1 |
+| 9 | Reframe work (benchmark-first) — DECISIONS 2026-08-23 | Dual-convention targets (T9.1), call-timestamp retrofit (T9.2), reproducibility-debt closure (T9.3), Earnings25 clean-audio ladder (T9.4) | T9.3 before further science; T9.1 before any comparability claim |
 
 ---
 

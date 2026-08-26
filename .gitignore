@@ -71,3 +71,6 @@ setup.md
 /t2019.json
 /t2020.json
 /t2021.json
+
+# Advisor briefing slides + build script (local only; binary .pptx). See DECISIONS 2026-08-26.
+/briefing/

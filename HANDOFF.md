@@ -16,9 +16,10 @@ Each entry: date · task ID · what the user must do · what unblocks when it's 
   the reproduction/audit study (Phase 6R) replaces it. **This cancels every open T6.2 human item
   below** — the second rating set, the self-re-rate workbook, and the Colab operational steps.
   Concretely: `ingest/Ratings_2.xlsx` and `ingest/Ratings_2_selfrerate20.xlsx` need not be filled in,
-  and no Colab run is needed. Nothing about the κ-gate result changes — it stays in the paper as a
-  *reported* negative finding (guidance 0.165 / hedging −0.050 / surprise 0.222, 95% upper bounds
-  far below 0.6, four null controls); what is dropped is the corpus run and RQ3's predictive arm.
+  and no Colab run is needed. *(Updated 2026-08-26 — DECISIONS 2026-08-26 §1.)* The κ-gate result is **excised from the paper**
+  entirely; the measurement (guidance 0.165 / hedging −0.050 / surprise 0.222, four null controls)
+  stays in the repo as a released diagnostic (`data/coverage/llm_kappa_gate_report.md`,
+  `artifacts/diagnostics/`, `ecvol llm-kappa`).
   The frozen v2 schema, rubric, extraction code, and audit tooling remain in-tree as released
   benchmark artifacts.
   - **What this unblocks:** your time. The two T6.2 entries below are superseded and retained only
