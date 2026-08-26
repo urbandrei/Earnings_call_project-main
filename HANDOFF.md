@@ -11,7 +11,26 @@ Each entry: date · task ID · what the user must do · what unblocks when it's 
 
 ## Active (action needed to unblock a task)
 
-- **2026-06-29 · T6.2 — rater 1 labels are in and ingested; the κ-gate is unblocked on the labels side. Second rater is now PAPER-STAGE, not an OSC blocker.**
+- **2026-08-23 · ⛔ STOP — RATER 2 IS CANCELLED. Phase 6 is dropped. Do not spend any more time labelling.**
+  DECISIONS 2026-08-23 §11 drops Phase 6 (LLM structured features) entirely and withdraws RQ3;
+  the reproduction/audit study (Phase 6R) replaces it. **This cancels every open T6.2 human item
+  below** — the second rating set, the self-re-rate workbook, and the Colab operational steps.
+  Concretely: `ingest/Ratings_2.xlsx` and `ingest/Ratings_2_selfrerate20.xlsx` need not be filled in,
+  and no Colab run is needed. Nothing about the κ-gate result changes — it stays in the paper as a
+  *reported* negative finding (guidance 0.165 / hedging −0.050 / surprise 0.222, 95% upper bounds
+  far below 0.6, four null controls); what is dropped is the corpus run and RQ3's predictive arm.
+  The frozen v2 schema, rubric, extraction code, and audit tooling remain in-tree as released
+  benchmark artifacts.
+  - **What this unblocks:** your time. The two T6.2 entries below are superseded and retained only
+    for the record.
+  - **New asks arising from the redirection** (none are blocking today, listed so you can plan):
+    (1) **ACL cycle dates** — confirm the next ARR/ACL deadline, and check whether ARR's anonymity
+    policy conflicts with DESIGN §4's "arXiv preprint precedes any submission"; (2) **IEEE Xplore
+    lookup** — *"Volatility Prediction with Audio and Structure-Aware Text Embeddings in Earnings
+    Conference Calls"*, ICDMW 2025, is an exact title match for our task and is paywalled; we could
+    not retrieve authors, DOI, or abstract, so we cannot yet claim the space is clear.
+
+- **2026-06-29 · T6.2 — rater 1 labels are in and ingested; the κ-gate is unblocked on the labels side. Second rater is now PAPER-STAGE, not an OSC blocker.** *(SUPERSEDED 2026-08-23 — cancelled, see above)*
   You delivered `ingest/Ratings_1.xlsx` (50-call audit set). It is ingested + validated →
   `data/coverage/fincall_llm_labels_rater1.csv` (97 rows, exact match to the frozen sample, all in
   range). Per DECISIONS 2026-06-29, the **κ>0.6 go/no-go for the corpus run uses this single

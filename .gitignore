@@ -65,3 +65,9 @@ UNDERMIND_BRIEF.md
 .gitignore
 UNDERMIND_QUERY.md
 setup.md
+
+# Raw FinCall transcript copies at repo root (duplicates of D:\ecvol-data\raw\fincall\).
+# Third-party scraped content — must never be committed. See DECISIONS 2026-08-23.
+/t2019.json
+/t2020.json
+/t2021.json

@@ -4,7 +4,7 @@
 
 ## How to use this file
 
-- **Statuses:** `[ ]` todo · `[~]` in progress · `[x]` done · `[!]` blocked. Update the task status line and subtask checkboxes **as part of finishing the work**, not after.
+- **Statuses:** `[ ]` todo · `[~]` in progress · `[x]` done · `[!]` blocked · `[-]` dropped/deferred (with a DECISIONS.md entry). Update the task status line and subtask checkboxes **as part of finishing the work**, not after.
 - **Definition of done:** a task is `[x]` only when its **acceptance test** passes. No exceptions; if the test is wrong, fix the test via a [DECISIONS.md](DECISIONS.md) entry first.
 - **Notes:** record completion date, deviations, gotchas discovered, and links to run artifacts in the task's Notes line. The narrative of *how* the work went belongs in [JOURNAL.md](JOURNAL.md); link the journal entry from Notes when useful.
 - **Task IDs are stable.** Never renumber. Adding, removing, or materially changing a task requires a dated entry in [DECISIONS.md](DECISIONS.md).
@@ -274,7 +274,13 @@
 
 ---
 
-## Phase 6 — LLM structured features (~2 weeks)
+## Phase 6 — LLM structured features — **DROPPED 2026-08-23** (DECISIONS 2026-08-23 §11)
+
+> **Phase 6 is closed and replaced by Phase 6R (reproduction & audit study).** RQ3 is withdrawn as a
+> pre-registered research question. The κ-gate failure (2026-08-09) stands as a *reported* negative
+> finding — the measurement is retained, the corpus run and RQ3's predictive arm are not. The frozen
+> v2 schema, rubric, extraction code, and audit tooling stay in-tree as released benchmark artifacts.
+> **Rater-2 collection is CANCELLED** (see HANDOFF).
 
 ### T6.1 Feature schema design — `[x]` *(v2 schema signed off 2026-06-29)*
 - **Goal:** an auditable semantic feature set, grounded in actual calls.
@@ -288,7 +294,7 @@
   - 2026-06-29 — **schema → v2 (superset)** per rater-1 feedback + numeral-aware literature (DESIGN §3 R30/R31/R32). Added two **exploratory** fields (`management_optimism`, `quantitative_specificity`, both sections, unlabeled → no κ-gate); **confirmatory core** for the gate = `guidance_direction`/`hedging_intensity`/`surprise_mentions` (fixed pre-extraction on label variance, not model κ); weak labeled fields (`qa_evasiveness`, `analyst_tone`) reported-not-gated. `PROMPT_VERSION` v1→v2. 29 LLM tests green. DECISIONS 2026-06-29.
   - 2026-06-29 — **v2 SIGNED OFF (user).** Schema + rubric + `PROMPT_VERSION="v2"` frozen; OSC extraction may build against it. Acceptance met via **single careful rater + user sign-off** (the literal two-pass-IAA test deferred to pre-publication per DECISIONS 2026-06-29 — same single-rater stance as the κ-gate). T6.2 corpus extraction is now unblocked on the schema side (remaining blockers: OSC access + >32k-token context policy, HANDOFF).
 
-### T6.2 Constrained extraction + human-audit gate — `[!]` *(local route works; **κ-gate FAILED** — corpus blocked, decision owed)*
+### T6.2 Constrained extraction + human-audit gate — `[-]` *(**DROPPED 2026-08-23**; local route works, κ-gate FAILED and is retained as a reported finding — DECISIONS 2026-08-23 §11)*
 - **Goal:** reliable corpus-scale extraction on consumer GPU.
 - **End result:** Qwen2.5-7B-Instruct (4-bit) + Outlines pipeline; vLLM if VRAM allows, llama.cpp fallback; extracted features for the full corpus, cached with prompt+model version keys.
 - **Acceptance test:** 100% schema-valid outputs (constrained decoding guarantees shape; the gate is on content): **human audit on 50 calls, κ > 0.6 on categorical fields vs. rubric labels — scaling to corpus is blocked until passed**; throughput ETA recorded.
@@ -303,7 +309,7 @@
   - 2026-07-04 — **compute REROUTED OSC → Colab Pro+** (OSC access + funds lapsed; DECISIONS 2026-07-04, superseding the 2026-06-24 $1000 OSC spend — void/unused). Same `--engine vllm` + Outlines + YaRN engine, on a Colab GPU. Only new code: `featurize llm --audit-sample` (extract the 50 κ-gate calls through the same engine as the corpus; mutually exclusive with `--limit`; 2 tests). New ops package `cloud/colab/` (README + RUNBOOK + `setup.sh` + `run.ipynb`) mirrors `cloud/osc/`; Drive = persistence/resume store, GPU class not guaranteed (A100-40GB fits 7B/8B-fp16 @65k; 32B→AWQ; 72B dropped). No paid-API budget; flat Pro+, no deadline. `cloud/osc/` retained (reference). **Remaining: operational human steps on Colab** (repo+2 parquets on Drive; run the notebook; smoke → κ-gate → corpus). See `cloud/colab/README.md` + HANDOFF.
   - 2026-08-09 — **local route BUILT and WORKING; κ-gate FAILED → corpus NOT started.** The 2026-06-24 "local is infeasible" finding was engine-specific, not hardware-specific: a new `--engine llamacpp` (`llama-server` + HTTP JSON-schema decoding, same frozen v2 schema/prompt and same YaRN-65536 policy) runs Qwen2.5-7B **Q4_K_M** whole-section on the 16 GB card at **4.63 s/section** → FinCall ~6.6 h, +MAEC ~12 h total. Three real defects fixed en route: (1) pydantic omits defaulted fields from `required`, so the grammar closed early — `evidence` was empty on *every* section and a skipped exploratory field would have become a silent 0 *rating*; (2) an unbounded evidence string ran past the decode cap and emitted unparseable JSON; (3) the CLI died with UnicodeEncodeError the moment its output was redirected to a log (cp1252 vs "κ"). Defects (1)–(2) are **latent in the Outlines/vLLM path too** — same pydantic schema, same optional-field grammar — so the Colab route needs them before it runs. **Gate result on the 97 audit rows: guidance_direction κ=0.165, hedging_intensity κ=−0.050, surprise_mentions κ=0.222 (confirmatory core; all ≪0.6) → FAIL.** Not a plumbing bug (97/97 label join, section text spot-checked, 100% schema-valid) and not a calibration offset (shifting the ordinal by ±1/±2 does not rescue κ); the model is near-constant on `analyst_tone` (47/50 rated "2") and independent of the human on hedging. Full diagnosis + the decision options: `data/coverage/llm_kappa_gate_report.md`. **Corpus scale stays blocked** (DECISIONS 2026-06-29 rule) — this is far below the 0.45–0.6 borderline band, so rater 2 would not change the go/no-go, though it is now *diagnostic* (is the schema the problem?). See DECISIONS 2026-08-09, HANDOFF.
 
-### T6.3 Stage-5 results + masking ablation → Result Table 5 — `[ ]`
+### T6.3 Stage-5 results + masking ablation → Result Table 5 — `[-]` *(**DROPPED 2026-08-23** with RQ3 — DECISIONS 2026-08-23 §11; no Result Table 5 will exist)*
 - **Goal:** RQ3 answered; lookahead leakage estimated.
 - **End result:** LLM features → Stage-1 GBDT (with covariates), 5 seeds; masked-prompt (names/tickers/dates removed) variant; **Result Table 5**.
 - **Acceptance test:** DM tests vs. Stage 2 and Stage 4; masked-vs-unmasked gap reported with CI.
@@ -312,6 +318,70 @@
   - [ ] Masking transform
   - [ ] Result configs
 - **Notes:** —
+
+---
+
+## Phase 6R — Reproduction & audit study (~3–4 weeks) — *replaces Phase 6; DECISIONS 2026-08-23*
+
+### T6R.1 Benchmark substrate audit → Result Table 5R — `[ ]`
+- **Goal:** document what the evaluation substrate this literature shares actually contains. Requires reproducing no model.
+- **End result:** an `ecvol audit substrate` command + released report covering, for EC / MAEC-15 / MAEC-16: ticker overlap between train and test, embargo gap at each split boundary, sentinel/degenerate label cells, and label-schema hazards; plus a diff of the literature's shipped labels against our §5.3 targets.
+- **Acceptance test:** every number regenerates from the command; each claim carries the file and row/cell counts it was computed from; the "no paper reports a ticker-disjoint condition" claim is stated as a literature-coverage claim, not a data claim.
+- **Subtasks:**
+  - [ ] Fetch + manifest the canonical label/split files (VolTAGE, KeFVP, HTML lineage) with SHA-256
+  - [ ] Overlap + embargo metrics per benchmark, with our own splits as the contrast row
+  - [ ] Label-defect scan (sentinel zeros; interleaved binary/price columns)
+  - [ ] Label-vs-our-targets diff (MAEC join verified at 99.4%)
+  - [ ] Report + release packaging
+- **Notes:** findings already established 2026-08-23 (JOURNAL; `docs/advisor_redirection_2026-08.md` §5) — **VolTAGE and KeFVP ship byte-identical split files**; EC 80.4% / MAEC-15 44.2% / MAEC-16 55.7% test-ticker-in-train; **0-day embargo** on every boundary against τ≤30 targets; 137 zeros / 16,800 cells in the single-day series (headline Avg_Series clean); KeFVP MAEC files interleave binary labels at exactly τ ∈ {3,7,15,30} among 26 price columns (154/154 rows). **This task formalises and regenerates them, it does not re-derive them.** Open: settle the sentinel-zero interpretation (zero-variance day vs missing) before it enters a paper claim.
+
+### T6R.2 Reproduction of prior models under our controls → Result Table 6R — `[ ]`
+- **Goal:** demonstrate the benchmark's value by re-evaluating released models under embargoed, ticker-disjoint conditions.
+- **End result:** HTML, Same-Company-Same-Signal, KeFVP, DialogueGAT, and Sawhney (ACM MM 2020) run **each on its own original dataset** under our control suite; published-split vs leakage-proof-split deltas reported per model.
+- **Acceptance test:** for every model, either a result under both split conditions, or a documented reason code for why it could not run; the published-split numbers are reproduced within a stated tolerance before any controlled number is claimed; no model is evaluated on a dataset it was not originally trained on without that being labelled a transfer test.
+- **Subtasks:**
+  - [ ] HTML as an `ecvol` head over our embeddings (`legacy/4-Reproduce_HTML.ipynb` is a working prior reimplementation)
+  - [ ] Same-Company-Same-Signal (PEV / STPEV training-free baselines; MIT, actively maintained)
+  - [ ] KeFVP — EC only (torch 1.12 → modern port; `requirements.txt` unfixable as written; MAEC KePt embeddings unavailable upstream)
+  - [ ] DialogueGAT (τ ≤ 15; corpus rebuild required)
+  - [ ] Sawhney ACM MM 2020 (TF 2.1 / Keras 2.3.1)
+  - [ ] Code-availability audit table (the negative space — dead/empty/closed repos, with HTTP status and date)
+- **Notes:** DECISIONS 2026-08-23 §5. **Confound rule: each model runs on its own dataset**, else "the model fails" is indistinguishable from "the model does not transfer." Only 5 of ~20 papers released runnable code; the audit of the other 15 (ECC Analyzer closed/GPT-4, Sound of Risk figures-only, DeFVP repo 0 KB, ECHO-GL "cannot run", NumHTML no URL, GNA-Vol 404, AMA-LSTM stub, AT-FinGPT paywalled) is itself a deliverable. Consider adopting **FinTrust** (`yingpengma/FinTrust`, ACL 2023, by the HTML author) as a complementary perturbation-control axis.
+
+---
+
+## Phase 9 — Reframe work (benchmark-first) — *DECISIONS 2026-08-23*
+
+### T9.1 Dual-convention targets (calendar + trading day) — `[ ]`
+- **Goal:** make our targets comparable to the published leaderboard without discarding the validated trading-day set.
+- **End result:** `ecvol targets build` emits both conventions; every result table carries the convention as a column; the delta between them is reported.
+- **Acceptance test:** calendar-day targets unit-tested against hand-computed values exactly as the trading-day set was (T1.3); both sets regenerate deterministically; DESIGN §5.3 amended.
+- **Notes:** DECISIONS 2026-08-23 §3. Qin & Yang used **calendar** days (verified in the source PDF); DESIGN §5.3 misattributed the convention as trading days. ~30 vs ~21 sessions at τ=30. **Blocks any comparability claim in T6R.2.**
+
+### T9.2 Call-timestamp retrofit — `[ ]`
+- **Goal:** replace the uniform assume-after-hours fallback with measured call datetimes.
+- **End result:** per-call datetime + timezone with a provenance tier, joined into the target pipeline; a sensitivity run comparing the fallback against measured timings.
+- **Acceptance test:** coverage reported by provenance tier; the after-hours sensitivity check finally runs (DESIGN §10 risk #7); zero post-`as_of` reads.
+- **Subtasks:**
+  - [ ] Check SCSS `beforeAfterMarket` coverage against our corpus first (~1 day, may be free)
+  - [ ] EDGAR 8-K Item 2.02 retrofit for the remainder, piloted on 50 calls before any bulk pull
+- **Notes:** DECISIONS 2026-08-23 §8. No call time-of-day exists anywhere today (only 3.4% of transcripts mention a clock time); 32.4% of recovered *dates* come from slide-PDF creation stamps.
+
+### T9.3 Reproducibility-debt closure — `[ ]`
+- **Goal:** make DESIGN §8.2/§12 true rather than aspirational, since the artifact is now the contribution.
+- **End result:** every result-producing run writes `artifacts/runs/<run_id>/`; one committed config per experiment under `configs/`; `ecvol report` regenerates every paper table byte-identically from artifacts.
+- **Acceptance test:** clean-machine regeneration of Result Table 1 byte-identical from artifacts alone; CI asserts it.
+- **Subtasks:**
+  - [ ] Determine whether `ecvol report` currently sources `artifacts/` or `data/results/` (5 min; do this first)
+  - [ ] Backfill run artifacts + per-experiment configs
+  - [ ] CI assertion
+- **Notes:** DECISIONS 2026-08-23 §9. Today `artifacts/` holds 8 diagnostic files and no run payload; `configs/` holds only `example.yaml`.
+
+### T9.4 Earnings25 clean-audio ladder re-run — `[ ]`
+- **Goal:** test whether "audio is inert" survives on audio that is not a 40 kbps transcode.
+- **End result:** the frozen Stage-3 audio ladder (eGeMAPS + WavLM + emotion2vec+) re-run on Earnings25 audio with the identity controls attached.
+- **Acceptance test:** same extractors, same heads, same controls as T4.4; real-vs-shuffle reported; any divergence from the FinCall result stated with the audio-quality difference as the candidate cause.
+- **Notes:** DECISIONS 2026-08-23 §7. **Highest-value single experiment on the backlog**: the audio finding currently rests entirely on FinCall's uniform 40 kbps transcodes because MAEC ships no audio. Depends on T7.1 (Earnings25 ingestion).
 
 ---
 
@@ -326,7 +396,7 @@
   - [ ] IR-page fallback fetcher
   - [ ] Ingestion onto the common schema
   - [ ] Universe selection rule (e.g., S&P 500 members, pre-registered)
-- **Notes:** —
+- **Notes:** **2026-08-23 — primary source changed to Earnings25** (DECISIONS 2026-08-23 §6): Zenodo DOI 10.5281/zenodo.18762168, CC-BY-4.0, ~500 Q4-2025 S&P 500 calls / 498 h, held Jan–Feb 2026 ⇒ post-cutoff for the Qwen2.5 stack. The task's original primary source (EarningsCast) is dead (HTTP 410, verified 2026-08-13) and earningscall.biz audio is paywalled at $129/mo. **Gated on a one-day verification** that Earnings25 carries what the T1.3 price joins need — audio provenance is undisclosed upstream and per-call metadata completeness (exact datetimes?) is unknown. Self-collection (TX4) is deferred, so the ≥200-call acceptance bar is now met by Earnings25 rather than by our own scripts; the "scripts-not-data" framing applies to the *ingestion* scripts. Also feeds T9.4 (clean-audio ladder re-run).
 
 ### T7.2 Frozen-pipeline post-cutoff evaluation — `[ ]`
 - **Goal:** the lookahead-bias experiment (DESIGN.md §7.4).
@@ -410,7 +480,7 @@ Adopted from this team's prior multimodal-volatility work (see `ingest/ingest.md
   - [ ] Write-up (signal vs. identity) → feeds the §4 framing-gate evidence
 - **Notes:** their setup reuses KeFVP's released labels (conflicts with §5.3 computed targets). DECISIONS.md 2026-06-14.
 
-### TX4 — ecvol-live 50-call capture pilot — `[~]` *(green-lit 2026-08-13; time-sensitive: Q2 2026 replay window closing)*
+### TX4 — ecvol-live 50-call capture pilot — `[-]` *(**DEFERRED to future work 2026-08-23** — DECISIONS 2026-08-23 §4; discovery stage + artifacts retained, capture never built, replay window closed on 8/50 calls)*
 - **Goal:** measure the feasibility numbers for the ecvol-live forward-collection design (`docs/fincall_methodology_and_successor.md` §4–5) on 50 current-season calls.
 - **End result:** captured replay audio + at-collection-time metadata (ticker/CIK/company/fiscal period/call datetime+TZ/replay URL) for up to 50 Q2-2026 calls (~35 S&P 500 / ~15 S&P 400), every non-captured attempt reason-coded; then local Whisper+pyannote transcripts and T1.3 target joins; a pilot report with the three go/no-go numbers: automation coverage (% direct-MP3 / HLS / walled), per-call human minutes for the walled remainder, ASR WER vs Earnings25 overlaps.
 - **Acceptance test:** pilot report exists with all three numbers **measured, not estimated**; every attempted call has either bytes-on-disk with SHA-256 manifest or a reason code; zero cash spent; no DESIGN.md change without a further DECISIONS.md entry.
