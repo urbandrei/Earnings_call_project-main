@@ -1,0 +1,4 @@
+# Committed command config (T9.3/T6R.2). `ecvol reproduce scss` loads this by default.
+# Deterministic (training-free baselines over the shipped DEC file); seeds unused.
+command: reproduce-scss
+seeds: [0]

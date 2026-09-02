@@ -117,6 +117,7 @@ class CommandConfig(StrictModel):
         "timing-sensitivity",
         "audit-substrate",
         "reproduce-html",
+        "reproduce-scss",
     ]
     seeds: list[int] = Field(default=[0, 1, 2, 3, 4], min_length=1)
 

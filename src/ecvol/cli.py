@@ -1133,6 +1133,28 @@ def reproduce_html(
     typer.echo(f"run artifact: {write_command_run(cfg, root)}")
 
 
+@reproduce_app.command("scss")
+def reproduce_scss(
+    root: Path = typer.Option(Path("data"), help="Data root directory."),  # noqa: B008
+    config: Path | None = _CONFIG_OPT,
+) -> None:
+    """Same-Company-Same-Signal PEV/STPEV baselines on DEC (rolling quarters) → 6R entry."""
+    from ecvol.eval.reproduce_scss import run_scss_reproduction
+    from ecvol.tracking import resolve_command_config, write_command_run
+
+    cfg = resolve_command_config("reproduce-scss", config, None)
+    t = run_scss_reproduction(root)
+    head = t[(t["horizon"] == 0) & (t["year"] == 2023)]
+    for r in head.itertuples():
+        typer.echo(
+            f"  2023 {r.quarter:>6} {r.model:<10} MSE(avg tau)={r.mse:.3f} "
+            f"(published {r.published_mse:.3f})"
+        )
+    typer.echo("  ticker_disjoint: STPEV undefined without same-ticker history (reason-coded)")
+    typer.echo("6R (SCSS): data/results/result_table_6r_scss.csv")
+    typer.echo(f"run artifact: {write_command_run(cfg, root)}")
+
+
 @app.command(name="evaluate-audio-earnings25")
 def evaluate_audio_earnings25(
     root: Path = typer.Option(Path("data"), help="Data root directory."),  # noqa: B008
