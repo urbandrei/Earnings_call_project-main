@@ -24,6 +24,9 @@ app = typer.Typer(
     help="Earnings-call volatility prediction pipeline.",
 )
 
+# configs/<command>.yaml is the default; a module-level singleton keeps ruff B008 quiet.
+_CONFIG_OPT = typer.Option(None, help="Command config YAML (default: configs/<command>.yaml).")
+
 
 def _parse_stop_at(hhmm: str) -> float:
     """``"19:30"`` → the next local-time epoch at that clock time (today, else tomorrow)."""
@@ -376,6 +379,75 @@ def targets_compare(
             f"corr dv={r.corr_delta_v:.3f}"
         )
     typer.echo(f"delta report: {out}")
+
+
+timing_app = typer.Typer(no_args_is_help=True, help="Call-timestamp retrofit (T9.2).")
+app.add_typer(timing_app, name="timing")
+
+
+@timing_app.command("build")
+def timing_build(
+    dataset: str = typer.Argument(help="Dataset: fincall | maec | earnings25."),
+    root: Path = typer.Option(Path("data"), help="Data root directory."),  # noqa: B008
+    no_fetch: bool = typer.Option(False, help="Offline: use only cached EDGAR submissions."),
+    limit: int = typer.Option(0, help="Only the first N resolved calls (0 = all; pilots)."),
+) -> None:
+    """Measure each call's information boundary (EDGAR 8-K › Earnings25 › DEC › fallback)."""
+    from ecvol.data.timing import build_call_times, write_call_times
+
+    rows, counts = build_call_times(root, dataset, fetch=not no_fetch, limit=(limit or None))
+    out = root / "coverage" / f"{dataset}_timing.csv"
+    write_call_times(rows, out)
+    n = len(rows)
+    typer.echo(f"{dataset}: {n} resolved calls")
+    for tier, c in counts.items():
+        typer.echo(f"  {tier}: {c} ({100 * c / n:.1f}%)" if n else f"  {tier}: 0")
+    rules: dict[str, int] = {}
+    for r in rows:
+        rules[r.session_rule] = rules.get(r.session_rule, 0) + 1
+    typer.echo("session rule: " + ", ".join(f"{k}={v}" for k, v in sorted(rules.items())))
+    typer.echo(f"table: {out}")
+
+
+@timing_app.command("targets")
+def timing_targets(
+    dataset: str = typer.Argument(help="Dataset: fincall | maec | earnings25."),
+    root: Path = typer.Option(Path("data"), help="Data root directory."),  # noqa: B008
+) -> None:
+    """Measured-anchor target variant → data/{dataset}/targets_measured{,_calendar}.parquet."""
+    from ecvol.data.timing import build_measured_targets
+
+    s = build_measured_targets(root, dataset)
+    typer.echo(
+        f"{dataset}: {s['calls']} calls, {s['measured']} with a measured anchor; "
+        f"{s['ok_rows']} ok trading rows → data/{dataset}/targets_measured.parquet"
+    )
+
+
+@timing_app.command("sensitivity")
+def timing_sensitivity(
+    root: Path = typer.Option(Path("data"), help="Data root directory."),  # noqa: B008
+    config: Path | None = _CONFIG_OPT,
+) -> None:
+    """Fallback vs measured day-0 anchors: Stage-0 baselines on the test segment (T9.2)."""
+    from ecvol.data.timing import sensitivity
+    from ecvol.tracking import resolve_command_config, write_command_run
+
+    cfg = resolve_command_config("timing-sensitivity", config, None)
+    table = sensitivity(root)
+    shift = table[table["anchor"] == "shift"]
+    for r in shift.itertuples():
+        typer.echo(f"{r.dataset}: as_of moved for {100 * r.r2_oos:.1f}% of {r.n} calls")
+    head = table[
+        (table["anchor"] != "shift") & (table["target"] == "v") & (table["model"] == "har")
+    ]
+    for r in head.itertuples():
+        typer.echo(
+            f"  {r.dataset} {r.split} tau={r.horizon} HAR level-v [{r.anchor}]: "
+            f"R2={r.r2_oos:+.3f} MSE={r.mse:.3f} (n={r.n})"
+        )
+    typer.echo("table: data/results/timing_sensitivity.csv")
+    typer.echo(f"run artifact: {write_command_run(cfg, root)}")
 
 
 splits_app = typer.Typer(no_args_is_help=True, help="Leakage-proof split construction (T1.6).")
@@ -843,8 +915,6 @@ def audio_emotion2vec(
 
 
 # Shared `--config` option for the result-producing commands (T9.3): the committed
-# configs/<command>.yaml is the default; a module-level singleton keeps ruff B008 quiet.
-_CONFIG_OPT = typer.Option(None, help="Command config YAML (default: configs/<command>.yaml).")
 
 
 @app.command()

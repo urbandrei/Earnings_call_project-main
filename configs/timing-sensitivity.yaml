@@ -1,0 +1,4 @@
+# Committed command config (T9.3/T9.2). `ecvol timing sensitivity` loads this by
+# default. Deterministic (persistence + train-fit HAR only); seeds unused.
+command: timing-sensitivity
+seeds: [0]
