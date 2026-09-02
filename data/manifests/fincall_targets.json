@@ -2,8 +2,15 @@
   {
     "license": "Derived artifact \u2014 computed from price data (DESIGN \u00a75.3); no external source",
     "path": "fincall/targets.parquet",
-    "retrieved_at": "2026-06-19T01:25:46+00:00",
-    "sha256": "cc5c00e899c9a64586a42d877185e519e1bb682dd7ae400e728ba503d29d4542",
+    "retrieved_at": "2026-09-02T03:57:56+00:00",
+    "sha256": "4173ed5c12c6d06753dc435b48b1b0f9d563ff8161c8c2756ed54070b4813685",
+    "source_url": "computed: ecvol targets build (DESIGN \u00a75.3)"
+  },
+  {
+    "license": "Derived artifact \u2014 computed from price data (DESIGN \u00a75.3); no external source",
+    "path": "fincall/targets_calendar.parquet",
+    "retrieved_at": "2026-09-02T03:57:57+00:00",
+    "sha256": "06c88b05cce2a68748f0f9b6ee1a98fff692f2b100a346cec40c25de9b2266b6",
     "source_url": "computed: ecvol targets build (DESIGN \u00a75.3)"
   }
 ]
