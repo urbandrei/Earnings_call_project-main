@@ -1,0 +1,34 @@
+{
+  "command": "timing-sensitivity",
+  "config": {
+    "command": "timing-sensitivity",
+    "seeds": [
+      0
+    ]
+  },
+  "config_hash": "a9f55c8a7a0f11ffe179576ab133663593cdda8b020ba4c4a0308224c0597196",
+  "created_at": "2026-09-02T05:34:23+00:00",
+  "env": {
+    "gpus": [
+      "NVIDIA GeForce RTX 5060 Ti, 591.86"
+    ],
+    "lockfile_sha256": "827d6e8e585a892361fe4cedf07eae6cf970be3513a8dfd8a7a46ce1b434a0f3",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "python": "3.12.8"
+  },
+  "git": {
+    "dirty": true,
+    "sha": "d4287de46712b302a6131fc531e9d44a198cc5f8"
+  },
+  "outputs": {
+    "results/timing_sensitivity.csv": {
+      "bytes": 12651,
+      "sha256": "be9b074c71ba838f7621043f87e00a39d9bf350f102421593725e3d10087846f"
+    }
+  },
+  "provenance": "run",
+  "run_id": "20260902T053423Z-timing-sensitivity-a9f55c8a",
+  "seeds": [
+    0
+  ]
+}
