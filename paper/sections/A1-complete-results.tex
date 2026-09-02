@@ -38,7 +38,6 @@ the value).
 The full per-file audit behind Table~\ref{tab:substrate} (file SHA-256 per repository commit, per-split counts, embargo and duplicate checks, sentinel-zero cells per split, binary-column detection per file, and the per-horizon MAEC label diff) is released as \texttt{data/results/result\_table\_5r.csv} and \texttt{result\_table\_5r\_labels.csv}, with the lineage mirror manifest under \texttt{raw/ref/lineage/}.
 
 \subsection{Reproductions and code-availability audit (Result Table 6R)}
-\pending{T6R.2: the complete reproduction grid behind Table~\ref{tab:repro}, and
-the audit of the fifteen non-runnable papers---repository URL, HTTP status and
-date, and the reason code (no code; empty or unpushed repository; closed-API
-dependency; stated inability to run; paywalled).}
+The complete reproduction grid behind Table~\ref{tab:repro} is released as \texttt{data/results/result\_table\_6r.csv} (HTML on EC: three seeds, tuned $\alpha$, persistence per cell) and \texttt{result\_table\_6r\_scss.csv} (Same-Company-Same-Signal on DEC: PEV and STPEV per rolling quarter and horizon, 2021--2023, with the published 2023 cells alongside). Table~\ref{tab:code-audit} is the code-availability audit.
+
+\input{tables/code_audit}
