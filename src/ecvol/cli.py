@@ -1176,6 +1176,28 @@ def audit_code(
     typer.echo(f"run artifact: {write_command_run(cfg, root)}")
 
 
+@app.command(name="evaluate-lookahead")
+def evaluate_lookahead(
+    root: Path = typer.Option(Path("data"), help="Data root directory."),  # noqa: B008
+    resamples: int = typer.Option(1000, help="Cluster-bootstrap resamples (clusters = month)."),
+    config: Path | None = _CONFIG_OPT,
+) -> None:
+    """T7.2: frozen FinCall-trained heads scored on post-cutoff Earnings25 → Result Table 7."""
+    from ecvol.eval.lookahead import run_lookahead
+    from ecvol.tracking import resolve_command_config, write_command_run
+
+    cfg = resolve_command_config("evaluate-lookahead", config, None)
+    t = run_lookahead(root, n_resamples=resamples)
+    for r in t[t["target"] == "dv"].itertuples():
+        typer.echo(
+            f"  {r.stage:<22} dv tau={r.horizon:<2} R2 in={r.r2_oos_in:+.3f} "
+            f"post={r.r2_oos_post:+.3f} [{r.r2_oos_post_lo:+.3f},{r.r2_oos_post_hi:+.3f}] "
+            f"deg={r.degradation:+.3f} (n_post={r.n_post})"
+        )
+    typer.echo("Result Table 7 (lookahead): data/results/result_table_7.csv")
+    typer.echo(f"run artifact: {write_command_run(cfg, root)}")
+
+
 @app.command(name="evaluate-audio-earnings25")
 def evaluate_audio_earnings25(
     root: Path = typer.Option(Path("data"), help="Data root directory."),  # noqa: B008

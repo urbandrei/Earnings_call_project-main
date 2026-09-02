@@ -1,0 +1,4 @@
+# Committed command config (T9.3/T7.2). `ecvol evaluate-lookahead` loads this by default.
+# Ridge heads are deterministic; the bootstrap is seeded (seed 0) inside the command.
+command: evaluate-lookahead
+seeds: [0]

@@ -162,6 +162,7 @@ COMMAND_OUTPUTS: dict[str, tuple[str, ...]] = {
     "reproduce-html": ("results/result_table_6r.csv",),
     "reproduce-scss": ("results/result_table_6r_scss.csv",),
     "audit-code": ("results/code_availability.csv",),
+    "evaluate-lookahead": ("results/result_table_7.csv",),
     "evaluate-audio-earnings25": (
         "results/result_table_3_earnings25.csv",
         "results/audio_shuffle_earnings25.csv",
