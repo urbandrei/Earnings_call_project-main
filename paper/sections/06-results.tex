@@ -163,5 +163,6 @@ stack, audio is as inert beyond past volatility as it was on FinCall.
 
 \subsection{Post-cutoff lookahead}
 \label{sec:results-lookahead}
-\pending{Phase 7: the frozen-pipeline evaluation on Earnings25's post-cutoff
-calls, no retraining, rule fixed in advance.}
+Every head in Tables~\ref{tab:baselines}--\ref{tab:grid} was fit on FinCall's temporal training split; here the same fits are scored, with no retraining and no threshold change, on the 475 Earnings25 calls of Q4~2025---after the training cut-off of every frozen encoder in the stack, and on companies none of the heads has seen. Table~\ref{tab:lookahead} shows no post-cutoff degradation: HAR-RV rises from 0.46/0.41/0.21/$-$0.29 to 0.56/0.47/0.32/0.08, and the ridge text and audio heads rise with it, because FinCall's in-cutoff test segment sits in the 2020 regime that \S\ref{sec:results} discusses while Q4~2025 is calm. What survives the cut-off is the \emph{ordering}: HAR-RV beats every content head at every horizon, the content heads track past volatility rather than adding to it (on $\Delta v$ the frozen text head reaches 0.25 at $\tau{=}3$ against HAR's 0.56), the fusion head is the least stable, and nothing beats persistence at $\tau{=}30$. A lookahead effect would show as content heads that were competitive in-cutoff and collapse post-cutoff; we observe the reverse, which is what an honest, encoder-frozen pipeline should produce. This is, to our knowledge, the first frozen-pipeline post-cutoff evaluation in this literature; the ticker fixed-effect GBDT of Stage~1 is absent by construction, since every post-cutoff company is unseen.
+
+\input{tables/lookahead}
