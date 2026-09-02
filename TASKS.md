@@ -388,7 +388,7 @@
 
 ## Phase 7 — Post-cutoff data + lookahead study (~2 weeks, calendar-dependent)
 
-### T7.1 Fresh acquisition pipeline (scripts-not-data) — `[~]` *(started 2026-09-01: Earnings25 verification — Zenodo zip 12.04 GB downloading to `D:/ecvol-data/raw/earnings25/`, md5 5aa434b3…; open access, no key needed)*
+### T7.1 Fresh acquisition pipeline (scripts-not-data) — `[~]` *(2026-09-02: Earnings25 verification DONE → GO; `docs/earnings25_verification_2026-09.md`; ingestion next, two design calls open)*
 - **Goal:** ≥200 calls from 2025-Q4 / 2026-Q1 with audio + transcript + price joins.
 - **End result:** acquisition scripts (EarningsCall/EarningsCast API primary; company-IR-page fetcher fallback) + terms-of-use review note; local-only data with manifests.
 - **Acceptance test:** ≥200 calls pass the same ingestion gates as T1.4 (≥95% price join); ToS review written **before** any bulk pull; zero raw data committed.
@@ -398,6 +398,7 @@
   - [ ] Ingestion onto the common schema
   - [ ] Universe selection rule (e.g., S&P 500 members, pre-registered)
 - **Notes:** **2026-08-23 — primary source changed to Earnings25** (DECISIONS 2026-08-23 §6): Zenodo DOI 10.5281/zenodo.18762168, CC-BY-4.0, ~500 Q4-2025 S&P 500 calls / 498 h, held Jan–Feb 2026 ⇒ post-cutoff for the Qwen2.5 stack. The task's original primary source (EarningsCast) is dead (HTTP 410, verified 2026-08-13) and earningscall.biz audio is paywalled at $129/mo. **Gated on a one-day verification** that Earnings25 carries what the T1.3 price joins need — audio provenance is undisclosed upstream and per-call metadata completeness (exact datetimes?) is unknown. Self-collection (TX4) is deferred, so the ≥200-call acceptance bar is now met by Earnings25 rather than by our own scripts; the "scripts-not-data" framing applies to the *ingestion* scripts. Also feeds T9.4 (clean-audio ladder re-run).
+- **Verification (2026-09-02, `docs/earnings25_verification_2026-09.md`):** zip md5 verified, CC-BY-4.0 (ToS = attribution). 514 calls / 497.9 h, one record each with `Company`/`Country`/`ReleaseDate` (datetime, **consistent with UTC** — first measured call times in the project, feeds T9.2)/`Industry`/`MarketCap`, aligned speaker-attributed segments. No ticker: name→SEC-ticker via the T1.4 matcher + 8 overrides = 499/514; **472 are S&P 500 snapshot members (91.8%)**, ~20 more are 2025-Q4 members since dropped, **~25 calls (~5%) are name-collision look-alikes** (Grainger PLC, Domino's Pizza Group/Enterprises, Paramount Group, Vertex Inc., PTC India, Goldman Sachs BDC, Apple Hospitality REIT, …) → reason code at ingestion. Prices: archive ends 2022-06-30 → fresh yfinance pull needed (dry-checked, serves through 2026-02-27). **Audio is not clean:** 281 calls 44.1 kHz/64 kbps, 216 at 16 kHz/24 kbps, 16 at 11 kHz/16 kbps — 45% *below* FinCall's 40 kbps. **Design calls (user):** (a) re-scope T9.4 to a within-corpus 64-vs-≤24 kbps stratified re-run; (b) universe rule = S&P 500 membership on `ReleaseDate` (recommended) vs any US-listed ticker. Artifacts: `data/coverage/earnings25_{inventory,audio_probe}.csv`.
 
 ### T7.2 Frozen-pipeline post-cutoff evaluation — `[ ]`
 - **Goal:** the lookahead-bias experiment (DESIGN.md §7.4).
