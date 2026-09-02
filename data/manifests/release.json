@@ -1,0 +1,481 @@
+{
+  "archives": [
+    {
+      "archive": "ecvol-bench_fincall_f325864.zip",
+      "bytes": 81745562,
+      "corpus": "fincall",
+      "license": "Apache-2.0",
+      "members": [
+        {
+          "bytes": 197127,
+          "path": "coverage/fincall_timing.csv",
+          "sha256": "e476eefc9756285ce8018e8a54f5b1e07a267f391ae8757f78622e398cff5d00"
+        },
+        {
+          "bytes": 2284520,
+          "path": "fincall/audio_egemaps.parquet",
+          "sha256": "f2883c2e676245db14063bab0cfbcfce04960f6dae86e7faab9a465da1a48757"
+        },
+        {
+          "bytes": 22205316,
+          "path": "fincall/audio_emotion2vec.parquet",
+          "sha256": "a018dfc38a81fd1ad687356ef0c95400e8cc181958cbf221bd3865aa1117a762"
+        },
+        {
+          "bytes": 22223110,
+          "path": "fincall/audio_wavlm.parquet",
+          "sha256": "e35f582160a810a524452113a822c85f4f827b36b2b2bb0989394d108e067b81"
+        },
+        {
+          "bytes": 493102,
+          "path": "fincall/targets.parquet",
+          "sha256": "4173ed5c12c6d06753dc435b48b1b0f9d563ff8161c8c2756ed54070b4813685"
+        },
+        {
+          "bytes": 480003,
+          "path": "fincall/targets_calendar.parquet",
+          "sha256": "06c88b05cce2a68748f0f9b6ee1a98fff692f2b100a346cec40c25de9b2266b6"
+        },
+        {
+          "bytes": 473535,
+          "path": "fincall/targets_measured.parquet",
+          "sha256": "dd10d46fa2b4a41c2564eadcf6f084871394997037af8ff81e7bf00744c64ef0"
+        },
+        {
+          "bytes": 462988,
+          "path": "fincall/targets_measured_calendar.parquet",
+          "sha256": "ffba2000bdc3ff96972d10c0da38359b6ce75605594e165b75730819d5929f17"
+        },
+        {
+          "bytes": 64362698,
+          "path": "fincall/text_embeddings.parquet",
+          "sha256": "14b714be7849820b4dd73763849e9984c146539d829bc40582e61b5e92f36b71"
+        },
+        {
+          "bytes": 1087548,
+          "path": "fincall/text_finbert.parquet",
+          "sha256": "03b6c038037d54640787c232da7ea602be59d0edb1ea60a3eb5de5899e84a0d5"
+        },
+        {
+          "bytes": 335000,
+          "path": "fincall/text_surface.parquet",
+          "sha256": "df27aad283d7ff745bc762a71bb56d46621d7582b329ff3abdb9af25b9465e38"
+        },
+        {
+          "bytes": 275163,
+          "path": "identity/fincall_identity.csv",
+          "sha256": "604a4d621824c4b1aec92ea734465fd72b614cc620ff959cdccebaca164ea20c"
+        },
+        {
+          "bytes": 301,
+          "path": "manifests/fincall_audio_egemaps.json",
+          "sha256": "32ef5d74aab443f90e352a7393270561c4bf3421bd9708051ec79bd951075f5f"
+        },
+        {
+          "bytes": 329,
+          "path": "manifests/fincall_audio_emotion2vec.json",
+          "sha256": "6179e73fc6708c07f189d05382439dbe604eb19a57f4fb1a3157d446c667d4bb"
+        },
+        {
+          "bytes": 304,
+          "path": "manifests/fincall_audio_wavlm.json",
+          "sha256": "1df9fc8c2eb608aa793c3e1bf0113235938788873d2c51be81b1996a77ce5381"
+        },
+        {
+          "bytes": 340,
+          "path": "manifests/fincall_calls.json",
+          "sha256": "463220c1346d1d96b5476c63c3d18097993e84441e0661dc0acec10eed680dfd"
+        },
+        {
+          "bytes": 268,
+          "path": "manifests/fincall_chunks.json",
+          "sha256": "cccc7eefda3e5dbcce0b1f296a2cdb6f56453f62089d5369ce01d0d3b8a0b767"
+        },
+        {
+          "bytes": 421,
+          "path": "manifests/fincall_llm_features__bartowski__Qwen2.5-7B-Instruct-GGUF_Q4_K_M.json",
+          "sha256": "9cd3e988a5e60166867bff8837f62792dd821b08e590653701e37fbe572d4d69"
+        },
+        {
+          "bytes": 417,
+          "path": "manifests/fincall_llm_features__bartowski__Qwen2.5-7B-Instruct-GGUF_Q8_0.json",
+          "sha256": "cda4c3cb3019d53b1724c31e3617038d8e8f8b8d3076573e231c6ad283c6b983"
+        },
+        {
+          "bytes": 736,
+          "path": "manifests/fincall_targets.json",
+          "sha256": "a01ee576a2faac309146f3d7f692164cb429241a5af503dab956ed906a30ab25"
+        },
+        {
+          "bytes": 780,
+          "path": "manifests/fincall_targets_measured.json",
+          "sha256": "23ca9ad0da62d0ae13dc26c0fb8495e0afca2c52619877491be200b1709389fc"
+        },
+        {
+          "bytes": 326,
+          "path": "manifests/fincall_text_embeddings.json",
+          "sha256": "6498c6462da438036f4fd6d8477cb2c40dc478ae9fb21021d2234068386b3dcb"
+        },
+        {
+          "bytes": 321,
+          "path": "manifests/fincall_text_finbert.json",
+          "sha256": "5a24c76e46989bc9a19615cdcdc298cadfc475cec7869663807152eb7686b45f"
+        },
+        {
+          "bytes": 288,
+          "path": "manifests/fincall_text_surface.json",
+          "sha256": "37192f63744ab68447e3a23bd5cdb888e03db579c5c685f44af772ef1564b101"
+        },
+        {
+          "bytes": 76638,
+          "path": "splits/fincall_combined.csv",
+          "sha256": "06a9bd3529247aac9ce960e154b33bd0a0651764045df819cd18292fbd71ba96"
+        },
+        {
+          "bytes": 72459,
+          "path": "splits/fincall_temporal.csv",
+          "sha256": "4db756bf99a1c05a5b9ae70702432be6a10c02865827336fc93504ec4ad955a9"
+        },
+        {
+          "bytes": 71964,
+          "path": "splits/fincall_ticker_disjoint.csv",
+          "sha256": "22be6d2c0d900de5632b41a6fbb048bdf1d4bf686511cca27b0d44dcbe67e378"
+        }
+      ],
+      "sha256": "dbe25038a44dc84b33615f526436fda6fdf57244c112e86d2cdd6d44b32b170e"
+    },
+    {
+      "archive": "ecvol-bench_maec_f325864.zip",
+      "bytes": 36903943,
+      "corpus": "maec",
+      "license": "CC-BY-SA-4.0",
+      "members": [
+        {
+          "bytes": 283158,
+          "path": "coverage/maec_timing.csv",
+          "sha256": "63a8115a5ea293b121bd57355577127affa366e81c8b113609560d96aaddb4da"
+        },
+        {
+          "bytes": 583893,
+          "path": "maec/targets.parquet",
+          "sha256": "90ce6dd4aded9cce33fc1f96227caf6006330b4f818cd3b6a7460bd0af654a72"
+        },
+        {
+          "bytes": 566220,
+          "path": "maec/targets_calendar.parquet",
+          "sha256": "e6b94c38b2ca33e36c2d6f57bcbeadc3d7e67786c36a39bad536bc7ee927ef53"
+        },
+        {
+          "bytes": 595418,
+          "path": "maec/targets_measured.parquet",
+          "sha256": "1fdc36a541e4224a4942b73127d85db2aeab54f21e35eb65648ff3e6fa6be7be"
+        },
+        {
+          "bytes": 581610,
+          "path": "maec/targets_measured_calendar.parquet",
+          "sha256": "2e51be4c6b3e1e385d345902f7e11d3b72aafb68666182db3f09214931dc7996"
+        },
+        {
+          "bytes": 63311684,
+          "path": "maec/text_embeddings.parquet",
+          "sha256": "54ab00869558c7823df4ded7cfa09b42c073e624d826f4aaaf5a0da832d3f2c6"
+        },
+        {
+          "bytes": 301389,
+          "path": "maec/text_finbert.parquet",
+          "sha256": "c8cd942359866ad4a73b770b651a6c7cee0e6eea52ea30282216d87f099454e1"
+        },
+        {
+          "bytes": 282962,
+          "path": "maec/text_surface.parquet",
+          "sha256": "c36bfd457718c8f5f49c09154432387e67609d8945fc920cf0b9ec80ced47301"
+        },
+        {
+          "bytes": 324,
+          "path": "manifests/maec_calls.json",
+          "sha256": "46b025ef9f41f2c92a9cb6f5ce579d272b741facebbb1f41edbe750b9730d2f7"
+        },
+        {
+          "bytes": 265,
+          "path": "manifests/maec_chunks.json",
+          "sha256": "2bb45456fbfbb326cce41fcc5c0d8228e70d6ad1df03c142c1125281939c7152"
+        },
+        {
+          "bytes": 756,
+          "path": "manifests/maec_targets.json",
+          "sha256": "c1c3af870e236dfb2e6ddf9c287aed418b8b6bcbb68d9c7c414e48e3b052c9fa"
+        },
+        {
+          "bytes": 768,
+          "path": "manifests/maec_targets_measured.json",
+          "sha256": "6f8c3208fff4f883dbd0ba2c8bb52acaa1dc12051e9e3fb2d500e102c40a96b9"
+        },
+        {
+          "bytes": 323,
+          "path": "manifests/maec_text_embeddings.json",
+          "sha256": "10fcdbe46d1ade57bad8eda169cb593377852e3034322859dbedfa39c26dfc1a"
+        },
+        {
+          "bytes": 318,
+          "path": "manifests/maec_text_finbert.json",
+          "sha256": "5f6ee74a5f2029adff82ee83e513b4508d8a49eeb1baa84cdbf6d81e58e2afda"
+        },
+        {
+          "bytes": 285,
+          "path": "manifests/maec_text_surface.json",
+          "sha256": "d67b693365ce336fde8ca6006aa8fc79b1d8bf4a9fd5ebca5b8257a820804434"
+        },
+        {
+          "bytes": 95924,
+          "path": "splits/maec_combined.csv",
+          "sha256": "0892c65e36129c3ddcc05d6b8c96f9ebc98ac3d41cd92448143871211302e4ed"
+        },
+        {
+          "bytes": 92041,
+          "path": "splits/maec_temporal.csv",
+          "sha256": "96a96bb4b5aa0a01273d67b73555c998925879310a8ccb5f072953003f47c49a"
+        },
+        {
+          "bytes": 90874,
+          "path": "splits/maec_ticker_disjoint.csv",
+          "sha256": "9a60b97371ec48c7ba8416b9ffb254ba5e86eeaabaf1109b90cb5275c5dae3ea"
+        }
+      ],
+      "sha256": "4014a78abd41435570ee8f0532f24c30f048a0275e8c54dfe2c3ac785114ab32"
+    },
+    {
+      "archive": "ecvol-bench_earnings25_f325864.zip",
+      "bytes": 11563289,
+      "corpus": "earnings25",
+      "license": "CC-BY-4.0",
+      "members": [
+        {
+          "bytes": 36520,
+          "path": "coverage/earnings25_call_times.csv",
+          "sha256": "d2c902368efd83ba3c2ca204bda11039710b1bf3b9a015d286dd00146926ca37"
+        },
+        {
+          "bytes": 312,
+          "path": "coverage/earnings25_ingest_report.csv",
+          "sha256": "507fbb4ffe7a36c6c08a4209fa19d135116aabe5eaaf641526f7a63e5b91374c"
+        },
+        {
+          "bytes": 60343,
+          "path": "coverage/earnings25_inventory.csv",
+          "sha256": "6dd1b56f09b022da4ab8792f7eaad45d95e3ee03f7ab4345dbb059c66e81d836"
+        },
+        {
+          "bytes": 40110,
+          "path": "coverage/earnings25_timing.csv",
+          "sha256": "eb5bcebed78971dc8b62f28180ec0654aeb770d3eb35acc3fd84eba378ccf390"
+        },
+        {
+          "bytes": 454548,
+          "path": "earnings25/audio_egemaps.parquet",
+          "sha256": "1fc893f45815a5eaf009937ead5cfc389f6163e64c8a6c6339c626b4259e3a6a"
+        },
+        {
+          "bytes": 4499607,
+          "path": "earnings25/audio_emotion2vec.parquet",
+          "sha256": "5acddfca925cab5f10c414276d55d537a29d8d062f86a79cc50fdcbcaf9d407d"
+        },
+        {
+          "bytes": 4517441,
+          "path": "earnings25/audio_wavlm.parquet",
+          "sha256": "242ce881b4f6ed1356a549b40fe8401339980a5ae99ff79f36cccae11722ff0b"
+        },
+        {
+          "bytes": 94267,
+          "path": "earnings25/targets.parquet",
+          "sha256": "39a8ad74e9920dbe3b492ea1bf1d724b2964032ed24a2548a20bff17d343cdbf"
+        },
+        {
+          "bytes": 91837,
+          "path": "earnings25/targets_calendar.parquet",
+          "sha256": "8f1037b97da795ae0bb858eca6654fd396894c438bbb8f9905668e9a1580a31e"
+        },
+        {
+          "bytes": 94237,
+          "path": "earnings25/targets_measured.parquet",
+          "sha256": "1f88ef9119ea30b3f1f70f1bce994eee4dd0842f9bf494f39e7a8d3b3730855d"
+        },
+        {
+          "bytes": 92088,
+          "path": "earnings25/targets_measured_calendar.parquet",
+          "sha256": "196f1f4317474b17262723b157d432b55b55e72ca5302dac33538983a32dacb1"
+        },
+        {
+          "bytes": 8982579,
+          "path": "earnings25/text_embeddings.parquet",
+          "sha256": "744ea5d6f1eaa11e18b802064cebf0d735378d4efe151f1362549a739f49c97a"
+        },
+        {
+          "bytes": 74686,
+          "path": "earnings25/text_finbert.parquet",
+          "sha256": "215f5d0b6c7fb20fbcba2ade514072941bb8af47338afbe9ce73e7714b15e82b"
+        },
+        {
+          "bytes": 47675,
+          "path": "earnings25/text_surface.parquet",
+          "sha256": "228eed107dac58a778951e2ceb97bb6354dbf73ac1f953fffdad701545b5788b"
+        },
+        {
+          "bytes": 304,
+          "path": "manifests/earnings25_audio_egemaps.json",
+          "sha256": "40d742d07fc8112d6ed26141d877fae976ccb420842b5a5feb191a99f0a1660f"
+        },
+        {
+          "bytes": 332,
+          "path": "manifests/earnings25_audio_emotion2vec.json",
+          "sha256": "1a8bc6e2ffe82b869e693a80a7da6f29a5ada199c470f5b6ade35104389f9d40"
+        },
+        {
+          "bytes": 307,
+          "path": "manifests/earnings25_audio_wavlm.json",
+          "sha256": "439eb699d99df2b8748e9525735e22813620ceb62d8df1c14c5afa3689b7d230"
+        },
+        {
+          "bytes": 339,
+          "path": "manifests/earnings25_calls.json",
+          "sha256": "4cc192d87783e615b7774834afb06ebbbb52e7cff64b6a34a003e603897dfc6a"
+        },
+        {
+          "bytes": 271,
+          "path": "manifests/earnings25_chunks.json",
+          "sha256": "01857b10d390530fa11ad904ae08bf0699ec1f91b8a9a381ec3dad41d4e8a911"
+        },
+        {
+          "bytes": 2471,
+          "path": "manifests/earnings25_raw.json",
+          "sha256": "2eef20c31cb2b52d0fd21367e438137f32f0ae1319eb353f6f4cce2f7c2d58a4"
+        },
+        {
+          "bytes": 780,
+          "path": "manifests/earnings25_targets.json",
+          "sha256": "9134edaa40064e86dc2372ae5e1b62c1dc8646d54a853bcd8208b0c306dd238e"
+        },
+        {
+          "bytes": 792,
+          "path": "manifests/earnings25_targets_measured.json",
+          "sha256": "557087459baf3c346a2b584d99a93dd88b1c5cc39e455b6013f1115712ff88c3"
+        },
+        {
+          "bytes": 329,
+          "path": "manifests/earnings25_text_embeddings.json",
+          "sha256": "c5eb3337fac1ccf4127ca492222f3f4a374451bf907cf5cb996d3dc1d683a0ef"
+        },
+        {
+          "bytes": 324,
+          "path": "manifests/earnings25_text_finbert.json",
+          "sha256": "e0a680800cac4c807bdf7a5a704e47c7a203b419fe4f4fa70cbe0957cfd7d00e"
+        },
+        {
+          "bytes": 291,
+          "path": "manifests/earnings25_text_surface.json",
+          "sha256": "c65c67dfeac8048b148defc131cdbc48d49fcf41b0f7b9d0c3eb2ad6c8c046d0"
+        },
+        {
+          "bytes": 16654,
+          "path": "splits/earnings25_combined.csv",
+          "sha256": "d61cd1efb39b001826c68492e98e1aa8632bbc343571c77a3fdd5ce6b148219c"
+        },
+        {
+          "bytes": 15980,
+          "path": "splits/earnings25_temporal.csv",
+          "sha256": "de7f7b8e27b483400a9fb80b0ac5547860567163dacdc916095880b611a360f7"
+        },
+        {
+          "bytes": 15130,
+          "path": "splits/earnings25_ticker_disjoint.csv",
+          "sha256": "6179c823d2571349f6eda6ebeafb4ec2072e257e31031f4a59e5efd58b8fabf5"
+        }
+      ],
+      "sha256": "44c31570d764eb2e00091c7ee9c8bf5488cd271487e4b2222c86e59829095323"
+    },
+    {
+      "archive": "ecvol-bench_ec_f325864.zip",
+      "bytes": 7533310,
+      "corpus": "ec",
+      "license": "terms pending (LICENSE-DATA.md open item 1); pooled per-call features only",
+      "members": [
+        {
+          "bytes": 121615,
+          "path": "ec/targets.parquet",
+          "sha256": "9f3d2c6f9fdc9a8f23164e285d6ac195e1bf022647770b5238c86dd2add2884d"
+        },
+        {
+          "bytes": 118357,
+          "path": "ec/targets_calendar.parquet",
+          "sha256": "9382bf3777a304dfe5568f67e930bc86b2b2793e676fdbf9b9af755aecf71f1c"
+        },
+        {
+          "bytes": 11230726,
+          "path": "ec/text_embeddings.parquet",
+          "sha256": "ea821a5ca144e14bff682635957e1fdc8ec0b12b66e2a71291e911050702e422"
+        },
+        {
+          "bytes": 67446,
+          "path": "ec/text_finbert.parquet",
+          "sha256": "e238a8452e523c9721a222ba332ddc6e6ceed436a87448e01a7cf4442bfcf4b4"
+        },
+        {
+          "bytes": 71964,
+          "path": "ec/text_surface.parquet",
+          "sha256": "b208d34a504f491b785384bfcd54d37be45d33f99f340e575b47509f4f967183"
+        },
+        {
+          "bytes": 348,
+          "path": "manifests/ec_calls.json",
+          "sha256": "f0a82584a403657dca7ad1253d73f7eed142f6b7f4242b01ff0e60c0aa43b7b8"
+        },
+        {
+          "bytes": 272,
+          "path": "manifests/ec_chunks.json",
+          "sha256": "25ac195cd9599f7eab1602b0ae79ea59cc3b21ccc12bfd7e846ea5f602057385"
+        },
+        {
+          "bytes": 748,
+          "path": "manifests/ec_targets.json",
+          "sha256": "879d95e6d142706890d50512dc1126242a0b2dfc453be39216289227fa1ece70"
+        },
+        {
+          "bytes": 321,
+          "path": "manifests/ec_text_embeddings.json",
+          "sha256": "d405702800c3566f020770e1350fc0af292a6b47d1efc2c9c6d836b794a0b490"
+        },
+        {
+          "bytes": 316,
+          "path": "manifests/ec_text_finbert.json",
+          "sha256": "4cc0a18cf1e18956c693279a89c43ac0960514ea00370e69608f649f3d16134f"
+        },
+        {
+          "bytes": 283,
+          "path": "manifests/ec_text_surface.json",
+          "sha256": "9aea8842946c0b63d30e258c77990451f9ba997e210f7017388e86fe0cbbfc90"
+        },
+        {
+          "bytes": 27235,
+          "path": "splits/ec_combined.csv",
+          "sha256": "3f458e2791e03d1c53ce649cda43c37c59cdded193443aa7198a7747f64ebf1a"
+        },
+        {
+          "bytes": 25893,
+          "path": "splits/ec_published.csv",
+          "sha256": "7445ace7b3cd0b7a6cecdbefc7676f5ddbd91bc92712660a7153bd265c7b4539"
+        },
+        {
+          "bytes": 26424,
+          "path": "splits/ec_temporal.csv",
+          "sha256": "05f17847bb59eda90c42a89ca5b4cca0e5dbf2acb037643ec5cba86b8ec5a8e2"
+        },
+        {
+          "bytes": 26038,
+          "path": "splits/ec_ticker_disjoint.csv",
+          "sha256": "5cb4aa2bfcf1657e5557b6218980951f4d2713d4a3868ec26206c515fb77e874"
+        }
+      ],
+      "sha256": "9a0853c4e2b29e5fa96bd57d4531162b5d5b50790dcee22031ab91d89dd5e4d1"
+    }
+  ],
+  "tag": "f325864"
+}
