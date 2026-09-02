@@ -1,6 +1,7 @@
-% Curated from data/results/result_table_7.csv (run 20260902T173818Z-evaluate-lookahead-aba100fd).
-% R^2_OOS vs persistence, level-v target. "in" = FinCall temporal test (2020-21, in-cutoff);
-% "post" = all 475 Earnings25 calls (Q4 2025), same frozen heads; CI = month-cluster bootstrap.
+% Curated from data/results/result_table_7.csv (run 20260902T204206Z-evaluate-lookahead-aba100fd;
+% byte-identical to run 20260902T173818Z). R^2_OOS vs persistence, level-v target.
+% "in" = FinCall temporal test (2021, in-cutoff); "post" = all 475 Earnings25 calls
+% (Jul-Dec 2025), same frozen heads; CI = month-cluster bootstrap.
 \begin{table}[t]
 \centering
 \small
@@ -20,10 +21,11 @@ Stage / head & segment & $\tau$=3 & $\tau$=7 & $\tau$=15 & $\tau$=30 \\
 \end{tabular}
 \caption{\textbf{Frozen-pipeline post-cutoff evaluation} (T7.2, Result Table 7). Each
 head is fit once on FinCall's temporal training split and scored unchanged in-cutoff
-(FinCall test) and post-cutoff (Earnings25, 475 calls). No head degrades
-post-cutoff; the in-cutoff test segment falls in the 2020 regime and is the harder
-one. The ordering is preserved out of sample: HAR-RV beats every content head at
-every horizon, and no head beats persistence at $\tau{=}30$. Month-cluster
-bootstrap CIs and the $\Delta v$ rows are in the released CSV.}
+(FinCall test, 2021) and post-cutoff (Earnings25, 475 calls, 2025). No head
+that was competitive in-cutoff degrades; only the fusion ridge is unstable at
+$\tau{=}3$. The ordering is preserved out of sample: HAR-RV beats every content
+head at every horizon, and at $\tau{=}30$ only HAR-RV edges past persistence, with
+a CI that includes zero. Month-cluster bootstrap CIs and the $\Delta v$ rows are in
+the released CSV.}
 \label{tab:lookahead}
 \end{table}

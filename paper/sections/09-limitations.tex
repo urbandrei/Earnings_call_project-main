@@ -1,14 +1,11 @@
 \section*{Limitations}
 \addcontentsline{toc}{section}{Limitations}
 
-\textbf{Pending results.} The substrate-audit numbers in \S\ref{sec:substrate} were
-established in a one-off audit and await regeneration by \texttt{ecvol audit
-substrate}; the reproduction study (\S\ref{sec:results-repro}), the calendar-day
-recomputation (\S\ref{sec:results-convention}), the clean-audio re-run
-(\S\ref{sec:results-clean-audio}), and the post-cutoff lookahead
-(\S\ref{sec:results-lookahead}) are owed. Until the lookahead lands, results on
-2019--2021 calls from models with later training cutoffs carry contamination risk
-by default. \textbf{Reproductions run on their own data.} Each prior model is
+\textbf{One post-cutoff quarter.} The lookahead (\S\ref{sec:results-lookahead})
+rests on 475 calls from a single calm quarter and a different universe from the
+training corpus, so it bounds contamination in the ordering of models, not in
+their absolute scores; a second post-cutoff season would tighten it.
+\textbf{Reproductions run on their own data.} Each prior model is
 re-evaluated on its original dataset, not on \ecvol-bench, to keep ``the model
 fails'' separable from ``the model does not transfer''; two reproductions carry
 known costs (KeFVP's MAEC embeddings are unavailable upstream; DialogueGAT stops at
@@ -18,17 +15,18 @@ which is why the consolidated grid uses deterministic ridge/structural canonical
 MLP cells in the appendix should be read as seed means with that caveat.
 \textbf{The past-vol covariate block is not HAR.} The learned
 $[v_{\mathrm{pre}}, \mathrm{RV}_{1/5/22}]$ ridge used inside Stage-2--4 heads
-overfits the COVID regime shift on the temporal split ($\Rtwo{-}2.0$ at $\tau{=}15$)
+overfits the COVID regime shift on the temporal split ($\Rtwo{-}2.9$ at $\tau{=}15$)
 where the rigid OLS HAR-RV stays robust ($+0.21$); the two are labelled distinctly
 throughout, and the gap is itself a small finding about structural vs.\
 unconstrained conditioning under regime shift. \textbf{Short-horizon \Rtwo{}
 inflation.} The persistence denominator is noisiest at $\tau{=}3$ (its MSE is
 $\sim$2.8$\times$ the $\tau{=}7$ one), so short-horizon \Rtwo{} gains are easier to
-show and should be read accordingly. \textbf{Timestamps.} No call in either corpus
-carries a measured time of day, so every target rests on a flagged after-hours
-rule; mis-dated calls add noise to short-horizon targets, and the sensitivity of
-the results to that rule is unmeasured until the retrofit of \S\ref{sec:timing}
-lands. \textbf{Regime sensitivity.} FinCall-Surprise spans COVID; the temporal
+show and should be read accordingly. \textbf{Timestamps.} The primary targets rest on a flagged after-hours
+rule that the EDGAR retrofit (\S\ref{sec:timing}) shows is wrong for 53--59\% of
+calls; the measured-anchor targets are shipped beside them, HAR-RV is insensitive
+to the choice, and the learned ridge heads are not
+(Table~\ref{tab:lookahead-measured}). Re-baselining every table on the measured
+anchor is deferred to the release decision because it moves split boundaries. \textbf{Regime sensitivity.} FinCall-Surprise spans COVID; the temporal
 $\tau{=}30$ baseline failure shows long-horizon level forecasts are
 regime-sensitive, which is why we emphasise the identity-robust \dv{} target and
 report per-year breakdowns. \textbf{MAEC coverage.} The 75.4\% price-join rate

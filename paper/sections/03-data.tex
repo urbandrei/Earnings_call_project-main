@@ -53,10 +53,10 @@ third, post-cutoff corpus for the lookahead and clean-audio experiments.
 calls spanning 2019--2021 with full MP3 audio, JSON transcripts, and slides.
 \textbf{MAEC} \citep{li2020maec} (secondary; CC-BY-SA-4.0) contains $\sim$3{,}443
 calls over 2015--2018 (S\&P~1500) with sentence-aligned audio features and
-transcripts but no raw audio. \textbf{Earnings25} \TODO{cite; Zenodo
-10.5281/zenodo.18762168} (CC-BY-4.0; $\sim$500 Q4-2025 S\&P~500 calls, 498\,h of
-audio, held January--February 2026) is post-cutoff for every model we use and
-carries webcast MP3 audio at 64\,kbps for 281 calls and $\le$24\,kbps for 233; it is
+transcripts but no raw audio. \textbf{Earnings25} \citep{jiang2026earnings25} (CC-BY-4.0; 514 S\&P~500 calls, 498\,h of audio, held July--December 2025 with
+97\% in October--December) is post-cutoff for every model we use and carries
+webcast MP3 audio at 64\,kbps for 281 calls and $\le$24\,kbps for 232 (one at
+32\,kbps); it is
 the post-cutoff corpus (\S\ref{sec:experiments}). We admit a call when its company
 resolves to an SEC ticker that was an S\&P~500 constituent on the release date
 (476 of 514; the rest are name-collision look-alikes such as Grainger PLC or
@@ -73,8 +73,8 @@ identity controls of \S\ref{sec:experiments} runnable on the corpus at all.
 \subsection{Price data and targets}
 \label{sec:targets}
 Daily adjusted-close OHLCV is obtained from a free, no-account source and
-cross-checked against Tiingo on a random ticker sample (adjusted-return correlation
-$>0.999$); delisted or unmatched tickers produce an explicit coverage report rather
+cross-checked against Tiingo on a 50-ticker random sample (47 pass, three flagged
+and documented, minimum adjusted-return correlation 0.976); delisted or unmatched tickers produce an explicit coverage report rather
 than being silently dropped. After price joining, FinCall-Surprise yields 2{,}424
 calls with at least one target (97.1\% join rate) and MAEC yields 2{,}578 (75.4\%; a
 documented shortfall driven by 2015--2018 delistings), for a combined modelling set
@@ -131,10 +131,12 @@ call date, this affects the published targets as much as ours. We keep the
 after-hours targets as the primary set for every result in \S\ref{sec:results}
 and ship the measured-anchor targets beside them (\texttt{targets\_measured}),
 with a sensitivity table (\texttt{timing\_sensitivity.csv}): persistence MSE rises
-1--8\% on FinCall and up to 26\% on MAEC at $\tau{=}3$ once the reaction session
-enters the post window, while the HAR-RV $R^2_{\mathrm{OOS}}$ moves by at most
-$\pm0.08$; the target correlation between anchors is 0.97 for $v_{\mathrm{post}}$
-and 0.80 for $\Delta v$ on Earnings25. Whether to re-baseline on the measured
+by up to 8\% on FinCall and up to 26\% on MAEC at $\tau{=}3$ once the reaction
+session enters the post window, while the HAR-RV $R^2_{\mathrm{OOS}}$ moves by at
+most 0.04 on FinCall and 0.11 on MAEC and Earnings25; the target correlation
+between anchors on Earnings25 is 0.81--0.97 for $v_{\mathrm{post}}$ and 0.68--0.80
+for $\Delta v$ across horizons. The learned ridge heads are more anchor-sensitive
+than HAR-RV (\S\ref{sec:results-lookahead}). Whether to re-baseline on the measured
 anchor is a release decision we flag rather than take here, since it moves every
 split boundary.
 

@@ -56,15 +56,18 @@ fusion. All fusion heads are $<$5M parameters.
 
 \paragraph{Reproduced prior models.}
 \label{sec:repro-protocol}
-Of $\sim$20 papers in the lineage of \S\ref{sec:related}, five release code that
-still runs: HTML \citep{yang2020html}, Same-Company-Same-Signal \citep{scss2024},
-KeFVP \citep{niu2023kefvp}, DialogueGAT \citep{sang2022dialoguegat}, and VolTAGE
-\citep{sawhney2020voltage}. We re-run each \emph{on its own original dataset}, first
-reproducing the published-split number within a stated tolerance, then evaluating
-the same model under an embargoed and a \tickerdisjoint{} split of that dataset,
-so that ``the model fails'' cannot be confused with ``the model does not
-transfer'' (RQ3). The remaining fifteen---among them the strongest recent positive
-claims \citep{cao2024ecc,soundofrisk2025}---have no code, empty or unpushed
-repositories, closed-API dependencies, or a stated inability to run; we tabulate
+Of the seventeen papers in the lineage of \S\ref{sec:related} that we probe
+(Table~\ref{tab:code-audit}), two release code that still runs end to end: HTML
+\citep{yang2020html} and Same-Company-Same-Signal \citep{scss2024}. We re-run each
+\emph{on its own original dataset}, first reproducing the published-split number
+within a stated tolerance, then evaluating the same model under an embargoed and a
+\tickerdisjoint{} split of that dataset, so that ``the model fails'' cannot be
+confused with ``the model does not transfer'' (RQ3). Six more---KeFVP
+\citep{niu2023kefvp}, DialogueGAT \citep{sang2022dialoguegat}, and VolTAGE
+\citep{sawhney2020voltage} among them---ship partial code whose missing
+preprocessing, features, or checkpoints we reason-code rather than re-implement;
+the remaining nine---among them the strongest recent positive claims
+\citep{cao2024ecc,soundofrisk2025}---have no code, empty or unpushed repositories,
+closed-API dependencies, or a stated inability to run; we tabulate
 each with the evidence (Table~\ref{tab:repro}; Table~\ref{tab:code-audit} in
 Appendix~\ref{app:complete}).

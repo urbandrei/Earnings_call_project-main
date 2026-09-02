@@ -9,7 +9,7 @@
 \toprule
 Stratum & calls (test) & & $\tau$=3 & $\tau$=7 & $\tau$=15 & $\tau$=30 \\
 \midrule
-\multirow{3}{*}{All (64 + $\le$24 kbps)} & \multirow{3}{*}{476 (95)} & real & 0.443 & 0.203 & 0.080 & 0.108 \\
+\multirow{3}{*}{All} & \multirow{3}{*}{514 (95)} & real & 0.443 & 0.203 & 0.080 & 0.108 \\
  & & global shuffle & 0.351 & 0.150 & 0.040 & 0.095 \\
  & & \textbf{increment} & \textbf{0.093} & \textbf{0.052} & \textbf{0.041} & \textbf{0.014} \\
 \midrule
@@ -17,7 +17,7 @@ Stratum & calls (test) & & $\tau$=3 & $\tau$=7 & $\tau$=15 & $\tau$=30 \\
  & & global shuffle & 0.121 & 0.113 & 0.018 & 0.138 \\
  & & \textbf{increment} & \textbf{0.033} & \textbf{0.004} & \textbf{0.080} & \textbf{$-$0.015} \\
 \midrule
-\multirow{3}{*}{$\le$24 kbps} & \multirow{3}{*}{233 (55)} & real & 0.101 & 0.198 & 0.023 & 0.066 \\
+\multirow{3}{*}{$\le$24 kbps} & \multirow{3}{*}{232 (55)} & real & 0.101 & 0.198 & 0.023 & 0.066 \\
  & & global shuffle & 0.141 & 0.180 & $-$0.044 & 0.025 \\
  & & \textbf{increment} & \textbf{$-$0.040} & \textbf{0.018} & \textbf{0.068} & \textbf{0.040} \\
 \bottomrule
@@ -25,7 +25,10 @@ Stratum & calls (test) & & $\tau$=3 & $\tau$=7 & $\tau$=15 & $\tau$=30 \\
 \caption{\textbf{Audio on Earnings25 by bitrate stratum} (T9.4; $R^2_{\mathrm{OOS}}$ vs.\
 persistence, $\Delta v$, ridge on WavLM + past-vol, ticker-disjoint test). The
 within-ticker shuffle is the identity here (one call per company), so the global
-shuffle is the control. The audio increment never exceeds 0.09 and has no
+shuffle is the control. Call counts are inventory calls with audio at that bitrate
+(one call at 32\,kbps sits in neither stratum); the heads see the 475 admitted,
+priced calls, and the test count is their ticker-disjoint segment. The audio
+increment never exceeds 0.09 and has no
 consistent sign across strata; the 64 kbps stratum is not better than the
 $\le$24 kbps one. Full grid (eGeMAPS, emotion2vec+, fusion, MLP heads, all
 targets): \texttt{result\_table\_3\_earnings25.csv}.}

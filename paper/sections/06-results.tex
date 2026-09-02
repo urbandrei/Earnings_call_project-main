@@ -52,10 +52,11 @@ identity the corpus omits (\S\ref{sec:corpora}).
 \input{tables/controls}
 
 \subsection{Audio content (Stage 3)}
-Table~\ref{tab:audio} extends the same design to audio. Audio-\emph{only} heads
-(eGeMAPS, WavLM-Large, emotion2vec+, ridge or MLP) sit at \Rtwo{} zero on every
-split and horizon ($-0.06$ to $+0.03$): frozen audio content alone carries no
-measurable \dv{} signal. Adding past-volatility covariates reproduces the Stage-2
+Table~\ref{tab:audio} extends the same design to audio. Audio-\emph{only} ridge heads
+(eGeMAPS, WavLM-Large, emotion2vec+) sit at \Rtwo{} zero on the temporal and
+\tickerdisjoint{} splits ($-0.06$ to $+0.03$), and their MLP counterparts fall
+well below persistence at long horizons (to $-1.3$ at $\tau{=}30$): frozen audio
+content alone carries no measurable \dv{} signal. Adding past-volatility covariates reproduces the Stage-2
 pattern---the only DM-significant wins over Stage-1 are past-vol-augmented heads on
 the \tickerdisjoint{} split. The audio-shuffle control (bottom block) is decisive:
 replacing each test call's audio with a random \emph{other company's} call leaves
@@ -75,8 +76,8 @@ audio; \S\ref{sec:results-clean-audio} is the test of whether it transfers.
 \subsection{Fusion and the consolidated grid (Stage 4)}
 Gated fusion and late-fusion stacking over all frozen modalities answer RQ2 in the
 negative: \emph{multimodal is not better than the best unimodal model}. Only one of
-48 \dv{} test cells beats Stages 1--3 DM-significantly (gated fusion, temporal
-$\tau{=}7$, $\Rtwo{=}+0.019$---negligible), and the best fusion cell overall
+48 \dv{} test cells beats Stages 1--3 DM-significantly (gated fusion with
+past-vol covariates, \tickerdisjoint{} $\tau{=}7$, $\Rtwo{=}+0.019$---negligible), and the best fusion cell overall
 (stacking, \tickerdisjoint{} $\tau{=}3$, $\Rtwo{=}0.436$) is not significant
 vs.\ Stage-1 ($p{=}0.13$). Table~\ref{tab:grid} consolidates the ladder with one
 pre-registered canonical model per stage and Holm-corrected confirmatory tests. Two
@@ -143,7 +144,7 @@ what the published protocol leaves unmeasured. The second entry is Same-Company-
 \subsection{Audio by bitrate: the Stage-3 ladder on Earnings25}
 \label{sec:results-clean-audio}
 Earnings25 audio is webcast MP3 at 64 kbps for 281 calls and at 24 kbps or
-below for 233 (\S\ref{sec:corpora}), so it cannot test ``clean'' audio; it can
+below for 232 (\S\ref{sec:corpora}), so it cannot test ``clean'' audio; it can
 test whether the FinCall audio result depends on bitrate \emph{within one quarter},
 with the same extractors, heads and controls as Table~\ref{tab:audio}. A
 single-quarter corpus spans about 105 sessions, so the embargoed temporal split
@@ -163,6 +164,46 @@ stack, audio is as inert beyond past volatility as it was on FinCall.
 
 \subsection{Post-cutoff lookahead}
 \label{sec:results-lookahead}
-Every head in Tables~\ref{tab:baselines}--\ref{tab:grid} was fit on FinCall's temporal training split; here the same fits are scored, with no retraining and no threshold change, on the 475 Earnings25 calls of Q4~2025---after the training cut-off of every frozen encoder in the stack, and on companies none of the heads has seen. Table~\ref{tab:lookahead} shows no post-cutoff degradation: HAR-RV rises from 0.46/0.41/0.21/$-$0.29 to 0.56/0.47/0.32/0.08, and the ridge text and audio heads rise with it, because FinCall's in-cutoff test segment sits in the 2020 regime that \S\ref{sec:results} discusses while Q4~2025 is calm. What survives the cut-off is the \emph{ordering}: HAR-RV beats every content head at every horizon, the content heads track past volatility rather than adding to it (on $\Delta v$ the frozen text head reaches 0.25 at $\tau{=}3$ against HAR's 0.56), the fusion head is the least stable, and nothing beats persistence at $\tau{=}30$. A lookahead effect would show as content heads that were competitive in-cutoff and collapse post-cutoff; we observe the reverse, which is what an honest, encoder-frozen pipeline should produce. This is, to our knowledge, the first frozen-pipeline post-cutoff evaluation in this literature; the ticker fixed-effect GBDT of Stage~1 is absent by construction, since every post-cutoff company is unseen.
+Every head in Tables~\ref{tab:baselines}--\ref{tab:grid} was fit on FinCall's
+temporal training split; here the same fits are scored, with no retraining and no
+threshold change, on the 475 Earnings25 calls (held July--December 2025, 97\% of
+them in October--December)---after the training cut-off of every frozen encoder in
+the stack, and on companies none of the heads has seen. Table~\ref{tab:lookahead}
+shows no post-cutoff degradation for any head that was competitive in-cutoff: HAR-RV
+rises from 0.46/0.41/0.21/$-$0.29 to 0.56/0.47/0.32/0.08, and the ridge text and
+audio heads rise with it. The two segments differ in period and universe (the
+FinCall test year is 2021, mid-cap-heavy; Earnings25 is S\&P~500 in a calm
+quarter), so absolute levels are not comparable across the cut-off; what is
+comparable is the \emph{ordering}, and it survives: HAR-RV beats every content head
+at every horizon on level-$v$, the content heads track past volatility rather than
+adding to it (on $\Delta v$ the frozen text head reaches 0.25 at $\tau{=}3$ against
+HAR's 0.56), and at $\tau{=}30$ only HAR-RV edges past persistence (0.08, CI
+$-0.12$ to $0.47$). The one head that does degrade is the 3k-dimensional fusion
+ridge (level-$v$ $\tau{=}3$: 0.43 to 0.15, CI $-0.15$ to $0.67$), which is unstable
+rather than contaminated. A lookahead effect would show as content heads that were
+competitive in-cutoff and collapse post-cutoff; we observe none. This is, to our
+knowledge, the first frozen-pipeline post-cutoff evaluation in this literature; the
+ticker fixed-effect GBDT of Stage~1 is absent by construction, since every
+post-cutoff company is unseen.
+
+\paragraph{Anchor sensitivity of the frozen heads.}
+Table~\ref{tab:lookahead-measured} repeats the evaluation with day~0 anchored on
+the measured EDGAR timestamp on both sides of the cut-off
+(\texttt{result\_table\_7\_measured.csv}; same heads, same splits). HAR-RV barely
+moves, but the ridge heads that carry a learned past-volatility block change
+character: their in-cutoff $\Delta v$ collapse under the after-hours anchor
+($-1.7$ to $-3.6$ for text, $-1.0$ to $-2.0$ for WavLM) disappears under the
+measured one ($+0.04$ to $+0.34$), and the post-cutoff fusion instability shrinks
+from $-7.0$ to $-0.8$ at $\tau{=}3$. This is consistent with the learned
+$[v_{\mathrm{pre}}, \mathrm{RV}]$ block absorbing the reaction session that the
+after-hours rule leaves inside the pre-window for before-open calls, and it
+identifies the ``past-vol ridge is not HAR'' gap of the Limitations as at least
+partly an anchoring artefact. The ordering is unchanged on level-$v$; on
+$\Delta v$ at $\tau{=}30$ the frozen WavLM+past-vol head is the only one whose
+post-cutoff CI excludes zero (0.18, CI 0.14--0.24, against HAR's 0.08), a
+single-quarter, no-DM-test observation we report as exploratory and not as a win.
+The variant is an input to the re-baselining decision of \S\ref{sec:timing}, not a
+change of the primary targets.
 
 \input{tables/lookahead}
+\input{tables/lookahead_measured}

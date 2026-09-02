@@ -31,8 +31,9 @@ cannot distinguish a model from a memory of which company it is looking at.
 \ecvol-bench is the repair, and the negative results above are what the repaired
 substrate reports for the modern representations we could run. The reproduction
 study (\S\ref{sec:results-repro}) is the same test applied to the field's own
-models on the field's own data; it is the part of the argument this draft still
-owes.
+models on the field's own data, and it returns the same diagnosis: the one runnable
+neural model loses up to 46\% MSE once companies are held out, and the strongest
+published baseline is same-company history.
 
 \paragraph{Engaging the strongest positive claims.}
 The strongest recent positive claim---up to 43.8\% of 30-day realised-volatility
@@ -62,9 +63,9 @@ audited against what the data said and when.
 Independent of any model, two facts about the corpora limit every result in this
 literature and are addressed only by new data: the uniform 40\,kbps transcode
 underlying all FinCall-Surprise acoustics, and the absence of any measured call
-time of day. The first is why the Earnings25 clean-audio re-run
-(\S\ref{sec:results-clean-audio}) is the single most informative pending
-experiment---it either makes the audio-inert finding near-unassailable or
-overturns it; the second is why the timestamp retrofit (\S\ref{sec:timing}) is
-part of the benchmark rather than a footnote.
-\TODO{Finalise this section once Phase 6R, T9.1, T9.4, and Phase 7 land.}
+time of day. The first is why the Earnings25 bitrate study
+(\S\ref{sec:results-clean-audio}) matters: at 64\,kbps and at $\le$24\,kbps alike
+the audio increment stays below 0.09 with no consistent sign, so the audio-inert
+finding does not rest on FinCall's transcode; a lossless corpus would still be
+the definitive test. The second is why the timestamp retrofit (\S\ref{sec:timing})
+is part of the benchmark rather than a footnote.
