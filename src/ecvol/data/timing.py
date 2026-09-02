@@ -194,7 +194,17 @@ def build_call_times(
     filings_cache: dict[str, pd.DataFrame] = {}
     rows: list[TimingRow] = []
     for r in calls.itertuples(index=False):
-        cdate = date.fromisoformat(r.call_date)
+        try:
+            cdate = date.fromisoformat(r.call_date)
+            if not (date(2000, 1, 1) <= cdate <= date(2030, 12, 31)):
+                raise ValueError(r.call_date)
+        except ValueError:  # identity dates outside the target range (reason `invalid_date`)
+            rows.append(
+                TimingRow(
+                    r.call_id, r.ticker, r.call_date, "assumed_after_hours", "", "invalid_date", ""
+                )
+            )
+            continue
         cik = cik_by_ticker.get(r.ticker, "")
         hit = None
         if cik:
