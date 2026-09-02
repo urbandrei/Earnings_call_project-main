@@ -116,9 +116,28 @@ Fewer than 4\% of FinCall-Surprise transcripts mention a clock time, and 32.4\% 
 recovered \emph{dates} come from slide-PDF creation stamps, so no call in either
 corpus carries a measured time of day. All results in \S\ref{sec:results} therefore
 use a uniform, flagged after-hours rule (calls assumed to occur after market close;
-$t{=}1$ is the next trading session). \pending{T9.2 retrofits measured call
-datetimes with a provenance tier---first from the before/after-market attribute
-shipped with \citet{scss2024}'s earnings histories, then from EDGAR 8-K Item 2.02
+$t{=}1$ is the next trading session). We retrofit the information boundary per call from
+EDGAR: the acceptance time of the earliest 8-K carrying Item~2.02 (the earnings
+release) within three days before to one day after the call date, taken from the
+SEC submissions API and cached; where no such filing exists we fall back, in
+order, to Earnings25's call-start time, to the before/after-market attribute of
+\citet{scss2024}, and finally to the after-hours assumption, with the tier recorded
+per call. Coverage by the EDGAR tier is 89.3\% for FinCall-Surprise, 68.6\% for
+MAEC, and 99.8\% for Earnings25. Under the measured anchor, \textbf{53\% of FinCall
+and 59\% of MAEC calls change day~0}, almost all one session earlier: releases
+before the open are the norm (FinCall 53\%, Earnings25 72\%), so the uniform
+after-hours rule places the reaction session in the \emph{pre} window for most of
+the corpus. Because every released label set in this literature anchors on the
+call date, this affects the published targets as much as ours. We keep the
+after-hours targets as the primary set for every result in \S\ref{sec:results}
+and ship the measured-anchor targets beside them (\texttt{targets\_measured}),
+with a sensitivity table (\texttt{timing\_sensitivity.csv}): persistence MSE rises
+1--8\% on FinCall and up to 26\% on MAEC at $\tau{=}3$ once the reaction session
+enters the post window, while the HAR-RV $R^2_{\mathrm{OOS}}$ moves by at most
+$\pm0.08$; the target correlation between anchors is 0.97 for $v_{\mathrm{post}}$
+and 0.80 for $\Delta v$ on Earnings25. Whether to re-baseline on the measured
+anchor is a release decision we flag rather than take here, since it moves every
+split boundary.'s earnings histories, then from EDGAR 8-K Item 2.02
 filings for the remainder---and reports the sensitivity of every target to the
 after-hours rule.}
 

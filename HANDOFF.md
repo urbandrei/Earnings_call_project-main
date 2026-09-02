@@ -11,6 +11,19 @@ Each entry: date · task ID · what the user must do · what unblocks when it's 
 
 ## Active (action needed to unblock a task)
 
+- **2026-09-03 · DECISION — re-baseline on measured day-0 anchors, or keep them as a variant?** T9.2 measured the
+  information boundary for 89% of FinCall / 69% of MAEC / 99.8% of Earnings25 calls from EDGAR 8-K Item 2.02
+  acceptance times. Under it, **day 0 moves one session earlier for 53% of FinCall and 59% of MAEC calls**
+  (releases before the open are the norm), so the primary targets — and every released label set in the
+  literature, which anchor on the call date — place the reaction session in the *pre* window for most calls.
+  The measured-anchor targets are shipped beside the primary ones (`targets_measured{,_calendar}.parquet`)
+  with `results/timing_sensitivity.csv` (persistence MSE ×1.01–1.26; HAR R² ±0.08). **Options:** (A) keep the
+  after-hours set primary and report the variant as a sensitivity (paper §3.4 already says this — zero re-runs);
+  (B) re-baseline: measured anchors become the primary targets → splits, Tables 1–4, controls and the grid all
+  regenerate (features are cached; ~1 day of runs) and every number in the paper changes. Recommendation: **B
+  before submission** — a benchmark paper should not ship a known one-session error as its primary target —
+  but sequenced *after* T6R.1/6R.2 so the reproduction study runs once. Reply with A or B (and when).
+
 - **2026-08-23 · ⛔ STOP — RATER 2 IS CANCELLED. Phase 6 is dropped. Do not spend any more time labelling.**
   DECISIONS 2026-08-23 §11 drops Phase 6 (LLM structured features) entirely and withdraws RQ3;
   the reproduction/audit study (Phase 6R) replaces it. **This cancels every open T6.2 human item
