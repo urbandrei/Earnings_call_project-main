@@ -1,0 +1,51 @@
+[
+  {
+    "license": "Earnings25 \u2014 CC-BY-4.0 (Zenodo 10.5281/zenodo.18762168)",
+    "path": "raw/earnings25/earnings-25/testset-full/data.jsonl",
+    "retrieved_at": "2026-09-02T04:47:59+00:00",
+    "sha256": "8f95019ce7f946d7fbf1f257b083d9ecc1b8d2a512758e2884acd6536bad3ddd",
+    "source_url": "https://zenodo.org/records/18762168"
+  },
+  {
+    "license": "Wikipedia \u2014 CC-BY-SA-4.0 (cached page revision)",
+    "path": "raw/live/sp500_revisions/wiki_sp500_2025-03_rev1283349047.html",
+    "retrieved_at": "2026-09-02T04:47:59+00:00",
+    "sha256": "68aac00a37bf10913fe85edf9f19ab349186610784dbb45ef545653ee3552751",
+    "source_url": "https://en.wikipedia.org/w/index.php"
+  },
+  {
+    "license": "Wikipedia \u2014 CC-BY-SA-4.0 (cached page revision)",
+    "path": "raw/live/sp500_revisions/wiki_sp500_2025-07_rev1302049498.html",
+    "retrieved_at": "2026-09-02T04:47:59+00:00",
+    "sha256": "c09e4a4e68c32c38b115d1d7a8052766962b4059e4945df351cd3129954518d3",
+    "source_url": "https://en.wikipedia.org/w/index.php"
+  },
+  {
+    "license": "Wikipedia \u2014 CC-BY-SA-4.0 (cached page revision)",
+    "path": "raw/live/sp500_revisions/wiki_sp500_2025-08_rev1308482549.html",
+    "retrieved_at": "2026-09-02T04:47:59+00:00",
+    "sha256": "21fcb64d7d28efae1767bc28caca6537529899654e5b08bf150568b3ae2dfbe1",
+    "source_url": "https://en.wikipedia.org/w/index.php"
+  },
+  {
+    "license": "Wikipedia \u2014 CC-BY-SA-4.0 (cached page revision)",
+    "path": "raw/live/sp500_revisions/wiki_sp500_2025-10_rev1319706093.html",
+    "retrieved_at": "2026-09-02T04:47:59+00:00",
+    "sha256": "6dcfdbf7833148a72ca1c40726d3e6e6ddd91a13d191ee6323ec7ad557c0c7e2",
+    "source_url": "https://en.wikipedia.org/w/index.php"
+  },
+  {
+    "license": "Wikipedia \u2014 CC-BY-SA-4.0 (cached page revision)",
+    "path": "raw/live/sp500_revisions/wiki_sp500_2025-11_rev1324692884.html",
+    "retrieved_at": "2026-09-02T04:47:59+00:00",
+    "sha256": "3b09c2906f4cb942ec0080c8b4f19d022ce33933d29a2959f59871d69655fd16",
+    "source_url": "https://en.wikipedia.org/w/index.php"
+  },
+  {
+    "license": "Wikipedia \u2014 CC-BY-SA-4.0 (cached page revision)",
+    "path": "raw/live/sp500_revisions/wiki_sp500_2025-12_rev1329075976.html",
+    "retrieved_at": "2026-09-02T04:47:59+00:00",
+    "sha256": "bb5d25aee74fb2e98b62dd5d3dc394f682a649f698c96d2683fb0780f73ddfdc",
+    "source_url": "https://en.wikipedia.org/w/index.php"
+  }
+]

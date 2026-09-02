@@ -1,0 +1,3327 @@
+[
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/AAPL.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "1602e0692ae327386fb78f11c0aa9daee5373bc2d5f093e796453d925a37a342",
+    "source_url": "https://finance.yahoo.com/quote/AAPL/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/ABBV.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "4b309f8487aad4c878b4d44c44276547c8fcea598f44a3c59e00bb7fc456b206",
+    "source_url": "https://finance.yahoo.com/quote/ABBV/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/ABNB.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "b8cdd1bcfac724e57695b6561ec3ac8eef18bafae42416bf42d39f29c40439eb",
+    "source_url": "https://finance.yahoo.com/quote/ABNB/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/ABT.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "9c1a99e37293c5337c8bac2522aae5df116491d9f19ef73896590fbcab6067c6",
+    "source_url": "https://finance.yahoo.com/quote/ABT/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/ACGL.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "6187a522126d39460a72f8b50ee4e10bf95128563f616c9fbdf669cbe6e2ae5c",
+    "source_url": "https://finance.yahoo.com/quote/ACGL/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/ACN.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "343cea167c5a96da5b6de8295a2eb05d39e6248e3486907bb4266768029d842b",
+    "source_url": "https://finance.yahoo.com/quote/ACN/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/ADBE.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "8682019b4f40d0fd89275bbe9fb718b1d3c4a6273496974152812e0d850bb706",
+    "source_url": "https://finance.yahoo.com/quote/ADBE/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/ADI.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "9e498f4a6656f12db15ef9e1a0acf916a352d7374a87393d355dc4dbd2ff482d",
+    "source_url": "https://finance.yahoo.com/quote/ADI/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/ADM.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "0fa89305be36e07d1ae4202cf2a330564069fc8b2886ff82203bfaee87871d5b",
+    "source_url": "https://finance.yahoo.com/quote/ADM/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/ADP.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "a9b0c608408e5bee8f9dadfd02cac541b60a3ef1dd3b7801db42a96b583dd6a1",
+    "source_url": "https://finance.yahoo.com/quote/ADP/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/ADSK.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "24ef102811cd1346da9642f7c35311667c31ac1456a89845e71ca66d16518e46",
+    "source_url": "https://finance.yahoo.com/quote/ADSK/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/AEE.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "7079b3ab95c2db8d77a3b7ba98e1601c6e5efb3b4f81b36435a9377724c94de7",
+    "source_url": "https://finance.yahoo.com/quote/AEE/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/AEP.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "eacbec0e9f4e701be1a0811dbecc83d2616673482208e913f1becd8c7f81075f",
+    "source_url": "https://finance.yahoo.com/quote/AEP/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/AES.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "bf96594f2a4f3f1c6ce2977f30785caa5fc1283bcce10cb9673d59849c438c5e",
+    "source_url": "https://finance.yahoo.com/quote/AES/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/AFL.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "e03dc2f0c078d81ff0fd1625f39fcac1086b20d09279ced1027abaae0c7accc2",
+    "source_url": "https://finance.yahoo.com/quote/AFL/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/AIG.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "985ac50b803210a0b405994e97fb84d94e5542114781ec6bdae1ca438bee72c8",
+    "source_url": "https://finance.yahoo.com/quote/AIG/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/AIZ.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "09deb237e7e1879c170eb292a62d22d060739dcc65b9d50d0cc59afcff0c281e",
+    "source_url": "https://finance.yahoo.com/quote/AIZ/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/AJG.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "0dc401601ccfc57e8893e4f55f3dc1b9b95685f408ea1c4d90d58ecf3395c3c9",
+    "source_url": "https://finance.yahoo.com/quote/AJG/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/AKAM.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "4d3d9c8caeb90394b677a6349d77205bc5713658adc6de1c99ec745c93c55f62",
+    "source_url": "https://finance.yahoo.com/quote/AKAM/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/ALB.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "0dc30e03962874b868c4ad2f6a2dcc6d5ee8003cc4f1a671071d572704d742bb",
+    "source_url": "https://finance.yahoo.com/quote/ALB/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/ALGN.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "b4bd37a2c0df8da89d744b5195ccbcb6f62e7190fb8ed4819ea25fdb443951a3",
+    "source_url": "https://finance.yahoo.com/quote/ALGN/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/ALL.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "e6f4156345b98e6ab50c638e4055161bdb8341d626c412be4d734fedc0405e05",
+    "source_url": "https://finance.yahoo.com/quote/ALL/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/ALLE.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "5152830b3bede649440dc28046164f0c564f013054b3c8b137cecb7d99c40635",
+    "source_url": "https://finance.yahoo.com/quote/ALLE/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/AMAT.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "5a19430c0f84f7275a7fd29f6b355d90eafd425b440c45d6bbca9a3f357e4cab",
+    "source_url": "https://finance.yahoo.com/quote/AMAT/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/AMCR.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "a81a045a93f17629afa6ad5927b2872060974dccf743e8cdbb80d38453eb9480",
+    "source_url": "https://finance.yahoo.com/quote/AMCR/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/AMD.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "51be816ede88a8fac121cb27fafe54e9edcf327287ba0eb94785b847488c9f1c",
+    "source_url": "https://finance.yahoo.com/quote/AMD/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/AME.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "9b52140a192aea4cba3d52a9fa9c99841b943e4dfdb559a58e102b3e7289fedc",
+    "source_url": "https://finance.yahoo.com/quote/AME/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/AMGN.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "639e97c93911733158a049a45c5618a30c0d026964b40f24a6d02e7dfdbc7665",
+    "source_url": "https://finance.yahoo.com/quote/AMGN/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/AMP.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "19575e642bcb5970d62fdf113fde4d3240b38f4ee9e5949a7f5da77633349240",
+    "source_url": "https://finance.yahoo.com/quote/AMP/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/AMT.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "9f51ac120b38a357045077acccb6fe305bfc4b36877ac3df2f4df479b11ec0a7",
+    "source_url": "https://finance.yahoo.com/quote/AMT/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/AMZN.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "04a71ca4c129fcc747de36d14f346cc4e5b328394f2f3b40d5f10c8410e02b1b",
+    "source_url": "https://finance.yahoo.com/quote/AMZN/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/ANET.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "6425b10b6a958451574fa4b5d7ffc3d63ddc0cf0b166927337979e229ac16b5f",
+    "source_url": "https://finance.yahoo.com/quote/ANET/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/AON.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "0df1e7782361bfa3f7f2c836f32aed11cb4cc9f90f4e5842ea397ceec10d8297",
+    "source_url": "https://finance.yahoo.com/quote/AON/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/AOS.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "72afcfa3bb8503b18b40025826902e5f913dad1c03477c339683d0c2ca85a278",
+    "source_url": "https://finance.yahoo.com/quote/AOS/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/APA.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "31a82fd1397839ae9f723804e4f6aa6ceaf05f4d79f9d04b209123b820e71f49",
+    "source_url": "https://finance.yahoo.com/quote/APA/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/APD.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "b62e4d1c571ab1b9460b2192441898c13179505985bc7e83e85227c18af1584f",
+    "source_url": "https://finance.yahoo.com/quote/APD/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/APH.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "ca21abcb1e5949db17409dd0959066a74f933cbc9d0faf754cd78f680ea112f7",
+    "source_url": "https://finance.yahoo.com/quote/APH/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/APO.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "aaab78ad41abce09cf19f35e6ab577148751e1f849211a869c5c91aaf0373b64",
+    "source_url": "https://finance.yahoo.com/quote/APO/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/APP.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "65f2159df983104d2bae47377f29e26d572c4848f791bdc35009c51fa2298a56",
+    "source_url": "https://finance.yahoo.com/quote/APP/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/APTV.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "9cf2dafce291aff3c2f22333dacb24c718e0a3a0ddddea1734d0ca4cfe72a9fb",
+    "source_url": "https://finance.yahoo.com/quote/APTV/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/ARE.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "0f062e9bb3a8b0b7eb903795dfa4df1d7578af4e57cdd853b350c97eca0e443a",
+    "source_url": "https://finance.yahoo.com/quote/ARE/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/ATO.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "b55f09fecaf5f043e584e0f80378b4bfb1cfc94415b0bd33d7b6cd1a40a1aabb",
+    "source_url": "https://finance.yahoo.com/quote/ATO/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/AVB.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "80b2e0945eb826920ccf57a6a48e75d99fb67081c083b439b512916ed62a07af",
+    "source_url": "https://api.tiingo.com/tiingo/daily/AVB/prices"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/AVGO.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "aba4723fe0da030612c8ca4595f98e494dfadf71e96eaf9e8fcb2c0496a3a064",
+    "source_url": "https://finance.yahoo.com/quote/AVGO/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/AVY.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "2827292fe466bce404060ad8e453ec20c544999749d40dbf001834bb0c424ca5",
+    "source_url": "https://finance.yahoo.com/quote/AVY/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/AWK.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "eaebad2d8928d2f211c4de2faaeab4df777c84313a9abd0fc4c4318ebc14c5eb",
+    "source_url": "https://finance.yahoo.com/quote/AWK/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/AXP.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "00f46215401c4206b680849e76385b630c3a430b7ffe0f0533b42055bbe7f276",
+    "source_url": "https://finance.yahoo.com/quote/AXP/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/AZO.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "68166e62bdd37a93d9a314ab0f04e3e0481a0db627b2703088b24ed4c1ffef39",
+    "source_url": "https://finance.yahoo.com/quote/AZO/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/BA.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "198cf3d2c6598be11998b15e5d4dc58b75949c1460c320c1d832c3a6b313abdf",
+    "source_url": "https://finance.yahoo.com/quote/BA/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/BAC.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "e745b733637efb912cb9c69a78f7245cc9ae9eaccccaca0ecc2a4aaca40a9050",
+    "source_url": "https://finance.yahoo.com/quote/BAC/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/BALL.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "0e3d1c8cf1f81aca00988e70554bb93d388c9486987624eca213a0a6943185ea",
+    "source_url": "https://finance.yahoo.com/quote/BALL/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/BAX.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "ae35c713c50c3baa55f0d659d7f2ba7167de2acad6480101498d0b55edfbbe70",
+    "source_url": "https://finance.yahoo.com/quote/BAX/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/BBY.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "cf6cbba4f8f32126c65b828be9f750998389a8735dfaa8d698a22c0225cb1f7c",
+    "source_url": "https://finance.yahoo.com/quote/BBY/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/BDX.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "503f5ab8891b27e2cd62bdb0d598f7aef23d42a3ad8d9e8e5064c165034d408c",
+    "source_url": "https://finance.yahoo.com/quote/BDX/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/BEN.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "8b26305fc6ce5dad4d725faa899a0ad1a6fda380402cc7638acdb0f3b75f202a",
+    "source_url": "https://finance.yahoo.com/quote/BEN/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/BF-A.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "c2f9276648583e33ceef8e833c977767c6f8c2235c42409af5572e927ec7257a",
+    "source_url": "https://finance.yahoo.com/quote/BF-A/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/BG.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "d500aec1e52d25dbd0daeefa31d4a2a6b0cee18492531b39817724971023e9bb",
+    "source_url": "https://finance.yahoo.com/quote/BG/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/BIIB.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "25bce58c4f682529853c75e804ddb27682f305f33fae06026c3bd99cd9f2802f",
+    "source_url": "https://finance.yahoo.com/quote/BIIB/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/BKNG.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "716ee13d43bed900188d28df2e446278ffeab33b5d0d436d28729d8f306d147b",
+    "source_url": "https://finance.yahoo.com/quote/BKNG/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/BKR.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "5ae3e6de550f940c217c16aae83105609d1d4e0b3390c279fd29e04dcbba67f3",
+    "source_url": "https://finance.yahoo.com/quote/BKR/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/BLDR.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "1b6badcfcf67258f61eeb78e8b264193595c8b34d19f5cb7173cb73653403952",
+    "source_url": "https://finance.yahoo.com/quote/BLDR/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/BLK.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "622b883fa70c1b1535b6a1ad9703b1a1a1994c4e5703c2b14116ab07d434f611",
+    "source_url": "https://finance.yahoo.com/quote/BLK/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/BMY.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "00f9ac1c959b08f0d00dbaa32876c433ab783c0946fd2276ab784d8fb5b555fc",
+    "source_url": "https://finance.yahoo.com/quote/BMY/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/BR.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "c6fdc9a98b66cb46c06f6a2eeed0b5ab820bc9b6beb7dbda7114304b86cae288",
+    "source_url": "https://finance.yahoo.com/quote/BR/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/BRO.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "b0b351334e6f70041150aaca42278de0224258b6b136a34ee3bd75e1f877a944",
+    "source_url": "https://finance.yahoo.com/quote/BRO/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/BSX.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "d2c696cc44eb1c010c07a604015f5b4b50a9d3604f84800dcdc9fb2d4ed062b3",
+    "source_url": "https://finance.yahoo.com/quote/BSX/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/BX.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "60046af9d89d4632d97935d7df11e875fe3802c66dc7bef7567e598a5505d888",
+    "source_url": "https://finance.yahoo.com/quote/BX/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/BXP.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "2861c28888007da6f966d0c0a1c311b645a80b83263501ef109a5e44da2fcf78",
+    "source_url": "https://finance.yahoo.com/quote/BXP/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/C.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "24f65906bf8e0c4ddc8b968002057b4af57bd0811b8320486e2c5ecdbbb4b9d2",
+    "source_url": "https://finance.yahoo.com/quote/C/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/CAG.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "0e48e2fd48944a69018b8a21eea8364c1b28ae731a047760ab01aed964354b18",
+    "source_url": "https://finance.yahoo.com/quote/CAG/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/CAH.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "b1e0fc254e613a35baeb71e83770795f4becd7c0d0becfb635d618ed4894ba9c",
+    "source_url": "https://finance.yahoo.com/quote/CAH/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/CARR.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "e2152b00dc20d664cb21c39075c457e81876941a210754e3ddecf241c93253c9",
+    "source_url": "https://finance.yahoo.com/quote/CARR/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/CAT.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "3b417dd83b47e27db3ef74d151bbd287c3d6a37a72d360dc91856929e8b18703",
+    "source_url": "https://finance.yahoo.com/quote/CAT/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/CB.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "471325906e31df4a84cc25f764d0d8d9742e0b81d6e3e6507e09b639c9ec8afc",
+    "source_url": "https://finance.yahoo.com/quote/CB/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/CBOE.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "984985587e0c601937a1fbba92a9b1c17a3955fd8f1c33d2abb56b7fd3b6bb67",
+    "source_url": "https://finance.yahoo.com/quote/CBOE/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/CBRE.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "025f4469e814f4254856ec76c1b1e48e13ac8de694b1fd1c1e18eecb54b072fa",
+    "source_url": "https://finance.yahoo.com/quote/CBRE/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/CCI.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "257db87271b82ff456f079b8f20c10cb9da6c93375b24e5de497c12bf7bbf4c1",
+    "source_url": "https://finance.yahoo.com/quote/CCI/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/CCL.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "950978653b07bb335711627da96a8e90fe4f7748afea9e914784b16faca6eec3",
+    "source_url": "https://finance.yahoo.com/quote/CCL/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/CDNS.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "1108a12c7f3431d1112eef7bd77f682d2c5ae259369d531547299675d66eec65",
+    "source_url": "https://finance.yahoo.com/quote/CDNS/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/CDW.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "de2d17d1250e28b269606f73dd958a5763c69b37915abb114e8b5c304bfd205f",
+    "source_url": "https://finance.yahoo.com/quote/CDW/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/CEG.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "2578036d75976a1e1df05dbb4236842f6f5448d56c3e01b347182d49fd391463",
+    "source_url": "https://finance.yahoo.com/quote/CEG/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/CF.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "3b3041df7b8f8c6e814c7a101ea17dfb3472a33308fda3aa808c7e69bc547edb",
+    "source_url": "https://finance.yahoo.com/quote/CF/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/CFG.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "f2e8b93df1d32e6d1c0a2f83ef9a850019e5aec3e756c1e198e965a40c5b0b88",
+    "source_url": "https://finance.yahoo.com/quote/CFG/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/CHD.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "e4603f74af4b6120a74217075605e8df5e32618064f328f276b6234d9e183bf3",
+    "source_url": "https://finance.yahoo.com/quote/CHD/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/CHRW.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "f4e5b853d4fd6587a6b07777c8200420daab258ba3e828a256bd4dbac16f42a4",
+    "source_url": "https://finance.yahoo.com/quote/CHRW/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/CHTR.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "d1a62f21dd211d4d5c465350c309f7b6952dd368dbfcc83ab52e662a10ff10a5",
+    "source_url": "https://finance.yahoo.com/quote/CHTR/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/CI.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "22aa2bd785e8d32fe0ca9d42b5181852c2d9134039e5464ca2d21573d7e5400c",
+    "source_url": "https://finance.yahoo.com/quote/CI/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/CINF.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "ec1011f228ebdb6e4aef069fab4933fdc76e0bedafc7c109ae58d8e909764395",
+    "source_url": "https://finance.yahoo.com/quote/CINF/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/CL.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "27cd1efcd89c5e8a0887aa64fe8616684d952544cc0821d1e366a731c6a3d2c2",
+    "source_url": "https://finance.yahoo.com/quote/CL/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/CLX.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "f904767b0c23a7025ac8695136548b5571ad6b3c0b8d0050c486e01327f40079",
+    "source_url": "https://finance.yahoo.com/quote/CLX/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/CMCSA.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "15a59a5cd72f048198a37f754c9c393d9f55200413d89404b1430bc5715a9202",
+    "source_url": "https://finance.yahoo.com/quote/CMCSA/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/CME.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "f67d475ba8953eea53b6cb076b36c49f897effdc8bd857ce1b0bb37a95296750",
+    "source_url": "https://finance.yahoo.com/quote/CME/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/CMG.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "86d9f81d5750848652a14f383698063b9600f98e16c3ccb185dc6b5b695b511f",
+    "source_url": "https://finance.yahoo.com/quote/CMG/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/CMI.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "e8908e004f89c835d0c69f3441d1040c1096e386f3dda10fe59b2ce5a59b608b",
+    "source_url": "https://finance.yahoo.com/quote/CMI/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/CMS.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "4290519c84789b2ec4f3d9dfa5dd21ffabee4ae0d8838e1de34bd70465345432",
+    "source_url": "https://finance.yahoo.com/quote/CMS/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/CNC.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "38d467706b54f43dae259c565ad306c1b7087fcdb60d03863a3d9826242320cf",
+    "source_url": "https://finance.yahoo.com/quote/CNC/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/CNP.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "69307456ce827be93564ca01fe49fc87e74d74b012c8a07158b15297c2b6f45b",
+    "source_url": "https://finance.yahoo.com/quote/CNP/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/COF.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "8e7423c9e30199065855b59530782eaf662a7eb2ca0a8a39b15fe40047ac2b50",
+    "source_url": "https://finance.yahoo.com/quote/COF/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/COIN.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "e3b2676ebae05bc7c6a2a14d04d72250cc8b0afab104440ff9605fa0630a6305",
+    "source_url": "https://finance.yahoo.com/quote/COIN/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/COO.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "6957fd10cedaf12bd6773b671f10d1088c73e1545bdcaa58f5734aa061690ddd",
+    "source_url": "https://finance.yahoo.com/quote/COO/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/COP.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "778940f87a797eae13f34f85141b4821792983026db3ee6a6dac89bb34070f51",
+    "source_url": "https://finance.yahoo.com/quote/COP/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/COR.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "ad7a764b197f12ecef49edc88be28736ef84821e9feff44f4d57be80458fad3a",
+    "source_url": "https://finance.yahoo.com/quote/COR/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/COST.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "7560fe2dcd3ac8905321b96993f22c85470c6583ed9a5dd87c166b53367249e7",
+    "source_url": "https://finance.yahoo.com/quote/COST/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/CPAY.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "27803b16c171b29d62832c71dea43c49e348266a5c22453ed40b59bf1cd06a40",
+    "source_url": "https://finance.yahoo.com/quote/CPAY/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/CPB.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "1bad75da4cfccad05e6ca780a62932c2ae966f582f2150b532900b2f86541e1e",
+    "source_url": "https://finance.yahoo.com/quote/CPB/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/CPRT.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "8e0f587bdafe264a56abca4e0899af8a74a86a7c5cd815c159122b853bfe59ba",
+    "source_url": "https://finance.yahoo.com/quote/CPRT/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/CPT.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "07c10c1681cad12d7f832a37bf9f096a170b84dce9ab69d554246b67b14ec2d5",
+    "source_url": "https://finance.yahoo.com/quote/CPT/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/CRL.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "efd52f0c45fb3b5d5416117bfda3a27d26a7458f6065de0464a7e5f6ecae978e",
+    "source_url": "https://finance.yahoo.com/quote/CRL/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/CRM.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "08f050a688a8e42b5263be9c61dbedb67f965610c984c4db7528684ceff6be02",
+    "source_url": "https://finance.yahoo.com/quote/CRM/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/CRWD.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "287dc3ca97c3d9303d8c283a222c16a585df0cc40f90813454cb9d4bac54974f",
+    "source_url": "https://finance.yahoo.com/quote/CRWD/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/CSCO.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "5a4a59f7b8d8071096fd40fcc051b5225de4f6221e0708785d9b67a2d9bcfa4c",
+    "source_url": "https://finance.yahoo.com/quote/CSCO/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/CSGP.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "9878fd9e1f607a9b8a0c5b7857b5f76bbff8c4848223a5afe143b78b0c4ddcdd",
+    "source_url": "https://finance.yahoo.com/quote/CSGP/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/CSX.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "60583358253d4513e84efc004550b20b35c3de5cacea4a70f36b9216f15ece9e",
+    "source_url": "https://finance.yahoo.com/quote/CSX/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/CTAS.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "41c5b5d5afec5d0969752b3aaf809fa9c0c5daf295fd699ca52d7e7483a6512e",
+    "source_url": "https://finance.yahoo.com/quote/CTAS/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/CTSH.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "e208e2d5d35f01f9a21553a3d70eb2680232b7a878d2c685c82568b24cef3807",
+    "source_url": "https://finance.yahoo.com/quote/CTSH/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/CTVA.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "0f452600b4996fb36e73868a8de45b5ec2191c5996740ca9c3b9b4f5748e1150",
+    "source_url": "https://finance.yahoo.com/quote/CTVA/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/CVS.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "34b4220eed694bc42f380304bdd4c6ca24aa71cfe7b2f729807a39471cab4ab4",
+    "source_url": "https://finance.yahoo.com/quote/CVS/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/CVX.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "be8f5bb4a4e392418169b9cef225a18ea1ce2f5915b2fd3b7ec1bff222d74a35",
+    "source_url": "https://finance.yahoo.com/quote/CVX/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/D.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "9e16db7b9a48a7a141edc514b31b98ac176ac4de781ea046e831268d150cf13b",
+    "source_url": "https://finance.yahoo.com/quote/D/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/DAL.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "82331494446202adf7b0ba5debf0c47f14a0482391921d8c8487215d01188ec0",
+    "source_url": "https://finance.yahoo.com/quote/DAL/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/DASH.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "964133150a79831ea71f2ece59c7f83e622a1dc682e9542f8415cca45fce6425",
+    "source_url": "https://finance.yahoo.com/quote/DASH/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/DD.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "ff9b881322e513b4fec64ff895abf611b49ea969756640914274992a8170aab0",
+    "source_url": "https://finance.yahoo.com/quote/DD/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/DDOG.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "7c2053e3cd020c388760e5a5992fc1a902658ac0b19da1375ab167df05911d24",
+    "source_url": "https://finance.yahoo.com/quote/DDOG/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/DE.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "2d4e7d0ee9c6ad9a772557d2b8253146760fce981ef4756339d13bf108e789ed",
+    "source_url": "https://finance.yahoo.com/quote/DE/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/DECK.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "b7dabd99b28f3ebd7019d1758be9770f4dc86ed83c9346e1ca1ee7cf5cc7df08",
+    "source_url": "https://finance.yahoo.com/quote/DECK/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/DELL.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "85aa19a0d628b2643b2fbaa851a367fb08830de9537533e904312ce9cdb69b7d",
+    "source_url": "https://finance.yahoo.com/quote/DELL/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/DG.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "5cf6b2d0ee12a9f24ab860a9703f313bf4374dc4ff0addcc6684ec79172ed207",
+    "source_url": "https://finance.yahoo.com/quote/DG/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/DGX.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "ccce4e3b621dc1005d9110747247042adda1804896446c2199ef2aca63f4e7fc",
+    "source_url": "https://finance.yahoo.com/quote/DGX/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/DHI.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "98a6c66148cee3454dbe8593d23359fc47a06f1451f7227c1407f8cee34f6e76",
+    "source_url": "https://finance.yahoo.com/quote/DHI/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/DHR.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "032da429f37c59c088fa2e8fc19ce88063c475d049903311fa38d6b840bf2a62",
+    "source_url": "https://finance.yahoo.com/quote/DHR/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/DIS.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "63ced2f363153a16831c88513266e78bb54e26a1ebe8030be59e96c33409dcf1",
+    "source_url": "https://finance.yahoo.com/quote/DIS/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/DLR.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "432d8e8c5c6dc3b92ce4cdd09c02ecc81611944e5c3bfcb888a49ff0e0f376e6",
+    "source_url": "https://finance.yahoo.com/quote/DLR/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/DLTR.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "989fda547f47c726e8cc0e41b75b8e93b5269721be87f2c02a4c7d8ed60f8b43",
+    "source_url": "https://finance.yahoo.com/quote/DLTR/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/DOC.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "3d39f22bdfb6f4f4473e6fa7ab3264cca5c58a9c8796377931e60f9257f5ca1c",
+    "source_url": "https://finance.yahoo.com/quote/DOC/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/DOV.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "d04d21281b58b12d6aec5a10ea9a2fa6108ff76cbb11f10b158d4cdac9cf1010",
+    "source_url": "https://finance.yahoo.com/quote/DOV/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/DOW.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "a36a78c92b96126c92e6dac69c3814ade6c30765bcf7fa2745559fe022e1cb4f",
+    "source_url": "https://finance.yahoo.com/quote/DOW/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/DPZ.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "aa027f60e25461a9c2db6d37b55da50a87b06b2aceed1310b2fa34ee2c2e77c5",
+    "source_url": "https://finance.yahoo.com/quote/DPZ/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/DRI.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "afb4b3a79fd4d39959a9349ad7bdf12760ea5d1762468743a4b9ec7daa8edfb2",
+    "source_url": "https://finance.yahoo.com/quote/DRI/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/DTE.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "fca78eeee87b2b7837aed1283bc18f488cd6f08f90a9c0a4b78c6256d6814bcf",
+    "source_url": "https://finance.yahoo.com/quote/DTE/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/DUK.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "b658ca5f5ae9fe862f2e2554000c52b10030fdd4fb0bceb838693fa463292581",
+    "source_url": "https://finance.yahoo.com/quote/DUK/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/DVA.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "30c025af17af7f854d35c5221c10d5151d472919e6c5636c649355637ed35fb0",
+    "source_url": "https://finance.yahoo.com/quote/DVA/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/DVN.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "ec39ba15530398a4a23ce333f3f73c0dc554d0406deb11cee100ac552aaa3e37",
+    "source_url": "https://finance.yahoo.com/quote/DVN/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/DXCM.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "e99fbe84a33e3f578d763c5b3d1a96aac838d086ca2a046d8c75e66478b6f84a",
+    "source_url": "https://finance.yahoo.com/quote/DXCM/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/EA.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "06e8c0acf0cdb3058482870736e64ca4387e9d06b287772b854bdb3cad39f705",
+    "source_url": "https://api.tiingo.com/tiingo/daily/EA/prices"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/EBAY.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "44d240cff7c914440118e59275b74c75bfd5f9990de221cec720886df220ee2a",
+    "source_url": "https://finance.yahoo.com/quote/EBAY/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/ECL.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "775413007d2ed02f77e7f9ba8c3139e1b0c349dc148e2f125d409c5143c20f51",
+    "source_url": "https://finance.yahoo.com/quote/ECL/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/EFX.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "5030e5d53779e7e0ca26e290b9bdcdd63634da12fe1cf1de5f6559ac93bd08fa",
+    "source_url": "https://finance.yahoo.com/quote/EFX/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/EG.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "d189cc4b563fed72f3f9f9a518e624da132b588678d0c3eb65b9530653b3471b",
+    "source_url": "https://finance.yahoo.com/quote/EG/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/EIX.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "634ae8503a0d8f71bd0fcfe30ba3f02c3b19ef556ac61d42339172e00e06373e",
+    "source_url": "https://finance.yahoo.com/quote/EIX/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/ELV.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "ba472dbd7cd62bc97170ea8cf07a981a9775dc3976662c682f1a24a1fbef6a06",
+    "source_url": "https://finance.yahoo.com/quote/ELV/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/EME.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "8ed2b7d927b9ffec5102b192f96d5e5f2b7e4c1be4d90c69a1b71e4f211ba29d",
+    "source_url": "https://finance.yahoo.com/quote/EME/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/EMR.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "3a18fc845de722e7d204260e2d1e8f45b70c753f2d83b140182df49e6eba7c3d",
+    "source_url": "https://finance.yahoo.com/quote/EMR/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/EOG.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "c52c8e19dd88eb47470c43c22609ba0895f97fd229ccfdbf7c92a3b364af9e96",
+    "source_url": "https://finance.yahoo.com/quote/EOG/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/EPAM.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "219eb1f76e64dd7af54c932279feb1b0c86a61c4876a2da2193f5a9dbb9d932c",
+    "source_url": "https://finance.yahoo.com/quote/EPAM/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/EQIX.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "474d5942cdad6d2acd349a6d812010290585bb8648a3ad6290b1bd14d86a787c",
+    "source_url": "https://finance.yahoo.com/quote/EQIX/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/EQT.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "a0914a50f77600c45ee5b1d507258ba2ae572305b32268123791c1424c8445c7",
+    "source_url": "https://finance.yahoo.com/quote/EQT/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/ERIE.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "732035cd410c652e592e71f0ceb3221ce0d61c4c45c4be320f5484a63f1b162e",
+    "source_url": "https://finance.yahoo.com/quote/ERIE/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/ES.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "fea929d4a596b14008312a7198888faa73d8d94f71cc5fd0a23d5f2d14b7cdd2",
+    "source_url": "https://finance.yahoo.com/quote/ES/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/ESS.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "40c471b0899a3cd6d4bf2e2be64c1d2fc10215f2ec6f1bf3473204a1fc597b06",
+    "source_url": "https://finance.yahoo.com/quote/ESS/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/ETN.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "227cbf72c89ad3ad39106c8b51f7e5130a2e19967d1046b69eb5a18a4e137872",
+    "source_url": "https://finance.yahoo.com/quote/ETN/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/ETR.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "4df3210b78c6b3d86e93993528ef2f0b322f7cc4b92626bd21248d49ca495f0e",
+    "source_url": "https://finance.yahoo.com/quote/ETR/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/EVRG.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "0d1bbc242a29fc08707e257bc11ba5457b914bf070261dec6508100dc5e9e123",
+    "source_url": "https://finance.yahoo.com/quote/EVRG/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/EXC.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "3a886fa62b6f6d5e8e8b62a3d076f0798c20346d4eb963fe6868e646e630305f",
+    "source_url": "https://finance.yahoo.com/quote/EXC/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/EXE.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "8e40eda63242541e8d7a4b7eab8bfd2bbda627fdad6dd8fbc9255cfeeef0d843",
+    "source_url": "https://finance.yahoo.com/quote/EXE/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/EXPE.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "e0ccf1d76f2eabdae08f70c9feea5355eea573b78ebaab0a0e598f3ac9584e57",
+    "source_url": "https://finance.yahoo.com/quote/EXPE/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/EXR.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "01f15189d53aa74891a0ab7295913b08c56b4b0175ea0730513b146c0f4196ef",
+    "source_url": "https://finance.yahoo.com/quote/EXR/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/F.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "2f9817dde11f76de07ecd95c640ebb17ca5623bd1e6e9187a2b413a9e9175564",
+    "source_url": "https://finance.yahoo.com/quote/F/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/FANG.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "5239130886c24af3abaafab84e60dce4fac939f66701be8f623824453a1c380d",
+    "source_url": "https://finance.yahoo.com/quote/FANG/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/FAST.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "5e188646748054eeb0bda8b061203d9a8f3f2e87bd7eebfc312e924fa70bdfef",
+    "source_url": "https://finance.yahoo.com/quote/FAST/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/FCX.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "1a20fadd370e97b953d1d83770b29d8d8423ad798bb53bae5243b943940bd617",
+    "source_url": "https://finance.yahoo.com/quote/FCX/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/FDS.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "65a4c322b7583cc7e9bb6dd0ca430486d4d69808f50994b83edd6876dc6087d6",
+    "source_url": "https://finance.yahoo.com/quote/FDS/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/FDX.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "19a1443eb37fefc830448905939372ced9b43b5348b7c3dbb4ae2c89c8425f3d",
+    "source_url": "https://finance.yahoo.com/quote/FDX/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/FE.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "5d7a5b34d7c5f12edc5448291333a0941851e9365ca720a01010f624a195d63e",
+    "source_url": "https://finance.yahoo.com/quote/FE/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/FFIV.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "c9fa7926d60100f02021c13b8565f3303ccf8503d7369eae68277e54a15bb53d",
+    "source_url": "https://finance.yahoo.com/quote/FFIV/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/FICO.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "6b817681d91d5871821ddd63091a4218a9efc0972cfc4db0ac949c42d75db55f",
+    "source_url": "https://finance.yahoo.com/quote/FICO/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/FIS.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "073c9c9fa89566a52811e128246092ac1d77512cac4cdc7a9d52123c8c703a5e",
+    "source_url": "https://finance.yahoo.com/quote/FIS/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/FITB.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "1b0a7ca0092ac4b3d26f8b1692e60565cf48b2e8cf457a84a00c4d43cfc7832b",
+    "source_url": "https://finance.yahoo.com/quote/FITB/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/FOXA.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "d0691b17e28c503a3237298d786e7f8b439641fac50345faa47135e718895d8e",
+    "source_url": "https://finance.yahoo.com/quote/FOXA/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/FRT.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "fa871385503b1483250bcebf48073424993fd7e93bcc6ff5d9302f0a550f9967",
+    "source_url": "https://finance.yahoo.com/quote/FRT/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/FSLR.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "f558930616ab2638e75789c0ac5eb212651fbf5d37826ff8d40b303dd8be89be",
+    "source_url": "https://finance.yahoo.com/quote/FSLR/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/FTNT.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "43921d2b2f53b9da58a1664947101b772eb94dcadb6f80dc4eca08d93003c0eb",
+    "source_url": "https://finance.yahoo.com/quote/FTNT/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/FTV.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "6ade11b4145c0b59a3aeaa0473b2b575fe8384be50063dd2eed456ec9c301d43",
+    "source_url": "https://finance.yahoo.com/quote/FTV/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/GD.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "d83dd40e80df891d60ee9fd8570ad5ecde45c883e7ff9ac99e4e0131a8dd07b7",
+    "source_url": "https://finance.yahoo.com/quote/GD/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/GDDY.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "ca2e178535e311356bb6a4429c5d1d7576ca1a84a8d2b17db16eb29c98a70375",
+    "source_url": "https://finance.yahoo.com/quote/GDDY/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/GEHC.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "991d5029f9c65d2af4b4bef720894150839a9058d60ada7d6f3a8e5dba6fabf5",
+    "source_url": "https://finance.yahoo.com/quote/GEHC/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/GEN.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "f167f0f96f8c56ce123c133ea0f98f67dc3218d6883063beffd261b681d630eb",
+    "source_url": "https://finance.yahoo.com/quote/GEN/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/GEV.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "fae64cdb921977ece4a7da869fea0f72065a8ed3fa1217f9b95ffdcde555370d",
+    "source_url": "https://finance.yahoo.com/quote/GEV/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/GILD.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "c0800f53d229307aabdfc364c12af78cce52be532354fdd938e178640478609d",
+    "source_url": "https://finance.yahoo.com/quote/GILD/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/GIS.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "a362d5071382dd565388286650a780cdd78670a0c4170e8ff5e5ddad055b315a",
+    "source_url": "https://finance.yahoo.com/quote/GIS/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/GL.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "d532011cbe12033ce120c77b45453a491d65503988dae9d5e22294897de34b12",
+    "source_url": "https://finance.yahoo.com/quote/GL/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/GLW.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "df1715cc1a92569eca5a18f65d1f02081b1f95ebecbd7e437ab97a7b77aed6fd",
+    "source_url": "https://finance.yahoo.com/quote/GLW/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/GM.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "4bb85f83e56624ab5ef73e910f3169343931ba30d3ccd5631dbbbb42020beb95",
+    "source_url": "https://finance.yahoo.com/quote/GM/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/GNRC.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "2f256e18c2ae2eed8cf4e08ad9c42c82c0d2cd464221215a1291257c1e79e6dd",
+    "source_url": "https://finance.yahoo.com/quote/GNRC/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/GOOGL.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "79a64728c1fe0cb68c72461e4ca15ea0dbdb0bee50291f0e1ffe87b471cccbb0",
+    "source_url": "https://finance.yahoo.com/quote/GOOGL/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/GPC.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "c38c591a351a03fc91fa18b8e9188c4a8f582c00390025cb4a988f19966422ba",
+    "source_url": "https://finance.yahoo.com/quote/GPC/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/GPN.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "129826e90a405e8004b56040d67b881aae170fdafe413aa587f79f8333589b28",
+    "source_url": "https://finance.yahoo.com/quote/GPN/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/GRMN.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "8238385e3670fe5a253b6f993155b9d7a18dd6b3b3560570969738450fd99262",
+    "source_url": "https://finance.yahoo.com/quote/GRMN/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/GS.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "0a7710fe4c6655cdc49caf82c809c10252a6fd29a34a35408790a352f8eb179c",
+    "source_url": "https://finance.yahoo.com/quote/GS/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/GWW.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "02d59dea460c9ff106180e2e71da9f653d0fe5468b89a2ca8a03c47afdd29720",
+    "source_url": "https://finance.yahoo.com/quote/GWW/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/HAL.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "ea8c5429c1da96cbd98275f9c3c834ed9387be2bc3a24e0426d8d2f20a6c10ab",
+    "source_url": "https://finance.yahoo.com/quote/HAL/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/HAS.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "e4777ccdb20d4f07b4c9f023669ef95a02ecf1c07676672d4a482b13f9546a90",
+    "source_url": "https://finance.yahoo.com/quote/HAS/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/HBAN.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "3f2d0a0a44f01225d7c90f5e18459196e4ec8e8a19cc7d016b71f1351f563806",
+    "source_url": "https://finance.yahoo.com/quote/HBAN/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/HCA.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "055fc4299dcc3b3a57cf824be56563d2128e435c0c376c401fe65876b79b4792",
+    "source_url": "https://finance.yahoo.com/quote/HCA/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/HD.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "b86ee7704369a47d2e1620c0f9e75b20be81b46303af531c2f406441b2691eb7",
+    "source_url": "https://finance.yahoo.com/quote/HD/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/HIG.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "f86201712b02d3f86051b7a6bcc20bf571bbd76fb77d792c6235a2fa6c16da0e",
+    "source_url": "https://finance.yahoo.com/quote/HIG/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/HII.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "55aab9e1c0f1696f17ddaee888eff3fb4bb14fabd6efe5b17d3736f445ac11a6",
+    "source_url": "https://finance.yahoo.com/quote/HII/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/HLT.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "49bb73643331be99f10f4434b1548a9831d2b7ef3136a3c7d5ec7cadaae1c483",
+    "source_url": "https://finance.yahoo.com/quote/HLT/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/HON.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "db67bffbe0c01100ed705b98847a3b549a7edeb3d555274141708ff28b6f34da",
+    "source_url": "https://finance.yahoo.com/quote/HON/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/HOOD.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "0f94fbc56bf3b61941d62e80657703215f6f637ee89b16845f15cd1346a54a7d",
+    "source_url": "https://finance.yahoo.com/quote/HOOD/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/HPE.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "ab7e44d27458ad0d7335c08561e8d4c769f7214f6fe721a146305f52276565ef",
+    "source_url": "https://finance.yahoo.com/quote/HPE/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/HPQ.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "0b2e7e894c1f481ebeecce82b2861644c0812e7cc30f61282db33c2e7833dcb6",
+    "source_url": "https://finance.yahoo.com/quote/HPQ/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/HRL.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "1d383098236986e98a33466cef8254219de22f8c9955500e65b78d982ba7f467",
+    "source_url": "https://finance.yahoo.com/quote/HRL/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/HSIC.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "3f3ef4a77a47ecb845837b8d4b6ece210850a83016c0a1ab931aaee5deb39f93",
+    "source_url": "https://finance.yahoo.com/quote/HSIC/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/HST.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "ed5d46f11ef9725e865562a05b37f675b40b5496ca308efd6bc0e0610e971bfe",
+    "source_url": "https://finance.yahoo.com/quote/HST/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/HSY.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "ac5ecb1863baa75baee5f7a3f16cc2f01f31c60fcd470ffd7d29b9c9092cafd2",
+    "source_url": "https://finance.yahoo.com/quote/HSY/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/HUBB.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "0c2c85f55736a01d9bb3ec5904b19c2c6460ddee70c4bc577a4fed8a2f7783e0",
+    "source_url": "https://finance.yahoo.com/quote/HUBB/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/HUM.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "5138d484440c48e8ef6e49f7c280df2466dc1a74e6ed07fdaa552c3e909f01a6",
+    "source_url": "https://finance.yahoo.com/quote/HUM/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/HWM.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "35c5e208d10b6c0d12ff5bc5c48f9735cf51c1a3da280689c69bd4b9aab0ec49",
+    "source_url": "https://finance.yahoo.com/quote/HWM/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/IBKR.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "e2eadca16d9f0eccfb3288fcf1b52391828e3a7d00dad92c90ca479ebc9a77d9",
+    "source_url": "https://finance.yahoo.com/quote/IBKR/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/IBM.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "19289cd485e964101286dcb6b623ccb7f9f6d40bb6885c6b8e61aa084d02bffe",
+    "source_url": "https://finance.yahoo.com/quote/IBM/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/ICE.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "7441977235b0935d5a2258587d4926a258f8847331e034c45ae0c314ed209620",
+    "source_url": "https://finance.yahoo.com/quote/ICE/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/IDXX.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "5c1ee6618f91811cc414aae2f7e99889cacfe11591015b0e05e1d57895cc07fd",
+    "source_url": "https://finance.yahoo.com/quote/IDXX/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/IEX.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "8edf73b9694765b7f3ebde3b1bfd5fdb7721d48110a27f8291d63bfba73634bc",
+    "source_url": "https://finance.yahoo.com/quote/IEX/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/IFF.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "77d93f319f854ecf2dcb11b469b4b9b4064afb9953e5b8ee8717951dcd47ac39",
+    "source_url": "https://finance.yahoo.com/quote/IFF/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/INCY.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "b5a7327145f1087137966e550813d8533e2df0e8761643f0f98e22c8595efdd6",
+    "source_url": "https://finance.yahoo.com/quote/INCY/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/INTC.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "dbcc033b6585b7bda37599a1b0e88c08f40164dda9c6fa20032d1c64524903ea",
+    "source_url": "https://finance.yahoo.com/quote/INTC/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/INTU.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "c31ca19227205af0f8b9655f536df7d51a9a6bed9def0c1a7f53827d04b4a0ad",
+    "source_url": "https://finance.yahoo.com/quote/INTU/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/INVH.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "f0b0a01b472f201fff88dcdc6d940b5917999f6998da996f03b295250f5e5d1b",
+    "source_url": "https://finance.yahoo.com/quote/INVH/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/IP.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "b5ef8b5bdfb00fda7ee49d45e31c7b103421bea53a2fdc624fc6acf43be7cc92",
+    "source_url": "https://finance.yahoo.com/quote/IP/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/IQV.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "cffbf4002c8e643311df517bae7ce20dbe444f600e71d0e9287878664ab49ab4",
+    "source_url": "https://finance.yahoo.com/quote/IQV/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/IR.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "d91f47bd1247de6c6417a01c40452260286e6b220674eeb7a1f2020d06836898",
+    "source_url": "https://finance.yahoo.com/quote/IR/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/IRM.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "5ca68c13f131af8e8ce757fd09d8aa940f7b9f6286923b44fc1725a1e3d13f7a",
+    "source_url": "https://finance.yahoo.com/quote/IRM/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/ISRG.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "720a0a063c7a94c3660489deff04c60fb455ba3d476476b946622642ddfd060c",
+    "source_url": "https://finance.yahoo.com/quote/ISRG/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/IT.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "cf0e19d7dc44424aadc0cc85a9cd79aebab753e7e921d9da6349100b0438415a",
+    "source_url": "https://finance.yahoo.com/quote/IT/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/ITW.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "66b8a5343e7b5b1bd30044c852e6e0f4001464645e06edcac65d1484a47ac32f",
+    "source_url": "https://finance.yahoo.com/quote/ITW/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/IVZ.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "ccaacb2663de4497f1f6dd7b12c798e18d070632d3354e7dd5fb3572f6cc88df",
+    "source_url": "https://finance.yahoo.com/quote/IVZ/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/J.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "eca3a510614c42ddd1d7f09a8386acd724542a54ae7a03f91a5c2866756325c3",
+    "source_url": "https://finance.yahoo.com/quote/J/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/JBHT.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "f7bfbe1ba6156e9380a5a79398c1e5f13f2c9076b11a7f0aca04ede44d03f1b7",
+    "source_url": "https://finance.yahoo.com/quote/JBHT/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/JBL.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "2ac3bce00733ddc0360a308f1d15ef38d18283951f9d48a8196c35dd63553c1d",
+    "source_url": "https://finance.yahoo.com/quote/JBL/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/JCI.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "ab8a7fa8608c6426e641a02bb5d386ad79ee01c5b12aa4619ae8e23963a27afd",
+    "source_url": "https://finance.yahoo.com/quote/JCI/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/JKHY.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "70f30080ee72f02eee79216b14d2175bdb3134bc6ee902ecabfbc25dac7f22e4",
+    "source_url": "https://finance.yahoo.com/quote/JKHY/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/JNJ.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "450b0e29ab8fa0f3d07f448788b181e3277f1eda7cc4e532f40433ccab467284",
+    "source_url": "https://finance.yahoo.com/quote/JNJ/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/JPM.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "a0baa33b60592d68cfeaefe473da3373aafefe2ef1e2214a062c6c6fd0292b7b",
+    "source_url": "https://finance.yahoo.com/quote/JPM/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/KDP.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "22cf7443bf1ff78f9ac4e97b947f0e246f22acc0fa8529f246cb9b2dea3a2567",
+    "source_url": "https://finance.yahoo.com/quote/KDP/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/KEY.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "bf17b4a1bbe12eb13eefc1676234b48664314899b74e58ac9bf1ab69943cb0e0",
+    "source_url": "https://finance.yahoo.com/quote/KEY/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/KEYS.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "6909fd0d48de071d448c9b04676befff81b8f4b5d43add315da9672fffb5e859",
+    "source_url": "https://finance.yahoo.com/quote/KEYS/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/KHC.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "7a3555b51b04f2f0305740eccbc922b37104d5b1f64441dda90741278258c40e",
+    "source_url": "https://finance.yahoo.com/quote/KHC/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/KIM.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "518a5eb9a2c40e9e4a1579b668b53255de5a0214f3c12134a4c0aa6336429378",
+    "source_url": "https://finance.yahoo.com/quote/KIM/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/KKR.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "97ebc7562f878049172026df42beb0ff2ceffb4eaebc5d34e88d7285bdbc6afa",
+    "source_url": "https://finance.yahoo.com/quote/KKR/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/KLAC.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "7be75aa335982e77f1c289a2c0f9e162beaad8e430b6c539d545af9aad729a67",
+    "source_url": "https://finance.yahoo.com/quote/KLAC/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/KMB.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "ad8c024bd254a256e94672b6b8c4283f91fbdf4a3f2ae5e706b484124dbb9dfc",
+    "source_url": "https://finance.yahoo.com/quote/KMB/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/KMI.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "4c2a56f34100dc293d5fd23bdc4504e87e321691ab0943faeda6b79fd22b446d",
+    "source_url": "https://finance.yahoo.com/quote/KMI/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/KO.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "87c7fcffd9b3cd3debbd8a9233cb8eb226c0cbd47300870ed1f1c6d62a838aad",
+    "source_url": "https://finance.yahoo.com/quote/KO/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/KR.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "3f19f7c1dd68692ae7b9dbaabbc1ffaab8df05660d9449abc012830f5eb6a513",
+    "source_url": "https://finance.yahoo.com/quote/KR/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/KVUE.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "59387977938a0b113ed6aef692fc6b2a671bf9d90c331f887a3af3c287e881c1",
+    "source_url": "https://finance.yahoo.com/quote/KVUE/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/LDOS.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "0c5b6c6bcb33d09fa677b95aa3b2dff8e11155f0ff14616662d637216bb36c86",
+    "source_url": "https://finance.yahoo.com/quote/LDOS/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/LEN.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "f8dd078fa92ab984ea6b4360b9638c1d2b571c599fcec1a3dd6a8a6062357825",
+    "source_url": "https://finance.yahoo.com/quote/LEN/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/LH.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "3096cbfac66f29925c078c0130c47a1e571af2e5b95192b322b7cc15199c8604",
+    "source_url": "https://finance.yahoo.com/quote/LH/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/LHX.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "38872dd8e9baef55078d7edb9946c8330d04a555b04631b0e5281e4264c2b695",
+    "source_url": "https://finance.yahoo.com/quote/LHX/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/LII.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "74c628ef28fa912026793b26ee89560fdd83b4521328fa122185b57e7b8576bb",
+    "source_url": "https://finance.yahoo.com/quote/LII/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/LIN.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "167668272755d0820ddf7bf35a58eb154d1e078fa9299f8c9660b13712d05f9f",
+    "source_url": "https://finance.yahoo.com/quote/LIN/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/LLY.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "234d829d7574b98ac68de257ebd9c427e9625e546c41c57935b0352be2b7f1b4",
+    "source_url": "https://finance.yahoo.com/quote/LLY/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/LMT.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "ddcc4c54daedbc42d1724e223dcb0f36b866967d8c88a007afd0659f4b119440",
+    "source_url": "https://finance.yahoo.com/quote/LMT/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/LNT.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "d0e405429b9ee3871619adf6c615b6c4d29365ad80b7f633c248d91ccd377970",
+    "source_url": "https://finance.yahoo.com/quote/LNT/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/LOW.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "7146d65dfa3492588c0dede104518ff489264eeee84425e230f3dda7c617049f",
+    "source_url": "https://finance.yahoo.com/quote/LOW/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/LRCX.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "80aab88164f4f4e16be311a27511de4dec10be08029c82f12b68810946edca4c",
+    "source_url": "https://finance.yahoo.com/quote/LRCX/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/LULU.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "450c7d0df1b8b6782be4aa1f41625bcf9efbd83859de8d0d8ddff714c46f1b3b",
+    "source_url": "https://finance.yahoo.com/quote/LULU/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/LUV.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "c6d38a57462cacfb84bbad454c42326065dbdbee3cde5c0bb631719b2ac00e43",
+    "source_url": "https://finance.yahoo.com/quote/LUV/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/LVS.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "9bf2a68237fdfd0c374845cccc9d9d73bab21b32d4544732ab0122aa1099e0c4",
+    "source_url": "https://finance.yahoo.com/quote/LVS/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/LW.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "df7d11fc24b4c19eb30fef89a876be67a34514dc8aa9102408b94a9410a2a00e",
+    "source_url": "https://finance.yahoo.com/quote/LW/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/LYB.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "8f437682ef7c6518268df85d7f4aab6ae491f73438c447f0c6b898190e9ced81",
+    "source_url": "https://finance.yahoo.com/quote/LYB/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/LYV.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "df8455729588e36b11fa7da7eadae86e443907dcd218562b8e75a3ab9f525d0b",
+    "source_url": "https://finance.yahoo.com/quote/LYV/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/MA.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "643eb944998b9f6a8bf703afc5a6d258d2eadbdc4d10b25c4d7bb58bced41049",
+    "source_url": "https://finance.yahoo.com/quote/MA/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/MAA.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "b6055123b92a14ca900967d950a440ef1b43439ac1aa40171a50eeb9eb6441c9",
+    "source_url": "https://finance.yahoo.com/quote/MAA/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/MAR.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "bc58f3829c15793b24bf276d4ac71602a02a44495d4153804e59d7903844e8ef",
+    "source_url": "https://finance.yahoo.com/quote/MAR/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/MAS.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "d2f5c94ba24ff0dc9721bd3b04ce2d58450e09681c2d6a3602ba0b602320a402",
+    "source_url": "https://finance.yahoo.com/quote/MAS/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/MCD.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "4afe91cd6db13e7205a1af132042222f6f4466803612c29c29200a4702e215de",
+    "source_url": "https://finance.yahoo.com/quote/MCD/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/MCHP.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "dd1d669b0fbb6a594ea8411eab5619ab106a4639afb17ea258e0c741beb0d6d6",
+    "source_url": "https://finance.yahoo.com/quote/MCHP/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/MCK.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "b46dcbf5a4d599fc0a02c6f0fc2a2c2c9a48a68b6949880cb2b04bbb25172bb8",
+    "source_url": "https://finance.yahoo.com/quote/MCK/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/MCO.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "c8150151d2a24c57ec83a6e1ef0539dd5879ed1f4e373a48ccd08d28569c41f5",
+    "source_url": "https://finance.yahoo.com/quote/MCO/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/MDLZ.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "a78b68b7da021a9fc14f5f767e9dd16f61c57cf1379a0ed5e2ba331f61b14327",
+    "source_url": "https://finance.yahoo.com/quote/MDLZ/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/MDT.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "0585740cdf30817c6ec59bb59455b2fd9b256ad3870f2e7d0210820545d302ae",
+    "source_url": "https://finance.yahoo.com/quote/MDT/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/MET.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "f55759a0725018eef6633562a0ba2eb3c27679dbb15e6cbbec6eced5b8715c24",
+    "source_url": "https://finance.yahoo.com/quote/MET/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/META.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "430eaf00637e5c179bd9e3fb9f700076fce5f54473ec6eaa8b0192d626a55d68",
+    "source_url": "https://finance.yahoo.com/quote/META/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/MGM.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "e4bec3d0178e28aac7d340e13e4611321712d2ca161d7248de753667cc12732c",
+    "source_url": "https://finance.yahoo.com/quote/MGM/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/MKC.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "edd8d6ed67b369f6e61df3d3075a6186a61748ef42c91ce15d3bab03414ec5bd",
+    "source_url": "https://finance.yahoo.com/quote/MKC/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/MLM.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "1a12b473ed8f15d326fcbefc1788c50af5d43182a2e63ca6fd8f7fefc12ba2b4",
+    "source_url": "https://finance.yahoo.com/quote/MLM/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/MMM.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "4cbde1eed2ed368d56af8c1437d28375d432c82e2e578c40ab447081fe2964ba",
+    "source_url": "https://finance.yahoo.com/quote/MMM/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/MNST.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "a4ead62597acb6adb6fc165b57bed74c025eb9e963aa36859557879828d57b31",
+    "source_url": "https://finance.yahoo.com/quote/MNST/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/MO.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "ce97acc1c6c883a7b70aca79ef7d10c712d46e7d9de736dc7aa2bac2b350047f",
+    "source_url": "https://finance.yahoo.com/quote/MO/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/MOH.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "55788e96e9078d28f4b7225b666a65184ca9ae669bc0969131155982bdd02ba4",
+    "source_url": "https://finance.yahoo.com/quote/MOH/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/MOS.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "cd8add1b56bc77488035b2da21bb696f2351aa8f894bfadd505879c38a74f444",
+    "source_url": "https://finance.yahoo.com/quote/MOS/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/MPC.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "d4da9fb91ca8b3953bc1b1c030ba70a107d0d2ca11972ceac3db766f3b4a584a",
+    "source_url": "https://finance.yahoo.com/quote/MPC/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/MPWR.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "473d5ef506b94ff858833331f121db7e3867f2a7823b361e58604c4fb1b23293",
+    "source_url": "https://finance.yahoo.com/quote/MPWR/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/MRK.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "1733efefa80a78364d120b88a229dbaae9448ea0d690464bd3762c940ae4daf6",
+    "source_url": "https://finance.yahoo.com/quote/MRK/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/MRNA.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "0fb51c21b1a88c6144e1a4b3466ff290697d500e62387e7428eafaa848c6fcab",
+    "source_url": "https://finance.yahoo.com/quote/MRNA/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/MS.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "41b44c4bdb686a319fc50540d0b439a9b6b6f89f641e04cfbab4b7cc45ef768b",
+    "source_url": "https://finance.yahoo.com/quote/MS/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/MSCI.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "28eb52161a026e1563340f8303d2ceb3c6c6a6aebc9519fc9974dbc7de8f7d67",
+    "source_url": "https://finance.yahoo.com/quote/MSCI/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/MSFT.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "ba7b450654780aafdd709a714e8171c35615afe368b820494fb7ee27daee5d50",
+    "source_url": "https://finance.yahoo.com/quote/MSFT/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/MSI.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "57981061448851c3b264a5726d10eea21f43d0ed90cfb0bfd520da22eb096e60",
+    "source_url": "https://finance.yahoo.com/quote/MSI/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/MTB.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "b933c78d31cdf8aaedeec0f0fea2c8d28690947ed58f154ef13528a0c5991a2a",
+    "source_url": "https://finance.yahoo.com/quote/MTB/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/MTCH.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "ac4417179f8e6c28715832e5bd8cbd90d34310b87d7c5eedce72385b80246c30",
+    "source_url": "https://finance.yahoo.com/quote/MTCH/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/MTD.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "1967d79ff80824ed6bf4dd9a8d91ad7b2674ee2c3de72742984d46c5ca5858b9",
+    "source_url": "https://finance.yahoo.com/quote/MTD/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/MU.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "b4f4b9ce46f19f27049729e23eed199a86dbcd05311658e4e0ee04c0c6ef4103",
+    "source_url": "https://finance.yahoo.com/quote/MU/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/NCLH.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "1670f5811248ff92d66f5739127358f3c41a6065e54936f086cda2772bc91f80",
+    "source_url": "https://finance.yahoo.com/quote/NCLH/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/NDAQ.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "b3319d57913dec3964a8eddb6ee1959411f151c4fc248dd49e57532208044c16",
+    "source_url": "https://finance.yahoo.com/quote/NDAQ/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/NDSN.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "3b87849b4b1378d33db0128ed3dba527c52636c1cb9a23e5ccabbbbdac1d5edc",
+    "source_url": "https://finance.yahoo.com/quote/NDSN/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/NEE.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "8000fa86ed3c6afb28680fa3baebf600bf72083dda2c9f4d9b3fc7def8aa81f6",
+    "source_url": "https://finance.yahoo.com/quote/NEE/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/NEM.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "1e7ee019ff2be251340f651831387ca695c98d87359ad03eedcbac1e2cb0ae5b",
+    "source_url": "https://finance.yahoo.com/quote/NEM/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/NFLX.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "ef47e3cd43d55688d1b1942a4b748d833b1d2fdefe2dc850ba7200e7e8a7c48b",
+    "source_url": "https://finance.yahoo.com/quote/NFLX/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/NI.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "ea13394ef4595d5863a0321a8bf988a831732c597768eccf07b03cf9398513db",
+    "source_url": "https://finance.yahoo.com/quote/NI/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/NKE.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "8a8be35a424fdca762c1d17c8eda5a949c555023db62316d7da3ab967865e530",
+    "source_url": "https://finance.yahoo.com/quote/NKE/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/NOC.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "94726a2759b61f14e58826244ee01ec834e08bf3d43af37dbc83cca8bb273227",
+    "source_url": "https://finance.yahoo.com/quote/NOC/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/NOW.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "283ba26c5dd849cb139970fb3a1206f0303fea40d710ce878e68c1e44684c5c3",
+    "source_url": "https://finance.yahoo.com/quote/NOW/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/NRG.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "5432301c8e0c9ed35adf2f822a87972b8d1773f5ffaf43168e304979e273c85d",
+    "source_url": "https://finance.yahoo.com/quote/NRG/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/NSC.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "1d57249db0c43f307f657bd8965614e948758ea8e11c585f05ecccdf8de717ef",
+    "source_url": "https://finance.yahoo.com/quote/NSC/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/NTAP.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "7ff037f2bd5cdcc32beea6bfedf07cc1df8fbe4f684ce94698c51500f95d1e44",
+    "source_url": "https://finance.yahoo.com/quote/NTAP/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/NTRS.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "e329154a56a2325fd70cbcc88ed5485a927277b4922586b0e724a38088d6d116",
+    "source_url": "https://finance.yahoo.com/quote/NTRS/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/NUE.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "6ef3b7114f20ee85621f101fabc0f3ffe8e6869294662606c0e20d308a09055d",
+    "source_url": "https://finance.yahoo.com/quote/NUE/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/NVDA.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "b383da46bacc77fc81613b08833739608d2d1df26beb4504b292d354250e7fd0",
+    "source_url": "https://finance.yahoo.com/quote/NVDA/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/NWSA.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "15876c9263bd782a611c27b949242b50b91cd0221ef608d945d443fe8e5e0632",
+    "source_url": "https://finance.yahoo.com/quote/NWSA/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/NXPI.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "d7a371ac1df80c5db8346ba57c5c2c371eff3c7b447250a498f6493c17ce5de6",
+    "source_url": "https://finance.yahoo.com/quote/NXPI/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/O.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "89442a08744dcfc467376d7e644e1493c6b149d71ca375327c5f852a36dc0d7d",
+    "source_url": "https://finance.yahoo.com/quote/O/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/ODFL.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "9e173766d6b05cfafdb572fe706271a9a025b6ce8b5c6e324de8343d413eaaaf",
+    "source_url": "https://finance.yahoo.com/quote/ODFL/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/OKE.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "34dcf2eeac6d2db82b6310d3cac82ca4a1841bfd4dd996fc07be22fe242b3a08",
+    "source_url": "https://finance.yahoo.com/quote/OKE/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/OMC.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "e8a59b6f8c9fbe0c710c7d8ebdd763d14f25687de8f13fddf6d2aba4cc9befd2",
+    "source_url": "https://finance.yahoo.com/quote/OMC/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/ON.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "0e6074836fd60f0d3d8f6489174b6ac598cdddf29959b7c05d21d4c9a384b250",
+    "source_url": "https://finance.yahoo.com/quote/ON/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/ORCL.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "5611682837a0f2a3e16cd8291f6f27b068727cf983a6410aa4bdb05e2d67e4c5",
+    "source_url": "https://finance.yahoo.com/quote/ORCL/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/ORLY.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "d22a97839d4424055a0720b110e494e4928c0e27f968763520f3a64d11ec366e",
+    "source_url": "https://finance.yahoo.com/quote/ORLY/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/OTIS.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "d0ef5b418352de5d8cfe3f41e5cd2492e3060160cf3abf7d1e8df486eb9295c0",
+    "source_url": "https://finance.yahoo.com/quote/OTIS/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/OXY.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "b98f2f8a73477d7f6c1271332555adf8c2ae90ccf701f9993f8b42d5592b2832",
+    "source_url": "https://finance.yahoo.com/quote/OXY/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/PANW.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "00815f83ec6de2c4cc9411fad58a7bcb96f6a26309cb9469afade71d658ddd62",
+    "source_url": "https://finance.yahoo.com/quote/PANW/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/PAYC.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "a815eb71a2524dd3154a1d1e2da012b01bc39c1da40e4da2117e023332b3057f",
+    "source_url": "https://finance.yahoo.com/quote/PAYC/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/PAYX.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "947ed7a64be9def4158b5acc4579603fa56d991646846ed351bd4cffeb3821d0",
+    "source_url": "https://finance.yahoo.com/quote/PAYX/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/PCAR.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "8ce4df02a175121a04fdb98709a1a00045419324113a999881360c5d08406e1c",
+    "source_url": "https://finance.yahoo.com/quote/PCAR/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/PCG.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "db955bb84556c5b1199c336f78e4d6b7853da9e5acc365266bf5b1e239b8a2c3",
+    "source_url": "https://finance.yahoo.com/quote/PCG/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/PEG.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "ddc22c4ea2a0a4896942e7c77d6096a0bf9c9148d3b67eb9ea543059401c0cef",
+    "source_url": "https://finance.yahoo.com/quote/PEG/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/PEP.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "51aa51913d7dc2705e0796e9673b08941ed3ef375985fc644512a20e9a4ea59a",
+    "source_url": "https://finance.yahoo.com/quote/PEP/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/PFE.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "c633df4414810c0cdf5a8c869554fe2dd48e56eb718689742f3d6e869773f53e",
+    "source_url": "https://finance.yahoo.com/quote/PFE/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/PFG.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "843a8dc2e972407b589fc1c534ac57b9828bff0888cded6879441107c3a16f31",
+    "source_url": "https://finance.yahoo.com/quote/PFG/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/PG.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "ea038751f26701fe13a7b86fffc32be19eed9c3ce6392ae44f12f4f948c4f548",
+    "source_url": "https://finance.yahoo.com/quote/PG/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/PGR.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "5fce2260ea3c38884a0cf4d2085b33757a3fca6e4c78e22d9cce430106533c95",
+    "source_url": "https://finance.yahoo.com/quote/PGR/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/PH.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "c7e2fd09ff2be66441dacd7410425a2cc468328c4e613b28860959ff0963cd38",
+    "source_url": "https://finance.yahoo.com/quote/PH/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/PHM.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "3d5784bb5221fd34cc6f9fa8eebfa300cc108516c34b0937ceb9de2edffafca9",
+    "source_url": "https://finance.yahoo.com/quote/PHM/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/PKG.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "7426a9c6f1d0aea24649a6bdfa7d3cb7290f431ab4d3cbb175056567456c88b3",
+    "source_url": "https://finance.yahoo.com/quote/PKG/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/PLD.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "7081ac2c86b8bf316a9c4a43c93e6bc8e9b98316c26fb7c08e1471263b55556e",
+    "source_url": "https://finance.yahoo.com/quote/PLD/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/PLTR.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "05ac94c92e9ff892e9f7330eff4eb2476e5cd5a0480d32085a54feb658c9179b",
+    "source_url": "https://finance.yahoo.com/quote/PLTR/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/PM.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "17326aa432adc9b0a5a53bc55f7e8e6ddeda6c65a65ab7a65ed894ce540915a4",
+    "source_url": "https://finance.yahoo.com/quote/PM/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/PNC.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "673e5de2a7e47fe638f3541f2c80dca342a4894eba7dce70ecd57978312309c1",
+    "source_url": "https://finance.yahoo.com/quote/PNC/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/PNR.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "82802d2035fa202d278ff1a49b1c5a5aeedb96dded69a43dd8ee34104811af4c",
+    "source_url": "https://finance.yahoo.com/quote/PNR/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/PNW.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "6ef9421f66aa28fec9d651d02f76481bf928d58f25dbe7ecea52a7c63c31e863",
+    "source_url": "https://finance.yahoo.com/quote/PNW/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/PODD.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "cc4db704c9e49f604026ccbe541d48ab0ab0045bc88cd9b7795f0c5ac24c7298",
+    "source_url": "https://finance.yahoo.com/quote/PODD/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/POOL.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "82c9d7502717ebcee3a3a60c2031eaab2ceef0d05a42f16ce3e8a8cd592dc22a",
+    "source_url": "https://finance.yahoo.com/quote/POOL/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/PPG.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "0e0cae764c3b4cef35a9796f3cde213f333761b0277bf66e52c92aba8441dbb2",
+    "source_url": "https://finance.yahoo.com/quote/PPG/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/PPL.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "ba8b31e69b99d625759bfa2d5943c0246766489dd25beec1db7d392bce277a66",
+    "source_url": "https://finance.yahoo.com/quote/PPL/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/PRU.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "fc30d4fd57cf34c6e40281b6381acf995a92b73da3694142fd20fa776de5fa98",
+    "source_url": "https://finance.yahoo.com/quote/PRU/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/PSA.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "167a2de974e2e050eb1b325d00ac68015aceddfe3615ca0ccecacfc775e3c2da",
+    "source_url": "https://finance.yahoo.com/quote/PSA/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/PSKY.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "2533c48ea709d2be8b6ddec30e845bf4343adf0645e2eed2e14a9db6e278e697",
+    "source_url": "https://finance.yahoo.com/quote/PSKY/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/PSX.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "dee6e629e4fc6ce8e17c35aca5582951aa11306fcf0bdebcab09f946162789c7",
+    "source_url": "https://finance.yahoo.com/quote/PSX/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/PTC.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "16fd60452d8c609bdf3e081df004811302fa78084c907d6d6734c5c726ddacbf",
+    "source_url": "https://finance.yahoo.com/quote/PTC/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/PWR.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "18e6f66bcb13ea4450054a8f245fd271ec651e449ee1bc654354e972d85c96ea",
+    "source_url": "https://finance.yahoo.com/quote/PWR/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/PYPL.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "8623084edb6bfadf49a15247b540c29f0f742fc1459dcb45ac942b19cd6efd07",
+    "source_url": "https://finance.yahoo.com/quote/PYPL/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/QCOM.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "37de96798523ad969d6c34740e325a0ad7b8854b670c4da5cebf8572ec98d647",
+    "source_url": "https://finance.yahoo.com/quote/QCOM/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/REG.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "e1be3055bce05c7eb7986e7e544693773b018340c00727eb16002ce906106530",
+    "source_url": "https://finance.yahoo.com/quote/REG/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/REGN.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "b2891e97436a9f226a10a0b3d2cc32728c53bf1e09cbd6bd51569e801da3ff33",
+    "source_url": "https://finance.yahoo.com/quote/REGN/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/RF.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "163af6b1a3a6474a46f91a2f957f2ca511af44412d36078415792b4b0a94fc94",
+    "source_url": "https://finance.yahoo.com/quote/RF/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/RJF.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "ebb02e64246fb8b5abf43598db96f63a43a65f5510f3049ac24d4fdfc3df63dc",
+    "source_url": "https://finance.yahoo.com/quote/RJF/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/RL.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "b8c5127f36135cc991c985777e1c3eefe97559b0a6c3a312073f63bac46824be",
+    "source_url": "https://finance.yahoo.com/quote/RL/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/RMD.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "29359b1bf505caa3b91d960f61c978261af645346936f9d3d2264c833cf3c757",
+    "source_url": "https://finance.yahoo.com/quote/RMD/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/ROK.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "5e62868a0b5623e77f2ccaefe93341dc1d1910c9891073886fceed024195f465",
+    "source_url": "https://finance.yahoo.com/quote/ROK/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/ROL.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "6fc5d9136e64d386afc84789aabb50b0ff1088bf939ceac534cf56c350319d4b",
+    "source_url": "https://finance.yahoo.com/quote/ROL/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/ROP.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "a16160dc98c67af289b3944c9e37d73f1d0bed866f5aa2a068d4f10e4086a0dd",
+    "source_url": "https://finance.yahoo.com/quote/ROP/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/ROST.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "02348aa0d3d3a7528a058bd2cabe4895f6bf95486a6ca29bc8e1af471dddc6ba",
+    "source_url": "https://finance.yahoo.com/quote/ROST/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/RSG.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "06936bd77beb05608f7b0cb3ecde9d725136e41d5e308e5f7be2366983155d3f",
+    "source_url": "https://finance.yahoo.com/quote/RSG/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/RTX.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "b6c72dbd5f2786a4733bf469dc26f6614ccaaf50ae18e8b5a0f8a40a60df1250",
+    "source_url": "https://finance.yahoo.com/quote/RTX/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/RVTY.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "d2785b97ae367064c0a83de7f585f2affe58c6d93de3a1abc55d70611ee01b83",
+    "source_url": "https://finance.yahoo.com/quote/RVTY/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/SBAC.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "9601ed500ed813252c9706b42d753f2640d66c4de3c97d8f32a6543c58ff913c",
+    "source_url": "https://finance.yahoo.com/quote/SBAC/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/SBUX.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "257613d1cd5525021579c659382f17599d62d5f4fb4a7e8ea769b8a5153f2665",
+    "source_url": "https://finance.yahoo.com/quote/SBUX/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/SCHW.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "914e38a010de5dc74fe3b41bf11ee847e87d46ba86a0e34eda9a45fdb11f9806",
+    "source_url": "https://finance.yahoo.com/quote/SCHW/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/SHW.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "050f76a1ae2b1e2ccae40736db7e1e2a0e356e61c44246424216752d87caa7df",
+    "source_url": "https://finance.yahoo.com/quote/SHW/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/SJM.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "8a53fd697257deffe3785649e8de460dfc45a7ed8a6f8335a1185a48c29e310d",
+    "source_url": "https://finance.yahoo.com/quote/SJM/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/SLB.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "dacdff30d213a168528d4c1eb98d17ae1900bbfe1f6bad3d364ad4eef43efd9d",
+    "source_url": "https://finance.yahoo.com/quote/SLB/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/SMCI.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "e4d790c116ee9f43cb81c4f531df5ded549a83a736a7dcb4f01ca58e80f2d954",
+    "source_url": "https://finance.yahoo.com/quote/SMCI/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/SNA.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "ea9bfe87c00356c2c5b6a75b21d8d4e2797dcd7e173da5049c55dea2b707f7fe",
+    "source_url": "https://finance.yahoo.com/quote/SNA/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/SNPS.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "61aa5a27f9c73c630923dfa275da6199177e1b2cf78ff1ae5933022f007a2f22",
+    "source_url": "https://finance.yahoo.com/quote/SNPS/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/SO.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "dd37d1a8fc5b0f464e4b9bae828fdca7c635f8ad5aa6e064e4e0446337b6baf5",
+    "source_url": "https://finance.yahoo.com/quote/SO/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/SOLV.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "64bbb13020012ca9af456b84de4e756ac349be1f4ac13d7f84e673f74d011d30",
+    "source_url": "https://finance.yahoo.com/quote/SOLV/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/SPG.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "d74a78e111a09727c84d8d27e33ae037a37e9bb9471e899542bf780bbacf867b",
+    "source_url": "https://finance.yahoo.com/quote/SPG/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/SPGI.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "42ee73a2554d6d24c8afa603ef8e26fbae1c46bd100e6ab8c08bbde8e77b9827",
+    "source_url": "https://finance.yahoo.com/quote/SPGI/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/SRE.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "b397b97bf42e4d7f7e95ecec507da7a4097fb44bc2065e4ba649a68e06fcc426",
+    "source_url": "https://finance.yahoo.com/quote/SRE/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/STE.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "1424fc98de17581255f6dd5262fc3aaaba5e35a7a272f8079d929e32bc9e1bd3",
+    "source_url": "https://finance.yahoo.com/quote/STE/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/STLD.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "d9c294064cd47d15527355c7984a7d56d0d109ba0db9017bce1095dc6d08382c",
+    "source_url": "https://finance.yahoo.com/quote/STLD/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/STT.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "a5dc8f0dc8a4ea89253deb96c12c0a4ee9eaf5728386e6afbf94219a325fef2a",
+    "source_url": "https://finance.yahoo.com/quote/STT/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/STX.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "627ffe08db0b7e8fa68d9907e1116e6bc7a943d85d0dd4020bdbd785a586010d",
+    "source_url": "https://finance.yahoo.com/quote/STX/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/STZ.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "2c8d92bcad035f678c3114ef23cb2b1cc0aec0701ca082495f43bc32776dcf93",
+    "source_url": "https://finance.yahoo.com/quote/STZ/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/SW.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "c108e7e65b06ff0a3ccdbe33b7e680a6381f84b9f2734f881301b1609649e884",
+    "source_url": "https://finance.yahoo.com/quote/SW/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/SWK.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "26023ab44bc850c575c0c07294516f2db4028edfa1cd8321460fde5cb19140b3",
+    "source_url": "https://finance.yahoo.com/quote/SWK/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/SWKS.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "6a22a60aaa9760d5a307fd048701d9c8ff970214d8bc15551e3946484e37f9ee",
+    "source_url": "https://finance.yahoo.com/quote/SWKS/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/SYF.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "ff75ac4e4c954754580fe8d4261b84523253d5a3deeade11e2c595f6f25ed488",
+    "source_url": "https://finance.yahoo.com/quote/SYF/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/SYK.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "1170779c970425e9e26352c31696385daad4fcba27d368dd8682d9496645f49f",
+    "source_url": "https://finance.yahoo.com/quote/SYK/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/SYY.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "a15a6a6cf04a0c28e08b4bb8cb9be5c3faaee585ce1bc79038598fdca26ad590",
+    "source_url": "https://finance.yahoo.com/quote/SYY/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/T.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "3102e82c26b45ae733ae3fc31277a0de1526205ffdb040fb2ac866efeb78c9ed",
+    "source_url": "https://finance.yahoo.com/quote/T/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/TAP.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "7e5e137a5b0e30d56d1245da925273388f98a7ebb901e50068690239967eca27",
+    "source_url": "https://finance.yahoo.com/quote/TAP/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/TDG.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "fe0bfe3167550c1f65604e0925cf3f85853ab3f7d47f0a1fabe3df1d78814834",
+    "source_url": "https://finance.yahoo.com/quote/TDG/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/TDY.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "9f059a00449a4270353f01eafcac05adfc789fe9ecab40fd57e4a6a82952cbde",
+    "source_url": "https://finance.yahoo.com/quote/TDY/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/TECH.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "af675051f72e9ff518d36e2d9abb08b7cf719aca48499a1e845c044da3de366e",
+    "source_url": "https://finance.yahoo.com/quote/TECH/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/TEL.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "64d431810821becd7cef3ddb8ad442f55540775da00a797088dda2fcc9859397",
+    "source_url": "https://finance.yahoo.com/quote/TEL/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/TER.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "e82aca10d5de1aeb3aec7b9969d306989951cf4ee081f11a0361379d9913a54d",
+    "source_url": "https://finance.yahoo.com/quote/TER/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/TFC.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "e7c79c9f99236a1ee40899dce227f1732045be29ee343676d4d14ccb23947b63",
+    "source_url": "https://finance.yahoo.com/quote/TFC/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/TGT.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "ce888362bc3ffc1544bf5956d292c4b4e1c712c8c9fda482b929bd3ab2726848",
+    "source_url": "https://finance.yahoo.com/quote/TGT/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/TJX.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "434831cb6ca4091fe0e1b5b2b986ec27a10125ae57d3276fdebf97dc2a33c25b",
+    "source_url": "https://finance.yahoo.com/quote/TJX/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/TKO.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "c69168059a68c0b5696e8447f918d4e2ba57fd0ae97c433644c0263879469c83",
+    "source_url": "https://finance.yahoo.com/quote/TKO/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/TMO.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "94c0cd6cf242c6ccf351a8f1eaf114dccdb510f3547c34a317b34bf7524bb0f0",
+    "source_url": "https://finance.yahoo.com/quote/TMO/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/TMUS.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "69c77e44979d7ea43caee20515263df5407903b6e4d72e6f3a2c920c29ba2f2b",
+    "source_url": "https://finance.yahoo.com/quote/TMUS/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/TPL.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "1b06ad9fd2c07ad7f633b0e00e9a8c1e79f72dda2fe691e71f0624b159329cb6",
+    "source_url": "https://finance.yahoo.com/quote/TPL/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/TPR.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "46d4b2833385e4ccb5d0e0afc32788d211df418ae8c52fbc17088df2a9fb23f6",
+    "source_url": "https://finance.yahoo.com/quote/TPR/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/TRGP.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "cb0e84c3ac85f9eb1cba69f14d7c3eeb87b0ae0fb6e847180dc3041392fba92b",
+    "source_url": "https://finance.yahoo.com/quote/TRGP/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/TRMB.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "fbba5dff9ca639ba4af7ca6a9ae79a4ee880cf243c5ed88b22a52d6be51c6d0e",
+    "source_url": "https://finance.yahoo.com/quote/TRMB/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/TROW.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "0eeb2d724ef5c98bea93a1963002c2fd79f6a72f95bce7a225aae888562149e1",
+    "source_url": "https://finance.yahoo.com/quote/TROW/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/TRV.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "6c20615554980de59e294db27f9c48d2998503aea97e45ecd1927331de1b5bdc",
+    "source_url": "https://finance.yahoo.com/quote/TRV/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/TSLA.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "1e52abec1267b79fa3b20cf98442de03fdac42e4cdf237e0b91057481e2352c8",
+    "source_url": "https://finance.yahoo.com/quote/TSLA/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/TSN.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "225523542f4ecef1bf725f8be44087f8fe821a92fbc8fbbc24f9fdc2c500d591",
+    "source_url": "https://finance.yahoo.com/quote/TSN/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/TT.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "de5941987fe7337419b86cc14c0f2dd11ebbbaaf3dfde52ee9f8e493b79c1c9c",
+    "source_url": "https://finance.yahoo.com/quote/TT/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/TTD.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "dddf19a26d28fa1792e052896560472333942e1d518cbd2fcfa4b9a0b6bef32f",
+    "source_url": "https://finance.yahoo.com/quote/TTD/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/TTWO.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "41719a1de5617af312f4dcb705743fdde668c48fa4f42f9f0f4fa23fd459887d",
+    "source_url": "https://finance.yahoo.com/quote/TTWO/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/TXN.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "27e9b26684b0e0c53c53a868a253912b1f22572ed514abca53a4ad008e4d1d02",
+    "source_url": "https://finance.yahoo.com/quote/TXN/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/TXT.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "b1bae2f2d695fd78475e751cc20c6ae33ab990a4d1f06eaae891e946066d5065",
+    "source_url": "https://finance.yahoo.com/quote/TXT/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/TYL.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "bde7b95da754f5f7118f9aaf757b2db51f18a1be402f2c6933ad53e124b93928",
+    "source_url": "https://finance.yahoo.com/quote/TYL/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/UAL.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "7cde209a62f4eec0b6ef63c9d67d8947f453657c5f7b042b482604e1543889ce",
+    "source_url": "https://finance.yahoo.com/quote/UAL/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/UBER.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "150af67e50136896274de5a75dc00a2ece460d9d0885a9c2c92489890e094f23",
+    "source_url": "https://finance.yahoo.com/quote/UBER/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/UDR.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "b65b90570354b8af17fd3b758a4239c2912a83285bece1a2d57a1540e8ffae0c",
+    "source_url": "https://finance.yahoo.com/quote/UDR/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/UHS.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "09b11f5644e942cc5c867cf67c375362a928774430f306d3e1931630c16b2c2a",
+    "source_url": "https://finance.yahoo.com/quote/UHS/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/ULTA.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "158a8f0296194ec6e42fd4a03f05a7d8c5237b2ed9f777cfe0bb8acbdc3838b7",
+    "source_url": "https://finance.yahoo.com/quote/ULTA/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/UNH.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "4184591573ca92a3929107edeabb75bb684695ce793465bb6729a8af569f328a",
+    "source_url": "https://finance.yahoo.com/quote/UNH/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/UNP.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "3c0ecc7d5c1c49fd835c219db7809f011b61e103c3431152ca5157c6952fd72e",
+    "source_url": "https://finance.yahoo.com/quote/UNP/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/UPS.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "6eef11fe9abd73795adfc78c59f440c164b0974c11838a823f4b80daddffde5c",
+    "source_url": "https://finance.yahoo.com/quote/UPS/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/URI.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "08be3e3959b61fe2156d19c3b5be8d5b556707519dd56d07ffe729a24ef0a426",
+    "source_url": "https://finance.yahoo.com/quote/URI/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/USB.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "d7afa4ae66e6beed7a589a40f58c4659646f70bfc7c42dd272f9014e3ca737fa",
+    "source_url": "https://finance.yahoo.com/quote/USB/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/V.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "c0cfbae25491a50c64f9089da854b199293aa72931189793c7512a12d96f31fd",
+    "source_url": "https://finance.yahoo.com/quote/V/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/VICI.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "014eaa0c1c2e3ddf9d3e247104e6cf3ca5c955df91b9ddbf19bdc532dad832fc",
+    "source_url": "https://finance.yahoo.com/quote/VICI/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/VLO.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "b17d96d38a6640468a23f3aea5e38079eac4fd35a0e0bd247cac08972cd7bc60",
+    "source_url": "https://finance.yahoo.com/quote/VLO/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/VLTO.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "e642e9c7e9c47c4e5243af26c99a8b4d673efb73e53b6ce86d94d272c786a545",
+    "source_url": "https://finance.yahoo.com/quote/VLTO/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/VMC.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "12a9c7a7039f2055c7ca879b06386c8ad08b34be3e93b178ee7085daf601ac7a",
+    "source_url": "https://finance.yahoo.com/quote/VMC/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/VRSK.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "673177a2d9cd28b5fa46729981591ec8499de4aae61cb694a2d9c3f7ef4f1bf3",
+    "source_url": "https://finance.yahoo.com/quote/VRSK/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/VRSN.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "4649c051de68161b0cb523bf2fc0a69c963359813066da4c37a34cf9c202a79e",
+    "source_url": "https://finance.yahoo.com/quote/VRSN/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/VRTX.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "13d8ec373c1a55f9c0dc1aa5645a7829a55c5d99b11128faebe7ff9e447962ef",
+    "source_url": "https://finance.yahoo.com/quote/VRTX/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/VST.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "cd2b4a423ec170babaae4ebfc8e0295668d1e0043dedd44e1d828f5240eb8802",
+    "source_url": "https://finance.yahoo.com/quote/VST/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/VTR.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "9398e9f605389c6ff0dd1b71f91f71ae6861589d9841bc55eca8e3f295ce1cbb",
+    "source_url": "https://finance.yahoo.com/quote/VTR/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/VTRS.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "7da2b223e229f25cefba2eaf3e1cdd611823abf24a7a9c608fa66d87dbd29a9e",
+    "source_url": "https://finance.yahoo.com/quote/VTRS/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/VZ.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "13ea15c85bfac3561d3757aa5a3ef177c9a38162a23a45b1e69fcfbb5eb44fd1",
+    "source_url": "https://finance.yahoo.com/quote/VZ/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/WAB.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "5a292b9ccf01d3b15a3dcdc0f829a65a85039e53e439aa19a15ad60f1dc47c0d",
+    "source_url": "https://finance.yahoo.com/quote/WAB/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/WAT.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "29eb7f46c8cabf7b39538494bfd992bd563e43ce961f90d4b7b0929570573b32",
+    "source_url": "https://finance.yahoo.com/quote/WAT/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/WBD.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "c3d450b2931b8596a809d2f275b46886ea30164464fa0dc762db38b880de0af9",
+    "source_url": "https://finance.yahoo.com/quote/WBD/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/WDAY.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "da2e3de5d6e307ff748df03bf356b76b51a07827d57d4b2de86a3c3b56421a6d",
+    "source_url": "https://finance.yahoo.com/quote/WDAY/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/WDC.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "668fe56424ade336fc517602bdaafdb7bb77abce070624b7ba5d9eaed7ec0e68",
+    "source_url": "https://finance.yahoo.com/quote/WDC/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/WEC.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "e9bd5eadcd86d7b00c7397ca85b746a8ec89350fba732c04129e2e614f5fcf82",
+    "source_url": "https://finance.yahoo.com/quote/WEC/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/WELL.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "ff4b5b8d94c3f2f6881ae4e6f88dd3d12987eda2120f6143746f3cb56f544131",
+    "source_url": "https://finance.yahoo.com/quote/WELL/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/WFC.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "9b53278da0f691fea6beba771b81e6ca6e40ab0ac24d1df4b56eb6d520bd6061",
+    "source_url": "https://finance.yahoo.com/quote/WFC/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/WM.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "33218f0bea89478c30c6519cf54202f12a702c57e2cde5380e71f5b8d8b397da",
+    "source_url": "https://finance.yahoo.com/quote/WM/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/WMB.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "17ca34553ccd8ceba1433c7f6c02f185ac7ffc4b01601e95bfe9956c8ab89912",
+    "source_url": "https://finance.yahoo.com/quote/WMB/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/WMT.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "c08460aa8271b9c1824d676865e917098f1f2aeb57d93b6cadb2586e58fc682b",
+    "source_url": "https://finance.yahoo.com/quote/WMT/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/WRB.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "e0f1e65805ce079a9add74f038b928016a48d01b7c8b2f5fe9100195240c3c6b",
+    "source_url": "https://finance.yahoo.com/quote/WRB/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/WSM.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "8ec0a32ac3f039716b32be9ce02925c1550ba24690307f459c2c539d4f050811",
+    "source_url": "https://finance.yahoo.com/quote/WSM/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/WST.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "63ecd3e9404c65ccfda9206b1caa12f0d416eb8ca1ed573104041ba9a706dc48",
+    "source_url": "https://finance.yahoo.com/quote/WST/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/WTW.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "6e1d65e78dde9abf5bd8c87eeebdf2ebb4abd85f5c76d41979a5dd4209f4715b",
+    "source_url": "https://finance.yahoo.com/quote/WTW/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/WY.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "5b6f462916ee4f0c784866626075c342ba4abda1ec8ce1c960168a1dfe0a372b",
+    "source_url": "https://finance.yahoo.com/quote/WY/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/WYNN.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "6ddb2c99a2ba654e0734b770843f3968c13ceabcb79efc23fde7c3aec82e417c",
+    "source_url": "https://finance.yahoo.com/quote/WYNN/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/XEL.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "06e3a6b49d29c2a35d99e75a4a1d4b8f7cac4c904f572f2ec38153604f31faa6",
+    "source_url": "https://finance.yahoo.com/quote/XEL/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/XOM.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "cb3e6076d4e8c74a6f1e9c4b8caabd5e5cc82780b09673d0d84e23cdf0d8fd7a",
+    "source_url": "https://finance.yahoo.com/quote/XOM/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/XYL.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "2615b746cd307c11c97bc39c6d5247a7a516ef8e50366cc2b1d18a4e9159f990",
+    "source_url": "https://finance.yahoo.com/quote/XYL/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/XYZ.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "415fd2ff9c7f35d66161f5f56089e25073d7276f8dc485415676e82860b278f1",
+    "source_url": "https://finance.yahoo.com/quote/XYZ/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/YUM.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "ac5b5aec2c5c6e1490a7ba470ae562ba04e007498f24715543655c21bdf10fc9",
+    "source_url": "https://finance.yahoo.com/quote/YUM/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/ZBH.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "97586915f82556e476f2a928ed61edee3f46485d7b3d6a5be28e36e416a11396",
+    "source_url": "https://finance.yahoo.com/quote/ZBH/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/ZBRA.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "29793f4e590c201c7196dd583954ce97ebba9da186be2af82177f6e84693a099",
+    "source_url": "https://finance.yahoo.com/quote/ZBRA/history"
+  },
+  {
+    "license": "Yahoo Finance \u2014 research use; not redistributed (manifest records provenance only)",
+    "path": "prices_earnings25/ZTS.parquet",
+    "retrieved_at": "2026-09-02T04:47:30+00:00",
+    "sha256": "f47a8adf54dc92354e264e61b7e168c8083a4294166615c2d956b256b79f4ed8",
+    "source_url": "https://finance.yahoo.com/quote/ZTS/history"
+  }
+]

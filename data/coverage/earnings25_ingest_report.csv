@@ -1,0 +1,14 @@
+metric,value
+total_calls,514
+ok_calls,476
+months,2025-03 2025-07 2025-08 2025-10 2025-11 2025-12
+joined_calls,475
+join_rate_pct,99.79
+missing_price_tickers,1
+reason:lookalike,4
+reason:not_sp500,23
+reason:unresolved,11
+target_reason:no_price_data,4
+stratum:64k,281
+stratum:le24k,232
+stratum:other,1

@@ -1,0 +1,9 @@
+[
+  {
+    "license": "Derived artifact \u2014 normalized from Earnings25 (CC-BY-4.0)",
+    "path": "earnings25/calls.parquet",
+    "retrieved_at": "2026-09-02T04:47:59+00:00",
+    "sha256": "3fb7d87e4ca5ae5fffa178ea91fd67df043effa56fe9ffbf3124d945e485b333",
+    "source_url": "computed: ecvol data ingest earnings25 (T7.1)"
+  }
+]

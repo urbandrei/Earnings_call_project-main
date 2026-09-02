@@ -363,7 +363,7 @@ Components run sequentially, never co-resident; eGeMAPS (openSMILE) is CPU-only 
 | 6R | Reproduction & audit study (~3–4 wks) — *replaces Phase 6* | `ecvol audit substrate` → **Result Table 5R**; five reproductions (HTML, SCSS, KeFVP, DialogueGAT, Sawhney) each on its own data under our controls → **Result Table 6R**; code-availability audit | Published-split numbers reproduced within a stated tolerance before any controlled number is claimed |
 | 7 | Post-cutoff lookahead study (~2 wks) | Earnings25 ingestion (DECISIONS 2026-08-23 §6; self-collection deferred); frozen-pipeline evaluation | No retraining after first look (pre-registered) |
 | 8 | Paper + repro package (~2–3 wks) | REPRODUCE.md, feature release, manuscript (benchmark-first), ACL/ARR submission | Clean-machine reproduction of Table 1 |
-| 9 | Reframe work (benchmark-first) — DECISIONS 2026-08-23 | Dual-convention targets (T9.1), call-timestamp retrofit (T9.2), reproducibility-debt closure (T9.3), Earnings25 clean-audio ladder (T9.4) | T9.3 before further science; T9.1 before any comparability claim |
+| 9 | Reframe work (benchmark-first) — DECISIONS 2026-08-23 | Dual-convention targets (T9.1), call-timestamp retrofit (T9.2), reproducibility-debt closure (T9.3), Earnings25 bitrate-stratified audio ladder (T9.4; re-scoped DECISIONS 2026-09-02 — its audio is 64/24/16 kbps, not clean) | T9.3 before further science; T9.1 before any comparability claim |
 
 ---
 
