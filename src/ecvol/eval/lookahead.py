@@ -22,9 +22,11 @@ The Stage-1 ticker-fixed-effect GBDT is omitted by design: every Earnings25
 company is unseen, so a ticker fixed effect has no post-cutoff meaning (which is
 itself the point of DESIGN §3.1). Degradation per (stage, target, τ) is the
 post-cutoff minus in-cutoff R²_OOS against persistence, with a cluster-bootstrap
-CI (clusters = calendar month of day 0) on the post-cutoff R². Targets are the
-primary (assume-after-hours) sets for both corpora so the anchor rule is held
-fixed too. Output: `results/result_table_7.csv`.
+CI (clusters = calendar month of day 0) on the post-cutoff R². The table is
+computed twice with the anchor rule held fixed on both sides: on the primary
+(assume-after-hours) targets → `results/result_table_7.csv`, and on the measured
+EDGAR-anchored variant of T9.2 → `results/result_table_7_measured.csv` (input to
+the re-baselining decision, DECISIONS 2026-09-03; not a change of the primary).
 """
 
 from __future__ import annotations
@@ -47,6 +49,7 @@ TRAIN_DATASET = "fincall"
 POST_DATASET = "earnings25"
 TARGETS = ("v", "dv")
 STAGES = ("persistence", "har", "ridge_text_pastvol", "ridge_wavlm_pastvol", "ridge_fusion_pastvol")
+ANCHOR_FILES = {"assumed": "result_table_7.csv", "measured": "result_table_7_measured.csv"}
 
 
 def _features(root: Path, dataset: str):
@@ -75,17 +78,31 @@ def _impute(X: np.ndarray, med: np.ndarray) -> np.ndarray:
     return X
 
 
-def run_lookahead(root: Path, *, n_resamples: int = 1000) -> pd.DataFrame:
-    train_df = E.load_eval_frame(root, TRAIN_DATASET)
-    post_df = E.load_eval_frame(root, POST_DATASET)
-    assign = pd.read_csv(
-        root / "splits" / f"{TRAIN_DATASET}_temporal.csv", dtype={"call_id": str}
-    ).set_index("call_id")["split"]
-    train_df["split"] = train_df["call_id"].map(assign).fillna("excluded")
+def run_lookahead(root: Path, *, n_resamples: int = 1000) -> dict[str, pd.DataFrame]:
+    """Result Table 7 under each anchor rule (see module docstring); returns {anchor: table}."""
     feat_tr, cols = _features(root, TRAIN_DATASET)
     feat_post, cols_post = _features(root, POST_DATASET)
     for k in cols:
         assert cols[k] == cols_post[k], f"feature columns differ for {k}"
+    out = root / "results"
+    out.mkdir(parents=True, exist_ok=True)
+    tables = {}
+    for anchor, name in ANCHOR_FILES.items():
+        table = _lookahead_table(root, anchor, feat_tr, feat_post, cols, n_resamples)
+        table.to_csv(out / name, index=False, lineterminator="\n")
+        tables[anchor] = table
+    return tables
+
+
+def _lookahead_table(
+    root: Path, anchor: str, feat_tr, feat_post, cols: dict, n_resamples: int
+) -> pd.DataFrame:
+    train_df = E.load_eval_frame(root, TRAIN_DATASET, anchor=anchor)
+    post_df = E.load_eval_frame(root, POST_DATASET, anchor=anchor)
+    assign = pd.read_csv(
+        root / "splits" / f"{TRAIN_DATASET}_temporal.csv", dtype={"call_id": str}
+    ).set_index("call_id")["split"]
+    train_df["split"] = train_df["call_id"].map(assign).fillna("excluded")
 
     rows = []
     for tau in E.HORIZONS:
@@ -160,8 +177,4 @@ def run_lookahead(root: Path, *, n_resamples: int = 1000) -> pd.DataFrame:
                         "degradation": r2_post - r2_in,
                     }
                 )
-    table = pd.DataFrame(rows)
-    out = root / "results"
-    out.mkdir(parents=True, exist_ok=True)
-    table.to_csv(out / "result_table_7.csv", index=False, lineterminator="\n")
-    return table
+    return pd.DataFrame(rows)

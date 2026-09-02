@@ -1187,14 +1187,21 @@ def evaluate_lookahead(
     from ecvol.tracking import resolve_command_config, write_command_run
 
     cfg = resolve_command_config("evaluate-lookahead", config, None)
-    t = run_lookahead(root, n_resamples=resamples)
+    tables = run_lookahead(root, n_resamples=resamples)
+    t = tables["assumed"]
     for r in t[t["target"] == "dv"].itertuples():
         typer.echo(
             f"  {r.stage:<22} dv tau={r.horizon:<2} R2 in={r.r2_oos_in:+.3f} "
             f"post={r.r2_oos_post:+.3f} [{r.r2_oos_post_lo:+.3f},{r.r2_oos_post_hi:+.3f}] "
             f"deg={r.degradation:+.3f} (n_post={r.n_post})"
         )
-    typer.echo("Result Table 7 (lookahead): data/results/result_table_7.csv")
+    m = tables["measured"]
+    for r in m[(m["target"] == "dv") & (m["stage"] != "persistence")].itertuples():
+        typer.echo(
+            f"  [measured anchor] {r.stage:<22} dv tau={r.horizon:<2} "
+            f"R2 in={r.r2_oos_in:+.3f} post={r.r2_oos_post:+.3f} deg={r.degradation:+.3f}"
+        )
+    typer.echo("Result Table 7 (lookahead): data/results/result_table_7.csv (+ _measured.csv)")
     typer.echo(f"run artifact: {write_command_run(cfg, root)}")
 
 
@@ -1306,6 +1313,34 @@ def report(
         md4, tex4 = write_reports4(root)
         typer.echo(f"Table 4 markdown: {md4}")
         typer.echo(f"Table 4 latex:    {tex4}")
+
+
+release_app = typer.Typer(no_args_is_help=True, help="Released derived-feature archives (T8.1).")
+app.add_typer(release_app, name="release")
+
+
+@release_app.command("build")
+def release_build(
+    root: Path = typer.Option(Path("data"), help="Data root directory."),  # noqa: B008
+    out: Path = typer.Option(Path("data/release"), help="Archive output directory."),  # noqa: B008
+    tag: str | None = typer.Option(None, help="Archive tag (default: short git SHA)."),
+) -> None:
+    """Build one deterministic zip per corpus + write data/manifests/release.json."""
+    import json
+
+    from ecvol.release import build_release
+    from ecvol.tracking import git_info
+
+    if tag is None:
+        info = git_info()
+        tag = info["sha"][:7] if info else "untagged"
+    manifest = build_release(root, out, tag)
+    for a in json.loads(manifest.read_text(encoding="utf-8"))["archives"]:
+        typer.echo(
+            f"  {a['archive']:<40} {a['bytes'] / 1e6:8.1f} MB  {len(a['members']):3d} members  "
+            f"sha256={a['sha256'][:12]}  [{a['license']}]"
+        )
+    typer.echo(f"release manifest: {manifest}")
 
 
 runs_app = typer.Typer(no_args_is_help=True, help="Run manifests for result CSVs (T9.3).")
