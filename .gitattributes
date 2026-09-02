@@ -3,3 +3,7 @@
 *.ipynb text eol=lf
 *.pdf binary
 *.pptx binary
+*.csv text eol=lf
+*.json text eol=lf
+*.md text eol=lf
+*.tex text eol=lf
