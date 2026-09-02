@@ -6,7 +6,9 @@ Markdown and LaTeX, deterministically (byte-identical regeneration is the
 acceptance test, CI-checked).
 
 **Table specs are data** (`TABLE_1_SPECS`): each spec selects a slice
-(dataset × split × target × metric, test segment) and pivots model × horizon.
+(dataset × convention × split × target × metric, test segment) and pivots
+model × horizon. The trading-day views come first, then the calendar-day
+views (T9.1) — the delta between the two is the convention finding.
 Adding a table is adding a `TableSpec`, never new rendering code. Cells carry a
 `*` when the model is DM-significant vs. persistence (p<0.05; DESIGN §7.5);
 NaN renders as an em dash. The headline metric is R²_OOS vs. persistence
@@ -51,23 +53,26 @@ class TableSpec:
     target: str
     metric: str
     segment: str = "test"
+    convention: str = "trading"
 
     @property
     def title(self) -> str:
+        conv = "" if self.convention == "trading" else " — calendar-day τ"
         return (
             f"{self.dataset} — {self.split} split — {TARGET_LABELS[self.target]} — "
-            f"{METRIC_LABELS[self.metric]} ({self.segment})"
+            f"{METRIC_LABELS[self.metric]} ({self.segment}){conv}"
         )
 
 
 def _specs() -> list[TableSpec]:
-    """The committed Result-Table-1 view set (headline R²_OOS + MSE)."""
+    """The committed Result-Table-1 view set (headline R²_OOS + MSE), per convention."""
     specs: list[TableSpec] = []
-    for metric in ("r2_oos", "mse"):
-        for dataset in ("fincall", "maec"):
-            for target in ("v", "dv"):
-                for split in ("temporal", "ticker_disjoint"):
-                    specs.append(TableSpec(dataset, split, target, metric))
+    for convention in ("trading", "calendar"):
+        for metric in ("r2_oos", "mse"):
+            for dataset in ("fincall", "maec"):
+                for target in ("v", "dv"):
+                    for split in ("temporal", "ticker_disjoint"):
+                        specs.append(TableSpec(dataset, split, target, metric, "test", convention))
     return specs
 
 
@@ -100,6 +105,8 @@ def build_table(df: pd.DataFrame, spec: TableSpec) -> tuple[list[str], list[list
         & (df["target"] == spec.target)
         & (df["segment"] == spec.segment)
     ]
+    if "convention" in df.columns:  # pre-T9.1 result files carry trading rows only
+        sel = sel[sel["convention"] == spec.convention]
     n = int(sel["n"].max()) if len(sel) else 0
     header = ["Model", *[f"τ={h}" for h in HORIZONS]]
     body: list[list[str]] = []

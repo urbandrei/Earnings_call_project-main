@@ -101,3 +101,20 @@ def test_committed_reports_match_fresh_render():
     assert R.render_latex(df, R.TABLE_1_SPECS) == (REPO_RESULTS / "result_table_1.tex").read_text(
         encoding="utf-8"
     )
+
+
+def test_build_table_filters_by_convention():
+    df = _results_frame()
+    cal = df.copy()
+    cal["mse"] = 9.0
+    df["convention"], cal["convention"] = "trading", "calendar"
+    both = pd.concat([df, cal], ignore_index=True)
+    spec_tr = R.TableSpec("fincall", "temporal", "v", "mse")
+    spec_cal = R.TableSpec("fincall", "temporal", "v", "mse", "test", "calendar")
+    _, body_tr, _ = R.build_table(both, spec_tr)
+    _, body_cal, _ = R.build_table(both, spec_cal)
+    assert body_tr[0][1] == "0.500" and body_cal[0][1] == "9.000"
+    assert spec_cal.title.endswith("calendar-day τ") and "calendar" not in spec_tr.title
+    # the committed view set renders trading first, then calendar
+    convs = [s.convention for s in R.TABLE_1_SPECS]
+    assert convs == ["trading"] * (len(convs) // 2) + ["calendar"] * (len(convs) // 2)

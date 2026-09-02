@@ -36,7 +36,13 @@ import pyarrow as pa
 from ecvol.data.calls import NAN, CallRecord, write_calls_parquet, write_metric_csv
 from ecvol.data.manifests import make_entry, write_manifest
 from ecvol.data.prices import load_close_series
-from ecvol.data.targets import HORIZONS, compute_call_targets, write_targets_parquet
+from ecvol.data.targets import (
+    CONVENTIONS,
+    HORIZONS,
+    TARGET_FILES,
+    compute_call_targets,
+    write_targets_parquet,
+)
 
 SOURCE = "maec"
 DATASET_REL = "raw/maec/repo/MAEC_Dataset"
@@ -171,7 +177,9 @@ def _excluded_record(call_id: str, reason: str) -> CallRecord:
 # --- targets -----------------------------------------------------------------
 
 
-def compute_targets(records: list[CallRecord], prices_dir: Path, *, horizons=HORIZONS):
+def compute_targets(
+    records: list[CallRecord], prices_dir: Path, *, horizons=HORIZONS, convention="trading"
+):
     """Targets for every parsed MAEC call, reusing the FinCall target math."""
     close_cache: dict[str, dict[str, float]] = {}
     rows = []
@@ -186,7 +194,11 @@ def compute_targets(records: list[CallRecord], prices_dir: Path, *, horizons=HOR
             "date": r.call_date,
             "call_type": r.call_type,
         }
-        rows.extend(compute_call_targets(call, close_cache[r.ticker], horizons=horizons))
+        rows.extend(
+            compute_call_targets(
+                call, close_cache[r.ticker], horizons=horizons, convention=convention
+            )
+        )
     return rows
 
 
@@ -245,10 +257,16 @@ def ingest_maec(root: Path, *, horizons=HORIZONS) -> MaecSummary:
     calls_path = root / SOURCE / "calls.parquet"
     write_calls_parquet(records, calls_path, id_type=pa.string())
 
-    # Targets (price/target join), same machinery as FinCall.
+    # Targets (price/target join), same machinery as FinCall; both conventions
+    # (T9.1). The join audit below is over the trading-day set.
     target_rows = compute_targets(records, root / "prices", horizons=horizons)
-    targets_path = root / SOURCE / "targets.parquet"
-    write_targets_parquet(target_rows, targets_path, id_type=pa.string())
+    target_paths = {c: root / SOURCE / TARGET_FILES[c] for c in CONVENTIONS}
+    write_targets_parquet(target_rows, target_paths["trading"], id_type=pa.string())
+    write_targets_parquet(
+        compute_targets(records, root / "prices", horizons=horizons, convention="calendar"),
+        target_paths["calendar"],
+        id_type=pa.string(),
+    )
 
     joined_ids = {r.call_id for r in target_rows if r.status == "ok"}
     parsed_calls = [r for r in records if r.parsed]
@@ -303,7 +321,10 @@ def ingest_maec(root: Path, *, horizons=HORIZONS) -> MaecSummary:
         root / "manifests" / "maec_calls.json",
     )
     write_manifest(
-        [make_entry(targets_path, root, source_url=TARGETS_SOURCE, license=TARGETS_LICENSE)],
+        [
+            make_entry(target_paths[c], root, source_url=TARGETS_SOURCE, license=TARGETS_LICENSE)
+            for c in CONVENTIONS
+        ],
         root / "manifests" / "maec_targets.json",
     )
     return summary

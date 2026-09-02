@@ -14,6 +14,13 @@ Sanity gate (DESIGN §6 Stage 0): HAR-RV must beat persistence at τ=30 on the
 temporal split, level-v, test — i.e. HAR's R²_OOS (vs persistence) > 0. If
 violated, the run reports `gate_passed=False` (halt and debug targets). GARCH
 convergence is reported against the >95% gate.
+
+Horizon conventions (T9.1): every dataset is evaluated under the trading-day
+targets (`targets.parquet`) and, when present, the calendar-day targets
+(`targets_calendar.parquet`); rows carry a `convention` column. Forecasts that
+depend on the window length (GARCH, HAR) use the row's actual session count
+`n_post`, which equals τ under the trading convention. The gate reads the
+trading rows only.
 """
 
 from __future__ import annotations
@@ -24,6 +31,7 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
+from ecvol.data import targets as T
 from ecvol.data.targets import HAR_WINDOWS  # noqa: F401  (documents the HAR lag origin)
 from ecvol.eval import metrics as M
 from ecvol.eval.significance import diebold_mariano
@@ -42,10 +50,13 @@ DEFAULT_SEEDS = (0, 1, 2, 3, 4)
 # --- data loading ------------------------------------------------------------
 
 
-def load_eval_frame(root: Path, dataset: str) -> pd.DataFrame:
+def load_eval_frame(root: Path, dataset: str, convention: str = "trading") -> pd.DataFrame:
     """ok target rows joined with call metadata; one row per (call, horizon)."""
-    targets = pd.read_parquet(root / dataset / "targets.parquet")
+    targets = pd.read_parquet(root / dataset / T.TARGET_FILES[convention])
     targets = targets[targets["status"] == "ok"].copy()
+    targets["convention"] = convention
+    if "n_post" not in targets.columns:  # pre-T9.1 files: trading ⇒ n_post = τ
+        targets["n_post"] = targets["horizon"]
     calls = pd.read_parquet(
         root / dataset / "calls.parquet", columns=["call_id", "n_turns", "n_chars"]
     )
@@ -58,13 +69,15 @@ def add_econometric_forecasts(df: pd.DataFrame, prices_dir: Path) -> pd.DataFram
     """Add per-call `v_post` forecasts (split-independent): EWMA + GARCH.
 
     Persistence is `v_pre` (already a column) and HAR is train-fit later. EWMA is
-    flat across horizons; GARCH is fit once per call and forecast for each τ.
-    `garch_ok` flags convergence for the gate.
+    flat across horizons; GARCH is fit once per call and forecast over each row's
+    window length `n_post` (= τ under the trading convention, fewer sessions under
+    the calendar one). `garch_ok` flags convergence for the gate.
     """
     from ecvol.data.prices import load_close_series
 
-    df = df.sort_values(["call_id", "horizon"]).reset_index(drop=True)
+    df = df.sort_values(["call_id", "horizon", "convention"]).reset_index(drop=True)
     close_cache: dict[str, dict[str, float]] = {}
+    steps = tuple(range(1, max(HORIZONS) + 1))
 
     def close_for(ticker: str) -> dict[str, float]:
         if ticker not in close_cache:
@@ -78,13 +91,15 @@ def add_econometric_forecasts(df: pd.DataFrame, prices_dir: Path) -> pd.DataFram
     for (cid, as_of, ticker), _ in df.groupby(["call_id", "as_of", "ticker"]):
         close = close_for(ticker)
         ewma[cid] = B.ewma_log_rv(close, as_of)
-        g = B.garch_log_rv_multi(close, as_of, HORIZONS)
+        g = B.garch_log_rv_multi(close, as_of, steps)
         garch_ok[cid] = g is not None
-        for h in HORIZONS:
+        for h in steps:
             garch[(cid, h)] = g[h] if g is not None else np.nan
 
     df["ewma_vpost"] = df["call_id"].map(ewma)
-    df["garch_vpost"] = [garch[(c, h)] for c, h in zip(df["call_id"], df["horizon"], strict=True)]
+    df["garch_vpost"] = [
+        garch.get((c, int(n)), np.nan) for c, n in zip(df["call_id"], df["n_post"], strict=True)
+    ]
     df["garch_ok"] = df["call_id"].map(garch_ok)
     return df
 
@@ -148,8 +163,9 @@ class EvalSummary:
 
 
 def evaluate_dataset(df: pd.DataFrame, dataset: str, splits_dir: Path, *, seeds) -> list[dict]:
-    """All (split × target × τ × model × segment) metric rows for one dataset."""
+    """All (split × target × τ × model × segment) metric rows for one dataset+convention."""
     rows: list[dict] = []
+    convention = str(df["convention"].iloc[0]) if len(df) else "trading"
     for scheme in SPLIT_SCHEMES:
         split_csv = splits_dir / f"{dataset}_{scheme}.csv"
         if not split_csv.is_file():
@@ -199,6 +215,8 @@ def evaluate_dataset(df: pd.DataFrame, dataset: str, splits_dir: Path, *, seeds)
                             dataset, scheme, target, tau, seg, sub, mask, yt, base, gbdt_preds
                         )
                     )
+    for r in rows:
+        r["convention"] = convention
     return rows
 
 
@@ -227,6 +245,7 @@ def _gbdt_row(dataset, scheme, target, tau, seg, sub, mask, yt, base, gbdt_preds
 def _row(dataset, scheme, target, tau, model, seg, cell) -> dict:
     return {
         "dataset": dataset,
+        "convention": "trading",  # overwritten per frame by evaluate_dataset
         "split": scheme,
         "target": target,
         "horizon": int(tau),
@@ -247,18 +266,24 @@ def run_evaluate(root: Path, *, seeds=DEFAULT_SEEDS) -> EvalSummary:
     all_rows: list[dict] = []
     garch_conv: dict[str, float] = {}
     for dataset in DATASETS:
-        if not (root / dataset / "targets.parquet").is_file():
+        present = [c for c in T.CONVENTIONS if (root / dataset / T.TARGET_FILES[c]).is_file()]
+        if "trading" not in present:
             continue
-        df = load_eval_frame(root, dataset)
+        # One frame over every convention so EWMA/GARCH are fit once per call.
+        df = pd.concat([load_eval_frame(root, dataset, c) for c in present], ignore_index=True)
         df = add_econometric_forecasts(df, root / "prices")
-        # convergence over distinct calls (not call×horizon rows)
+        # convergence over distinct calls (not call×horizon×convention rows)
         per_call = df.drop_duplicates("call_id")
         garch_conv[dataset] = float(per_call["garch_ok"].mean())
-        all_rows.extend(evaluate_dataset(df, dataset, root / "splits", seeds=seeds))
+        for c in present:
+            sub = df[df["convention"] == c].reset_index(drop=True)
+            all_rows.extend(evaluate_dataset(sub, dataset, root / "splits", seeds=seeds))
 
+    table = pd.DataFrame(all_rows)
+    table["_c"] = table["convention"].map({c: i for i, c in enumerate(T.CONVENTIONS)})
     table = (
-        pd.DataFrame(all_rows)
-        .sort_values(["dataset", "split", "target", "horizon", "model", "segment"])
+        table.sort_values(["dataset", "_c", "split", "target", "horizon", "model", "segment"])
+        .drop(columns="_c")
         .reset_index(drop=True)
     )
     _write_results(table, root)
@@ -271,6 +296,7 @@ def _har_beats_persistence(table: pd.DataFrame, dataset: str, split: str, tau: i
     """HAR's level-v test R²_OOS vs persistence at horizon τ (>0 ⇒ HAR wins)."""
     sel = table[
         (table["model"] == "har")
+        & (table["convention"] == "trading")
         & (table["dataset"] == dataset)
         & (table["split"] == split)
         & (table["target"] == "v")

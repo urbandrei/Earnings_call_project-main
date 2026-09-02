@@ -1,4 +1,4 @@
-"""T1.3 target computation: RV math, after-hours day-0 rule, exclusions, determinism.
+"""T1.3/T9.1 target computation: RV math, day-0 rule, both horizon conventions, exclusions.
 
 Numeric checks use zero-mean return windows so the expected log-RV has the closed
 form `0.5·ln(mean(r²))` — an independent check, not a re-run of `realized_vol`.
@@ -14,7 +14,9 @@ from ecvol.data.prices import write_price_parquet
 from ecvol.data.targets import (
     anchor_day0,
     build_targets,
+    calendar_window,
     compute_call_targets,
+    convention_delta,
     realized_vol,
     session_offsets,
 )
@@ -203,8 +205,10 @@ def _seed_root(tmp_path: Path) -> Path:
 
 def test_build_targets_summary_and_determinism(tmp_path):
     root = _seed_root(tmp_path)
-    summary = build_targets(root, horizons=(3, 7))
+    summaries = build_targets(root, horizons=(3, 7))
+    summary = summaries["trading"]
 
+    assert set(summaries) == {"trading", "calendar"}
     assert summary.total_calls == 3
     assert summary.resolved_calls == 2  # AAA, BBB (102 unresolved)
     assert summary.rows_total == 3 * 2  # one row per (call, τ)
@@ -215,10 +219,24 @@ def test_build_targets_summary_and_determinism(tmp_path):
     assert summary.reason_counts.get("no_price_data") == 2
     assert summary.calls_with_any_ok == 1
 
-    # deterministic: same inputs → byte-identical parquet
+    # deterministic: same inputs → byte-identical parquet (both conventions)
     first = (root / "fincall" / "targets.parquet").read_bytes()
+    first_cal = (root / "fincall" / "targets_calendar.parquet").read_bytes()
     build_targets(root, horizons=(3, 7))
     assert (root / "fincall" / "targets.parquet").read_bytes() == first
+    assert (root / "fincall" / "targets_calendar.parquet").read_bytes() == first_cal
+
+    # each file is stamped with its convention; the manifest lists both
+    cal = pq.read_table(root / "fincall" / "targets_calendar.parquet")
+    assert set(cal.column("convention").to_pylist()) == {"calendar"}
+    assert (root / "coverage" / "targets_calendar_report.csv").is_file()
+    manifest = (root / "manifests" / "fincall_targets.json").read_text(encoding="utf-8")
+    assert "fincall/targets.parquet" in manifest and "targets_calendar.parquet" in manifest
+
+    # the delta report covers every horizon with both files present
+    delta = convention_delta(root, datasets=("fincall",))
+    assert list(delta["horizon"]) == [3, 7]
+    assert set(delta.columns) >= {"n_ok_both", "corr_v_post", "sessions_calendar_mean"}
 
     # schema sanity + deterministic ordering (sorted by call_id, then horizon)
     table = pq.read_table(root / "fincall" / "targets.parquet")
@@ -250,5 +268,78 @@ def test_insufficient_pre_history_reason(tmp_path):
         if o >= 0
     ]
     write_price_parquet(rows, root / "prices" / "AAA.parquet")
-    summary = build_targets(root, horizons=(3,))
+    summary = build_targets(root, horizons=(3,))["trading"]
     assert summary.reason_counts.get("insufficient_pre_history") == 1
+
+
+# --- calendar-day convention (T9.1) ------------------------------------------
+
+# Prices by session offset around DAY0 (Fri 2021-01-15). Pre returns over
+# offsets -4..0 are [0.1,-0.1,0.1,-0.1,0.0] (zero-mean, Σr²=0.04); post returns
+# over offsets 1..4 are [0.2,-0.2,0.1,-0.1] (zero-mean, Σr²=0.10).
+CAL_PRICES = {
+    -5: 100.0,
+    -4: 110.0,
+    -3: 99.0,
+    -2: 108.9,
+    -1: 98.01,
+    0: 98.01,
+    1: 117.612,
+    2: 94.0896,
+    3: 103.49856,
+    4: 93.148704,
+}
+
+
+def test_calendar_window_bounds_hand_counted():
+    """Sessions inside τ calendar days of Fri 2021-01-15 (MLK Monday is closed)."""
+    off = session_offsets(DAY0, back=30, fwd=30)
+    # post: Sat/Sun/MLK → none; 7d → Tue19..Fri22; 15d → +Jan25..29; 30d → through Feb 12
+    assert calendar_window(off, DAY0, 3, post=True) == (1, 0)
+    assert calendar_window(off, DAY0, 7, post=True) == (1, 4)
+    assert calendar_window(off, DAY0, 15, post=True) == (1, 9)
+    assert calendar_window(off, DAY0, 30, post=True) == (1, 19)
+    # pre (window ends at day 0 inclusive): 3d → Wed13..Fri15; 7d → Mon11..; 15d →
+    # Jan 4.. (Jan 1 closed); 30d → Dec 17.. (Dec 25 closed)
+    assert calendar_window(off, DAY0, 3, post=False) == (-2, 0)
+    assert calendar_window(off, DAY0, 7, post=False) == (-4, 0)
+    assert calendar_window(off, DAY0, 15, post=False) == (-9, 0)
+    assert calendar_window(off, DAY0, 30, post=False) == (-19, 0)
+
+
+def test_handverified_calendar_call_values():
+    """τ=7 calendar days: 5 pre sessions / 4 post sessions, closed-form log-RV."""
+    off = session_offsets(DAY0, back=7, fwd=7)
+    close = _close_at(off, CAL_PRICES)
+    call = {"call_id": 20, "ticker": "AAA", "date": DAY0.isoformat(), "call_type": "earnings"}
+    r = compute_call_targets(call, close, horizons=(7,), convention="calendar")[0]
+    assert r.status == "ok" and r.convention == "calendar"
+    assert (r.n_pre, r.n_post) == (5, 4)
+    assert math.isclose(r.v_pre, 0.5 * math.log(0.04 / 5), abs_tol=1e-9)
+    assert math.isclose(r.v_post, 0.5 * math.log(0.10 / 4), abs_tol=1e-9)
+    assert math.isclose(r.delta_v, 0.5 * math.log((0.10 / 4) / (0.04 / 5)), abs_tol=1e-9)
+    # the HAR inputs are session-based and identical under both conventions
+    t = compute_call_targets(call, close, horizons=(3,), convention="trading")[0]
+    assert (t.rv_daily, t.rv_weekly) == (r.rv_daily, r.rv_weekly)
+    assert t.convention == "trading" and (t.n_pre, t.n_post) == (3, 3)
+    assert not math.isclose(t.v_post, r.v_post)  # a different window ⇒ a different target
+
+
+def test_calendar_short_and_missing_windows():
+    off = session_offsets(DAY0, back=7, fwd=7)
+    close = _close_at(off, CAL_PRICES)
+    call = {"call_id": 21, "ticker": "AAA", "date": DAY0.isoformat(), "call_type": "earnings"}
+    rows = compute_call_targets(call, close, horizons=(3, 15), convention="calendar")
+    # τ=3 over a holiday weekend: zero post sessions → excluded, not silently NaN
+    assert rows[0].status == "excluded" and rows[0].reason == "short_window_post"
+    assert rows[0].n_post == 0 and rows[0].n_pre == 3
+    # τ=15: the post window (9 sessions) runs past the last price → insufficient history
+    assert rows[1].reason == "insufficient_post_history"
+
+
+def test_unknown_convention_rejected():
+    import pytest
+
+    call = {"call_id": 1, "ticker": "AAA", "date": "2021-01-15"}
+    with pytest.raises(ValueError):
+        compute_call_targets(call, {}, convention="x")

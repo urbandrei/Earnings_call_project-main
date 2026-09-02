@@ -121,6 +121,7 @@ def test_ingest_maec_join_and_artifacts(tmp_path: Path):
     # Artifacts.
     assert (root / "maec" / "calls.parquet").is_file()
     assert (root / "maec" / "targets.parquet").is_file()
+    assert (root / "maec" / "targets_calendar.parquet").is_file()  # T9.1
     assert (root / "manifests" / "maec_calls.json").is_file()
     assert (root / "manifests" / "maec_targets.json").is_file()
     for name in ("maec_ingest_report.csv", "maec_audio_features.csv", "maec_join_audit.csv"):

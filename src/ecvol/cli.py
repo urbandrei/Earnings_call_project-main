@@ -269,23 +269,54 @@ def targets_build(
     root: Path = typer.Option(Path("data"), help="Data root directory."),  # noqa: B008
     horizons: str = typer.Option("3,7,15,30", help="Comma-separated trading-day horizons."),
 ) -> None:
-    """Compute v_pre/v_post/Δv + HAR inputs per (call, horizon) → parquet + report (T1.3)."""
-    from ecvol.data.targets import build_targets
+    """Compute v_pre/v_post/Δv + HAR inputs per (call, horizon), both conventions (T1.3, T9.1)."""
+    from ecvol.data.targets import TARGET_FILES, build_targets
 
     taus = tuple(int(h) for h in horizons.split(",") if h.strip())
-    summary = build_targets(root, horizons=taus)
-    typer.echo(
-        f"calls: {summary.resolved_calls}/{summary.total_calls} resolved; "
-        f"rows: {summary.ok_rows}/{summary.rows_total} ok"
-    )
-    typer.echo(
-        f"join rate: {summary.calls_with_any_ok}/{summary.resolved_calls} "
-        f"calls with ≥1 target ({summary.join_rate_pct}%)"
-    )
-    typer.echo("per-horizon ok: " + ", ".join(f"{h}d={n}" for h, n in summary.horizon_ok.items()))
-    if summary.reason_counts:
-        typer.echo("exclusions: " + ", ".join(f"{k}={v}" for k, v in summary.reason_counts.items()))
-    typer.echo("targets: data/fincall/targets.parquet; report: data/coverage/targets_report.csv")
+    summaries = build_targets(root, horizons=taus)
+    for convention, summary in summaries.items():
+        typer.echo(f"[{convention}-day horizons]")
+        typer.echo(
+            f"  calls: {summary.resolved_calls}/{summary.total_calls} resolved; "
+            f"rows: {summary.ok_rows}/{summary.rows_total} ok"
+        )
+        typer.echo(
+            f"  join rate: {summary.calls_with_any_ok}/{summary.resolved_calls} "
+            f"calls with ≥1 target ({summary.join_rate_pct}%)"
+        )
+        typer.echo(
+            "  per-horizon ok: " + ", ".join(f"{h}d={n}" for h, n in summary.horizon_ok.items())
+        )
+        if summary.reason_counts:
+            typer.echo(
+                "  exclusions: " + ", ".join(f"{k}={v}" for k, v in summary.reason_counts.items())
+            )
+        typer.echo(f"  targets: data/fincall/{TARGET_FILES[convention]}")
+    typer.echo("reports: data/coverage/targets_report.csv, targets_calendar_report.csv")
+
+
+@targets_app.command("compare")
+def targets_compare(
+    root: Path = typer.Option(Path("data"), help="Data root directory."),  # noqa: B008
+) -> None:
+    """Trading- vs calendar-day target delta per (dataset, horizon) → coverage CSV (T9.1)."""
+    from ecvol.data.targets import convention_delta
+
+    table = convention_delta(root)
+    if table.empty:
+        typer.echo("no dataset has both targets.parquet and targets_calendar.parquet", err=True)
+        raise typer.Exit(code=1)
+    out = root / "coverage" / "targets_convention_delta.csv"
+    table.to_csv(out, index=False, lineterminator="\n", float_format="%.6f")
+    for r in table.itertuples(index=False):
+        typer.echo(
+            f"{r.dataset} tau={r.horizon}: sessions {r.sessions_trading} vs "
+            f"{r.sessions_calendar_mean:.1f} [{r.sessions_calendar_min}-{r.sessions_calendar_max}]"
+            f"; ok {r.n_ok_trading}/{r.n_ok_calendar} (both {r.n_ok_both}); "
+            f"corr v_post={r.corr_v_post:.3f} |diff|={r.mean_abs_diff_v_post:.3f}; "
+            f"corr dv={r.corr_delta_v:.3f}"
+        )
+    typer.echo(f"delta report: {out}")
 
 
 splits_app = typer.Typer(no_args_is_help=True, help="Leakage-proof split construction (T1.6).")

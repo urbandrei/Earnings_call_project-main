@@ -1,12 +1,23 @@
-"""Volatility target computation per (call, horizon) — DESIGN §5.3 (T1.3).
+"""Volatility target computation per (call, horizon) — DESIGN §5.3 (T1.3, T9.1).
 
 Computes, for each resolved FinCall call and each horizon τ ∈ {3,7,15,30}:
-  v_post(τ) = ln( sqrt( (1/τ) · Σ_{t=1..τ} (r_t − r̄)² ) )   (log realized vol)
-  v_pre(τ)  = same over the τ returns ending at day 0
+  v_post(τ) = ln( sqrt( (1/n) · Σ_{t=1..n} (r_t − r̄)² ) )   (log realized vol)
+  v_pre(τ)  = same over the returns ending at day 0
   Δv(τ)     = v_post(τ) − v_pre(τ)
 plus the HAR-RV inputs (realized variance over the last 1/5/22 sessions, as of
 day 0). `r_t = (P_t − P_{t−1})/P_{t−1}` over adjusted closes; level log-RV, not
-annualized (Qin & Yang convention, for literature comparability).
+annualized.
+
+**Two horizon conventions (DECISIONS 2026-08-23 §3, 2026-09-01).** Under the
+*trading* convention the post window is sessions 1..τ after day 0 (n = τ; the
+validated T1.3 set). Under the *calendar* convention — Qin & Yang's, inherited
+by every released label set in this literature — the post window is every
+session dated within τ calendar days after day 0, and the pre window every
+session dated within τ calendar days ending at day 0, so n ≈ 0.7·τ and varies
+by weekday/holiday. n is recorded per row (`n_pre`, `n_post`); a window with
+fewer than two sessions is excluded (`short_window_*`). Each convention is
+written to its own parquet (`targets.parquet` = trading, unchanged;
+`targets_calendar.parquet`), both stamped with a `convention` column.
 
 **Day-0 / after-hours rule (DESIGN §5.3).** `day0` is the last NYSE session whose
 information is public *before* the post-call window. Call times-of-day are not yet
@@ -40,6 +51,8 @@ from ecvol.data.prices import load_close_series
 
 HORIZONS = (3, 7, 15, 30)
 HAR_WINDOWS = (1, 5, 22)  # daily / weekly / monthly realized-variance lookbacks
+CONVENTIONS = ("trading", "calendar")
+TARGET_FILES = {"trading": "targets.parquet", "calendar": "targets_calendar.parquet"}
 FINCALL_IDENTITY = "identity/fincall_identity.csv"
 TARGETS_LICENSE = "Derived artifact — computed from price data (DESIGN §5.3); no external source"
 TARGETS_SOURCE = "computed: ecvol targets build (DESIGN §5.3)"
@@ -124,6 +137,9 @@ class TargetRow:
     assumed_after_hours: bool
     status: str  # "ok" | "excluded"
     reason: str
+    convention: str = "trading"
+    n_pre: int = 0  # sessions (returns) in the pre window; τ under trading
+    n_post: int = 0  # sessions (returns) in the post window; τ under trading
 
 
 def _price_at(offsets: dict[int, date], close: dict[str, float], o: int) -> float | None:
@@ -143,6 +159,21 @@ def _returns(
     return [(prices[i] - prices[i - 1]) / prices[i - 1] for i in range(1, len(prices))]
 
 
+def calendar_window(
+    offsets: dict[int, date], day0: date, tau: int, *, post: bool
+) -> tuple[int, int]:
+    """Offset bounds (lo, hi) of the sessions inside a τ-calendar-day window.
+
+    post: sessions dated in [day0+1, day0+τ]  → (1, hi); hi = 0 when empty.
+    pre:  sessions dated in [day0−τ+1, day0]  → (lo, 0); lo = 1 when empty.
+    """
+    if post:
+        inside = [o for o, d in offsets.items() if o > 0 and d <= day0 + timedelta(days=tau)]
+        return (1, max(inside)) if inside else (1, 0)
+    inside = [o for o, d in offsets.items() if o <= 0 and d >= day0 - timedelta(days=tau - 1)]
+    return (min(inside), 0) if inside else (1, 0)
+
+
 def _har_inputs(offsets: dict[int, date], close: dict[str, float]) -> tuple[float, float, float]:
     out = []
     for w in HAR_WINDOWS:
@@ -156,8 +187,11 @@ def compute_call_targets(
     close: dict[str, float],
     *,
     horizons: tuple[int, ...] = HORIZONS,
+    convention: str = "trading",
 ) -> list[TargetRow]:
     """One TargetRow per horizon for a single call. Never raises; encodes reasons."""
+    if convention not in CONVENTIONS:
+        raise ValueError(f"unknown convention {convention!r}; expected one of {CONVENTIONS}")
     call_id = call["call_id"]  # type preserved as given (FinCall int, MAEC str)
     ticker = str(call.get("ticker") or "").strip()
     call_type = str(call.get("call_type") or "").strip()
@@ -183,6 +217,7 @@ def compute_call_targets(
                 assumed,
                 "excluded",
                 reason,
+                convention,
             )
             for h in horizons
         ]
@@ -209,8 +244,14 @@ def compute_call_targets(
 
     rows: list[TargetRow] = []
     for h in horizons:
-        pre_rets = _returns(offsets, close, 1 - h, 0)  # r_{-h+1..0}
-        post_rets = _returns(offsets, close, 1, h)  # r_{1..h}
+        if convention == "trading":
+            pre_lo, pre_hi, post_lo, post_hi = 1 - h, 0, 1, h  # r_{-h+1..0}, r_{1..h}
+        else:
+            pre_lo, pre_hi = calendar_window(offsets, day0, h, post=False)
+            post_lo, post_hi = calendar_window(offsets, day0, h, post=True)
+        n_pre, n_post = max(pre_hi - pre_lo + 1, 0), max(post_hi - post_lo + 1, 0)
+        pre_rets = _returns(offsets, close, pre_lo, pre_hi) if n_pre else []
+        post_rets = _returns(offsets, close, post_lo, post_hi) if n_post else []
         v_pre = realized_vol(pre_rets) if pre_rets is not None else NAN
         v_post = realized_vol(post_rets) if post_rets is not None else NAN
         delta = v_post - v_pre if not (math.isnan(v_pre) or math.isnan(v_post)) else NAN
@@ -219,6 +260,10 @@ def compute_call_targets(
             status, reason = "excluded", "insufficient_post_history"
         elif pre_rets is None:
             status, reason = "excluded", "insufficient_pre_history"
+        elif n_post < 2:
+            status, reason = "excluded", "short_window_post"
+        elif n_pre < 2:
+            status, reason = "excluded", "short_window_pre"
         elif math.isnan(v_post):
             status, reason = "excluded", "zero_variance_post"
         elif math.isnan(v_pre):
@@ -243,6 +288,9 @@ def compute_call_targets(
                 assumed,
                 status,
                 reason,
+                convention,
+                n_pre,
+                n_post,
             )
         )
     return rows
@@ -300,6 +348,9 @@ def write_targets_parquet(
             "assumed_after_hours": pa.array([r.assumed_after_hours for r in rows], pa.bool_()),
             "status": pa.array([r.status for r in rows], pa.string()),
             "reason": pa.array([r.reason for r in rows], pa.string()),
+            "convention": pa.array([r.convention for r in rows], pa.string()),
+            "n_pre": pa.array([r.n_pre for r in rows], pa.int64()),
+            "n_post": pa.array([r.n_post for r in rows], pa.int64()),
         }
     )
     pq.write_table(table, path, compression="none", store_schema=True)
@@ -349,23 +400,83 @@ def write_targets_report(summary: TargetSummary, path: Path) -> None:
     path.write_text(buf.getvalue(), encoding="utf-8")
 
 
-def build_targets(root: Path, *, horizons: tuple[int, ...] = HORIZONS) -> TargetSummary:
-    """Compute targets for every resolved FinCall call; write parquet + report + manifest."""
+def convention_delta(root: Path, datasets: tuple[str, ...] = ("fincall", "maec")) -> pd.DataFrame:
+    """Per (dataset, horizon) delta between the trading- and calendar-day targets.
+
+    Joins the two parquets on (call_id, horizon) over rows ok under both, and
+    reports the session counts plus the correlation / mean absolute difference of
+    v_post and Δv — the "how much does the undocumented convention matter"
+    number (DECISIONS 2026-08-23 §3). Datasets lacking either file are skipped.
+    """
+    out = []
+    for dataset in datasets:
+        paths = {c: root / dataset / TARGET_FILES[c] for c in CONVENTIONS}
+        if not all(p.is_file() for p in paths.values()):
+            continue
+        cols = ["call_id", "horizon", "status", "v_post", "delta_v", "n_post"]
+        tr = pd.read_parquet(paths["trading"], columns=cols)
+        ca = pd.read_parquet(paths["calendar"], columns=cols)
+        for h in sorted(tr["horizon"].unique()):
+            t = tr[(tr["horizon"] == h) & (tr["status"] == "ok")]
+            c = ca[(ca["horizon"] == h) & (ca["status"] == "ok")]
+            both = t.merge(c, on=["call_id", "horizon"], suffixes=("_tr", "_ca"))
+            row = {
+                "dataset": dataset,
+                "horizon": int(h),
+                "n_ok_trading": int(len(t)),
+                "n_ok_calendar": int(len(c)),
+                "n_ok_both": int(len(both)),
+                "sessions_trading": int(h),
+                "sessions_calendar_mean": float(c["n_post"].mean()) if len(c) else NAN,
+                "sessions_calendar_min": int(c["n_post"].min()) if len(c) else 0,
+                "sessions_calendar_max": int(c["n_post"].max()) if len(c) else 0,
+            }
+            for col in ("v_post", "delta_v"):
+                a, b = both[f"{col}_tr"], both[f"{col}_ca"]
+                row[f"corr_{col}"] = float(a.corr(b)) if len(both) > 1 else NAN
+                row[f"mean_abs_diff_{col}"] = float((a - b).abs().mean()) if len(both) else NAN
+                row[f"mean_{col}_trading"] = float(a.mean()) if len(both) else NAN
+                row[f"mean_{col}_calendar"] = float(b.mean()) if len(both) else NAN
+            out.append(row)
+    return pd.DataFrame(out)
+
+
+def build_targets(root: Path, *, horizons: tuple[int, ...] = HORIZONS) -> dict[str, TargetSummary]:
+    """Compute targets for every resolved FinCall call under both conventions.
+
+    Writes `fincall/targets.parquet` (trading) + `fincall/targets_calendar.parquet`,
+    one coverage report each, and one manifest listing both. Returns the summary
+    per convention.
+    """
     calls = _read_identity(root)
     prices_dir = root / "prices"
     close_cache: dict[str, dict[str, float]] = {}
-    rows: list[TargetRow] = []
     for call in calls:
         ticker = str(call.get("ticker") or "").strip()
         if ticker and ticker not in close_cache:
             close_cache[ticker] = load_close_series(prices_dir, ticker)
-        rows.extend(compute_call_targets(call, close_cache.get(ticker, {}), horizons=horizons))
 
-    targets_path = root / "fincall" / "targets.parquet"
-    write_targets_parquet(rows, targets_path)
-    summary = _summarize(rows, total_calls=len(calls), horizons=horizons)
-    write_targets_report(summary, root / "coverage" / "targets_report.csv")
-    entry = make_entry(targets_path, root, source_url=TARGETS_SOURCE, license=TARGETS_LICENSE)
+    summaries: dict[str, TargetSummary] = {}
+    entries = []
+    for convention in CONVENTIONS:
+        rows: list[TargetRow] = []
+        for call in calls:
+            ticker = str(call.get("ticker") or "").strip()
+            rows.extend(
+                compute_call_targets(
+                    call, close_cache.get(ticker, {}), horizons=horizons, convention=convention
+                )
+            )
+        targets_path = root / "fincall" / TARGET_FILES[convention]
+        write_targets_parquet(rows, targets_path)
+        summaries[convention] = _summarize(rows, total_calls=len(calls), horizons=horizons)
+        suffix = "" if convention == "trading" else "_calendar"
+        write_targets_report(
+            summaries[convention], root / "coverage" / f"targets{suffix}_report.csv"
+        )
+        entries.append(
+            make_entry(targets_path, root, source_url=TARGETS_SOURCE, license=TARGETS_LICENSE)
+        )
     (root / "manifests").mkdir(parents=True, exist_ok=True)
-    write_manifest([entry], root / "manifests" / "fincall_targets.json")
-    return summary
+    write_manifest(entries, root / "manifests" / "fincall_targets.json")
+    return summaries

@@ -190,10 +190,14 @@ Let `P_t` be the **adjusted close** on trading day `t`, with `t = 0` the last tr
 **Primary target — log realized volatility** over horizon τ ∈ {3, 7, 15, 30}, shipped under **both** horizon conventions (DECISIONS 2026-08-23 §3): *trading* days (the validated T1.3 set — sessions 1..τ) and *calendar* days (the Qin & Yang convention, verified in the source PDF — "3, 7, 15, 30 calendar days" — and inherited by every downstream paper's released labels; ≈21 vs ≈30 sessions at τ=30). Every result table carries the convention as a column, and the delta between them is reported (T9.1). *(Until 2026-08-23 this section misattributed the trading-day convention to Qin & Yang; the targets were always internally valid, the comparability claim was not.)*
 
 ```
-v_post(τ) = ln( sqrt( (1/τ) · Σ_{t=1..τ} (r_t − r̄)² ) ),   r̄ = mean(r_1..r_τ)
+v_post(τ) = ln( sqrt( (1/n) · Σ_{t=1..n} (r_t − r̄)² ) ),   r̄ = mean(r_1..r_n)
 ```
 
-**Pre-call volatility** `v_pre(τ)`: same formula over the τ trading days (or calendar days, under that convention) ending at day 0.
+where the window holds `n` sessions: **trading convention** — sessions 1..τ after day 0, so `n = τ`; **calendar convention** — every session dated within τ calendar days after day 0 (`day0 < date ≤ day0 + τ`), so `n ≈ 0.7·τ` and varies with the weekday and holidays. The denominator is always the number of sessions actually in the window (population variance), never the calendar τ. *(Exact rule fixed 2026-09-01 — DECISIONS 2026-09-01 §1; the released label sets do not document their denominator, and T6R.1's label diff is where that gets settled.)*
+
+**Pre-call volatility** `v_pre(τ)`: same formula over the τ trading days (or, under the calendar convention, the sessions dated within τ calendar days) ending at day 0 inclusive.
+
+**Files.** Each convention is its own parquet with an identical schema plus a `convention` column and the per-row session counts `n_pre`/`n_post`: `data/{dataset}/targets.parquet` (trading — the T1.3 set, values unchanged) and `data/{dataset}/targets_calendar.parquet`. Splits and cohorts are defined once, on the trading-day set; the calendar-day evaluation reuses them. `ecvol targets compare` writes the per-(dataset, horizon) delta (`data/coverage/targets_convention_delta.csv`).
 
 **Headline variants (identity-robust):**
 - **Volatility change:** `Δv(τ) = v_post(τ) − v_pre(τ)` — subtracts the company's own level; a model must predict *how this call changes things*.
@@ -201,7 +205,7 @@ v_post(τ) = ln( sqrt( (1/τ) · Σ_{t=1..τ} (r_t − r̄)² ) ),   r̄ = mean(
 
 **Out of v1 scope** (exploratory backlog): directional movement, abnormal volume, implied-vol targets. *(Short-horizon/event-window RV and implied-vol are explored — not added to the headline targets — under TASKS.md TX2; DECISIONS.md 2026-06-14.)*
 
-Edge rules (encode in `targets.py`, unit-tested): non-trading-day call dates roll forward; insufficient post-call history (τ days unavailable, e.g., delisting) → target is NaN and the (call, τ) row is excluded with a reason code; zero-variance windows → NaN (log of 0), excluded with reason code.
+Edge rules (encode in `targets.py`, unit-tested): non-trading-day call dates roll forward; insufficient post-call history (τ days unavailable, e.g., delisting) → target is NaN and the (call, τ) row is excluded with a reason code; zero-variance windows → NaN (log of 0), excluded with reason code; **a calendar-day window holding fewer than two sessions** (a Thursday/Friday call at τ=3 spans only the weekend) → excluded with reason code `short_window_{pre,post}` rather than reported as a one-return "volatility" — under the trading convention this cannot occur.
 
 ### 5.4 Split design (leakage-proof)
 

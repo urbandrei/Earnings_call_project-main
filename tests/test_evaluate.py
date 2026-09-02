@@ -23,6 +23,7 @@ def _gate_table(fincall_temporal, fincall_disjoint, maec_temporal) -> pd.DataFra
         [
             {
                 "dataset": ds,
+                "convention": "trading",
                 "split": sp,
                 "target": "v",
                 "horizon": 30,
@@ -137,3 +138,37 @@ def test_end_to_end_deterministic(tmp_path, monkeypatch):
     first = (root / "results" / "result_table_1.csv").read_bytes()
     E.run_evaluate(root, seeds=(0,))
     assert (root / "results" / "result_table_1.csv").read_bytes() == first
+
+
+def test_calendar_convention_rows_leave_trading_rows_unchanged(tmp_path, monkeypatch):
+    """T9.1: with a calendar-day target file present, Result Table 1 gains calendar rows
+    and the trading rows are byte-for-byte what a trading-only run produces."""
+    monkeypatch.setattr(E, "SPLIT_SCHEMES", ("temporal",))
+    root = tmp_path / "data"
+    _build_fixture(root)
+    E.run_evaluate(root, seeds=(0,))
+    trading_only = pd.read_csv(root / "results" / "result_table_1.csv")
+    assert set(trading_only["convention"]) == {"trading"}
+
+    # A calendar file: same calls, shorter windows (n_post < τ), perturbed targets.
+    cal = pd.read_parquet(root / "fincall" / "targets.parquet")
+    cal["n_post"] = (cal["horizon"] * 0.7).round().astype(int).clip(lower=2)
+    cal["v_post"] = cal["v_post"] + 0.05
+    cal["delta_v"] = cal["v_post"] - cal["v_pre"]
+    cal.to_parquet(root / "fincall" / "targets_calendar.parquet")
+
+    summary = E.run_evaluate(root, seeds=(0,))
+    both = pd.read_csv(root / "results" / "result_table_1.csv")
+    assert set(both["convention"]) == {"trading", "calendar"}
+    assert list(both["convention"].drop_duplicates()) == ["trading", "calendar"]  # order
+    tr = both[both["convention"] == "trading"].reset_index(drop=True)
+    pd.testing.assert_frame_equal(tr, trading_only)
+    # the sanity gate reads trading rows only
+    assert summary.gate_detail["har_r2_oos_vs_persistence"]["fincall_temporal"] == float(
+        trading_only[
+            (trading_only.model == "har")
+            & (trading_only.target == "v")
+            & (trading_only.horizon == 30)
+            & (trading_only.segment == "test")
+        ]["r2_oos"].iloc[0]
+    )
