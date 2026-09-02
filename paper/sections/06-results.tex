@@ -95,10 +95,28 @@ audio $-1.66$, fusion $-1.02$).
 
 \subsection{Horizon convention: calendar vs.\ trading days}
 \label{sec:results-convention}
-\pending{T9.1: every table above recomputed under the calendar-day convention of
-\citet{qin2019what}; the between-convention delta per stage, split, and horizon,
-reported as a finding about how much the published leaderboard depends on an
-undocumented convention.}
+Table~\ref{tab:convention} reports the delta between the trading-day targets used
+above and the calendar-day targets of \citet{qin2019what}. Three facts matter for
+anyone comparing to the published leaderboard. First, the calendar window holds
+about $0.7\tau$ sessions, and at $\tau{=}3$ it holds at most one session for any
+Thursday or Friday call: 48.8\% of FinCall's calls have no defensible $\tau{=}3$
+calendar-day target and are excluded under our rules, whereas the released label
+sets carry a value for every call. Second, the two conventions are far from
+interchangeable at short horizons (correlation of $v_{\mathrm{post}}$ 0.75 at
+$\tau{=}3$, 0.93--0.96 beyond), and the persistence MSE---the leaderboard's
+metric---roughly doubles at $\tau{=}3$ under calendar days because the target is
+averaged over two returns instead of three. A published MSE therefore carries no
+information about model quality unless the convention is stated. Third, the
+one cell where our baselines fail the pre-registered sanity gate (HAR-RV below
+persistence at $\tau{=}30$ on FinCall's temporal split, the COVID-regime cell)
+becomes a marginal pass under the calendar convention ($R^2_{\mathrm{OOS}}$
+$-0.287 \to +0.017$), because a 21-session window straddles less of the regime
+shift than a 30-session one. The Stage-0/1 grid is shipped under both
+conventions (\texttt{result\_table\_1}, convention column); the Stage-2--4
+content models are evaluated under the trading-day convention only, since the
+delta above is a property of the target, not of the head.
+
+\input{tables/convention}
 
 \subsection{Prior models under the new controls (Stage R)}
 \label{sec:results-repro}

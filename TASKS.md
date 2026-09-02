@@ -352,11 +352,12 @@
 
 ## Phase 9 — Reframe work (benchmark-first) — *DECISIONS 2026-08-23*
 
-### T9.1 Dual-convention targets (calendar + trading day) — `[ ]`
+### T9.1 Dual-convention targets (calendar + trading day) — `[x]` *(done 2026-09-02; DECISIONS 2026-09-01 fixes the window rule; Table 1 carries both conventions, trading rows byte-identical)*
 - **Goal:** make our targets comparable to the published leaderboard without discarding the validated trading-day set.
 - **End result:** `ecvol targets build` emits both conventions; every result table carries the convention as a column; the delta between them is reported.
 - **Acceptance test:** calendar-day targets unit-tested against hand-computed values exactly as the trading-day set was (T1.3); both sets regenerate deterministically; DESIGN §5.3 amended.
 - **Notes:** DECISIONS 2026-08-23 §3. Qin & Yang used **calendar** days (verified in the source PDF); DESIGN §5.3 misattributed the convention as trading days. ~30 vs ~21 sessions at τ=30. **Blocks any comparability claim in T6R.2.**
+- **Done (2026-09-02):** `targets.py` computes both conventions (`convention=` kwarg; calendar window = sessions dated within τ calendar days; population variance over the n sessions present; `<2` sessions → `short_window_{pre,post}`); `ecvol targets build` and `ecvol data ingest maec` write `targets.parquet` (trading, **values byte-identical on the original 15 columns**, both datasets) + `targets_calendar.parquet`, each with `convention`/`n_pre`/`n_post`; `ecvol targets compare` → `data/coverage/targets_convention_delta.csv`; `ecvol evaluate` evaluates both conventions (GARCH over the row's `n_post`, HAR refit per convention) → Result Table 1 has a `convention` column, calendar rows appended, **trading rows identical to the committed table** (run `20260902T040159Z-evaluate-cbe08bbd`, provenance `run`); `ecvol report` renders the calendar views after the trading ones. Tests: hand-counted windows around the 2021 MLK weekend, closed-form calendar τ=7 values (5 pre / 4 post sessions), short/missing windows, both-file determinism, trading-rows-unchanged regression. Splits rebuilt → committed CSVs unchanged. DESIGN §5.3 amended. **Findings:** τ=3 calendar → 48.8% of FinCall calls (any Thu/Fri call) have ≤1 post session; corr(v_post) between conventions 0.75/0.93/0.96/0.94 at τ=3/7/15/30; persistence MSE ~doubles at τ=3 under calendar; the COVID-cell gate failure (HAR τ=30 FinCall temporal −0.287) becomes +0.017 under calendar. **Open (design call):** Stages 2–4 under calendar days — not done (doubles head compute; MLP seed instability); Tables 2–4 gain the `convention` column when re-run for the T9.3 backfill→run upgrade.
 
 ### T9.2 Call-timestamp retrofit — `[ ]`
 - **Goal:** replace the uniform assume-after-hours fallback with measured call datetimes.
@@ -387,7 +388,7 @@
 
 ## Phase 7 — Post-cutoff data + lookahead study (~2 weeks, calendar-dependent)
 
-### T7.1 Fresh acquisition pipeline (scripts-not-data) — `[ ]`
+### T7.1 Fresh acquisition pipeline (scripts-not-data) — `[~]` *(started 2026-09-01: Earnings25 verification — Zenodo zip 12.04 GB downloading to `D:/ecvol-data/raw/earnings25/`, md5 5aa434b3…; open access, no key needed)*
 - **Goal:** ≥200 calls from 2025-Q4 / 2026-Q1 with audio + transcript + price joins.
 - **End result:** acquisition scripts (EarningsCall/EarningsCast API primary; company-IR-page fetcher fallback) + terms-of-use review note; local-only data with manifests.
 - **Acceptance test:** ≥200 calls pass the same ingestion gates as T1.4 (≥95% price join); ToS review written **before** any bulk pull; zero raw data committed.

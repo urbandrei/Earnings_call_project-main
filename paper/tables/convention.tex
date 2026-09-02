@@ -1,0 +1,36 @@
+% Curated: horizon convention delta (T9.1). Target-level rows copied from
+% data/coverage/targets_convention_delta.csv (FinCall); baseline rows copied from
+% data/results/result_table_1.tex (level-v, test, HAR-RV and persistence MSE).
+% "sessions" = mean number of trading sessions inside the calendar-day window.
+\begin{table}[t]
+\centering
+\small
+\begin{tabular}{lrrrr}
+\toprule
+ & $\tau$=3 & $\tau$=7 & $\tau$=15 & $\tau$=30 \\
+\midrule
+\multicolumn{5}{l}{\textit{Targets (FinCall, calls ok under both conventions)}}\\
+Sessions in calendar window (mean)  & 2.4 & 4.9 & 10.7 & 21.0 \\
+Calls with $\ge$2 sessions (of 2{,}424) & 1{,}241 & 2{,}424 & 2{,}424 & 2{,}424 \\
+corr$(v_{\mathrm{post}}^{\mathrm{trad}}, v_{\mathrm{post}}^{\mathrm{cal}})$ & 0.748 & 0.925 & 0.957 & 0.936 \\
+corr$(\Delta v^{\mathrm{trad}}, \Delta v^{\mathrm{cal}})$ & 0.761 & 0.895 & 0.909 & 0.887 \\
+\midrule
+\multicolumn{5}{l}{\textit{Persistence MSE, level-$v$, temporal test (trading / calendar)}}\\
+FinCall & 1.174 / 2.307 & 0.419 / 0.597 & 0.208 / 0.288 & 0.111 / 0.153 \\
+MAEC    & 1.383 / 2.391 & 0.571 / 0.780 & 0.318 / 0.407 & 0.189 / 0.236 \\
+\midrule
+\multicolumn{5}{l}{\textit{HAR-RV $R^2_{\mathrm{OOS}}$ vs.\ persistence, level-$v$, temporal test (trading / calendar)}}\\
+FinCall & 0.464 / 0.380 & 0.410 / 0.448 & 0.207 / 0.323 & $-$0.287 / 0.017 \\
+MAEC    & 0.507 / 0.574 & 0.392 / 0.419 & 0.306 / 0.354 & 0.206 / 0.235 \\
+\bottomrule
+\end{tabular}
+\caption{Horizon convention delta. The calendar-day windows of \citet{qin2019what}
+hold $\sim$0.7$\tau$ sessions; at $\tau{=}3$ half the calls have at most one
+post-call session and are excluded. Persistence MSE (the leaderboard's metric)
+roughly doubles at $\tau{=}3$ under the calendar convention, so published MSE
+values are not comparable across conventions; the FinCall temporal $\tau{=}30$
+sign flip of HAR-RV (the COVID-regime cell, \S\ref{sec:results}) is
+itself convention-dependent. Full model $\times$ horizon views under both
+conventions: \texttt{data/results/result\_table\_1.tex}.}
+\label{tab:convention}
+\end{table}

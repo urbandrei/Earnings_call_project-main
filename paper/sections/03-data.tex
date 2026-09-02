@@ -88,13 +88,22 @@ $\tau \in \{3,7,15,30\}$,
 \begin{equation}
   v_{\mathrm{post}}(\tau) = \ln\!\Big(\sqrt{\tfrac{1}{\tau}\textstyle\sum_{t=1}^{\tau}(r_t-\bar r)^2}\Big),
 \end{equation}
-with pre-call volatility $v_{\mathrm{pre}}(\tau)$ defined over the $\tau$ sessions
-ending at day~0. We ship every target under \emph{both} horizon conventions: the
-trading-day convention (sessions $1..\tau$; all results in \S\ref{sec:results} use
-it) and the calendar-day convention of \citet{qin2019what} that the published
-leaderboard inherits; every result table carries the convention as a column
-\pending{calendar-day targets and the between-convention delta, T9.1}. We add two
-identity-robust variants: the \textbf{change} $\Delta v(\tau) = v_{\mathrm{post}}(\tau)
+with pre-call volatility $v_{\mathrm{pre}}(\tau)$ defined over the sessions
+ending at day~0. We ship every target under \emph{both} horizon conventions. Under
+the \textbf{trading-day} convention the window is sessions $1..\tau$ ($n=\tau$).
+Under the \textbf{calendar-day} convention of \citet{qin2019what}, which the
+published leaderboard inherits, the window is every session dated within $\tau$
+calendar days of day~0, so $n \approx 0.7\tau$ and varies with the weekday and
+holidays (FinCall: $n = 2.4 / 4.9 / 10.7 / 21.0$ sessions on average at
+$\tau = 3/7/15/30$). In both cases the variance is taken over the $n$ sessions
+actually present, and a window holding fewer than two sessions is excluded with a
+reason code rather than reported as a one-return ``volatility''---which removes
+\textbf{48.8\%} of FinCall's joined calls at $\tau{=}3$ calendar days (every
+Thursday or Friday call). Each convention is a separate file with an identical
+schema, a \texttt{convention} column and the per-row session counts; the
+trading-day file is the validated set every result in \S\ref{sec:results} uses,
+and every result table carries the convention as a column
+(\S\ref{sec:results-convention}). We add two identity-robust variants: the \textbf{change} $\Delta v(\tau) = v_{\mathrm{post}}(\tau)
 - v_{\mathrm{pre}}(\tau)$, which subtracts the company's own level, and the
 \textbf{HAR-residual} $v_{\mathrm{post}}(\tau) - \widehat{\mathrm{HAR}}(\tau)$,
 deviation from a train-only HAR-RV \citep{corsi2009har} forecast. Insufficient
