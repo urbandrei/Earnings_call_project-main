@@ -339,6 +339,66 @@ def pull_prices(
     return summary
 
 
+def pull_tickers(
+    tickers: list[str],
+    prices_dir: Path,
+    root: Path,
+    *,
+    start: date,
+    end: date,
+    manifest_name: str,
+    batch_size: int = 100,
+    refresh: bool = False,
+) -> tuple[list[str], list[str]]:
+    """Pull an explicit ticker list into `prices_dir` (own manifest); (fetched, missing).
+
+    The Earnings25 store (T7.1): a separate directory + manifest so the 2014–2022
+    archive the FinCall/MAEC targets were validated against is never touched.
+    Idempotent like `pull_prices`; no Tiingo fallback (post-2025 S&P 500 names
+    are all live on Yahoo, and every miss is reported).
+    """
+    prices_dir.mkdir(parents=True, exist_ok=True)
+    pending = sorted(
+        t for t in set(tickers) if refresh or not (prices_dir / f"{t}.parquet").exists()
+    )
+    sym_to_ticker = {to_yahoo_symbol(t): t for t in pending}
+    symbols = list(sym_to_ticker)
+    fetched: list[str] = []
+    for i in range(0, len(symbols), batch_size):
+        for sym, rows in fetch_batch(symbols[i : i + batch_size], start, end).items():
+            if rows:
+                write_price_parquet(rows, prices_dir / f"{sym_to_ticker[sym]}.parquet")
+                fetched.append(sym_to_ticker[sym])
+    # Tiingo recovers what Yahoo has purged (delisted/acquired since the call);
+    # inert without a key, and every remaining miss is returned.
+    wanted = sorted(set(tickers))
+    sources_path = root / "coverage" / f"{prices_dir.name}_sources.json"
+    sources = json.loads(sources_path.read_text(encoding="utf-8")) if sources_path.is_file() else {}
+    still_missing = [t for t in wanted if not (prices_dir / f"{t}.parquet").exists()]
+    if still_missing:
+        _tiingo_fallback(still_missing, prices_dir, root, sources, start, end)
+        fetched += [t for t in still_missing if (prices_dir / f"{t}.parquet").exists()]
+    if sources:
+        sources_path.parent.mkdir(parents=True, exist_ok=True)
+        sources_path.write_text(
+            json.dumps(dict(sorted(sources.items())), indent=2) + "\n", encoding="utf-8"
+        )
+    missing = [t for t in wanted if not (prices_dir / f"{t}.parquet").exists()]
+    entries = [
+        make_entry(
+            p,
+            root,
+            source_url=_source_url(p.stem, sources.get(p.stem, "yahoo")),
+            license=PRICE_LICENSE,
+        )
+        for p in sorted(prices_dir.glob("*.parquet"))
+    ]
+    if entries:
+        (root / "manifests").mkdir(parents=True, exist_ok=True)
+        write_manifest(entries, root / "manifests" / manifest_name)
+    return fetched, missing
+
+
 def _tiingo_fallback(
     tickers: list[str],
     prices_dir: Path,

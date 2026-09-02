@@ -83,16 +83,31 @@ def identity(
 
 @data_app.command()
 def ingest(
-    dataset: str = typer.Argument(help="Dataset to normalize: fincall | maec."),
+    dataset: str = typer.Argument(help="Dataset to normalize: fincall | maec | earnings25."),
     root: Path = typer.Option(Path("data"), help="Data root directory."),  # noqa: B008
     no_audio: bool = typer.Option(
         False, help="FinCall only: skip ffprobe audio-duration probing (durations left NaN)."
     ),
 ) -> None:
-    """Normalize a dataset onto the common call schema → parquet + reports (T1.4/T1.5)."""
-    if dataset not in ("fincall", "maec"):
-        typer.echo(f"unknown dataset {dataset!r} (expected fincall | maec)", err=True)
+    """Normalize a dataset onto the common call schema → parquet + reports (T1.4/T1.5/T7.1)."""
+    if dataset not in ("fincall", "maec", "earnings25"):
+        typer.echo(f"unknown dataset {dataset!r} (expected fincall | maec | earnings25)", err=True)
         raise typer.Exit(code=2)
+    if dataset == "earnings25":
+        from ecvol.data.earnings25_ingest import ingest_earnings25
+
+        e = ingest_earnings25(root, probe_audio=not no_audio)
+        typer.echo(f"calls: {e.ok}/{e.total_calls} admitted (months: {' '.join(e.months)})")
+        typer.echo(
+            f"join: {e.joined}/{e.ok} admitted calls with >=1 target ({e.join_rate_pct}%); "
+            f"missing-price tickers: {e.missing_price_tickers}"
+        )
+        if e.reason_counts:
+            typer.echo("exclusions: " + ", ".join(f"{k}={v}" for k, v in e.reason_counts.items()))
+        if e.strata:
+            typer.echo("bitrate strata: " + ", ".join(f"{k}={v}" for k, v in e.strata.items()))
+        typer.echo("calls/targets: data/earnings25/*.parquet; reports: data/coverage/earnings25_*")
+        return
     if dataset == "fincall":
         from ecvol.data.fincall_ingest import ingest_fincall
 
@@ -182,6 +197,44 @@ def _not_implemented(verb: str) -> None:
 
 
 prices_app = typer.Typer(no_args_is_help=True, help="Adjusted daily OHLCV ingestion (T1.2).")
+
+
+def _pull_earnings25_prices(root: Path, refresh: bool) -> None:
+    """Earnings25's own price store (T7.1): the admitted tickers, 2025-06-01 → 2026-03-31."""
+    from datetime import date
+
+    from ecvol.collect.discovery import _cik_by_ticker
+    from ecvol.data.earnings25_ingest import (
+        DATASET_REL,
+        PRICES_REL,
+        build_records,
+        membership_by_month,
+        read_records,
+    )
+    from ecvol.data.fincall_identity import load_sec_table
+    from ecvol.data.prices import pull_tickers
+
+    records = read_records(root / DATASET_REL)
+    months = sorted({r["extra_fields"]["ReleaseDate"][:7] for r in records})
+    members, _ = membership_by_month(root, months)
+    sec, _ = load_sec_table(root)
+    calls = build_records(records, sec, members, _cik_by_ticker(root))
+    tickers = sorted({c.record.ticker for c in calls if c.record.status == "ok"})
+    fetched, missing = pull_tickers(
+        tickers,
+        root / PRICES_REL,
+        root,
+        start=date(2025, 6, 1),
+        end=date(2026, 3, 31),
+        manifest_name="prices_earnings25.json",
+        refresh=refresh,
+    )
+    typer.echo(
+        f"earnings25 prices: {len(tickers)} tickers; fetched {len(fetched)}; missing {missing}"
+    )
+    typer.echo(f"store: data/{PRICES_REL}/; manifest: data/manifests/prices_earnings25.json")
+
+
 app.add_typer(prices_app, name="prices")
 
 
@@ -189,10 +242,16 @@ app.add_typer(prices_app, name="prices")
 def prices_pull(
     root: Path = typer.Option(Path("data"), help="Data root directory."),  # noqa: B008
     refresh: bool = typer.Option(False, help="Re-download tickers even if cached."),
+    dataset: str = typer.Option(
+        "fincall+maec", help="Universe: fincall+maec (T1.2 archive) | earnings25 (own store, T7.1)."
+    ),
 ) -> None:
     """Pull adjusted daily OHLCV for the FinCall+MAEC universe → parquet + coverage (T1.2)."""
     from ecvol.data.prices import pull_prices
 
+    if dataset == "earnings25":
+        _pull_earnings25_prices(root, refresh)
+        return
     summary = pull_prices(root, refresh=refresh)
     typer.echo(
         f"FinCall coverage: {summary.covered_fincall}/{summary.fincall_total} "
