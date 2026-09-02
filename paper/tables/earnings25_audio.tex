@@ -1,0 +1,33 @@
+% Curated from data/results/audio_strata_earnings25.csv and audio_shuffle_earnings25.csv
+% (run 20260902T124516Z-evaluate-audio-earnings25-6b0f8941). Ridge on WavLM + past-vol,
+% Delta-v target, ticker-disjoint test segment. "increment" = real minus global-shuffle
+% R^2_OOS: the part of the gain attributable to the audio content of the test call.
+\begin{table}[t]
+\centering
+\small
+\begin{tabular}{llrrrrr}
+\toprule
+Stratum & calls (test) & & $\tau$=3 & $\tau$=7 & $\tau$=15 & $\tau$=30 \\
+\midrule
+\multirow{3}{*}{All (64 + $\le$24 kbps)} & \multirow{3}{*}{476 (95)} & real & 0.443 & 0.203 & 0.080 & 0.108 \\
+ & & global shuffle & 0.351 & 0.150 & 0.040 & 0.095 \\
+ & & \textbf{increment} & \textbf{0.093} & \textbf{0.052} & \textbf{0.041} & \textbf{0.014} \\
+\midrule
+\multirow{3}{*}{64 kbps} & \multirow{3}{*}{281 (39)} & real & 0.154 & 0.117 & 0.098 & 0.122 \\
+ & & global shuffle & 0.121 & 0.113 & 0.018 & 0.138 \\
+ & & \textbf{increment} & \textbf{0.033} & \textbf{0.004} & \textbf{0.080} & \textbf{$-$0.015} \\
+\midrule
+\multirow{3}{*}{$\le$24 kbps} & \multirow{3}{*}{233 (55)} & real & 0.101 & 0.198 & 0.023 & 0.066 \\
+ & & global shuffle & 0.141 & 0.180 & $-$0.044 & 0.025 \\
+ & & \textbf{increment} & \textbf{$-$0.040} & \textbf{0.018} & \textbf{0.068} & \textbf{0.040} \\
+\bottomrule
+\end{tabular}
+\caption{\textbf{Audio on Earnings25 by bitrate stratum} (T9.4; $R^2_{\mathrm{OOS}}$ vs.\
+persistence, $\Delta v$, ridge on WavLM + past-vol, ticker-disjoint test). The
+within-ticker shuffle is the identity here (one call per company), so the global
+shuffle is the control. The audio increment never exceeds 0.09 and has no
+consistent sign across strata; the 64 kbps stratum is not better than the
+$\le$24 kbps one. Full grid (eGeMAPS, emotion2vec+, fusion, MLP heads, all
+targets): \texttt{result\_table\_3\_earnings25.csv}.}
+\label{tab:earnings25-audio}
+\end{table}

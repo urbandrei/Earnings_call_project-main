@@ -136,12 +136,26 @@ model on its own original dataset; published vs.\ reproduced vs.\ embargoed vs.\
 \label{tab:repro}
 \end{table}
 
-\subsection{Clean audio: the Stage-3 ladder on Earnings25}
+\subsection{Audio by bitrate: the Stage-3 ladder on Earnings25}
 \label{sec:results-clean-audio}
-\pending{T9.4: the frozen eGeMAPS / WavLM / emotion2vec+ ladder with the same heads
-and controls as Table~\ref{tab:audio}, on source-quality 2025 audio; real vs.\
-shuffle reported; any divergence from the FinCall result stated with the
-audio-quality difference as the candidate cause.}
+Earnings25 audio is webcast MP3 at 64 kbps for 281 calls and at 24 kbps or
+below for 233 (\S\ref{sec:corpora}), so it cannot test ``clean'' audio; it can
+test whether the FinCall audio result depends on bitrate \emph{within one quarter},
+with the same extractors, heads and controls as Table~\ref{tab:audio}. A
+single-quarter corpus spans about 105 sessions, so the embargoed temporal split
+degenerates (five training calls); Table~\ref{tab:earnings25-audio} therefore uses
+the ticker-disjoint split, pooled and per stratum. Audio-plus-past-vol heads beat
+persistence on $\Delta v$ (pooled $R^2_{\mathrm{OOS}}$ 0.44 at $\tau{=}3$), but a
+model given a \emph{random other call's} audio keeps most of that (0.35): the
+audio increment is 0.09 at $\tau{=}3$ and at most 0.05 beyond, and per stratum it
+is small and sign-inconsistent (64 kbps: 0.03 / 0.00 / 0.08 / $-$0.02; $\le$24 kbps:
+$-$0.04 / 0.02 / 0.07 / 0.04). With 39 and 55 test calls per stratum these
+increments are not distinguishable from zero, and the higher-bitrate stratum is
+not the better one. The FinCall result therefore does not look like an artefact
+of 40 kbps transcodes: at 64 kbps, on 2025 calls, with a post-cutoff encoder
+stack, audio is as inert beyond past volatility as it was on FinCall.
+
+\input{tables/earnings25_audio}
 
 \subsection{Post-cutoff lookahead}
 \label{sec:results-lookahead}
