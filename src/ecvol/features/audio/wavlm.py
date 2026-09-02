@@ -99,21 +99,22 @@ def write_vector_parquet(rows: list[dict], path: Path) -> None:
 
 def build_wavlm(
     root: Path,
+    dataset: str = "fincall",
     *,
     limit: int | None = None,
     device: str = "cuda",
     fp16: bool = False,
     batch: int = 4,
 ):
-    """Embed every decoded FinCall call with WavLM-Large; resumable. Returns (n, n_new, secs)."""
+    """Embed every decoded call of `dataset` with WavLM-Large; resumable → (n, n_new, secs)."""
     from ecvol.data.manifests import make_entry, write_manifest
 
-    qc = pd.read_csv(root / "coverage" / "fincall_audio_qc.csv")
+    qc = pd.read_csv(root / "coverage" / f"{dataset}_audio_qc.csv")
     qc = qc[qc["decode_ok"]].reset_index(drop=True)
     if limit is not None:
         qc = qc.head(limit)
-    store = root / "raw" / "audio_16k" / "fincall"
-    out = root / "fincall" / "audio_wavlm.parquet"
+    store = root / "raw" / "audio_16k" / dataset
+    out = root / dataset / "audio_wavlm.parquet"
 
     rows: list[dict] = []
     done: set[int] = set()
@@ -140,7 +141,7 @@ def build_wavlm(
     (root / "manifests").mkdir(parents=True, exist_ok=True)
     write_manifest(
         [make_entry(out, root, source_url=WAVLM_SOURCE, license=WAVLM_LICENSE)],
-        root / "manifests" / "fincall_audio_wavlm.json",
+        root / "manifests" / f"{dataset}_audio_wavlm.json",
     )
     return len(rows), n_new, secs
 

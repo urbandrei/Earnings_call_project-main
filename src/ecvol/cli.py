@@ -741,19 +741,20 @@ def audio_qc(
     root: Path = typer.Option(Path("data"), help="Data root directory."),  # noqa: B008
     limit: int = typer.Option(0, help="Process only the first N calls (0 = all)."),
     workers: int = typer.Option(8, help="Parallel ffmpeg workers."),
+    dataset: str = typer.Option("fincall", help="Dataset with raw audio: fincall | earnings25."),
 ) -> None:
-    """QC FinCall audio + write the 16 kHz mono FLAC store (T4.1; MAEC has no audio)."""
+    """QC a dataset's audio + write its 16 kHz mono FLAC store (T4.1/T9.4; MAEC has no audio)."""
     from ecvol.features.audio.qc import build_qc, have_ffmpeg
 
     if not have_ffmpeg():
         typer.echo("ffmpeg/ffprobe not found on PATH", err=True)
         raise typer.Exit(code=2)
-    s = build_qc(root, limit=(limit or None), workers=workers)
+    s = build_qc(root, dataset, limit=(limit or None), workers=workers)
     typer.echo(f"audio QC: {s.decoded}/{s.n} decoded; store: {s.store_dir}")
     typer.echo(
         "flagged: " + (", ".join(f"{k}={v}" for k, v in sorted(s.flagged.items())) or "none")
     )
-    typer.echo("report: data/coverage/fincall_audio_qc.csv")
+    typer.echo(f"report: data/coverage/{dataset}_audio_qc.csv")
 
 
 @audio_app.command("qc-ref")
@@ -779,14 +780,15 @@ def audio_egemaps(
     root: Path = typer.Option(Path("data"), help="Data root directory."),  # noqa: B008
     limit: int = typer.Option(0, help="Process only the first N decoded calls (0 = all)."),
     workers: int = typer.Option(8, help="Parallel openSMILE workers."),
+    dataset: str = typer.Option("fincall", help="Dataset: fincall | earnings25."),
 ) -> None:
-    """Extract eGeMAPSv02 functionals (88) per FinCall call → parquet + summary (T4.2)."""
+    """Extract eGeMAPSv02 functionals (88) per call → parquet + summary (T4.2/T9.4)."""
     from ecvol.features.audio.egemaps import build_egemaps
 
-    n, fails, features = build_egemaps(root, limit=(limit or None), workers=workers)
+    n, fails, features = build_egemaps(root, dataset, limit=(limit or None), workers=workers)
     typer.echo(f"eGeMAPS: {n} calls × {len(features)} features; failures: {fails}")
-    typer.echo("output: data/fincall/audio_egemaps.parquet")
-    typer.echo("summary: data/coverage/fincall_egemaps_summary.csv")
+    typer.echo(f"output: data/{dataset}/audio_egemaps.parquet")
+    typer.echo(f"summary: data/coverage/{dataset}_egemaps_summary.csv")
 
 
 @audio_app.command("wavlm")
@@ -796,6 +798,7 @@ def audio_wavlm(
     device: str = typer.Option("cuda", help="torch device (cuda | cpu)."),
     fp16: bool = typer.Option(False, help="Half precision (faster; slightly non-deterministic)."),
     batch: int = typer.Option(4, help="Windows per forward pass (VRAM-bound)."),
+    dataset: str = typer.Option("fincall", help="Dataset: fincall | earnings25."),
 ) -> None:
     """WavLM-Large per-call audio embeddings → parquet (T4.3; resumable). Run --limit 50 first."""
     import pandas as pd
@@ -803,8 +806,8 @@ def audio_wavlm(
     from ecvol.features.audio.wavlm import build_wavlm
 
     lim = limit or None
-    total = int(pd.read_csv(root / "coverage" / "fincall_audio_qc.csv")["decode_ok"].sum())
-    n, n_new, secs = build_wavlm(root, limit=lim, device=device, fp16=fp16, batch=batch)
+    total = int(pd.read_csv(root / "coverage" / f"{dataset}_audio_qc.csv")["decode_ok"].sum())
+    n, n_new, secs = build_wavlm(root, dataset, limit=lim, device=device, fp16=fp16, batch=batch)
     typer.echo(
         f"WavLM: {n} calls embedded ({n_new} new in {secs:.0f}s); output: audio_wavlm.parquet"
     )
@@ -821,6 +824,7 @@ def audio_emotion2vec(
     root: Path = typer.Option(Path("data"), help="Data root directory."),  # noqa: B008
     limit: int = typer.Option(0, help="Embed only the first N calls (use a small N for ETA)."),
     device: str = typer.Option("cuda", help="torch device (cuda | cpu)."),
+    dataset: str = typer.Option("fincall", help="Dataset: fincall | earnings25."),
 ) -> None:
     """emotion2vec+ per-call audio embeddings → parquet (T4.3; resumable). Run a small --limit first."""  # noqa: E501
     import pandas as pd
@@ -828,8 +832,8 @@ def audio_emotion2vec(
     from ecvol.features.audio.emotion2vec import build_emotion2vec
 
     lim = limit or None
-    total = int(pd.read_csv(root / "coverage" / "fincall_audio_qc.csv")["decode_ok"].sum())
-    n, n_new, secs = build_emotion2vec(root, limit=lim, device=device)
+    total = int(pd.read_csv(root / "coverage" / f"{dataset}_audio_qc.csv")["decode_ok"].sum())
+    n, n_new, secs = build_emotion2vec(root, dataset, limit=lim, device=device)
     typer.echo(f"emotion2vec+: {n} calls ({n_new} new in {secs:.0f}s) → audio_emotion2vec.parquet")
     if lim and n_new:
         rate = n_new / secs
@@ -956,6 +960,32 @@ def evaluate_audio(
         f"audio shuffle: {len(shuffle)} cells (real vs within/global) → "
         "data/results/audio_shuffle.csv"
     )
+    typer.echo(f"run artifact: {write_command_run(cfg, root)}")
+
+
+@app.command(name="evaluate-audio-earnings25")
+def evaluate_audio_earnings25(
+    root: Path = typer.Option(Path("data"), help="Data root directory."),  # noqa: B008
+    seeds: str | None = typer.Option(None, help="Comma-separated seeds; overrides the config."),
+    config: Path | None = _CONFIG_OPT,
+) -> None:
+    """T9.4: the frozen Stage-3 audio ladder on Earnings25, pooled + per bitrate stratum."""
+    from ecvol.eval.earnings25_audio import run_earnings25_audio
+    from ecvol.tracking import resolve_command_config, write_command_run
+
+    cfg = resolve_command_config("evaluate-audio-earnings25", config, seeds)
+    res = run_earnings25_audio(root, seeds=tuple(cfg.seeds))
+    typer.echo(
+        f"Result Table 3 (Earnings25): {len(res['table'])} rows → "
+        "data/results/result_table_3_earnings25.csv"
+    )
+    for r in res["summary"].itertuples():
+        typer.echo(
+            f"  {r.stratum:>5} tau={r.horizon:<2} n_test={r.n_test:<3} "
+            f"ridge WavLM+vol dv R2={r.r2_oos_vs_persistence:+.3f} "
+            f"(DM vs HAR p={r.dm_p_vs_har:.3f}); "
+            f"shuffle real={r.shuffle_real_r2:+.3f} global={r.shuffle_global_r2:+.3f}"
+        )
     typer.echo(f"run artifact: {write_command_run(cfg, root)}")
 
 

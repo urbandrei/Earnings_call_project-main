@@ -107,7 +107,13 @@ class CommandConfig(StrictModel):
     """
 
     command: Literal[
-        "evaluate", "evaluate-text", "controls", "evaluate-audio", "evaluate-fusion", "grid"
+        "evaluate",
+        "evaluate-text",
+        "controls",
+        "evaluate-audio",
+        "evaluate-fusion",
+        "grid",
+        "evaluate-audio-earnings25",
     ]
     seeds: list[int] = Field(default=[0, 1, 2, 3, 4], min_length=1)
 

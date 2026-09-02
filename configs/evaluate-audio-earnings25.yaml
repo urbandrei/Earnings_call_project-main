@@ -1,0 +1,5 @@
+# Committed command config (T9.3/T9.4). `ecvol evaluate-audio-earnings25` loads this
+# by default; `--seeds` overrides. The run manifest records the resolved values and
+# the SHA-256 of the three Earnings25 audio result CSVs.
+command: evaluate-audio-earnings25
+seeds: [0, 1, 2, 3, 4] # MLP heads (ridge is deterministic)

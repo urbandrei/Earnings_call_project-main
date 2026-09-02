@@ -14,9 +14,9 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-EGEMAPS_PARQUET = "fincall/audio_egemaps.parquet"
-WAVLM_PARQUET = "fincall/audio_wavlm.parquet"
-E2V_PARQUET = "fincall/audio_emotion2vec.parquet"
+EGEMAPS_PARQUET = "{dataset}/audio_egemaps.parquet"
+WAVLM_PARQUET = "{dataset}/audio_wavlm.parquet"
+E2V_PARQUET = "{dataset}/audio_emotion2vec.parquet"
 
 
 def _vec_block(path: Path, prefix: str) -> tuple[pd.DataFrame, list[str]]:
@@ -30,17 +30,19 @@ def _vec_block(path: Path, prefix: str) -> tuple[pd.DataFrame, list[str]]:
     return out, cols
 
 
-def load_audio_blocks(root: Path) -> tuple[pd.DataFrame, dict[str, list[str]]]:
+def load_audio_blocks(
+    root: Path, dataset: str = "fincall"
+) -> tuple[pd.DataFrame, dict[str, list[str]]]:
     """Per-call audio matrix (outer-joined on call_id) + a {block_name: columns} map.
 
     Blocks: `egemaps` (dense, 88), `wavlm` (emb, 1024), `emotion2vec` (emb, 1024).
     """
-    eg = pd.read_parquet(root / EGEMAPS_PARQUET)
+    eg = pd.read_parquet(root / EGEMAPS_PARQUET.format(dataset=dataset))
     eg["call_id"] = eg["call_id"].astype(str)
     eg_cols = [c for c in eg.columns if c != "call_id"]
 
-    wav, wav_cols = _vec_block(root / WAVLM_PARQUET, "wav")
-    e2v, e2v_cols = _vec_block(root / E2V_PARQUET, "e2v")
+    wav, wav_cols = _vec_block(root / WAVLM_PARQUET.format(dataset=dataset), "wav")
+    e2v, e2v_cols = _vec_block(root / E2V_PARQUET.format(dataset=dataset), "e2v")
 
     df = eg.merge(wav, on="call_id", how="outer").merge(e2v, on="call_id", how="outer")
     blocks = {"egemaps": eg_cols, "wavlm": wav_cols, "emotion2vec": e2v_cols}

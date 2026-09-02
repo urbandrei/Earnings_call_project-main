@@ -170,19 +170,21 @@ class QCSummary:
     store_dir: str
 
 
-def build_qc(root: Path, *, limit: int | None = None, workers: int = 8) -> QCSummary:
-    """QC + resample every FinCall call with audio; write report + manifest (T4.1)."""
+def build_qc(
+    root: Path, dataset: str = "fincall", *, limit: int | None = None, workers: int = 8
+) -> QCSummary:
+    """QC + resample every call of `dataset` with audio; write report + summary (T4.1, T9.4)."""
     import pandas as pd
 
     from ecvol.data.calls import write_metric_csv
 
     calls = pd.read_parquet(
-        root / "fincall" / "calls.parquet", columns=["call_id", "audio_path", "audio_exists"]
+        root / dataset / "calls.parquet", columns=["call_id", "audio_path", "audio_exists"]
     )
     calls = calls[calls["audio_exists"]].reset_index(drop=True)
     if limit is not None:
         calls = calls.head(limit)
-    store = root / "raw" / "audio_16k" / "fincall"
+    store = root / "raw" / "audio_16k" / dataset
 
     def work(row):
         src = root / row.audio_path
@@ -196,7 +198,7 @@ def build_qc(root: Path, *, limit: int | None = None, workers: int = 8) -> QCSum
 
     cov = root / "coverage"
     cov.mkdir(parents=True, exist_ok=True)
-    df.to_csv(cov / "fincall_audio_qc.csv", index=False, lineterminator="\n")
+    df.to_csv(cov / f"{dataset}_audio_qc.csv", index=False, lineterminator="\n")
     flagged = {r: int((df["reason"] == r).sum()) for r in df["reason"].unique() if r}
     summary_rows = [
         ("n", len(df)),
@@ -209,7 +211,7 @@ def build_qc(root: Path, *, limit: int | None = None, workers: int = 8) -> QCSum
     # T3.2 embedding cache — gitignored, not per-file manifested; the QC CSV is the audited report.
     n_flac = sum(1 for _ in store.glob("*.flac")) if store.exists() else 0
     summary_rows.append(("resampled_flac_files", n_flac))
-    write_metric_csv(summary_rows, cov / "fincall_audio_qc_summary.csv")
+    write_metric_csv(summary_rows, cov / f"{dataset}_audio_qc_summary.csv")
     return QCSummary(len(df), int(df["decode_ok"].sum()), flagged, str(store))
 
 

@@ -130,14 +130,24 @@ def _row3(dataset, scheme, target, tau, model, seg, cell) -> dict:
     }
 
 
-def evaluate_stage3(root: Path, dataset: str = "fincall", *, seeds=E.DEFAULT_SEEDS) -> list[dict]:
+def evaluate_stage3(
+    root: Path,
+    dataset: str = "fincall",
+    *,
+    seeds=E.DEFAULT_SEEDS,
+    schemes: tuple[str, ...] = E.SPLIT_SCHEMES,
+    call_ids: set[str] | None = None,
+) -> list[dict]:
+    """Stage-3 rows for one dataset; `call_ids` restricts the cohort (T9.4 bitrate strata)."""
     df = E.load_eval_frame(root, dataset)
-    audio_df, blocks = load_audio_blocks(root)
+    if call_ids is not None:
+        df = df[df["call_id"].isin(call_ids)].reset_index(drop=True)
+    audio_df, blocks = load_audio_blocks(root, dataset)
     text_df, text_emb, text_other = build_text_matrix(root, dataset)
     feat = audio_df.merge(text_df, on="call_id", how="outer")
     all_feat_cols = [c for c in feat.columns if c != "call_id"]
     rows: list[dict] = []
-    for scheme in E.SPLIT_SCHEMES:
+    for scheme in schemes:
         split_csv = root / "splits" / f"{dataset}_{scheme}.csv"
         if not split_csv.is_file():
             continue

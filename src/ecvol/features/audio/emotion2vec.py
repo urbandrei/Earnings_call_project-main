@@ -49,16 +49,18 @@ def embed_file(model, path: str) -> np.ndarray:
     return np.mean(vecs, axis=0).astype(np.float64)
 
 
-def build_emotion2vec(root: Path, *, limit: int | None = None, device: str = "cuda"):
-    """Embed every decoded FinCall call with emotion2vec+; resumable. Returns (n, n_new, secs)."""
+def build_emotion2vec(
+    root: Path, dataset: str = "fincall", *, limit: int | None = None, device: str = "cuda"
+):
+    """Embed every decoded call of `dataset` with emotion2vec+; resumable → (n, n_new, secs)."""
     from ecvol.data.manifests import make_entry, write_manifest
 
-    qc = pd.read_csv(root / "coverage" / "fincall_audio_qc.csv")
+    qc = pd.read_csv(root / "coverage" / f"{dataset}_audio_qc.csv")
     qc = qc[qc["decode_ok"]].reset_index(drop=True)
     if limit is not None:
         qc = qc.head(limit)
-    store = root / "raw" / "audio_16k" / "fincall"
-    out = root / "fincall" / "audio_emotion2vec.parquet"
+    store = root / "raw" / "audio_16k" / dataset
+    out = root / dataset / "audio_emotion2vec.parquet"
 
     rows: list[dict] = []
     done: set[int] = set()
@@ -85,6 +87,6 @@ def build_emotion2vec(root: Path, *, limit: int | None = None, device: str = "cu
     (root / "manifests").mkdir(parents=True, exist_ok=True)
     write_manifest(
         [make_entry(out, root, source_url=E2V_SOURCE, license=E2V_LICENSE)],
-        root / "manifests" / "fincall_audio_emotion2vec.json",
+        root / "manifests" / f"{dataset}_audio_emotion2vec.json",
     )
     return len(rows), n_new, secs

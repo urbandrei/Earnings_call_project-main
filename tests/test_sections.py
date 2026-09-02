@@ -211,3 +211,15 @@ def test_audit_restricted_to_cohort_with_context_columns(tmp_path: Path):
     assert {r["call_id"] for r in rows} == {"1"}  # call 2 excluded from the sample
     for col in ("prev_text", "boundary_text", "next_text"):
         assert col in rows[0]
+
+
+def test_audit_sheet_is_write_once(tmp_path: Path):
+    """The audit CSV is hand-filled (`correct_y_n`); a re-run must never overwrite it."""
+    root = tmp_path / "data"
+    _build_toy(root)
+    S.build_sections(root, audit_n=10, seed=0)
+    audit = root / "coverage" / "fincall_section_audit.csv"
+    filled = audit.read_text(encoding="utf-8").replace("\n", ",y\n", 1)
+    audit.write_text(filled, encoding="utf-8")
+    S.build_sections(root, audit_n=10, seed=0)
+    assert audit.read_text(encoding="utf-8") == filled

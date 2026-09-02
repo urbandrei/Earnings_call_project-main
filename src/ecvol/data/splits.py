@@ -33,7 +33,7 @@ import pyarrow.parquet as pq
 from ecvol.data import calendar as cal
 from ecvol.data.calls import write_metric_csv
 
-DATASETS = ("fincall", "maec")
+DATASETS = ("fincall", "maec", "earnings25")
 DEFAULT_RATIOS = (0.70, 0.10, 0.20)  # train / val / test (DESIGN §5.4)
 DEFAULT_EMBARGO = 30  # trading days; ≥ longest horizon (DESIGN §5.4.1)
 DEFAULT_SEED = 0

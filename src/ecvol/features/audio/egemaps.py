@@ -81,8 +81,10 @@ def _pending(all_ids: list[int], done_ids: set[int]) -> list[int]:
     return [i for i in all_ids if i not in done_ids]
 
 
-def build_egemaps(root: Path, *, limit: int | None = None, workers: int = 8):
-    """Extract eGeMAPSv02 functionals for every decoded FinCall call; resumable + checkpointed.
+def build_egemaps(
+    root: Path, dataset: str = "fincall", *, limit: int | None = None, workers: int = 8
+):
+    """Extract eGeMAPSv02 functionals for every decoded call of `dataset`; resumable + checkpointed.
 
     Re-reads any existing `audio_egemaps.parquet`, skips those calls, extracts the rest, and
     flushes the (sorted, deterministic) parquet every CHUNK calls — so a re-run resumes instantly
@@ -93,13 +95,13 @@ def build_egemaps(root: Path, *, limit: int | None = None, workers: int = 8):
     from ecvol.data.calls import write_metric_csv
     from ecvol.data.manifests import make_entry, write_manifest
 
-    qc = pd.read_csv(root / "coverage" / "fincall_audio_qc.csv")
+    qc = pd.read_csv(root / "coverage" / f"{dataset}_audio_qc.csv")
     qc = qc[qc["decode_ok"]].reset_index(drop=True)
     if limit is not None:
         qc = qc.head(limit)
-    store = root / "raw" / "audio_16k" / "fincall"
+    store = root / "raw" / "audio_16k" / dataset
     features = feature_names()
-    out = root / "fincall" / "audio_egemaps.parquet"
+    out = root / dataset / "audio_egemaps.parquet"
 
     rows: list[dict] = []
     done_ids: set[int] = set()
@@ -134,7 +136,7 @@ def build_egemaps(root: Path, *, limit: int | None = None, workers: int = 8):
     (root / "manifests").mkdir(parents=True, exist_ok=True)
     write_manifest(
         [make_entry(out, root, source_url=EGEMAPS_SOURCE, license=EGEMAPS_LICENSE)],
-        root / "manifests" / "fincall_audio_egemaps.json",
+        root / "manifests" / f"{dataset}_audio_egemaps.json",
     )
-    write_metric_csv(summarize(df, features), root / "coverage" / "fincall_egemaps_summary.csv")
+    write_metric_csv(summarize(df, features), root / "coverage" / f"{dataset}_egemaps_summary.csv")
     return len(df), len(failures), features

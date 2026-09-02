@@ -48,10 +48,10 @@ def _embed_probe(vectors: np.ndarray, tickers: np.ndarray, *, seed: int = 0) -> 
     return {"n_calls": int(len(y)), "n_tickers": nc, "probe_accuracy": acc, "chance": 1.0 / nc}
 
 
-def identity_probe(root: Path) -> pd.DataFrame:
-    """WavLM + emotion2vec+ identity probes (FinCall)."""
-    audio_df, blocks = load_audio_blocks(root)
-    calls = pd.read_parquet(root / "fincall" / "calls.parquet", columns=["call_id", "ticker"])
+def identity_probe(root: Path, dataset: str = "fincall") -> pd.DataFrame:
+    """WavLM + emotion2vec+ identity probes."""
+    audio_df, blocks = load_audio_blocks(root, dataset)
+    calls = pd.read_parquet(root / dataset / "calls.parquet", columns=["call_id", "ticker"])
     calls["call_id"] = calls["call_id"].astype(str)
     audio_df = audio_df.merge(calls, on="call_id", how="left").dropna(subset=["ticker"])
     rows = []
@@ -72,12 +72,12 @@ def identity_probe(root: Path) -> pd.DataFrame:
     return pd.DataFrame(rows)
 
 
-def _headline_audio_preds(root: Path, dataset="fincall", *, seed=0):
-    """WavLM-ridge (audio-only), temporal split, level-v test: (test_df, y_true, y_pred, F0)."""
+def _headline_audio_preds(root: Path, dataset="fincall", *, seed=0, scheme="temporal"):
+    """WavLM-ridge (audio-only), one split scheme, level-v test: (test_df, y_true, y_pred, F0)."""
     df = E.load_eval_frame(root, dataset)
-    audio_df, blocks = load_audio_blocks(root)
+    audio_df, blocks = load_audio_blocks(root, dataset)
     assign = pd.read_csv(
-        root / "splits" / f"{dataset}_temporal.csv", dtype={"call_id": str}
+        root / "splits" / f"{dataset}_{scheme}.csv", dtype={"call_id": str}
     ).set_index("call_id")["split"]
     at = df[df["horizon"] == 30].copy()
     at["split"] = at["call_id"].map(assign).fillna("excluded")
@@ -95,9 +95,9 @@ def _headline_audio_preds(root: Path, dataset="fincall", *, seed=0):
     return sub, y[te], pte, sub[F0_COL].to_numpy(np.float64)
 
 
-def gender_analysis(root: Path, dataset="fincall") -> pd.DataFrame:
+def gender_analysis(root: Path, dataset="fincall", *, scheme="temporal") -> pd.DataFrame:
     """§3.5: eGeMAPS-F0 pitch proxy → per-group test MSE + F0↔error/prediction correlations."""
-    sub, y_true, y_pred, f0 = _headline_audio_preds(root, dataset)
+    sub, y_true, y_pred, f0 = _headline_audio_preds(root, dataset, scheme=scheme)
     err2 = (y_true - y_pred) ** 2
     finite = np.isfinite(f0)
     coverage = float(finite.mean())
@@ -107,7 +107,7 @@ def gender_analysis(root: Path, dataset="fincall") -> pd.DataFrame:
     r_pred = float(pearsonr(f0[finite], y_pred[finite])[0]) if finite.sum() > 2 else float("nan")
     rows = [
         ("dataset", dataset),
-        ("model", "wavlm_ridge_audio (temporal, level-v, tau=30, test)"),
+        ("model", f"wavlm_ridge_audio ({scheme}, level-v, tau=30, test)"),
         ("f0_proxy_coverage", round(coverage, 4)),
         ("f0_split_semitones", F0_SPLIT_SEMITONES),
         ("n_low_pitch", int(low.sum())),
@@ -117,13 +117,21 @@ def gender_analysis(root: Path, dataset="fincall") -> pd.DataFrame:
         ("corr_f0_sq_error", round(r_err, 4)),
         ("corr_f0_prediction", round(r_pred, 4)),
     ]
-    out = root / "results" / "audio_gender.csv"
+    suffix = "" if dataset == "fincall" else f"_{dataset}"
+    out = root / "results" / f"audio_gender{suffix}.csv"
     out.parent.mkdir(parents=True, exist_ok=True)
     pd.DataFrame(rows, columns=["metric", "value"]).to_csv(out, index=False, lineterminator="\n")
     return pd.DataFrame(rows, columns=["metric", "value"])
 
 
-def audio_shuffle_control(root: Path, dataset="fincall") -> pd.DataFrame:
+def audio_shuffle_control(
+    root: Path,
+    dataset="fincall",
+    *,
+    schemes: tuple[str, ...] = ("temporal", "ticker_disjoint"),
+    call_ids: set[str] | None = None,
+    write: bool = True,
+) -> pd.DataFrame:
     """Same-ticker AUDIO shuffle on the headline WavLM+past-vol Δv head (the framing-gate test).
 
     Replaces each test call's WavLM features with a same-ticker sibling's (within), and any call's
@@ -139,11 +147,13 @@ def audio_shuffle_control(root: Path, dataset="fincall") -> pd.DataFrame:
     from ecvol.models.heads import ridge_fit
 
     df = E.load_eval_frame(root, dataset)
-    audio_df, blocks = load_audio_blocks(root)
+    if call_ids is not None:
+        df = df[df["call_id"].isin(call_ids)].reset_index(drop=True)
+    audio_df, blocks = load_audio_blocks(root, dataset)
     wav = blocks["wavlm"]
     feat_cols = wav + PASTVOL
     rows = []
-    for scheme in ("temporal", "ticker_disjoint"):
+    for scheme in schemes:
         assign = pd.read_csv(
             root / "splits" / f"{dataset}_{scheme}.csv", dtype={"call_id": str}
         ).set_index("call_id")["split"]
@@ -188,10 +198,12 @@ def audio_shuffle_control(root: Path, dataset="fincall") -> pd.DataFrame:
                         "r2_oos": float(r2_oos(y_all[te], yp, base[te])),
                     }
                 )
-    out = root / "results" / "audio_shuffle.csv"
-    out.parent.mkdir(parents=True, exist_ok=True)
-    pd.DataFrame(rows).to_csv(out, index=False, lineterminator="\n")
-    return pd.DataFrame(rows)
+    table = pd.DataFrame(rows)
+    if write:
+        out = root / "results" / "audio_shuffle.csv"
+        out.parent.mkdir(parents=True, exist_ok=True)
+        table.to_csv(out, index=False, lineterminator="\n")
+    return table
 
 
 def run_audio_eval(root: Path) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:

@@ -45,7 +45,7 @@ SECTION_QA = "qa"
 # model with a different context window.
 DEFAULT_MAX_WORDS = 320
 
-DATASETS = ("fincall", "maec")
+DATASETS = ("fincall", "maec", "earnings25")
 
 CHUNKS_SOURCE = "derived: ecvol featurize sections (T3.1)"
 CHUNKS_LICENSE = "derived"
@@ -381,7 +381,8 @@ def build_sections(
             for pc in sample
         ]
         audit_path = cov / f"{dataset}_section_audit.csv"
-        _write_csv(audit_header, audit_rows, audit_path)
+        if not audit_path.exists():  # a human fills `correct_y_n` in; never overwrite it
+            _write_csv(audit_header, audit_rows, audit_path)
 
         summaries.append(
             SectionSummary(
