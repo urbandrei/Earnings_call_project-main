@@ -1,0 +1,4 @@
+# Committed command config (T9.3/T6R.2). `ecvol audit code` loads this by default.
+# The live GitHub probe columns carry their probe date; curated columns are deterministic.
+command: audit-code
+seeds: [0]

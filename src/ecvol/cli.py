@@ -1155,6 +1155,27 @@ def reproduce_scss(
     typer.echo(f"run artifact: {write_command_run(cfg, root)}")
 
 
+@audit_app.command("code")
+def audit_code(
+    root: Path = typer.Option(Path("data"), help="Data root directory."),  # noqa: B008
+    no_live: bool = typer.Option(False, help="Skip the GitHub probe (curated columns only)."),
+    config: Path | None = _CONFIG_OPT,
+) -> None:
+    """Code-availability audit of the ECC volatility literature → results/code_availability.csv."""
+    from ecvol.eval.code_audit import run_code_audit
+    from ecvol.tracking import resolve_command_config, write_command_run
+
+    cfg = resolve_command_config("audit-code", config, None)
+    t = run_code_audit(root, live=not no_live)
+    for v in ("runnable", "partial", "none"):
+        typer.echo(
+            f"  {v:<9} {int((t['verdict'] == v).sum()):>2}: "
+            + ", ".join(t[t["verdict"] == v]["key"])
+        )
+    typer.echo("table: data/results/code_availability.csv")
+    typer.echo(f"run artifact: {write_command_run(cfg, root)}")
+
+
 @app.command(name="evaluate-audio-earnings25")
 def evaluate_audio_earnings25(
     root: Path = typer.Option(Path("data"), help="Data root directory."),  # noqa: B008

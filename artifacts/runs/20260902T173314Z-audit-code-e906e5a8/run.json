@@ -1,0 +1,34 @@
+{
+  "command": "audit-code",
+  "config": {
+    "command": "audit-code",
+    "seeds": [
+      0
+    ]
+  },
+  "config_hash": "e906e5a82f1456295d4ec2f7b1bb229b303301f027ceec8a56f98fb24fbac1be",
+  "created_at": "2026-09-02T17:33:14+00:00",
+  "env": {
+    "gpus": [
+      "NVIDIA GeForce RTX 5060 Ti, 591.86"
+    ],
+    "lockfile_sha256": "827d6e8e585a892361fe4cedf07eae6cf970be3513a8dfd8a7a46ce1b434a0f3",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "python": "3.12.8"
+  },
+  "git": {
+    "dirty": true,
+    "sha": "8ac3197a74bd18d0db162c443f522eed66b5fa54"
+  },
+  "outputs": {
+    "results/code_availability.csv": {
+      "bytes": 3217,
+      "sha256": "bdcb34b8c4fc4c46b893772237d512b186e359b319c961ea3bd93e7e270a3636"
+    }
+  },
+  "provenance": "run",
+  "run_id": "20260902T173314Z-audit-code-e906e5a8",
+  "seeds": [
+    0
+  ]
+}

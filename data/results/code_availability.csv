@@ -1,0 +1,18 @@
+key,paper,venue,url,verdict,reason,reproduced_here,probe_status,size_kb,files,code_files,pushed_at,license,probed_on
+qin2019,"Qin & Yang, What You Say and How You Say It Matters",ACL 2019,https://github.com/GeminiLn/EarningsCall_Dataset,partial,"dataset released (Drive, 5-part zip); no model code in the repository",,200,15047,355,0,2022-08-04,,2026-09-02
+html2020,"Yang et al., HTML",WWW 2020,https://github.com/YangLinyi/HTML-Hierarchical-Transformer-based-Multi-task-Learning-for-Volatility-Prediction,runnable,"PyTorch model code, no requirements file; head ported and run on EC",ecvol reproduce html,200,146,20,15,2024-01-05,,2026-09-02
+sawhney2020,"Sawhney et al., multimodal financial forecasting",ACM MM 2020,https://github.com/midas-research/multimodal-financial-forecasting,partial,TF 2.1 / Keras 2.3.1 pins; last push 2020; not ported (multi-day environment rebuild),,200,205,117,112,2020-10-26,,2026-09-02
+voltage2020,"Sawhney et al., VolTAGE",EMNLP 2020,https://github.com/piyushkhanna00705/VolTAGE,partial,ships the EC split/label files (byte-identical to KeFVP's) and GCN code; embeddings as .pkl; not ported,,200,3229,31,5,2021-11-16,,2026-09-02
+kefvp2023,"Niu et al., KeFVP",EMNLP Findings 2023,https://github.com/hankniu01/KeFVP,partial,"full code but requirements.txt does not install as written (spacy==.5.3, pickle); torch 1.12 predates Blackwell; MAEC KePt embeddings unavailable upstream; not ported",,200,4415,162,42,2024-01-28,,2026-09-02
+dialoguegat2023,DialogueGAT,2023,https://github.com/sangyx/DialogueGAT,partial,"MIT code, tau<=15 only; the dialogue corpus must be rebuilt before it runs; not ported",,200,3974,23,6,2023-06-12,MIT,2026-09-02
+scss2025,"Yu, Liu & He, Same Company, Same Signal",Findings of ACL 2025,https://github.com/piqueyd/Same-Company-Same-Signal,runnable,MIT; ships DEC with features and rolling masks; PEV/STPEV reproduced to 3 decimals,ecvol reproduce scss,200,11723,504,38,2026-08-13,MIT,2026-09-02
+fintrust2023,"Yang et al., FinTrust",ACL 2023 short,https://github.com/yingpengma/FinTrust,partial,"perturbation harness + 3/7/15/30 data; complementary control axis, not a volatility model",,200,4527,20,4,2024-01-22,,2026-09-02
+soundofrisk2025,Sound of Risk,2025,https://github.com/soundai2016/sound_risk,none,"repository holds figures only, zero source files; proprietary 1,795-call corpus",,200,913,7,0,2025-08-26,,2026-09-02
+defvp2024,DeFVP,2024,https://github.com/hankniu01/DeFVP,none,"repository exists but is empty (size 0 KB, never pushed; API returns 409)",,409,,,,,,2026-09-02
+echogl2024,ECHO-GL,2024,https://github.com/pupu0302/ECHOGL,none,"README states the code 'can not run at present'; target is direction, not volatility",,200,90216,17,3,2024-02-26,,2026-09-02
+eccanalyzer2024,ECC Analyzer,2024,,none,no code released; GPT-4 Turbo + OpenAI embeddings,,no_url,,,,,,
+risklabs2024,RiskLabs,2024,,none,no code released; GPT-4/3.5,,no_url,,,,,,
+numhtml2022,NumHTML,AAAI 2022,,none,paper promises code; no URL given,,no_url,,,,,,
+gnavol,GNA-Vol,,,none,artefact URL returns 404 (checked 2026-08-23),,no_url,,,,,,
+amalstm,AMA-LSTM,,,none,"10-byte stub repository, unattributed",,no_url,,,,,,
+atfingpt,AT-FinGPT,,,none,paywalled; no artefact,,no_url,,,,,,

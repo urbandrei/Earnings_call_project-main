@@ -161,6 +161,7 @@ COMMAND_OUTPUTS: dict[str, tuple[str, ...]] = {
     "audit-substrate": ("results/result_table_5r.csv", "results/result_table_5r_labels.csv"),
     "reproduce-html": ("results/result_table_6r.csv",),
     "reproduce-scss": ("results/result_table_6r_scss.csv",),
+    "audit-code": ("results/code_availability.csv",),
     "evaluate-audio-earnings25": (
         "results/result_table_3_earnings25.csv",
         "results/audio_shuffle_earnings25.csv",
