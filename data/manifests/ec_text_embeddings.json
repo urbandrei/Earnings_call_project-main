@@ -1,0 +1,9 @@
+[
+  {
+    "license": "derived; model BAAI/bge-m3 (MIT)",
+    "path": "ec/text_embeddings.parquet",
+    "retrieved_at": "2026-09-02T12:44:33+00:00",
+    "sha256": "ea821a5ca144e14bff682635957e1fdc8ec0b12b66e2a71291e911050702e422",
+    "source_url": "derived: ecvol featurize text (BGE-M3 embeddings, T3.2)"
+  }
+]
