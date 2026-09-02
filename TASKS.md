@@ -336,12 +336,12 @@
 - **Done (2026-09-03):** every 2026-08-23 number regenerates exactly (EC 80.4% / MAEC-15 44.2% / MAEC-16 55.7% overlap; 0-day embargos except MAEC-16 va→te 3 d; byte-identical VolTAGE/KeFVP files by SHA). Ticker-disjoint rows carry no embargo metric (not temporally ordered). **Open:** the sentinel-zero interpretation (zero-variance day vs missing) is still unsettled — the paper states the count only.
 - **Notes:** findings already established 2026-08-23 (JOURNAL; `docs/advisor_redirection_2026-08.md` §5) — **VolTAGE and KeFVP ship byte-identical split files**; EC 80.4% / MAEC-15 44.2% / MAEC-16 55.7% test-ticker-in-train; **0-day embargo** on every boundary against τ≤30 targets; 137 zeros / 16,800 cells in the single-day series (headline Avg_Series clean); KeFVP MAEC files interleave binary labels at exactly τ ∈ {3,7,15,30} among 26 price columns (154/154 rows). **This task formalises and regenerates them, it does not re-derive them.** Open: settle the sentinel-zero interpretation (zero-variance day vs missing) before it enters a paper claim.
 
-### T6R.2 Reproduction of prior models under our controls → Result Table 6R — `[ ]`
+### T6R.2 Reproduction of prior models under our controls → Result Table 6R — `[~]` *(started 2026-09-03: EC ingested, HTML head ported, `ecvol reproduce html` wired — run pending GPU)*
 - **Goal:** demonstrate the benchmark's value by re-evaluating released models under embargoed, ticker-disjoint conditions.
 - **End result:** HTML, Same-Company-Same-Signal, KeFVP, DialogueGAT, and Sawhney (ACM MM 2020) run **each on its own original dataset** under our control suite; published-split vs leakage-proof-split deltas reported per model.
 - **Acceptance test:** for every model, either a result under both split conditions, or a documented reason code for why it could not run; the published-split numbers are reproduced within a stated tolerance before any controlled number is claimed; no model is evaluated on a dataset it was not originally trained on without that being labelled a transfer test.
 - **Subtasks:**
-  - [ ] HTML as an `ecvol` head over our embeddings (`legacy/4-Reproduce_HTML.ipynb` is a working prior reimplementation)
+  - [~] HTML as an `ecvol` head over our embeddings — `src/ecvol/models/html_head.py` + `eval/reproduce.py` + `ecvol reproduce html` (DECISIONS 2026-09-03 (later)); EC ingested (`ecvol data ingest ec`: 558/572 ok, 550 priced, published split 385/54/109 in `splits/ec_published.csv`); run needs EC text features (GPU) first
   - [ ] Same-Company-Same-Signal (PEV / STPEV training-free baselines; MIT, actively maintained)
   - [ ] KeFVP — EC only (torch 1.12 → modern port; `requirements.txt` unfixable as written; MAEC KePt embeddings unavailable upstream)
   - [ ] DialogueGAT (τ ≤ 15; corpus rebuild required)

@@ -1,0 +1,4 @@
+# Committed command config (T9.3/T6R.2). `ecvol reproduce html` loads this by default.
+# Seeds drive the head's initialisation + batch order; alpha is tuned on validation with seed 0.
+command: reproduce-html
+seeds: [0, 1, 2]

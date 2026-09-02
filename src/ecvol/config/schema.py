@@ -116,6 +116,7 @@ class CommandConfig(StrictModel):
         "evaluate-audio-earnings25",
         "timing-sensitivity",
         "audit-substrate",
+        "reproduce-html",
     ]
     seeds: list[int] = Field(default=[0, 1, 2, 3, 4], min_length=1)
 

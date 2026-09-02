@@ -1106,6 +1106,33 @@ def audit_substrate(
     typer.echo(f"run artifact: {write_command_run(cfg, root)}")
 
 
+reproduce_app = typer.Typer(no_args_is_help=True, help="Reproduce published models (T6R.2).")
+app.add_typer(reproduce_app, name="reproduce")
+
+
+@reproduce_app.command("html")
+def reproduce_html(
+    root: Path = typer.Option(Path("data"), help="Data root directory."),  # noqa: B008
+    seeds: str | None = typer.Option(None, help="Comma-separated seeds; overrides the config."),
+    epochs: int = typer.Option(30, help="Training epochs per fit (paper: until convergence)."),
+    config: Path | None = _CONFIG_OPT,
+) -> None:
+    """HTML (Yang et al. 2020) on EC: published split/labels, then our splits → Result Table 6R."""
+    from ecvol.eval.reproduce import run_html_reproduction
+    from ecvol.tracking import resolve_command_config, write_command_run
+
+    cfg = resolve_command_config("reproduce-html", config, seeds)
+    table = run_html_reproduction(root, seeds=tuple(cfg.seeds), epochs=epochs)
+    for r in table[table["model"] == "html_text"].itertuples():
+        pub = f" (published {r.published_mse:.3f})" if r.published_mse == r.published_mse else ""
+        typer.echo(
+            f"  {r.split:>15} labels={r.labels:<9} tau={r.horizon:<2} n_test={r.n_test:<3} "
+            f"MSE={r.mse:.3f}±{r.mse_seed_std:.3f}{pub} R2vsPers={r.r2_oos_vs_persistence:+.3f}"
+        )
+    typer.echo("Result Table 6R: data/results/result_table_6r.csv")
+    typer.echo(f"run artifact: {write_command_run(cfg, root)}")
+
+
 @app.command(name="evaluate-audio-earnings25")
 def evaluate_audio_earnings25(
     root: Path = typer.Option(Path("data"), help="Data root directory."),  # noqa: B008
