@@ -1,0 +1,9 @@
+[
+  {
+    "license": "derived; openSMILE eGeMAPSv02",
+    "path": "earnings25/audio_egemaps.parquet",
+    "retrieved_at": "2026-09-02T06:37:16+00:00",
+    "sha256": "1fc893f45815a5eaf009937ead5cfc389f6163e64c8a6c6339c626b4259e3a6a",
+    "source_url": "derived: ecvol audio egemaps (T4.2)"
+  }
+]
