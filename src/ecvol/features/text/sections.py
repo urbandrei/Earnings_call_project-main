@@ -45,7 +45,7 @@ SECTION_QA = "qa"
 # model with a different context window.
 DEFAULT_MAX_WORDS = 320
 
-DATASETS = ("fincall", "maec", "earnings25")
+DATASETS = ("fincall", "maec", "earnings25", "ec")
 
 CHUNKS_SOURCE = "derived: ecvol featurize sections (T3.1)"
 CHUNKS_LICENSE = "derived"

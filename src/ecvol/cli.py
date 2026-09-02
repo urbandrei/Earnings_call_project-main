@@ -86,16 +86,33 @@ def identity(
 
 @data_app.command()
 def ingest(
-    dataset: str = typer.Argument(help="Dataset to normalize: fincall | maec | earnings25."),
+    dataset: str = typer.Argument(help="Dataset to normalize: fincall | maec | earnings25 | ec."),
     root: Path = typer.Option(Path("data"), help="Data root directory."),  # noqa: B008
     no_audio: bool = typer.Option(
         False, help="FinCall only: skip ffprobe audio-duration probing (durations left NaN)."
     ),
 ) -> None:
     """Normalize a dataset onto the common call schema → parquet + reports (T1.4/T1.5/T7.1)."""
-    if dataset not in ("fincall", "maec", "earnings25"):
-        typer.echo(f"unknown dataset {dataset!r} (expected fincall | maec | earnings25)", err=True)
+    if dataset not in ("fincall", "maec", "earnings25", "ec"):
+        typer.echo(
+            f"unknown dataset {dataset!r} (expected fincall | maec | earnings25 | ec)", err=True
+        )
         raise typer.Exit(code=2)
+    if dataset == "ec":
+        from ecvol.data.ec_ingest import ingest_ec
+
+        c = ingest_ec(root)
+        typer.echo(
+            f"calls: {c.ok}/{c.total_calls} ok; published split covers {c.published_split_calls}"
+        )
+        typer.echo(
+            f"join: {c.joined}/{c.ok} ok calls with >=1 target ({c.join_rate_pct}%); "
+            f"missing-price tickers: {c.missing_price_tickers}"
+        )
+        if c.reason_counts:
+            typer.echo("exclusions: " + ", ".join(f"{k}={v}" for k, v in c.reason_counts.items()))
+        typer.echo("calls/targets: data/ec/*.parquet; split: data/splits/ec_published.csv")
+        return
     if dataset == "earnings25":
         from ecvol.data.earnings25_ingest import ingest_earnings25
 
@@ -202,6 +219,28 @@ def _not_implemented(verb: str) -> None:
 prices_app = typer.Typer(no_args_is_help=True, help="Adjusted daily OHLCV ingestion (T1.2).")
 
 
+def _pull_ec_prices(root: Path, refresh: bool) -> None:
+    """EC tickers missing from the shared 2014–2022 archive (T6R.2) → data/prices/ + prices.json."""
+    from ecvol.data.ec_ingest import TICKER_ALIASES, ec_tickers
+    from ecvol.data.prices import END, START, pull_tickers
+
+    tickers = ec_tickers(root)
+    fetched, missing = pull_tickers(
+        tickers,
+        root / "prices",
+        root,
+        start=START,
+        end=END,
+        manifest_name="prices.json",
+        refresh=refresh,
+        aliases=TICKER_ALIASES,
+    )
+    typer.echo(
+        f"ec prices: {len(tickers)} tickers; fetched {len(fetched)}; "
+        f"missing {len(missing)}: {missing}"
+    )
+
+
 def _pull_earnings25_prices(root: Path, refresh: bool) -> None:
     """Earnings25's own price store (T7.1): the admitted tickers, 2025-06-01 → 2026-03-31."""
     from datetime import date
@@ -246,7 +285,8 @@ def prices_pull(
     root: Path = typer.Option(Path("data"), help="Data root directory."),  # noqa: B008
     refresh: bool = typer.Option(False, help="Re-download tickers even if cached."),
     dataset: str = typer.Option(
-        "fincall+maec", help="Universe: fincall+maec (T1.2 archive) | earnings25 (own store, T7.1)."
+        "fincall+maec",
+        help="Universe: fincall+maec (T1.2 archive) | earnings25 (own store) | ec (archive).",
     ),
 ) -> None:
     """Pull adjusted daily OHLCV for the FinCall+MAEC universe → parquet + coverage (T1.2)."""
@@ -254,6 +294,9 @@ def prices_pull(
 
     if dataset == "earnings25":
         _pull_earnings25_prices(root, refresh)
+        return
+    if dataset == "ec":
+        _pull_ec_prices(root, refresh)
         return
     summary = pull_prices(root, refresh=refresh)
     typer.echo(

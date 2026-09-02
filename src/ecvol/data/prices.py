@@ -349,8 +349,12 @@ def pull_tickers(
     manifest_name: str,
     batch_size: int = 100,
     refresh: bool = False,
+    aliases: dict[str, str] | None = None,
 ) -> tuple[list[str], list[str]]:
     """Pull an explicit ticker list into `prices_dir` (own manifest); (fetched, missing).
+
+    `aliases` maps a historical ticker to the symbol Yahoo serves it under today
+    (renames such as FB→META); the parquet is still stored under the historical ticker.
 
     The Earnings25 store (T7.1): a separate directory + manifest so the 2014–2022
     archive the FinCall/MAEC targets were validated against is never touched.
@@ -361,7 +365,8 @@ def pull_tickers(
     pending = sorted(
         t for t in set(tickers) if refresh or not (prices_dir / f"{t}.parquet").exists()
     )
-    sym_to_ticker = {to_yahoo_symbol(t): t for t in pending}
+    aliases = aliases or {}
+    sym_to_ticker = {to_yahoo_symbol(aliases.get(t, t)): t for t in pending}
     symbols = list(sym_to_ticker)
     fetched: list[str] = []
     for i in range(0, len(symbols), batch_size):
