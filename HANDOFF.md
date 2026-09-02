@@ -148,6 +148,29 @@ Each entry: date · task ID · what the user must do · what unblocks when it's 
     for now by using **Qwen2.5-14B** for the scale test, which is ungated and holds the model
     family constant — a cleaner scale comparison than Llama would have been anyway.
 
+- **2026-09-02 (later) · Re-baseline decision — new evidence.** `data/results/result_table_7_measured.csv`
+  (paper Table `tab:lookahead-measured`): under the measured anchor the ridge past-vol heads lose their
+  in-cutoff Δv collapse (−1.7…−3.6 → +0.08…+0.34) while HAR is unchanged. Recommendation stays **B
+  (re-baseline)**, now with a concrete reason: the primary anchor is what makes the learned heads look
+  regime-fragile. If you choose B, the loop re-runs `targets build → splits build → evaluate* → grid →
+  report` on the measured files (Stage 2–4 MLP/grid cells are the slow part, ~1 day GPU-free) and the
+  paper's Tables 1–4 numbers change; if A, nothing further is needed.
+- **2026-09-02 (later) · T8.1 · Release archives are built — upload is yours.** `ecvol release build`
+  wrote four zips to `data/release/` (`ecvol-bench_{fincall,maec,earnings25,ec}_f325864.zip`, 137.7 MB
+  total; SHA-256 in `data/manifests/release.json`). Create the data-host record (Zenodo or HF Datasets),
+  upload the four files + `LICENSE-DATA.md`, and paste the DOI into `REPRODUCE.md` and the paper's
+  release paragraph. Hold the **EC** archive until the terms question below is answered.
+- **2026-09-02 (later) · T8.1 · EC dataset terms — draft email to the authors (Qin & Yang).** Subject:
+  *Permission to release derived per-call features from EarningsCall_Dataset (Qin & Yang, ACL 2019)*.
+  Body: we used the 572-call release from your Drive link for a reproduction/benchmark study; we would
+  like to publish only (i) our volatility targets and split files keyed by your folder names and (ii)
+  pooled per-call embedding vectors (BGE-M3, FinBERT scores, surface statistics) from which the
+  transcripts cannot be reconstructed; no transcript text or audio would be redistributed; please confirm
+  this is acceptable, or tell us which licence you intend for the dataset. Send to the corresponding
+  author addresses in the ACL paper; record the answer here.
+- **2026-09-02 (later) · Clean-clone note.** A fresh Windows clone needs `git clone -c core.longpaths=true`
+  (an `ingest/` PDF's path exceeds 260 chars). If you would rather rename that file, it is yours to rename.
+
 ### Resolved
 - **2026-07-04 · T6.2 — OSC route SUPERSEDED by Colab Pro+.** The OSC allocation + funds lapsed;
   the corpus compute moved to Colab Pro+ (DECISIONS 2026-07-04). The 2026-06-24 $1000 OSC spend

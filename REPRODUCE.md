@@ -13,6 +13,8 @@ uv sync --group gpu     # + torch cu128, transformers, funasr: feature extractio
 ```
 
 Windows 11 / RTX 5060 Ti (16 GB) is the reference machine; ffmpeg 8.x on PATH for audio.
+On Windows clone with `git clone -c core.longpaths=true …` (one committed path exceeds 260 chars).
+Verified 2026-09-02: a fresh clone + `uv sync` (CPU) passes the full gate and `ecvol runs verify`.
 
 ## Data (local only; never committed)
 
@@ -56,7 +58,7 @@ ecvol audio emotion2vec --dataset {fincall,earnings25}
 | Table 6R (SCSS on DEC) | `ecvol reproduce scss` | `result_table_6r_scss.csv` | `configs/reproduce-scss.yaml` |
 | code-availability audit | `ecvol audit code` | `code_availability.csv` | `configs/audit-code.yaml` |
 | Earnings25 audio by bitrate | `ecvol evaluate-audio-earnings25` | `result_table_3_earnings25.csv`, `audio_*_earnings25.csv` | `configs/evaluate-audio-earnings25.yaml` |
-| Table 7 (lookahead) | `ecvol evaluate-lookahead` | `result_table_7.csv` | `configs/evaluate-lookahead.yaml` |
+| Table 7 (lookahead) + anchor variant | `ecvol evaluate-lookahead` | `result_table_7.csv`, `result_table_7_measured.csv` | `configs/evaluate-lookahead.yaml` |
 | rendered md/tex | `ecvol report` | `result_table_{1..4}.{md,tex}` | — |
 
 Curated paper tables under `paper/tables/*.tex` copy cells from these CSVs; the header comment of
@@ -73,6 +75,16 @@ ecvol data verify                                        # every data file ↔ i
 Determinism: ridge/HAR/persistence/GARCH runs are byte-identical across re-runs (Table 1 was
 re-run live on 2026-08-26 and 2026-09-02 and matched the committed bytes). MLP heads and the
 HTML head carry seeds; their cells report the seed standard deviation.
+
+## Release archives
+
+```
+ecvol release build          # data/release/ecvol-bench_<corpus>_<gitsha>.zip + data/manifests/release.json
+```
+
+One deterministic zip per corpus (targets under both conventions and anchors, splits, pooled per-call
+features, identity/timing tables, data manifests); raw transcripts, audio and prices are never members.
+The committed `release.json` pins each archive's SHA-256, so a rebuild elsewhere can be compared byte for byte.
 
 ## Licences of released derived artifacts
 
