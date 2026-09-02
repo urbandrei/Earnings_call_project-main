@@ -120,21 +120,27 @@ delta above is a property of the target, not of the head.
 
 \subsection{Prior models under the new controls (Stage R)}
 \label{sec:results-repro}
-\pending{Phase 6R, Result Table 6R (Table~\ref{tab:repro}): for each of HTML,
-Same-Company-Same-Signal, KeFVP, DialogueGAT, and VolTAGE on its own dataset---the
-published-split number as reported, our reproduction of it with tolerance, and the
-same model under an embargoed and a \tickerdisjoint{} split, with the identity
-probe and shuffle controls attached. Every model gets either both split conditions
-or a documented reason code.}
+Table~\ref{tab:repro} reports the first entry of the reproduction study: the HTML
+sentence-level transformer with its multi-task loss and published hyper-parameters
+\citep{yang2020html}, run over our frozen BGE-M3 chunk sequences (a documented
+encoder substitution; the head and protocol are the paper's) on EC. Three things
+follow. First, the published number is only partly reproduced: at $\tau{=}3$ the
+head beats it (0.77 vs.\ 1.18), but the published $\tau{=}15$ and $\tau{=}30$
+values (0.153, 0.133) are \emph{below the persistence floor of the shipped labels}
+(0.340, 0.202) and no configuration we ran approaches them---the head is worse than
+persistence at $\tau{=}30$ in every condition, as every model in
+\S\ref{sec:results} is on FinCall. Second, label source barely matters
+(0.77/0.44/0.29/0.22 vs.\ 0.74/0.40/0.28/0.22), so the convention and anchor
+issues of \S\ref{sec:substrate} do not explain the shortfall. Third, the
+\tickerdisjoint{} split raises the head's MSE by 9\% / 23\% / 46\% / 36\% over the
+published split with identical labels, collapsing its $R^2_{\mathrm{OOS}}$ against
+persistence at $\tau{=}15$ from 0.21 to 0.04, whereas the 30-session-embargoed
+temporal split costs nothing---the company-overlap confound, not the embargo, is
+what the published protocol leaves unmeasured. \pending{Remaining entries:
+Same-Company-Same-Signal on DEC, KeFVP on EC, DialogueGAT and Sawhney (ACM MM 2020)
+on their own data, plus the code-availability audit of the non-runnable papers.}
 
-\begin{table}[t]
-\centering\small
-\pending{Result Table 6R.}
-\caption{\textbf{Reproduced prior models under leakage-proof evaluation.} Each
-model on its own original dataset; published vs.\ reproduced vs.\ embargoed vs.\
-\tickerdisjoint{}.}
-\label{tab:repro}
-\end{table}
+\input{tables/repro}
 
 \subsection{Audio by bitrate: the Stage-3 ladder on Earnings25}
 \label{sec:results-clean-audio}

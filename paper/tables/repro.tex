@@ -1,0 +1,33 @@
+% Curated from data/results/result_table_6r.csv (run 20260902T153103Z-reproduce-html-1ac22d6e).
+% HTML head (Yang et al. 2020 sentence-level transformer + multi-task loss) over frozen
+% BGE-M3 chunk sequences, on EC. "published" split = VolTAGE train/val/test files
+% (560 calls; the paper used 576). Test MSE, mean of 3 seeds; persistence = past_tau.
+\begin{table}[t]
+\centering
+\small
+\begin{tabular}{llrrrr}
+\toprule
+Condition (EC) & model & $\tau$=3 & $\tau$=7 & $\tau$=15 & $\tau$=30 \\
+\midrule
+paper, published split, published labels & HTML (text, WWM-BERT) & 1.175 & 0.372 & 0.153 & 0.133 \\
+\midrule
+published split, published labels & HTML head (BGE-M3) & 0.769 & 0.436 & 0.285 & 0.223 \\
+ & persistence & 1.485 & 0.570 & 0.340 & 0.202 \\
+published split, our labels & HTML head (BGE-M3) & 0.739 & 0.395 & 0.277 & 0.218 \\
+ & persistence & 1.825 & 0.585 & 0.333 & 0.183 \\
+\midrule
+embargoed temporal, our labels & HTML head (BGE-M3) & 0.745 & 0.418 & 0.273 & 0.231 \\
+ & persistence & 1.946 & 0.623 & 0.353 & 0.192 \\
+\tickerdisjoint{}, our labels & HTML head (BGE-M3) & \textbf{0.808} & \textbf{0.486} & \textbf{0.404} & \textbf{0.296} \\
+ & persistence & 1.670 & 0.731 & 0.418 & 0.213 \\
+\bottomrule
+\end{tabular}
+\caption{\textbf{Reproduced prior model under leakage-proof evaluation} (Result Table 6R,
+first entry). The HTML head reproduces the paper's ordering against price baselines
+at $\tau{=}3$ (and beats the published number) but not the published $\tau{=}15$ and
+$\tau{=}30$ values, which lie \emph{below the persistence floor} of the shipped labels
+themselves; at $\tau{=}30$ every condition is worse than persistence. Moving the
+same head and labels from the published split to a \tickerdisjoint{} split raises
+test MSE by 9\% / 23\% / 46\% / 36\%; the embargoed temporal split does not.}
+\label{tab:repro}
+\end{table}
