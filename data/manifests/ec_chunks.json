@@ -1,0 +1,9 @@
+[
+  {
+    "license": "derived",
+    "path": "ec/chunks.parquet",
+    "retrieved_at": "2026-09-02T06:43:29+00:00",
+    "sha256": "af7e9ea7184e64e022b761a7db12de82dc38be8758c4f60cb1a0b6105b2e27ef",
+    "source_url": "derived: ecvol featurize sections (T3.1)"
+  }
+]

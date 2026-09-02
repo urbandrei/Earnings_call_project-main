@@ -1,0 +1,16 @@
+[
+  {
+    "license": "Derived artifact \u2014 computed from price data (DESIGN \u00a75.3); no external source",
+    "path": "ec/targets.parquet",
+    "retrieved_at": "2026-09-02T06:43:03+00:00",
+    "sha256": "9f3d2c6f9fdc9a8f23164e285d6ac195e1bf022647770b5238c86dd2add2884d",
+    "source_url": "computed: ecvol data ingest ec / targets (DESIGN \u00a75.3)"
+  },
+  {
+    "license": "Derived artifact \u2014 computed from price data (DESIGN \u00a75.3); no external source",
+    "path": "ec/targets_calendar.parquet",
+    "retrieved_at": "2026-09-02T06:43:03+00:00",
+    "sha256": "9382bf3777a304dfe5568f67e930bc86b2b2793e676fdbf9b9af755aecf71f1c",
+    "source_url": "computed: ecvol data ingest ec / targets (DESIGN \u00a75.3)"
+  }
+]

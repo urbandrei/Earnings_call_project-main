@@ -1,0 +1,11 @@
+metric,value
+total_calls,572
+ok_calls,558
+joined_calls,550
+join_rate_pct,98.57
+missing_price_tickers,3
+published_split_calls,559
+reason:unresolved,14
+target_reason:insufficient_post_history,16
+target_reason:no_price_data,16
+target_reason:zero_variance_post,3

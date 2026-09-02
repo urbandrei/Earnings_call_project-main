@@ -1,0 +1,9 @@
+[
+  {
+    "license": "Derived artifact \u2014 normalized from the EC release (Qin & Yang 2019; research use)",
+    "path": "ec/calls.parquet",
+    "retrieved_at": "2026-09-02T06:43:03+00:00",
+    "sha256": "73e90de7dcde370811e5e42eb845e0b2267dbc04b9b1c3e445f45c74ca418af0",
+    "source_url": "computed: ecvol data ingest ec (T6R.2)"
+  }
+]

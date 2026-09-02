@@ -1,0 +1,560 @@
+call_id,ticker,as_of,split
+3M Company_20170425,MMM,2017-04-25,train
+3M Company_20170725,MMM,2017-07-25,train
+A.O. Smith Corp_20170726,AOS,2017-07-26,train
+ABIOMED Inc_20170504,ABMD,2017-05-04,train
+AES Corp_20170508,AES,2017-05-08,train
+AES Corp_20171102,AES,2017-11-02,test
+AMETEK Inc._20170207,AME,2017-02-07,train
+AMETEK Inc._20170802,AME,2017-08-02,train
+AT&T Inc._20170425,T,2017-04-25,train
+AT&T Inc._20171024,T,2017-10-24,val
+AbbVie Inc._20170427,ABBV,2017-04-27,train
+AbbVie Inc._20170728,ABBV,2017-07-28,train
+AbbVie Inc._20170728,ABBV,2017-07-28,train
+AbbVie Inc._20171027,ABBV,2017-10-27,test
+Abbott Laboratories_20171018,ABT,2017-10-18,val
+Activision Blizzard_20170209,ATVI,2017-02-09,train
+Activision Blizzard_20170504,ATVI,2017-05-04,train
+Adobe Systems Inc_20170316,ADBE,2017-03-16,train
+Advance Auto Parts_20170524,AAP,2017-05-24,train
+Advanced Micro Devices Inc_20170501,AMD,2017-05-01,train
+Advanced Micro Devices Inc_20170725,AMD,2017-07-25,train
+Advanced Micro Devices Inc_20171024,AMD,2017-10-24,val
+Aetna Inc_20170131,AET,2017-01-31,train
+Aetna Inc_20170502,AET,2017-05-02,train
+Aetna Inc_20171031,AET,2017-10-31,test
+Agilent Technologies Inc_20170214,A,2017-02-14,train
+Akamai Technologies Inc_20170207,AKAM,2017-02-07,train
+Akamai Technologies Inc_20170502,AKAM,2017-05-02,train
+Alaska Air Group Inc_20170208,ALK,2017-02-08,train
+Alaska Air Group Inc_20171025,ALK,2017-10-25,test
+Alexion Pharmaceuticals_20171026,ALXN,2017-10-26,test
+Align Technology_20170131,ALGN,2017-01-31,train
+Align Technology_20170427,ALGN,2017-04-27,train
+Align Technology_20170727,ALGN,2017-07-27,train
+Allegion_20170209,ALLE,2017-02-09,train
+Allegion_20170427,ALLE,2017-04-27,train
+"Allergan, Plc_20170803",AGN,2017-08-03,val
+Alliance Data Systems_20170126,ADS,2017-01-26,train
+Alliance Data Systems_20170420,ADS,2017-04-20,train
+Alliance Data Systems_20171019,ADS,2017-10-19,val
+Altria Group Inc_20170502,MO,2017-05-02,train
+Altria Group Inc_20170727,MO,2017-07-27,train
+Altria Group Inc_20171026,MO,2017-10-26,test
+Amazon.com Inc._20170202,AMZN,2017-02-02,train
+Amazon.com Inc._20170427,AMZN,2017-04-27,train
+Ameren Corp_20170216,AEE,2017-02-16,train
+American Express Co_20170419,AXP,2017-04-19,train
+American Express Co_20170719,AXP,2017-07-19,train
+American Express Co_20171018,AXP,2017-10-18,val
+American Tower Corp A_20170227,AMT,2017-02-27,train
+American Tower Corp A_20170427,AMT,2017-04-27,train
+AmerisourceBergen Corp_20170131,ABC,2017-01-31,train
+AmerisourceBergen Corp_20170504,ABC,2017-05-04,train
+AmerisourceBergen Corp_20170803,ABC,2017-08-03,val
+AmerisourceBergen Corp_20171102,ABC,2017-11-02,test
+Amgen Inc._20170725,AMGN,2017-07-25,train
+Amgen Inc._20171025,AMGN,2017-10-25,test
+Anthem Inc._20170201,ANTM,2017-02-01,train
+Anthem Inc._20170426,ANTM,2017-04-26,train
+Anthem Inc._20170726,ANTM,2017-07-26,train
+Aon plc_20170509,AON,2017-05-09,train
+Aon plc_20171027,AON,2017-10-27,test
+Apache Corporation_20170223,APA,2017-02-23,train
+Apache Corporation_20171102,APA,2017-11-02,test
+Archer-Daniels-Midland Co_20170207,ADM,2017-02-07,train
+Archer-Daniels-Midland Co_20170502,ADM,2017-05-02,train
+Archer-Daniels-Midland Co_20170801,ADM,2017-08-01,train
+Archer-Daniels-Midland Co_20171031,ADM,2017-10-31,test
+Autodesk Inc._20170302,ADSK,2017-03-02,train
+Automatic Data Processing_20170201,ADP,2017-02-01,train
+Automatic Data Processing_20170503,ADP,2017-05-03,train
+Automatic Data Processing_20170727,ADP,2017-07-27,train
+Automatic Data Processing_20171102,ADP,2017-11-02,test
+Avery Dennison Corp_20170201,AVY,2017-02-01,train
+Avery Dennison Corp_20170426,AVY,2017-04-26,train
+Avery Dennison Corp_20170725,AVY,2017-07-25,train
+Avery Dennison Corp_20171025,AVY,2017-10-25,test
+Ball Corp_20170504,BLL,2017-05-04,train
+Ball Corp_20170803,BLL,2017-08-03,val
+Ball Corp_20171102,BLL,2017-11-02,test
+Baxter International Inc._20170426,BAX,2017-04-26,train
+Baxter International Inc._20170726,BAX,2017-07-26,train
+Becton Dickinson_20170803,BDX,2017-08-03,val
+Becton Dickinson_20171102,BDX,2017-11-02,test
+Biogen Inc._20170126,BIIB,2017-01-26,train
+Boeing Company_20170426,BA,2017-04-26,train
+Booking Holdings Inc_20170509,BKNG,2017-05-09,train
+Booking Holdings Inc_20171106,BKNG,2017-11-06,test
+BorgWarner_20170209,BWA,2017-02-09,train
+BorgWarner_20170727,BWA,2017-07-27,train
+Bristol-Myers Squibb_20170427,BMY,2017-04-27,train
+Bristol-Myers Squibb_20170727,BMY,2017-07-27,train
+Broadridge Financial Solutions_20170510,BR,2017-05-10,train
+"CA, Inc._20170802",CA,2017-08-02,train
+CBRE Group_20171103,CBRE,2017-11-03,test
+CBS Corp._20170807,CBS,2017-08-07,val
+CBS Corp._20171102,CBS,2017-11-02,test
+CIGNA Corp._20170202,CI,2017-02-02,train
+CIGNA Corp._20170505,CI,2017-05-05,train
+CIGNA Corp._20170804,CI,2017-08-04,val
+CME Group Inc._20171026,CME,2017-10-26,test
+CMS Energy_20170501,CMS,2017-05-01,train
+CMS Energy_20171026,CMS,2017-10-26,test
+CVS Health_20170209,CVS,2017-02-09,train
+Cadence Design Systems_20170724,CDNS,2017-07-24,train
+Campbell Soup_20170217,CPB,2017-02-17,train
+Campbell Soup_20170519,CPB,2017-05-19,train
+Campbell Soup_20170831,CPB,2017-08-31,val
+Campbell Soup_20171121,CPB,2017-11-21,test
+Cardinal Health Inc._20170501,CAH,2017-05-01,train
+Carmax Inc_20170922,KMX,2017-09-22,val
+Carmax Inc_20171221,KMX,2017-12-21,test
+Caterpillar Inc._20170126,CAT,2017-01-26,train
+Caterpillar Inc._20170425,CAT,2017-04-25,train
+Caterpillar Inc._20170725,CAT,2017-07-25,train
+Caterpillar Inc._20171024,CAT,2017-10-24,val
+Cboe Global Markets_20170804,CBOE,2017-08-04,val
+Celgene Corp._20170126,CELG,2017-01-26,train
+Celgene Corp._20170427,CELG,2017-04-27,train
+Celgene Corp._20170727,CELG,2017-07-27,train
+Celgene Corp._20171026,CELG,2017-10-26,test
+CenturyLink Inc_20170802,CTL,2017-08-02,train
+CenturyLink Inc_20171108,CTL,2017-11-08,test
+Chevron Corp._20170127,CVX,2017-01-27,train
+Chevron Corp._20170428,CVX,2017-04-28,train
+Chevron Corp._20170728,CVX,2017-07-28,train
+Church & Dwight_20170803,CHD,2017-08-03,train
+Church & Dwight_20171102,CHD,2017-11-02,test
+Cimarex Energy_20170510,XEC,2017-05-10,train
+Cisco Systems_20170215,CSCO,2017-02-15,train
+Cisco Systems_20171115,CSCO,2017-11-15,test
+Citigroup Inc._20170118,C,2017-01-18,train
+Citigroup Inc._20171012,C,2017-10-12,val
+Citrix Systems_20170802,CTXS,2017-08-02,train
+Coca-Cola Company (The)_20170209,KO,2017-02-09,train
+Coca-Cola Company (The)_20170726,KO,2017-07-26,train
+Cognizant Technology Solutions_20170803,CTSH,2017-08-03,val
+Cognizant Technology Solutions_20171101,CTSH,2017-11-01,test
+Comcast Corp._20170126,CMCSA,2017-01-26,train
+Comcast Corp._20170427,CMCSA,2017-04-27,train
+Comcast Corp._20170727,CMCSA,2017-07-27,train
+Comerica Inc._20170117,CMA,2017-01-17,train
+Comerica Inc._20170418,CMA,2017-04-18,train
+Conagra Brands_20171221,CAG,2017-12-21,test
+Corning Inc._20170124,GLW,2017-01-24,train
+"Coty, Inc_20170209",COTY,2017-02-09,train
+"Coty, Inc_20170822",COTY,2017-08-22,val
+"Coty, Inc_20171109",COTY,2017-11-09,test
+Crown Castle International Corp._20170719,CCI,2017-07-19,train
+Cummins Inc._20170801,CMI,2017-08-01,train
+D. R. Horton_20170124,DHI,2017-01-24,train
+DTE Energy Co._20170726,DTE,2017-07-26,train
+DaVita Inc._20170502,DVA,2017-05-02,train
+DaVita Inc._20170801,DVA,2017-08-01,train
+Darden Restaurants_20170926,DRI,2017-09-26,val
+Darden Restaurants_20171219,DRI,2017-12-19,test
+Digital Realty Trust Inc_20170216,DLR,2017-02-16,train
+Digital Realty Trust Inc_20170427,DLR,2017-04-27,train
+Dish Network_20170222,DISH,2017-02-22,train
+Dish Network_20170501,DISH,2017-05-01,train
+Dish Network_20170803,DISH,2017-08-03,val
+Dish Network_20171109,DISH,2017-11-09,test
+Dollar General_20171207,DG,2017-12-07,test
+Dominion Energy_20170504,D,2017-05-04,train
+Dominion Energy_20170802,D,2017-08-02,train
+Dominion Energy_20171030,D,2017-10-30,test
+Dover Corp._20170420,DOV,2017-04-20,train
+Dover Corp._20170720,DOV,2017-07-20,train
+Duke Energy_20171103,DUK,2017-11-03,test
+EQT Corporation_20170427,EQT,2017-04-27,train
+EQT Corporation_20170727,EQT,2017-07-27,train
+Ecolab Inc._20170221,ECL,2017-02-21,train
+Ecolab Inc._20170502,ECL,2017-05-02,train
+Ecolab Inc._20170801,ECL,2017-08-01,train
+Ecolab Inc._20171031,ECL,2017-10-31,test
+Edison Int'l_20170501,EIX,2017-05-01,train
+Edwards Lifesciences_20170201,EW,2017-02-01,train
+Electronic Arts_20171031,EA,2017-10-31,test
+Emerson Electric Company_20170207,EMR,2017-02-07,train
+Emerson Electric Company_20170502,EMR,2017-05-02,train
+Equinix_20170802,EQIX,2017-08-02,train
+Equinix_20171101,EQIX,2017-11-01,test
+Estee Lauder Cos._20170202,EL,2017-02-02,train
+Estee Lauder Cos._20170503,EL,2017-05-03,train
+Estee Lauder Cos._20170818,EL,2017-08-18,val
+Estee Lauder Cos._20171101,EL,2017-11-01,test
+Exxon Mobil Corp._20171027,XOM,2017-10-27,test
+F5 Networks_20170125,FFIV,2017-01-25,train
+F5 Networks_20170426,FFIV,2017-04-26,train
+F5 Networks_20170726,FFIV,2017-07-26,train
+FLIR Systems_20171025,FLIR,2017-10-25,test
+"Facebook, Inc._20171101",FB,2017-11-01,test
+Fidelity National Information Services_20170207,FIS,2017-02-07,train
+Fidelity National Information Services_20170802,FIS,2017-08-02,train
+Fifth Third Bancorp_20170124,FITB,2017-01-24,train
+FleetCor Technologies Inc_20170803,FLT,2017-08-03,train
+Foot Locker Inc_20170224,FL,2017-02-24,train
+Foot Locker Inc_20170519,FL,2017-05-19,train
+Foot Locker Inc_20171117,FL,2017-11-17,test
+Ford Motor_20170427,F,2017-04-27,train
+Fortive Corp_20170207,FTV,2017-02-07,train
+Fortune Brands Home & Security_20170802,FBHS,2017-08-02,train
+Franklin Resources_20170127,BEN,2017-01-27,train
+Franklin Resources_20170428,BEN,2017-04-28,train
+Freeport-McMoRan Inc._20170425,FCX,2017-04-25,train
+Gap Inc._20170223,GPS,2017-02-23,train
+Gap Inc._20170518,GPS,2017-05-18,train
+Garmin Ltd._20170222,GRMN,2017-02-22,train
+Garmin Ltd._20170503,GRMN,2017-05-03,train
+Garmin Ltd._20171101,GRMN,2017-11-01,test
+Gartner Inc_20170202,IT,2017-02-02,train
+Gartner Inc_20170504,IT,2017-05-04,train
+Gartner Inc_20170808,IT,2017-08-08,val
+Gartner Inc_20171102,IT,2017-11-02,test
+General Dynamics_20170127,GD,2017-01-27,train
+General Dynamics_20170426,GD,2017-04-26,train
+General Dynamics_20171025,GD,2017-10-25,test
+General Mills_20170628,GIS,2017-06-28,train
+General Mills_20171220,GIS,2017-12-20,test
+General Motors_20170207,GM,2017-02-07,train
+General Motors_20170428,GM,2017-04-28,train
+General Motors_20170725,GM,2017-07-25,train
+General Motors_20171024,GM,2017-10-24,test
+Genuine Parts_20170221,GPC,2017-02-21,train
+Gilead Sciences_20170502,GILD,2017-05-02,train
+Goldman Sachs Group_20170118,GS,2017-01-18,train
+Goldman Sachs Group_20170718,GS,2017-07-18,train
+Goodyear Tire & Rubber_20170428,GT,2017-04-28,train
+Grainger (W.W.) Inc._20170125,GWW,2017-01-25,train
+Grainger (W.W.) Inc._20170418,GWW,2017-04-18,train
+Grainger (W.W.) Inc._20170719,GWW,2017-07-19,train
+HCA Holdings_20170502,HCA,2017-05-02,train
+HP Inc._20170222,HPQ,2017-02-22,train
+HP Inc._20170524,HPQ,2017-05-24,train
+HP Inc._20170823,HPQ,2017-08-23,val
+HP Inc._20171121,HPQ,2017-11-21,test
+Halliburton Co._20171023,HAL,2017-10-23,val
+Hanesbrands Inc_20170502,HBI,2017-05-02,train
+Hanesbrands Inc_20171101,HBI,2017-11-01,test
+Hasbro Inc._20170206,HAS,2017-02-06,train
+Hasbro Inc._20170424,HAS,2017-04-24,train
+Hasbro Inc._20171023,HAS,2017-10-23,val
+Henry Schein_20170221,HSIC,2017-02-21,train
+Hess Corporation_20170125,HES,2017-01-25,train
+Hess Corporation_20170426,HES,2017-04-26,train
+Hess Corporation_20171025,HES,2017-10-25,test
+Hewlett Packard Enterprise_20170531,HPE,2017-05-31,train
+Hewlett Packard Enterprise_20170905,HPE,2017-09-05,val
+Hewlett Packard Enterprise_20171121,HPE,2017-11-21,test
+Hilton Worldwide Holdings Inc_20170215,HLT,2017-02-15,train
+Hilton Worldwide Holdings Inc_20170502,HLT,2017-05-02,train
+Hologic_20170201,HOLX,2017-02-01,train
+Hologic_20170802,HOLX,2017-08-02,train
+Hologic_20171108,HOLX,2017-11-08,test
+Home Depot_20170221,HD,2017-02-21,train
+Home Depot_20170516,HD,2017-05-16,train
+Hormel Foods Corp._20170223,HRL,2017-02-23,train
+Humana Inc._20170503,HUM,2017-05-03,train
+Humana Inc._20170802,HUM,2017-08-02,train
+IPG Photonics Corp._20170502,IPGP,2017-05-02,train
+Illinois Tool Works_20170424,ITW,2017-04-24,train
+Illinois Tool Works_20171023,ITW,2017-10-23,val
+Illumina Inc_20170131,ILMN,2017-01-31,train
+Illumina Inc_20170801,ILMN,2017-08-01,train
+Illumina Inc_20171024,ILMN,2017-10-24,test
+Incyte_20170214,INCY,2017-02-14,train
+Incyte_20170504,INCY,2017-05-04,train
+Incyte_20170801,INCY,2017-08-01,train
+Intel Corp._20170427,INTC,2017-04-27,train
+Intel Corp._20170727,INTC,2017-07-27,train
+Intel Corp._20171026,INTC,2017-10-26,test
+Intercontinental Exchange_20170207,ICE,2017-02-07,train
+International Paper_20170202,IP,2017-02-02,train
+Interpublic Group_20170210,IPG,2017-02-10,train
+Interpublic Group_20170421,IPG,2017-04-21,train
+Intuit Inc._20170223,INTU,2017-02-23,train
+Intuit Inc._20170523,INTU,2017-05-23,train
+Invesco Ltd._20170727,IVZ,2017-07-27,train
+Invesco Ltd._20171026,IVZ,2017-10-26,test
+Iron Mountain Incorporated_20170223,IRM,2017-02-23,train
+Iron Mountain Incorporated_20170427,IRM,2017-04-27,train
+JPMorgan Chase & Co._20170714,JPM,2017-07-14,train
+JPMorgan Chase & Co._20171012,JPM,2017-10-12,val
+Johnson Controls International_20170201,JCI,2017-02-01,train
+Johnson Controls International_20170427,JCI,2017-04-27,train
+Johnson Controls International_20170727,JCI,2017-07-27,train
+Johnson Controls International_20171109,JCI,2017-11-09,test
+Juniper Networks_20170425,JNPR,2017-04-25,train
+Juniper Networks_20170725,JNPR,2017-07-25,train
+KLA-Tencor Corp._20170427,KLAC,2017-04-27,train
+KLA-Tencor Corp._20170727,KLAC,2017-07-27,train
+Kansas City Southern_20170120,KSU,2017-01-20,train
+Kansas City Southern_20171020,KSU,2017-10-20,val
+Kellogg Co._20170504,K,2017-05-04,train
+Kellogg Co._20170803,K,2017-08-03,val
+Kellogg Co._20171031,K,2017-10-31,test
+Kimberly-Clark_20170124,KMB,2017-01-24,train
+Kimberly-Clark_20170424,KMB,2017-04-24,train
+Kimberly-Clark_20170725,KMB,2017-07-25,train
+Kinder Morgan_20170419,KMI,2017-04-19,train
+Kohl's Corp._20170223,KSS,2017-02-23,train
+Kohl's Corp._20170511,KSS,2017-05-11,train
+Kohl's Corp._20171109,KSS,2017-11-09,test
+Kraft Heinz Co_20170215,KHC,2017-02-15,train
+Kraft Heinz Co_20170503,KHC,2017-05-03,train
+Kraft Heinz Co_20171101,KHC,2017-11-01,test
+Kroger Co._20170302,KR,2017-03-02,train
+Kroger Co._20170615,KR,2017-06-15,train
+Kroger Co._20170908,KR,2017-09-08,val
+Kroger Co._20171130,KR,2017-11-30,test
+LKQ Corporation_20170427,LKQ,2017-04-27,train
+LKQ Corporation_20170727,LKQ,2017-07-27,train
+Lam Research_20170125,LRCX,2017-01-25,train
+Lam Research_20170418,LRCX,2017-04-18,train
+Lennar Corp._20170620,LEN,2017-06-20,train
+Lennar Corp._20171003,LEN,2017-10-03,val
+Lilly (Eli) & Co._20170131,LLY,2017-01-31,train
+Lilly (Eli) & Co._20170425,LLY,2017-04-25,train
+Lockheed Martin Corp._20170124,LMT,2017-01-24,train
+Lockheed Martin Corp._20170425,LMT,2017-04-25,train
+Lockheed Martin Corp._20170718,LMT,2017-07-18,train
+Lockheed Martin Corp._20171024,LMT,2017-10-24,test
+LyondellBasell_20170203,LYB,2017-02-03,train
+MGM Resorts International_20170727,MGM,2017-07-27,train
+MSCI Inc_20170504,MSCI,2017-05-04,train
+Marsh & McLennan_20170727,MMC,2017-07-27,train
+Marsh & McLennan_20171026,MMC,2017-10-26,test
+Martin Marietta Materials_20170214,MLM,2017-02-14,train
+Martin Marietta Materials_20170502,MLM,2017-05-02,train
+Martin Marietta Materials_20170801,MLM,2017-08-01,train
+Martin Marietta Materials_20171102,MLM,2017-11-02,test
+Masco Corp._20170727,MAS,2017-07-27,train
+Masco Corp._20171024,MAS,2017-10-24,val
+Mastercard Inc._20170131,MA,2017-01-31,train
+Mastercard Inc._20170727,MA,2017-07-27,train
+Mattel Inc._20170727,MAT,2017-07-27,train
+Mattel Inc._20171026,MAT,2017-10-26,test
+McDonald's Corp._20171024,MCD,2017-10-24,test
+Merck & Co._20170202,MRK,2017-02-02,train
+Merck & Co._20170502,MRK,2017-05-02,train
+Merck & Co._20170728,MRK,2017-07-28,train
+Merck & Co._20171027,MRK,2017-10-27,test
+Micron Technology_20170629,MU,2017-06-29,train
+Micron Technology_20170926,MU,2017-09-26,val
+Microsoft Corp._20170126,MSFT,2017-01-26,train
+Microsoft Corp._20170427,MSFT,2017-04-27,train
+Microsoft Corp._20170720,MSFT,2017-07-20,train
+Molson Coors Brewing Company_20170802,TAP,2017-08-02,train
+Mondelez International_20170802,MDLZ,2017-08-02,train
+Motorola Solutions Inc._20170504,MSI,2017-05-04,train
+Motorola Solutions Inc._20170803,MSI,2017-08-03,val
+Motorola Solutions Inc._20171102,MSI,2017-11-02,test
+Mylan N.V._20170510,MYL,2017-05-10,train
+NRG Energy_20170228,NRG,2017-02-28,train
+"Nasdaq, Inc._20170131",NDAQ,2017-01-31,train
+Nektar Therapeutics_20170301,NKTR,2017-03-01,train
+Nektar Therapeutics_20171107,NKTR,2017-11-07,test
+NetApp_20170215,NTAP,2017-02-15,train
+NetApp_20171115,NTAP,2017-11-15,test
+Newell Brands_20170206,NWL,2017-02-06,train
+Newmont Mining Corporation_20170725,NEM,2017-07-25,train
+News Corp. Class A_20170509,NWSA,2017-05-09,train
+NiSource Inc._20170503,NI,2017-05-03,train
+Nielsen Holdings_20170727,NLSN,2017-07-27,train
+Nielsen Holdings_20171025,NLSN,2017-10-25,test
+Nike_20170321,NKE,2017-03-21,train
+Noble Energy Inc_20170803,NBL,2017-08-03,val
+Nordstrom_20170223,JWN,2017-02-23,train
+Nordstrom_20171109,JWN,2017-11-09,test
+Norfolk Southern Corp._20170426,NSC,2017-04-26,train
+Norfolk Southern Corp._20171025,NSC,2017-10-25,test
+Norwegian Cruise Line_20170222,NCLH,2017-02-22,train
+Nucor Corp._20170420,NUE,2017-04-20,train
+Nucor Corp._20171019,NUE,2017-10-19,val
+Nvidia Corporation_20170509,NVDA,2017-05-09,train
+Oracle Corp._20170621,ORCL,2017-06-21,train
+Oracle Corp._20170914,ORCL,2017-09-14,val
+Oracle Corp._20171214,ORCL,2017-12-14,test
+PACCAR Inc._20170725,PCAR,2017-07-25,train
+PACCAR Inc._20171024,PCAR,2017-10-24,test
+PG&E Corp._20170727,PCG,2017-07-27,train
+PPG Industries_20170119,PPG,2017-01-19,train
+PPL Corp._20170201,PPL,2017-02-01,train
+PPL Corp._20170504,PPL,2017-05-04,train
+PPL Corp._20170803,PPL,2017-08-03,val
+Parker-Hannifin_20170202,PH,2017-02-02,train
+Parker-Hannifin_20170427,PH,2017-04-27,train
+Parker-Hannifin_20171102,PH,2017-11-02,test
+PayPal_20170126,PYPL,2017-01-26,train
+PayPal_20170726,PYPL,2017-07-26,train
+Pentair plc_20170725,PNR,2017-07-25,train
+PepsiCo Inc._20170215,PEP,2017-02-15,train
+PepsiCo Inc._20170426,PEP,2017-04-26,train
+PepsiCo Inc._20170711,PEP,2017-07-11,train
+PepsiCo Inc._20171004,PEP,2017-10-04,val
+PerkinElmer_20171102,PKI,2017-11-02,test
+Perrigo_20171109,PRGO,2017-11-09,test
+Pinnacle West Capital_20170224,PNW,2017-02-24,train
+Pinnacle West Capital_20170502,PNW,2017-05-02,train
+Pinnacle West Capital_20170803,PNW,2017-08-03,val
+Pinnacle West Capital_20171103,PNW,2017-11-03,test
+Polo Ralph Lauren Corp._20170202,RL,2017-02-02,train
+Polo Ralph Lauren Corp._20171102,RL,2017-11-02,test
+Prologis_20170718,PLD,2017-07-18,train
+Public Serv. Enterprise Inc._20170428,PEG,2017-04-28,train
+Quanta Services Inc._20170221,PWR,2017-02-21,train
+Quanta Services Inc._20170504,PWR,2017-05-04,train
+Quanta Services Inc._20170803,PWR,2017-08-03,train
+Quest Diagnostics_20170420,DGX,2017-04-20,train
+Quest Diagnostics_20170725,DGX,2017-07-25,train
+Raytheon Co._20170427,RTN,2017-04-27,train
+Raytheon Co._20171026,RTN,2017-10-26,test
+Red Hat Inc._20170327,RHI.F,2017-03-27,train
+Red Hat Inc._20170925,RHI.F,2017-09-25,val
+Red Hat Inc._20171219,RHI.F,2017-12-19,test
+Regeneron_20170504,REGN,2017-05-04,train
+Regeneron_20170803,REGN,2017-08-03,val
+Regeneron_20171108,REGN,2017-11-08,test
+Regions Financial Corp._20170721,RF,2017-07-21,train
+Regions Financial Corp._20171024,RF,2017-10-24,test
+Republic Services Inc_20170216,RSG,2017-02-16,train
+Republic Services Inc_20170727,RSG,2017-07-27,train
+ResMed_20170123,RMD,2017-01-23,train
+ResMed_20170427,RMD,2017-04-27,train
+ResMed_20171026,RMD,2017-10-26,test
+Rockwell Automation Inc._20170125,ROK,2017-01-25,train
+Rockwell Automation Inc._20170426,ROK,2017-04-26,train
+Rockwell Automation Inc._20170726,ROK,2017-07-26,train
+Roper Technologies_20170209,ROP,2017-02-09,train
+Ross Stores_20170228,ROST,2017-02-28,train
+Ross Stores_20170518,ROST,2017-05-18,train
+Ross Stores_20170817,ROST,2017-08-17,val
+Ross Stores_20171116,ROST,2017-11-16,test
+Royal Caribbean Cruises Ltd_20170801,RCL,2017-08-01,train
+Royal Caribbean Cruises Ltd_20171107,RCL,2017-11-07,test
+SVB Financial_20170126,SIVB,2017-01-26,train
+SVB Financial_20170427,SIVB,2017-04-27,train
+Salesforce.com_20170228,CRM,2017-02-28,train
+Salesforce.com_20170822,CRM,2017-08-22,val
+Schlumberger Ltd._20170421,SLB,2017-04-21,train
+Schlumberger Ltd._20170721,SLB,2017-07-21,train
+Seagate Technology_20170124,STX,2017-01-24,train
+Seagate Technology_20170426,STX,2017-04-26,train
+Seagate Technology_20170725,STX,2017-07-25,train
+Seagate Technology_20171023,STX,2017-10-23,val
+Sealed Air_20170209,SEE,2017-02-09,train
+Sealed Air_20170509,SEE,2017-05-09,train
+Sealed Air_20171108,SEE,2017-11-08,test
+Sempra Energy_20170509,SRE,2017-05-09,train
+Sherwin-Williams_20170420,SHW,2017-04-20,train
+Sherwin-Williams_20170720,SHW,2017-07-20,train
+Skyworks Solutions_20170119,SWKS,2017-01-19,train
+Skyworks Solutions_20170427,SWKS,2017-04-27,train
+Skyworks Solutions_20170720,SWKS,2017-07-20,train
+Skyworks Solutions_20171106,SWKS,2017-11-06,test
+Snap-On Inc._20170202,SNA,2017-02-02,train
+Snap-On Inc._20170720,SNA,2017-07-20,train
+Starbucks Corp._20170126,SBUX,2017-01-26,train
+Stericycle Inc_20170504,SRCL,2017-05-04,train
+Stericycle Inc_20170803,SRCL,2017-08-03,val
+Stericycle Inc_20171108,SRCL,2017-11-08,test
+Stryker Corp._20170727,SYK,2017-07-27,train
+Stryker Corp._20171026,SYK,2017-10-26,test
+SunTrust Banks_20170120,STI,2017-01-20,train
+SunTrust Banks_20171020,STI,2017-10-20,val
+Synopsys Inc._20170215,SNPS,2017-02-15,train
+Synopsys Inc._20170517,SNPS,2017-05-17,train
+Synopsys Inc._20171129,SNPS,2017-11-29,test
+Sysco Corp._20170508,SYY,2017-05-08,train
+Sysco Corp._20170814,SYY,2017-08-14,val
+Sysco Corp._20171106,SYY,2017-11-06,test
+TE Connectivity Ltd._20170125,TEL,2017-01-25,train
+TE Connectivity Ltd._20170726,TEL,2017-07-26,train
+"Tapestry, Inc._20170131",TPR,2017-01-31,train
+Target Corp._20170816,TGT,2017-08-16,val
+Target Corp._20171115,TGT,2017-11-15,test
+Texas Instruments_20170124,TXN,2017-01-24,train
+Texas Instruments_20170425,TXN,2017-04-25,train
+Texas Instruments_20171024,TXN,2017-10-24,test
+The Bank of New York Mellon Corp._20170720,BK,2017-07-20,train
+The Clorox Company_20170203,CLX,2017-02-03,train
+The Clorox Company_20170503,CLX,2017-05-03,train
+The Clorox Company_20170803,CLX,2017-08-03,train
+The Clorox Company_20171101,CLX,2017-11-01,test
+The Cooper Companies_20170831,COO,2017-08-31,val
+The Hershey Company_20170203,HSY,2017-02-03,train
+The Hershey Company_20170426,HSY,2017-04-26,train
+The Hershey Company_20171026,HSY,2017-10-26,test
+The Mosaic Company_20170502,MOS,2017-05-02,train
+The Mosaic Company_20170801,MOS,2017-08-01,train
+The Mosaic Company_20171031,MOS,2017-10-31,test
+The Walt Disney Company_20170207,DIS,2017-02-07,train
+The Walt Disney Company_20170509,DIS,2017-05-09,train
+The Walt Disney Company_20170808,DIS,2017-08-08,val
+The Walt Disney Company_20171109,DIS,2017-11-09,test
+Thermo Fisher Scientific_20170426,TMO,2017-04-26,train
+Tiffany & Co._20170524,TIF,2017-05-24,train
+Tractor Supply Company_20170201,TSCO,2017-02-01,train
+Tractor Supply Company_20170426,TSCO,2017-04-26,train
+Tractor Supply Company_20170726,TSCO,2017-07-26,train
+Tractor Supply Company_20171025,TSCO,2017-10-25,test
+TransDigm Group_20170207,TDG,2017-02-07,train
+"Twitter, Inc._20170209",TWTR,2017-02-09,train
+"Twitter, Inc._20170426",TWTR,2017-04-26,train
+"Twitter, Inc._20170727",TWTR,2017-07-27,train
+Tyson Foods_20170206,TSN,2017-02-06,train
+U.S. Bancorp_20170419,USB,2017-04-19,train
+U.S. Bancorp_20170719,USB,2017-07-19,train
+Ulta Beauty_20170309,ULTA,2017-03-09,train
+Ulta Beauty_20171130,ULTA,2017-11-30,test
+United Health Group Inc._20170418,UNH,2017-04-18,train
+United Health Group Inc._20171017,UNH,2017-10-17,val
+United Parcel Service_20170727,UPS,2017-07-27,train
+United Technologies_20170725,UTX,2017-07-25,train
+United Technologies_20171024,UTX,2017-10-24,test
+Valero Energy_20170131,VLO,2017-01-31,train
+Valero Energy_20170425,VLO,2017-04-25,train
+Valero Energy_20170727,VLO,2017-07-27,train
+Varian Medical Systems_20170125,VAR,2017-01-25,train
+Varian Medical Systems_20171025,VAR,2017-10-25,test
+Ventas Inc_20171027,VTR,2017-10-27,test
+Verisign Inc._20170427,VRSN,2017-04-27,train
+Verisign Inc._20170727,VRSN,2017-07-27,train
+Verisign Inc._20171026,VRSN,2017-10-26,test
+Verizon Communications_20170124,VZ,2017-01-24,train
+Verizon Communications_20170420,VZ,2017-04-20,train
+Verizon Communications_20170727,VZ,2017-07-27,train
+Verizon Communications_20171019,VZ,2017-10-19,val
+Vulcan Materials_20170802,VMC,2017-08-02,train
+Walgreens Boots Alliance_20170405,WBA,2017-04-05,train
+Walgreens Boots Alliance_20170629,WBA,2017-06-29,train
+Walgreens Boots Alliance_20171025,WBA,2017-10-25,test
+Walmart_20171116,WMT,2017-11-16,test
+Waste Management Inc._20170216,WM,2017-02-16,train
+Waste Management Inc._20170726,WM,2017-07-26,train
+Waste Management Inc._20171026,WM,2017-10-26,test
+Wec Energy Group Inc_20170201,WEC,2017-02-01,train
+Wec Energy Group Inc_20170502,WEC,2017-05-02,train
+Wec Energy Group Inc_20171026,WEC,2017-10-26,test
+Welltower Inc._20170505,WELL,2017-05-05,train
+WestRock_20170124,WRK,2017-01-24,train
+WestRock_20170426,WRK,2017-04-26,train
+WestRock_20171102,WRK,2017-11-02,test
+Western Digital_20171026,WDC,2017-10-26,test
+Western Union Co_20170502,WU,2017-05-02,train
+Western Union Co_20171102,WU,2017-11-02,test
+Weyerhaeuser_20170203,WY,2017-02-03,train
+Weyerhaeuser_20170428,WY,2017-04-28,train
+XL Group_20171024,XL,2017-10-24,val
+Xcel Energy Inc_20170202,XEL,2017-02-02,train
+Xcel Energy Inc_20170727,XEL,2017-07-27,train
+Xerox_20170425,XRX,2017-04-25,train
+Xerox_20170801,XRX,2017-08-01,train
+Xilinx_20170426,XLNX,2017-04-26,train
+Yum! Brands Inc_20170209,YUM,2017-02-09,train
+Yum! Brands Inc_20170803,YUM,2017-08-03,val
+eBay Inc._20170125,EBAY,2017-01-25,train
+eBay Inc._20170419,EBAY,2017-04-19,train
+eBay Inc._20170720,EBAY,2017-07-20,train

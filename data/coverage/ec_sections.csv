@@ -1,0 +1,11 @@
+metric,value
+n_calls,572
+n_processed,572
+n_no_turns,0
+calls_with_qa,227
+corroborated,0
+total_chunks,89722
+oversize_chunks,0
+max_words,320
+method:none,345
+method:text_cue,227
