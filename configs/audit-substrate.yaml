@@ -1,0 +1,4 @@
+# Committed command config (T9.3/T6R.1). `ecvol audit substrate` loads this by default.
+# Deterministic (file counts and joins over the mirrored lineage files); seeds unused.
+command: audit-substrate
+seeds: [0]

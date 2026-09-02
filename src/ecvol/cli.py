@@ -1033,6 +1033,36 @@ def evaluate_audio(
     typer.echo(f"run artifact: {write_command_run(cfg, root)}")
 
 
+audit_app = typer.Typer(no_args_is_help=True, help="Benchmark substrate audit (T6R.1).")
+app.add_typer(audit_app, name="audit")
+
+
+@audit_app.command("substrate")
+def audit_substrate(
+    root: Path = typer.Option(Path("data"), help="Data root directory."),  # noqa: B008
+    config: Path | None = _CONFIG_OPT,
+) -> None:
+    """Split overlap, embargo, label defects and label diff for EC / MAEC-15 / MAEC-16 (5R)."""
+    from ecvol.eval.substrate import run_substrate_audit
+    from ecvol.tracking import resolve_command_config, write_command_run
+
+    cfg = resolve_command_config("audit-substrate", config, None)
+    table, labels = run_substrate_audit(root)
+    for r in table[table["metric"] == "test_ticker_in_train_share"].itertuples():
+        typer.echo(f"  {r.benchmark}: test-ticker-in-train {100 * float(r.value):.1f}%")
+    for r in table[table["metric"].str.startswith("embargo_days")].itertuples():
+        typer.echo(f"  {r.benchmark}: {r.metric} = {r.value} d")
+    z = table[table["metric"] == "single_day_exact_zeros_all"].iloc[0]
+    typer.echo(f"  EC single-day series: {z.numerator} exact zeros / {z.denominator} cells")
+    for r in labels.itertuples():
+        typer.echo(
+            f"  {r.benchmark} tau={r.horizon}: joined {r.n_joined}/{r.n_shipped}, "
+            f"corr={r.corr:.3f}, |diff|={r.mean_abs_diff:.3f}"
+        )
+    typer.echo("Result Table 5R: data/results/result_table_5r.csv (+ _labels.csv)")
+    typer.echo(f"run artifact: {write_command_run(cfg, root)}")
+
+
 @app.command(name="evaluate-audio-earnings25")
 def evaluate_audio_earnings25(
     root: Path = typer.Option(Path("data"), help="Data root directory."),  # noqa: B008

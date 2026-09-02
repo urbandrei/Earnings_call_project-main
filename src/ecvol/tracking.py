@@ -158,6 +158,7 @@ COMMAND_OUTPUTS: dict[str, tuple[str, ...]] = {
     ),
     "evaluate-fusion": ("results/result_table_4_fusion.csv",),
     "timing-sensitivity": ("results/timing_sensitivity.csv",),
+    "audit-substrate": ("results/result_table_5r.csv", "results/result_table_5r_labels.csv"),
     "evaluate-audio-earnings25": (
         "results/result_table_3_earnings25.csv",
         "results/audio_shuffle_earnings25.csv",
