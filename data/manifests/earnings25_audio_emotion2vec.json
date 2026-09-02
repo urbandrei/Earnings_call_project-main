@@ -1,0 +1,9 @@
+[
+  {
+    "license": "derived; model emotion2vec/emotion2vec_plus_large",
+    "path": "earnings25/audio_emotion2vec.parquet",
+    "retrieved_at": "2026-09-02T12:37:50+00:00",
+    "sha256": "5acddfca925cab5f10c414276d55d537a29d8d062f86a79cc50fdcbcaf9d407d",
+    "source_url": "derived: ecvol audio emotion2vec (T4.3)"
+  }
+]

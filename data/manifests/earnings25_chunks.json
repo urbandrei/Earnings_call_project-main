@@ -2,7 +2,7 @@
   {
     "license": "derived",
     "path": "earnings25/chunks.parquet",
-    "retrieved_at": "2026-09-02T04:57:49+00:00",
+    "retrieved_at": "2026-09-02T06:43:27+00:00",
     "sha256": "cb62010048cb03ba5b1f2712824fdf0e1375ab5b5c7a936297c60695ca806c66",
     "source_url": "derived: ecvol featurize sections (T3.1)"
   }

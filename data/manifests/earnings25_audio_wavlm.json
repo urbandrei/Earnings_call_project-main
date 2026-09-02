@@ -1,0 +1,9 @@
+[
+  {
+    "license": "derived; model microsoft/wavlm-large",
+    "path": "earnings25/audio_wavlm.parquet",
+    "retrieved_at": "2026-09-02T10:03:25+00:00",
+    "sha256": "242ce881b4f6ed1356a549b40fe8401339980a5ae99ff79f36cccae11722ff0b",
+    "source_url": "derived: ecvol audio wavlm (T4.3)"
+  }
+]
