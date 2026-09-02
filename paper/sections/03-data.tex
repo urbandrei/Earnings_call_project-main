@@ -56,8 +56,11 @@ calls over 2015--2018 (S\&P~1500) with sentence-aligned audio features and
 transcripts but no raw audio. \textbf{Earnings25} \TODO{cite; Zenodo
 10.5281/zenodo.18762168} (CC-BY-4.0; $\sim$500 Q4-2025 S\&P~500 calls, 498\,h of
 audio, held January--February 2026) is post-cutoff for every model we use and
-carries native audio at source quality; it is the Phase-7 corpus
-(\S\ref{sec:experiments}) \pending{ingestion gated on a metadata check}.
+carries webcast MP3 audio at 64\,kbps for 281 calls and $\le$24\,kbps for 233; it is
+the post-cutoff corpus (\S\ref{sec:experiments}). We admit a call when its company
+resolves to an SEC ticker that was an S\&P~500 constituent on the release date
+(476 of 514; the rest are name-collision look-alikes such as Grainger PLC or
+Paramount Group, reason-coded), and 475 join prices.
 
 FinCall-Surprise ships with four fields per record and \emph{no} ticker, company,
 CIK, date, time, fiscal period, or speaker names. We reconstruct identity and date

@@ -17,6 +17,13 @@ volatility (its apparent gains survive a global audio shuffle); and fusion never
 significantly beats the best unimodal model. What the leaderboard literature
 measures as content signal is, under honest controls, overwhelmingly company
 identity plus past volatility.
-\pending{The reproduction study, the calendar-day recomputation, the clean-audio
-re-run, and the post-cutoff lookahead complete the argument.}
-\TODO{Finalise the verdict once the pending results land.}
+The remaining studies close the argument from the outside: the field's released
+labels sit on a call-date anchor that is one session late for most calls and on a
+calendar-day convention whose $\tau{=}3$ window holds a single session for half of
+them; its best published model loses up to 46\% MSE when companies are held out
+and its best published baseline is same-company history; and nothing here degrades
+when scored, frozen, on calls held after every encoder's cutoff. The verdict is
+not that transcripts and audio carry no information about a company's risk, but
+that the benchmarks this literature uses cannot tell that information apart from
+knowing which company is speaking---and that, once they can, the past-volatility
+floor has not been beaten.

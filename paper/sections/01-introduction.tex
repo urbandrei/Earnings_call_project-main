@@ -54,9 +54,8 @@ is needed. Concretely, we ask four research questions:
 
 The study was pre-registered so that no single outcome strands the work; the
 modelling stages, controls, and confirmatory tests were fixed before any model
-result existed and are recorded in a public decision log. RQ1, RQ2, and RQ4(a--b)
-are answered here; RQ3 and RQ4(c) are the subject of the reproduction and
-post-cutoff studies that this draft still owes (marked \pending{like this}).
+result existed and are recorded in a public decision log. RQ1--RQ4 are all
+answered here; every number in the paper regenerates from a manifested run.
 
 \paragraph{Contributions.}
 \begin{enumerate}
@@ -77,11 +76,17 @@ post-cutoff studies that this draft still owes (marked \pending{like this}).
     \tickerdisjoint{} evaluation; a gender-confound analysis---and what they show
     when modern open-weight text and audio representations are run through them on
     consumer hardware (\S\ref{sec:results}).
-  \item \textbf{A reproduction study} of the five publicly runnable models in this
-    lineage, each re-run on its own original data under the new controls, together
-    with a code-availability audit of the fifteen that cannot be run
-    \pending{Phase 6R; Table~\ref{tab:repro}}.
-  \item \textbf{Post-cutoff evaluation}: the audio ladder re-run on clean 2025
-    recordings, and the frozen pipeline evaluated on calls held after the
-    knowledge cutoff of every model used \pending{Phase 7 and T9.4}.
+  \item \textbf{Measured call timing}: the earnings-release timestamp of every
+    call from EDGAR 8-K filings (89\% of FinCall, 69\% of MAEC, 99.8\% of
+    Earnings25), showing that the call-date anchor used by every released label set
+    places the reaction session in the pre-window for most calls, with a
+    sensitivity study (\S\ref{sec:timing}).
+  \item \textbf{A reproduction study} of the runnable models in this lineage on
+    their own data under the new controls, with a code-availability audit of the
+    seventeen papers (two runnable, six partial, nine none; \S\ref{sec:results-repro},
+    Table~\ref{tab:repro}, Table~\ref{tab:code-audit}).
+  \item \textbf{Post-cutoff evaluation}: the audio ladder re-run on 2025 recordings
+    stratified by bitrate, and the frozen pipeline evaluated on 475 calls held after
+    the knowledge cutoff of every model used (\S\ref{sec:results-clean-audio},
+    \S\ref{sec:results-lookahead}).
 \end{enumerate}
