@@ -11,6 +11,17 @@ Each entry: date · task ID · what the user must do · what unblocks when it's 
 
 ## Active (action needed to unblock a task)
 
+- **2026-09-03 · T8.1 — data-host account + archive upload.** `REPRODUCE.md` and `LICENSE-DATA.md` are in; the
+  released derived-feature archives (per-call pooled features for FinCall/MAEC/Earnings25/EC; targets; splits;
+  timing tables) need a Zenodo or HF Datasets account to upload under. Also the **clean-machine verification**
+  (acceptance: Table 1 byte-identical, one GPU table within seed variance) is yours to run once — `REPRODUCE.md`
+  is the script.
+- **2026-09-03 · T8.1 — EC dataset terms.** The Qin & Yang release has no licence file. Before any archive that
+  includes EC-derived features is posted, confirm terms with the authors (we release only pooled per-call
+  features for EC; see `LICENSE-DATA.md` open item 1).
+- **2026-09-03 · T8.2 — review + venue.** The draft (26 pp, no pending stubs) is ready for advisor/co-author
+  review; ACL/ARR deadline + anonymity-vs-preprint question from 2026-08-23 still open.
+
 - **2026-09-03 · DECISION — re-baseline on measured day-0 anchors, or keep them as a variant?** T9.2 measured the
   information boundary for 89% of FinCall / 69% of MAEC / 99.8% of Earnings25 calls from EDGAR 8-K Item 2.02
   acceptance times. Under it, **day 0 moves one session earlier for 53% of FinCall and 59% of MAEC calls**
