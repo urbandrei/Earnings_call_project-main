@@ -1,0 +1,85 @@
+benchmark,metric,value,numerator,denominator,source
+EC,calls_train,392,,,VolTAGE gcn/data/*_split3.csv
+EC,calls_val,56,,,VolTAGE gcn/data/*_split3.csv
+EC,calls_test,112,,,VolTAGE gcn/data/*_split3.csv
+EC,test_ticker_in_train_share,0.8036,90.0,112.0,VolTAGE gcn/data/*_split3.csv
+EC,embargo_days_train_to_val,0,,,VolTAGE gcn/data/*_split3.csv
+EC,duplicate_calls_train_val,0,,,VolTAGE gcn/data/*_split3.csv
+EC,embargo_days_val_to_test,0,,,VolTAGE gcn/data/*_split3.csv
+EC,duplicate_calls_val_test,0,,,VolTAGE gcn/data/*_split3.csv
+MAEC-15,calls_train,535,,,KeFVP maec15_*_price_label.csv
+MAEC-15,calls_dev,76,,,KeFVP maec15_*_price_label.csv
+MAEC-15,calls_test,154,,,KeFVP maec15_*_price_label.csv
+MAEC-15,test_ticker_in_train_share,0.4416,68.0,154.0,KeFVP maec15_*_price_label.csv
+MAEC-15,embargo_days_train_to_dev,0,,,KeFVP maec15_*_price_label.csv
+MAEC-15,duplicate_calls_train_dev,0,,,KeFVP maec15_*_price_label.csv
+MAEC-15,embargo_days_dev_to_test,0,,,KeFVP maec15_*_price_label.csv
+MAEC-15,duplicate_calls_dev_test,0,,,KeFVP maec15_*_price_label.csv
+MAEC-15,binary_label_columns_train,"3,7,15,30",4.0,30.0,KeFVP/price_data/maec/15/maec15_train_price_label.csv
+MAEC-15,binary_columns_are_tau_train,1,,,KeFVP/price_data/maec/15/maec15_train_price_label.csv
+MAEC-15,binary_label_columns_dev,"3,7,15,30",4.0,30.0,KeFVP/price_data/maec/15/maec15_dev_price_label.csv
+MAEC-15,binary_columns_are_tau_dev,1,,,KeFVP/price_data/maec/15/maec15_dev_price_label.csv
+MAEC-15,binary_label_columns_test,"3,7,15,30",4.0,30.0,KeFVP/price_data/maec/15/maec15_test_price_label.csv
+MAEC-15,binary_columns_are_tau_test,1,,,KeFVP/price_data/maec/15/maec15_test_price_label.csv
+MAEC-16,calls_train,980,,,KeFVP maec16_*_price_label.csv
+MAEC-16,calls_dev,140,,,KeFVP maec16_*_price_label.csv
+MAEC-16,calls_test,280,,,KeFVP maec16_*_price_label.csv
+MAEC-16,test_ticker_in_train_share,0.5571,156.0,280.0,KeFVP maec16_*_price_label.csv
+MAEC-16,embargo_days_train_to_dev,0,,,KeFVP maec16_*_price_label.csv
+MAEC-16,duplicate_calls_train_dev,0,,,KeFVP maec16_*_price_label.csv
+MAEC-16,embargo_days_dev_to_test,3,,,KeFVP maec16_*_price_label.csv
+MAEC-16,duplicate_calls_dev_test,0,,,KeFVP maec16_*_price_label.csv
+MAEC-16,binary_label_columns_train,"3,7,15,30",4.0,30.0,KeFVP/price_data/maec/16/maec16_train_price_label.csv
+MAEC-16,binary_columns_are_tau_train,1,,,KeFVP/price_data/maec/16/maec16_train_price_label.csv
+MAEC-16,binary_label_columns_dev,"3,7,15,30",4.0,30.0,KeFVP/price_data/maec/16/maec16_dev_price_label.csv
+MAEC-16,binary_columns_are_tau_dev,1,,,KeFVP/price_data/maec/16/maec16_dev_price_label.csv
+MAEC-16,binary_label_columns_test,"3,7,15,30",4.0,30.0,KeFVP/price_data/maec/16/maec16_test_price_label.csv
+MAEC-16,binary_columns_are_tau_test,1,,,KeFVP/price_data/maec/16/maec16_test_price_label.csv
+EC,single_day_exact_zeros_train,94,94.0,11760.0,KeFVP/price_data/train_split_SeriesSingleDayVol3.csv
+EC,single_day_exact_zeros_val,9,9.0,1680.0,KeFVP/price_data/val_split_SeriesSingleDayVol3.csv
+EC,single_day_exact_zeros_test,34,34.0,3360.0,KeFVP/price_data/test_split_SeriesSingleDayVol3.csv
+EC,single_day_exact_zeros_all,137,137.0,16800.0,SeriesSingleDayVol3
+EC,avg_series_exact_zeros_train,0,,11368.0,KeFVP/price_data/train_split_Avg_Series_WITH_LOG.csv
+EC,avg_series_exact_zeros_val,0,,1624.0,KeFVP/price_data/val_split_Avg_Series_WITH_LOG.csv
+EC,avg_series_exact_zeros_test,0,,3248.0,KeFVP/price_data/test_split_Avg_Series_WITH_LOG.csv
+EC,kefvp_voltage_identical:test_split_SeriesSingleDayVol3.csv,1,,,6487473a062e
+EC,kefvp_voltage_identical:train_split_Avg_Series_WITH_LOG.csv,1,,,2495b7de16ec
+ours:fincall:temporal,calls_train,1480,,,fincall_temporal.csv
+ours:fincall:temporal,calls_val,228,,,fincall_temporal.csv
+ours:fincall:temporal,calls_test,481,,,fincall_temporal.csv
+ours:fincall:temporal,test_ticker_in_train_share,0.9127,439.0,481.0,fincall_temporal.csv
+ours:fincall:temporal,embargo_days_train_to_val,48,,,fincall_temporal.csv
+ours:fincall:temporal,duplicate_calls_train_val,0,,,fincall_temporal.csv
+ours:fincall:temporal,embargo_days_val_to_test,48,,,fincall_temporal.csv
+ours:fincall:temporal,duplicate_calls_val_test,0,,,fincall_temporal.csv
+ours:fincall:ticker_disjoint,calls_train,1701,,,fincall_ticker_disjoint.csv
+ours:fincall:ticker_disjoint,calls_val,239,,,fincall_ticker_disjoint.csv
+ours:fincall:ticker_disjoint,calls_test,484,,,fincall_ticker_disjoint.csv
+ours:fincall:ticker_disjoint,test_ticker_in_train_share,0.0,0.0,484.0,fincall_ticker_disjoint.csv
+ours:fincall:ticker_disjoint,duplicate_calls_train_val,0,,,fincall_ticker_disjoint.csv
+ours:fincall:ticker_disjoint,duplicate_calls_val_test,0,,,fincall_ticker_disjoint.csv
+ours:maec:temporal,calls_train,1604,,,maec_temporal.csv
+ours:maec:temporal,calls_val,73,,,maec_temporal.csv
+ours:maec:temporal,calls_test,507,,,maec_temporal.csv
+ours:maec:temporal,test_ticker_in_train_share,0.789,400.0,507.0,maec_temporal.csv
+ours:maec:temporal,embargo_days_train_to_val,101,,,maec_temporal.csv
+ours:maec:temporal,duplicate_calls_train_val,0,,,maec_temporal.csv
+ours:maec:temporal,embargo_days_val_to_test,48,,,maec_temporal.csv
+ours:maec:temporal,duplicate_calls_val_test,0,,,maec_temporal.csv
+ours:maec:ticker_disjoint,calls_train,1805,,,maec_ticker_disjoint.csv
+ours:maec:ticker_disjoint,calls_val,259,,,maec_ticker_disjoint.csv
+ours:maec:ticker_disjoint,calls_test,514,,,maec_ticker_disjoint.csv
+ours:maec:ticker_disjoint,test_ticker_in_train_share,0.0,0.0,514.0,maec_ticker_disjoint.csv
+ours:maec:ticker_disjoint,duplicate_calls_train_val,0,,,maec_ticker_disjoint.csv
+ours:maec:ticker_disjoint,duplicate_calls_val_test,0,,,maec_ticker_disjoint.csv
+ours:earnings25:temporal,calls_train,5,,,earnings25_temporal.csv
+ours:earnings25:temporal,calls_test,93,,,earnings25_temporal.csv
+ours:earnings25:temporal,test_ticker_in_train_share,0.0,0.0,93.0,earnings25_temporal.csv
+ours:earnings25:temporal,embargo_days_train_to_test,92,,,earnings25_temporal.csv
+ours:earnings25:temporal,duplicate_calls_train_test,0,,,earnings25_temporal.csv
+ours:earnings25:ticker_disjoint,calls_train,333,,,earnings25_ticker_disjoint.csv
+ours:earnings25:ticker_disjoint,calls_val,47,,,earnings25_ticker_disjoint.csv
+ours:earnings25:ticker_disjoint,calls_test,95,,,earnings25_ticker_disjoint.csv
+ours:earnings25:ticker_disjoint,test_ticker_in_train_share,0.0,0.0,95.0,earnings25_ticker_disjoint.csv
+ours:earnings25:ticker_disjoint,duplicate_calls_train_val,0,,,earnings25_ticker_disjoint.csv
+ours:earnings25:ticker_disjoint,duplicate_calls_val_test,0,,,earnings25_ticker_disjoint.csv

@@ -323,16 +323,17 @@
 
 ## Phase 6R — Reproduction & audit study (~3–4 weeks) — *replaces Phase 6; DECISIONS 2026-08-23*
 
-### T6R.1 Benchmark substrate audit → Result Table 5R — `[ ]`
+### T6R.1 Benchmark substrate audit → Result Table 5R — `[x]` *(done 2026-09-03; `ecvol audit substrate`, run 20260902T054152Z-audit-substrate-48b9432a)*
 - **Goal:** document what the evaluation substrate this literature shares actually contains. Requires reproducing no model.
 - **End result:** an `ecvol audit substrate` command + released report covering, for EC / MAEC-15 / MAEC-16: ticker overlap between train and test, embargo gap at each split boundary, sentinel/degenerate label cells, and label-schema hazards; plus a diff of the literature's shipped labels against our §5.3 targets.
 - **Acceptance test:** every number regenerates from the command; each claim carries the file and row/cell counts it was computed from; the "no paper reports a ticker-disjoint condition" claim is stated as a literature-coverage claim, not a data claim.
 - **Subtasks:**
-  - [ ] Fetch + manifest the canonical label/split files (VolTAGE, KeFVP, HTML lineage) with SHA-256
-  - [ ] Overlap + embargo metrics per benchmark, with our own splits as the contrast row
-  - [ ] Label-defect scan (sentinel zeros; interleaved binary/price columns)
-  - [ ] Label-vs-our-targets diff (MAEC join verified at 99.4%)
-  - [ ] Report + release packaging
+  - [x] Fetch + manifest the canonical label/split files — `D:\ecvol-data\raw\ref\lineage\{KeFVP,VolTAGE,HTML}` pinned to commits 95993892 / 597d69d8 / 9d717972, 44 files, `lineage_manifest.json` (SHA-256)
+  - [x] Overlap + embargo metrics per benchmark + our splits as contrast rows (`src/ecvol/eval/substrate.py`)
+  - [x] Label-defect scan — 137/16,800 single-day zeros (train 94 / val 9 / test 34; averaged series 0); `future_label_{3,7,15,30}` binary in all 6 KeFVP MAEC price files (154/154 etc.)
+  - [x] Label-vs-our-targets diff — KeFVP `maec{15,16}_test_avg_val.csv` × our calendar-day `v_post`: joins 113–114/154 and 216/280 at τ≥7 (74–77%; τ=3 only 30/154, 106/280 because our τ=3 calendar windows exclude ≤1-session calls), corr 0.67–0.88 (MAEC-15) / 0.51–0.82 (MAEC-16), τ=3 0.71 / 0.25. The 08-23 "99.4% join" was on the price-label file's ids, not on priced targets.
+  - [x] Report + release packaging — `results/result_table_5r.csv` + `_labels.csv` (manifested run), `paper/tables/substrate.tex`, §3.1 text, A1 pointer
+- **Done (2026-09-03):** every 2026-08-23 number regenerates exactly (EC 80.4% / MAEC-15 44.2% / MAEC-16 55.7% overlap; 0-day embargos except MAEC-16 va→te 3 d; byte-identical VolTAGE/KeFVP files by SHA). Ticker-disjoint rows carry no embargo metric (not temporally ordered). **Open:** the sentinel-zero interpretation (zero-variance day vs missing) is still unsettled — the paper states the count only.
 - **Notes:** findings already established 2026-08-23 (JOURNAL; `docs/advisor_redirection_2026-08.md` §5) — **VolTAGE and KeFVP ship byte-identical split files**; EC 80.4% / MAEC-15 44.2% / MAEC-16 55.7% test-ticker-in-train; **0-day embargo** on every boundary against τ≤30 targets; 137 zeros / 16,800 cells in the single-day series (headline Avg_Series clean); KeFVP MAEC files interleave binary labels at exactly τ ∈ {3,7,15,30} among 26 price columns (154/154 rows). **This task formalises and regenerates them, it does not re-derive them.** Open: settle the sentinel-zero interpretation (zero-variance day vs missing) before it enters a paper claim.
 
 ### T6R.2 Reproduction of prior models under our controls → Result Table 6R — `[ ]`
