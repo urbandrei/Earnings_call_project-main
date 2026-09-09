@@ -57,16 +57,18 @@ fusion. All fusion heads are $<$5M parameters.
 \paragraph{Reproduced prior models.}
 \label{sec:repro-protocol}
 Of the seventeen papers in the lineage of \S\ref{sec:related} that we probe
-(Table~\ref{tab:code-audit}), two release code that still runs end to end: HTML
-\citep{yang2020html} and Same-Company-Same-Signal \citep{scss2024}. We re-run each
-\emph{on its own original dataset}, first reproducing the published-split number
-within a stated tolerance, then evaluating the same model under an embargoed and a
+(Table~\ref{tab:code-audit}), one releases code that runs as released:
+Same-Company-Same-Signal \citep{scss2024}. Seven ship code that needs repair or
+missing inputs before it starts---HTML \citep{yang2020html}, KeFVP
+\citep{niu2023kefvp}, DialogueGAT \citep{sang2022dialoguegat}, Sawhney et al.\
+\citeyearpar{sawhney2020mm} and VolTAGE \citep{sawhney2020voltage} among them. We
+re-run each of the five on the slate \emph{on its own original dataset}, with the
+authors' code wherever it can be made to start (every patch listed in a released
+fidelity ledger) and a line-by-line port where it cannot; we first compare against
+the published-split number, then evaluate the same model under an embargoed and a
 \tickerdisjoint{} split of that dataset, so that ``the model fails'' cannot be
-confused with ``the model does not transfer'' (RQ3). Six more---KeFVP
-\citep{niu2023kefvp}, DialogueGAT \citep{sang2022dialoguegat}, and VolTAGE
-\citep{sawhney2020voltage} among them---ship partial code whose missing
-preprocessing, features, or checkpoints we reason-code rather than re-implement;
-the remaining nine---among them the strongest recent positive claims
+confused with ``the model does not transfer'' (RQ3). The remaining nine---among them
+the strongest recent positive claims
 \citep{cao2024ecc,soundofrisk2025}---have no code, empty or unpushed repositories,
 closed-API dependencies, or a stated inability to run; we tabulate
 each with the evidence (Table~\ref{tab:repro}; Table~\ref{tab:code-audit} in

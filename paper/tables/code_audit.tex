@@ -1,21 +1,21 @@
-% Generated from data/results/code_availability.csv (run 20260902T173314Z-audit-code-e906e5a8).
+% Generated from data/results/code_availability.csv (run 20260909T200449Z-audit-code-e906e5a8).
 \begin{table*}[t]
 \centering\scriptsize
 \begin{tabular}{llllp{7.2cm}}
 \toprule
 Paper & venue & probe (date) & verdict & reason \\
 \midrule
-Qin \& Yang, What You Say and How You Say It Matters & ACL 2019 & 200, 0.0 code files, pushed 2022-08-04 (2026-09-02) & partial & dataset released (Drive, 5-part zip); no model code in the repository \\
-Yang et al., HTML & WWW 2020 & 200, 15.0 code files, pushed 2024-01-05 (2026-09-02) & runnable & PyTorch model code, no requirements file; head ported and run on EC \\
-Sawhney et al., multimodal financial forecasting & ACM MM 2020 & 200, 112.0 code files, pushed 2020-10-26 (2026-09-02) & partial & TF 2.1 / Keras 2.3.1 pins; last push 2020; not ported (multi-day environment rebuild) \\
-Sawhney et al., VolTAGE & EMNLP 2020 & 200, 5.0 code files, pushed 2021-11-16 (2026-09-02) & partial & ships the EC split/label files (byte-identical to KeFVP's) and GCN code; embeddings as .pkl; not ported \\
-Niu et al., KeFVP & EMNLP Findings 2023 & 200, 42.0 code files, pushed 2024-01-28 (2026-09-02) & partial & full code but requirements.txt does not install as written (spacy==.5.3, pickle); torch 1.12 predates Blackwell; MAEC KePt embeddings unavailable upstream; not ported \\
-DialogueGAT & 2023 & 200, 6.0 code files, pushed 2023-06-12 (2026-09-02) & partial & MIT code, tau<=15 only; the dialogue corpus must be rebuilt before it runs; not ported \\
-Yu, Liu \& He, Same Company, Same Signal & Findings of ACL 2025 & 200, 38.0 code files, pushed 2026-08-13 (2026-09-02) & runnable & MIT; ships DEC with features and rolling masks; PEV/STPEV reproduced to 3 decimals \\
-Yang et al., FinTrust & ACL 2023 short & 200, 4.0 code files, pushed 2024-01-22 (2026-09-02) & partial & perturbation harness + 3/7/15/30 data; complementary control axis, not a volatility model \\
-Sound of Risk & 2025 & 200, 0.0 code files, pushed 2025-08-26 (2026-09-02) & none & repository holds figures only, zero source files; proprietary 1,795-call corpus \\
-DeFVP & 2024 & 409 (2026-09-02) & none & repository exists but is empty (size 0 KB, never pushed; API returns 409) \\
-ECHO-GL & 2024 & 200, 3.0 code files, pushed 2024-02-26 (2026-09-02) & none & README states the code 'can not run at present'; target is direction, not volatility \\
+Qin \& Yang, What You Say and How You Say It Matters & ACL 2019 & 200, 0.0 code files, pushed 2022-08-04 (2026-09-09) & partial & dataset released (Drive, 5-part zip); no model code in the repository \\
+Yang et al., HTML & WWW 2020 & 200, 15.0 code files, pushed 2024-01-05 (2026-09-09) & partial & model classes run verbatim; the released driver imports TensorFlow-1 set\_random\_seed and torchtext and splits features and labels with independent unseeded shuffles; inputs (WWM-BERT .npy, Praat features) behind dead Drive links — rebuilt; run with a corrected driver (T6R.3) \\
+Sawhney et al., multimodal financial forecasting & ACM MM 2020 & 200, 112.0 code files, pushed 2020-10-26 (2026-09-09) & partial & TF 2.1 / Keras 2.3.1 / tensorflow-addons 0.8.3 pins; unshipped call inventory, price files and two lexicons; text-feature script returns after one record; no multi-task loss in the released code; ported line by line to PyTorch (T6R.3) \\
+Sawhney et al., VolTAGE & EMNLP 2020 & 200, 5.0 code files, pushed 2021-11-16 (2026-09-09) & partial & ships the EC split/label files (byte-identical to KeFVP's) and GCN code; embeddings as .pkl; not ported \\
+Niu et al., KeFVP & EMNLP Findings 2023 & 200, 42.0 code files, pushed 2024-01-28 (2026-09-09) & partial & requirements.txt does not install as written; the script starts only after six import-level repairs (missing set\_seed, package init importing undefined names, a dropped class header, an unreleased 'latent' package, plotting imports); MAEC embeddings never released (regenerated with the authors' generator); EC KePt pickle Drive-only (T6R.3) \\
+DialogueGAT & Findings of EMNLP 2022 & 200, 6.0 code files, pushed 2023-06-12 (2026-09-09) & partial & MIT code, tau<=15 only; training pickle, SeekingAlpha corpus and CRSP labels never released; DGL has no wheels for torch 2.11; ported (PyG) onto FinCall turns (T6R.3) \\
+Yu, Liu \& He, Same Company, Same Signal & Findings of ACL 2025 & 200, 38.0 code files, pushed 2026-08-13 (2026-09-09) & runnable & MIT; ships DEC with features and rolling masks; PEV/STPEV to 3 decimals, TSMixer 76 cells to 1e-5, TMLP 228 cells within single-seed noise on the authors' embeddings \\
+Yang et al., FinTrust & ACL 2023 short & 200, 4.0 code files, pushed 2024-01-22 (2026-09-09) & partial & perturbation harness + 3/7/15/30 data; complementary control axis, not a volatility model \\
+Sound of Risk & 2025 & 200, 0.0 code files, pushed 2025-08-26 (2026-09-09) & none & repository holds figures only, zero source files; proprietary 1,795-call corpus \\
+DeFVP & 2024 & 409 (2026-09-09) & none & repository exists but is empty (size 0 KB, never pushed; API returns 409) \\
+ECHO-GL & 2024 & 200, 3.0 code files, pushed 2024-02-26 (2026-09-09) & none & README states the code 'can not run at present'; target is direction, not volatility \\
 ECC Analyzer & 2024 & no\_url & none & no code released; GPT-4 Turbo + OpenAI embeddings \\
 RiskLabs & 2024 & no\_url & none & no code released; GPT-4/3.5 \\
 NumHTML & AAAI 2022 & no\_url & none & paper promises code; no URL given \\
@@ -24,6 +24,6 @@ AMA-LSTM &  & no\_url & none & 10-byte stub repository, unattributed \\
 AT-FinGPT &  & no\_url & none & paywalled; no artefact \\
 \bottomrule
 \end{tabular}
-\caption{\textbf{Code-availability audit of the ECC volatility literature} (T6R.2; regenerated by \texttt{ecvol audit code}). Two of seventeen papers ship code that runs as released; six ship code with a broken environment or missing data; nine ship nothing usable. Probe columns come from the GitHub API on the stated date; verdicts and reasons are curated and re-checked.}
+\caption{\textbf{Code-availability audit of the ECC volatility literature} (T6R.2/T6R.3; regenerated by \texttt{ecvol audit code}, live GitHub probe on the date shown). One of seventeen papers ships code that runs as released; seven ship code with a broken environment, missing data, or defects that must be repaired before it starts (HTML's driver imports TensorFlow-1 symbols and decorrelates features from labels; KeFVP needs six import-level repairs); nine ship nothing usable. The reason column records what the faithful-reproduction sprint (Table~\ref{tab:faithful}) did with each.}
 \label{tab:code-audit}
 \end{table*}
