@@ -355,25 +355,25 @@
 - **Acceptance test:** for every paper, either (a) a run of the authors' code (forward-port patches listed) on the authors' data reaching a stated tolerance of the published cell, or (b) a harness port with every substitution labelled and the published cell shown beside it, or (c) a reason code with the missing artefact named; no cell is called "reproduced" under (b) or (c).
 - **Subtasks (threads; order = certainty):**
   - **HTML** (authors' `RTransformer` verbatim, driver rewritten — the shipped driver decorrelates X and y by three independent unseeded `train_test_split` calls):
-    - [ ] H1 BERT-WWM-Large sentence embeddings (layer −2 mean, `TextSequence.txt` lines) for 572 EC calls → cache
-    - [ ] H2 text-only faithful run, three conditions: `code` (random 70/10/20, dropout 0 as shipped, min-over-epochs val), `paper` (chronological 7:1:2, dropout 0.5), `published_split` (VolTAGE split3) — vs 1.175/0.372/0.153/0.133
+    - [x] H1 BERT-WWM-Large sentence embeddings (layer −2 mean, `TextSequence.txt` lines) for 572 EC calls → `data/ec/cache/html_bert_wwm_large_l2_sentences.parquet` (89,722 sentences; 2026-09-09)
+    - [~] H2 text-only faithful run (`ecvol reproduce html-faithful`, running 2026-09-09), three conditions: `code` (random 70/10/20, dropout 0 as shipped, min-over-epochs val), `paper` (chronological 7:1:2, dropout 0.5), `published_split` (VolTAGE split3) — vs 1.175/0.372/0.153/0.133
     - [ ] H3 27 Praat sentence features from `CEO/*.mp3` (parselmouth) → text+audio run vs 0.845/0.349/0.251/0.158 *(shared with Sawhney W3)*
     - [ ] H4 fix our port's auxiliary label (`our_labels` uses `future_3` at every τ; paper = single-day log|r| at day τ)
   - **KeFVP** (authors' `final_series_infer.py`, path/Windows patches; audio branch is commented out upstream, so text+price only is the faithful setting):
-    - [ ] K1 obtain the released EC KePt embedding pickle (Drive `1F83bjiJKEpq_MYrc0lzQb9rOLgooz-5E`; gdown refused — see HANDOFF if curl fails too)
+    - [!] K1 obtain the released EC KePt embedding pickle (Drive `1F83bjiJKEpq_MYrc0lzQb9rOLgooz-5E`): `gdown`, `curl` and browser-cookie routes all refused; the file opens in the user's browser → **user download, HANDOFF 2026-09-09**
     - [ ] K2 EC faithful run, 10 repeats × 4 τ → vs 0.610/0.291/0.183/0.114 (mean of 10)
-    - [ ] K3 MAEC-15/16 with **regenerated** `raw_bert_base_uncased` sentence embeddings via the authors' `generatePtmEmbeddings.py` (upstream never released these) → vs 0.418/0.187/0.122/0.087 and 0.445/0.279/0.303/0.177 (Table 2 MAEC-16 row is internally inconsistent — noted)
+    - [~] K3 MAEC-15/16 with **regenerated** `raw_bert_base_uncased` sentence embeddings (pickle regenerated 2026-09-09, 2,165 folders; `ecvol reproduce kefvp --dataset 15,16` running — the released script needed six forward-port patches to run at all, see `docs/faithful_ledger.md`) via the authors' `generatePtmEmbeddings.py` (upstream never released these) → vs 0.418/0.187/0.122/0.087 and 0.445/0.279/0.303/0.177 (Table 2 MAEC-16 row is internally inconsistent — noted)
     - [ ] K4 `[colab]` KePt adaptive pre-training (BERT, 60 epochs, ~5 h GPU; needs the `kept_dataset` Drive pickles) — not run locally
   - **SCSS** (authors' TSLib-style `run.py`):
-    - [ ] S1 restore the clone (filenames with `|` cannot exist on Windows → sparse checkout minus `earnings_results/`, index dumped to `raw/ref/scss/earnings_results_index.txt`, 304 published MSEs in the names)
-    - [ ] S2 TSMixer, 76 runs on DEC (no external asset) → vs the per-file MSEs
-    - [ ] S3 TMLP on the OpenAI `DEC.npz` embeddings (Drive-only; if unobtainable → HANDOFF; open-encoder substitute is a labelled deviation)
+    - [x] S1 restore the clone (filenames with `|` cannot exist on Windows → sparse checkout minus `earnings_results/`, index dumped to `raw/ref/scss/earnings_results_index.txt`, 304 published MSEs in the names)
+    - [x] S2 TSMixer, 76 runs on DEC → **median |ours − published| 1.6e-5, max 4.2e-3, 70/76 within 1e-3** (`result_table_6r_scss_tsmixer.csv`, run 20260909T054744Z)
+    - [~] S3 TMLP on the OpenAI embeddings — the Drive `Embeddings/openai/` subfolder was fetched with `gdown --folder` (`DEC.npz`, `DEC2RandomTicker.npz` ≙ script's `DECRandomTicker`, `DECRandomAll.npz`; 1800 × 3072); `ecvol reproduce scss-tmlp` running 2026-09-09
     - [ ] S4 Aug_PEV / Aug_STPEV on EC + MAEC from the shipped `dataset/EC|MAEC/*.csv` (notebook formulas re-implemented) → vs 0.367/0.296 (EC), 0.283/0.225 (MAEC15), 0.229/0.247 (MAEC16)
   - **DialogueGAT** (faithful impossible: training pickle unreleased, corpus = authors' private SeekingAlpha re-scrape with real speaker names, labels need CRSP, DGL has no wheels for this stack):
-    - [ ] D1 reason code confirmed with the missing artefacts named (`data/data_swd.pkl`, ~3,400 HTMLs, CRSP)
-    - [ ] D2 harness port: turn-graph GAT (PyG) over BGE-M3 turn embeddings + v_past, chain + speaker edges, on FinCall (named speakers) and MAEC person-label turns (anonymous ⇒ the paper's "w/o speaker" ablation); published 2015/2016/2017 cells shown as reference only
+    - [x] D1 reason code confirmed with the missing artefacts named (`data/data_swd.pkl`, ~3,400 HTMLs, CRSP)
+    - [~] D2 harness port (`ecvol reproduce dialoguegat`, running 2026-09-09; needs `torch_geometric`, added to the gpu group once the jobs release the venv): turn-graph GAT (PyG) over BGE-M3 turn embeddings + v_past, chain + speaker edges, on FinCall (named speakers) and MAEC person-label turns (anonymous ⇒ the paper's "w/o speaker" ablation); published 2015/2016/2017 cells shown as reference only
   - **Sawhney 2020** (faithful impossible as shipped: no `stock_data.csv`, no price series, no lexicons, TF 2.1/Keras 2.3.1/TFA 0.8.3; the released code has no multi-task loss and tunes the ensemble on the test set):
-    - [ ] W1 PyTorch port of the text BiLSTM (Mittens-retrofitted GloVe sentence means; plain GloVe first, Mittens if time) + SVR financial branch + (α,β) ensemble, their 60/20/20 split and mean-subtracted labels from our EC prices → vs 0.601/0.308/0.181/0.119 (second-hand, KeFVP Table 2)
+    - [x] W1 (2026-09-09, run 20260909T055052Z) PyTorch port of the text BiLSTM — **finance SVR 0.712/0.370/0.218/0.154 vs published ensemble 0.601/0.308/0.181/0.119** (persistence 1.491/0.563/0.345/0.205); the 2-epoch text BiLSTM sits above persistence (2.14/1.58/1.38/1.40, five seeds) so the ensemble collapses onto finance (α=0 whether tuned on val or on test); 547 EC calls carry their labels (Mittens-retrofitted GloVe sentence means; plain GloVe first, Mittens if time) + SVR financial branch + (α,β) ensemble, their 60/20/20 split and mean-subtracted labels from our EC prices → vs 0.601/0.308/0.181/0.119 (second-hand, KeFVP Table 2)
     - [ ] W2 `[colab]`-free but slow: Mittens retrofit (1000 it on a 6.9k vocab)
     - [ ] W3 audio branch (26-d Praat/prosodic per utterance, shared with H3) + cross-attention aligned model
 - **Fidelity ledger:** `docs/faithful_ledger.md` (one section per paper: verbatim / patched / substituted / reason-coded, with file:line of every patch).

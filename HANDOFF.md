@@ -229,3 +229,15 @@ These come from the backlog scan; the loop will move each into **Active** when i
 - **Phase 8 · T8.2** — **advisor/co-author review**, venue choice, arXiv submission.
 - **Phase 3 · T3.4** — the **§4 framing-gate review** (a decision, not a key): the identity
   controls' outcome triggers it and it requires your call either way.
+
+- **2026-09-09 · T6R.3/K1 — KeFVP EC embedding pickle: one browser download, please.** The
+  authors' KePt-BERT-large embeddings for EC (`text_embedding`, ~1.2 GB) are at
+  https://drive.google.com/file/d/1F83bjiJKEpq_MYrc0lzQb9rOLgooz-5E/view — the file opens in
+  your signed-in Chrome (a tab is open), but `gdown`, `curl` and the cookie route are all refused
+  and I do not click Download in your browser. Please download it and save it (unzipped if it is
+  an archive) so that `D:\ecvol-data\work\kefvp\dataset\text_embedding\
+  emnlp_202308_bert_large_unfreeze_6layers\ec_embed_bert_large_uncased_kept_epoch_6.pkl`
+  exists (or tell me the file's real name and I will map it). Then `ecvol reproduce kefvp
+  --dataset ec` runs the headline EC reproduction (10 repeats × 4 horizons, ~1 h GPU). While it
+  is missing, the EC row of Table 6R-F stays a reason code and the MAEC rows carry regenerated
+  BERT-base embeddings (labelled).

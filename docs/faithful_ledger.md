@@ -18,7 +18,7 @@ are never committed.
 | patched | `utils/tools.py`: `np.Inf` → `np.inf` (NumPy 2); `matplotlib.pyplot` import → a `switch_backend` no-op stub (plotting is never reached) |
 | checked out | the repository's 304 result CSVs carry `|` in their names and cannot be checked out on Windows; the tree was materialised file-by-file with `git show`, and the published per-cell MSEs were read from the file names (`raw/ref/scss/earnings_results_index.txt`) |
 | **result** | **TSMixer, 76 cells: median \|ours − published\| = 1.6e-5, max 4.2e-3, 70/76 within 1e-3** (`result_table_6r_scss_tsmixer.csv`, run 20260909T054744Z) |
-| pending | TMLP needs `dataset/Embeddings/openai/{DEC,DECRandomTicker,DECRandomAll}.npz` (OpenAI `text-embedding-3-large`, 3072-d), Drive-only — download in progress via `gdown --folder`; if absent → HANDOFF |
+| substituted (name only) | TMLP embeddings fetched from the authors' Drive `Embeddings/openai` (`DEC.npz`, `DEC2RandomTicker.npz`, `DECRandomAll.npz`, each 1800 × 3072 float64 with the same ids); the Drive file `DEC2RandomTicker` is staged as the script's `DECRandomTicker` |
 | earlier | PEV / STPEV reproduced to 3 decimals (`ecvol reproduce scss`, 2026-09-03) |
 
 ## HTML (Yang et al., WWW 2020) — `ecvol reproduce html-faithful`
@@ -37,7 +37,8 @@ are never committed.
 | status | item |
 |---|---|
 | verbatim | `kefvp/final_series_infer.py` (CondAutoformer, 200 epochs, lr 2e-4, wd 5e-2, mu 0.7, 10 repeats), `data_utils.py`, the shipped `price_data/` split + label files |
-| patched | `/your/project/path/` and `/your/dataset/path/` placeholders → the build's `proj/` and `dataset/`; log filename `%H:%M:%S` → `%H-%M-%S` (Windows); `float(Series)` → `float(Series.iloc[0])` (pandas 3) |
+| patched | `/your/project/path/` and `/your/dataset/path/` placeholders → the build's `proj/` and `dataset/`; log filename `%H:%M:%S` → `%H-%M-%S` (Windows); `float(Series)` → `float(Series.iloc[0])` and `audio_path.values.astype(float64)` (pandas 3 dtype semantics); output dirs `preds_dir/text_dir/reg`, `log/<name>` created |
+| patched (release defects) | `from data_utils import set_seed` — the function lives only in `pretrain/data_utils_pretrain_with_kg.py`: copied in verbatim; `transformers_model/__init__.py` star-imports `transformers_gpu.py`, which imports `CrossAttention`/`GraphConvolution` that no module defines: init emptied (the path uses only `transformers_model.modules`); `modules.py` lost its `class GraphChannelAttLayer(nn.Module):` header, so that class's `__init__`/`forward` had overridden `TransformerBlock`'s: header restored; `latent` (KumaGate/kumadist) never released and never instantiated on the CondAutoformer path: stubbed, raises if used; matplotlib/pylab: no-op stubs |
 | noted | the audio branch is commented out in `CondInfer.forward` upstream, so the published model is text + price; the unshipped HuBERT audio pickle is replaced by zeros by the script's own `try/except` |
 | pending (user) | EC headline run needs the released KePt-BERT-large embedding pickle (`text_embedding`, Drive `1F83bjiJKEpq_MYrc0lzQb9rOLgooz-5E`): the file is visible in the browser but `gdown`/`curl` are refused — HANDOFF |
 | substituted | MAEC-15/16: `raw_bert_base_uncased` sentence embeddings regenerated with the authors' `generatePtmEmbeddings.py` (`bert-base-uncased` pooler output, 512 sentences × 768); patched: `Text.txt` → MAEC's `text.txt`, chunked encoding (64 sentences at a time, numerically identical), only the 2,165 split folders encoded |
@@ -52,6 +53,7 @@ are never committed.
 | substituted | GloVe 6B-300d sentence means over their shipped `union_vocab.csv` (no Mittens retrofit — W2); regex + scikit-learn stop words instead of NLTK; Keras recurrent dropout → input dropout; audio branch absent (W3) |
 | labelled | the authors tune (α, β) on the **test** set; both `tuned_on=test` and `tuned_on=val` rows are reported |
 | published | 0.601 / 0.308 / 0.181 / 0.119 (second-hand: KeFVP Table 2 "Ensemble(Text+Audio)"; the MM'20 PDF is not held locally) |
+| **result** | finance SVR 0.712 / 0.370 / 0.218 / 0.154 (persistence 1.491 / 0.563 / 0.345 / 0.205); text BiLSTM after their 2 epochs 2.14 / 1.58 / 1.38 / 1.40 (5 seeds) — untrained regime; ensemble = finance (α = 0 on val and on test); 547 EC calls (`result_table_6r_sawhney.csv`, run 20260909T055052Z) |
 
 ## DialogueGAT (Sang & Bao, Findings of EMNLP 2022) — `ecvol reproduce dialoguegat` (harness port)
 
