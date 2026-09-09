@@ -1,0 +1,56 @@
+[
+  {
+    "name": "HTML",
+    "repo": "YangLinyi/HTML-Hierarchical-Transformer-based-Multi-task-Learning-for-Volatility-Prediction",
+    "commit": "9d717972a5324588af6d04c879d7689f9e54f60c",
+    "last_commit": "2024-01-05T16:00:04+08:00",
+    "tracked_files": 20,
+    "local": "raw/ref/repos/HTML",
+    "cloned_on": "2026-09-09"
+  },
+  {
+    "name": "KeFVP",
+    "repo": "hankniu01/KeFVP",
+    "commit": "95993892d087599dc5530804aada73f7b5004f39",
+    "last_commit": "2024-01-28T06:40:08Z",
+    "tracked_files": 162,
+    "local": "raw/ref/repos/KeFVP",
+    "cloned_on": "2026-09-09"
+  },
+  {
+    "name": "VolTAGE",
+    "repo": "piyushkhanna00705/VolTAGE",
+    "commit": "597d69d83f2ada4f1387538a3dbd1da8c6e40e61",
+    "last_commit": "2021-11-16T19:04:32+05:30",
+    "tracked_files": 31,
+    "local": "raw/ref/repos/VolTAGE",
+    "cloned_on": "2026-09-09"
+  },
+  {
+    "name": "DialogueGAT",
+    "repo": "sangyx/DialogueGAT",
+    "commit": "8d62d52ea82b85cd222ef8ac5075abba617ed007",
+    "last_commit": "2023-06-13T01:42:47+08:00",
+    "tracked_files": 23,
+    "local": "raw/ref/repos/DialogueGAT",
+    "cloned_on": "2026-09-09"
+  },
+  {
+    "name": "Sawhney2020",
+    "repo": "midas-research/multimodal-financial-forecasting",
+    "commit": "e4960a1ba4283716189926b97aece32822142581",
+    "last_commit": "2020-10-26T16:19:53+05:30",
+    "tracked_files": 117,
+    "local": "raw/ref/repos/Sawhney2020",
+    "cloned_on": "2026-09-09"
+  },
+  {
+    "name": "SCSS",
+    "repo": "piqueyd/Same-Company-Same-Signal",
+    "commit": "b37ae94ff2a2518400177c74ef0cc61ce0f4848a",
+    "last_commit": "2026-08-13T08:44:58-04:00",
+    "tracked_files": 0,
+    "local": "raw/ref/repos/SCSS",
+    "cloned_on": "2026-09-09"
+  }
+]
