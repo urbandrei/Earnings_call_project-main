@@ -154,13 +154,31 @@ def encode_ec_sentences(root: Path, *, batch_size: int = 32, device: str | None 
     return cache
 
 
-def sentence_arrays(root: Path) -> dict[str, np.ndarray]:
+def sentence_arrays(root: Path, modality: str = "text") -> dict[str, np.ndarray]:
+    """{call_id: [n_sentences, 1024 (+27)]}. `text_audio` concatenates the 27 Praat
+    features per sentence (`features/audio/praat.py`) as the multimodal notebook does
+    (`np.concatenate((text, audio), axis=1)` → 1051-d); Praat columns are z-scored over the
+    corpus and NaNs (failed clips) set to 0 — the authors' scaling is not recorded."""
     cache = pd.read_parquet(encode_ec_sentences(root))
     cache = cache.sort_values(["call_id", "sent_idx"])
-    return {
+    seqs = {
         str(c): np.vstack(g["vector"].to_numpy()).astype(np.float32)[:MAX_SENTENCES]
         for c, g in cache.groupby("call_id", sort=False)
     }
+    if modality == "text":
+        return seqs
+    from ecvol.features.audio.praat import sentence_audio
+
+    audio = sentence_audio(root, {c: s.shape[0] for c, s in seqs.items()})
+    allv = np.vstack([a for a in audio.values()])
+    mu, sd = np.nanmean(allv, axis=0), np.nanstd(allv, axis=0)
+    sd = np.where(sd > 0, sd, 1.0)
+    out = {}
+    for c, s in seqs.items():
+        a = audio.get(c)
+        a = np.zeros((s.shape[0], allv.shape[1]), np.float32) if a is None else (a - mu) / sd
+        out[c] = np.concatenate([s, np.nan_to_num(a).astype(np.float32)], axis=1)
+    return out
 
 
 def _pad(seqs: list[np.ndarray]) -> np.ndarray:
@@ -260,6 +278,9 @@ def fit_eval(
     return best
 
 
+PUBLISHED_AUDIO_MSE = {3: 0.845, 7: 0.349, 15: 0.251, 30: 0.158}  # Table 2, WWM-BERT+Audio
+
+
 def run_html_faithful(
     root: Path,
     *,
@@ -267,8 +288,9 @@ def run_html_faithful(
     seeds=(0, 1, 2),
     epochs: int = EPOCHS,
     alphas=ALPHAS,
+    modality: str = "text",
 ) -> pd.DataFrame:
-    seqs = sentence_arrays(root)
+    seqs = sentence_arrays(root, modality)
     labels = published_labels(root)
     labels = labels[labels.index.isin(seqs)]
     call_ids = labels.index.tolist()
@@ -324,7 +346,7 @@ def run_html_faithful(
             arr = np.array([p[:2] for p in per_seed])
             rows.append(
                 {
-                    "model": "html_text_faithful",
+                    "model": f"html_{modality}_faithful",
                     "condition": cond,
                     "dropout": dropout,
                     "horizon": tau,
@@ -336,12 +358,19 @@ def run_html_faithful(
                     "mse_seed_std": float(arr[:, 1].std(ddof=0)),
                     "best_epoch_mean": float(np.mean([p[2] for p in per_seed])),
                     "persistence_mse": float(np.mean([p[3] for p in per_seed])),
-                    "published_mse": PUBLISHED_TEXT_MSE[tau],
+                    "published_mse": (
+                        PUBLISHED_TEXT_MSE if modality == "text" else PUBLISHED_AUDIO_MSE
+                    )[tau],
                     "n_seeds": len(seeds),
                 }
             )
     table = pd.DataFrame(rows)
     out = root / "results"
     out.mkdir(parents=True, exist_ok=True)
-    table.to_csv(out / "result_table_6r_html_faithful.csv", index=False, lineterminator="\n")
+    path = out / "result_table_6r_html_faithful.csv"
+    if path.is_file():  # keep the other modality's rows
+        prev = pd.read_csv(path)
+        prev = prev[prev["model"] != f"html_{modality}_faithful"]
+        table = pd.concat([prev, table], ignore_index=True)
+    table.to_csv(path, index=False, lineterminator="\n")
     return table

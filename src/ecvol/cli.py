@@ -1141,6 +1141,7 @@ def reproduce_html_faithful(
     conditions: str = typer.Option(
         "code,paper,published_split", help="Comma-separated subset of the three conditions."
     ),
+    modality: str = typer.Option("text", help="text | text_audio (27 Praat features/sentence)."),
     config: Path | None = _CONFIG_OPT,
 ) -> None:
     """T6R.3: the authors' HTML classes verbatim on rebuilt WWM-BERT inputs → 6R-F entry."""
@@ -1153,8 +1154,9 @@ def reproduce_html_faithful(
         conditions=tuple(c.strip() for c in conditions.split(",") if c.strip()),
         seeds=tuple(cfg.seeds),
         epochs=epochs,
+        modality=modality,
     )
-    for r in table.itertuples():
+    for r in table[table["model"] == f"html_{modality}_faithful"].itertuples():
         typer.echo(
             f"  {r.condition:>15} tau={r.horizon:<2} n_test={r.n_test:<3} alpha={r.alpha:.1f} "
             f"MSE={r.mse:.3f}±{r.mse_seed_std:.3f} (published {r.published_mse:.3f}, "

@@ -253,6 +253,125 @@ def ensemble(p_text, p_fin, y, grid=None):
     return best[1]
 
 
+AUDIO_DROPOUT = {3: 0.6, 7: 0.4, 15: 0.45, 30: 0.4}  # aligned_audio_reg.py
+AUDIO_EPOCHS = 1  # aligned_audio_reg.py trains one epoch, `last_epoch` checkpoint
+ATT_HIDDEN, ATT_HEADS = 100, 5
+
+
+def fit_aligned_audio(
+    S_tr, A_tr, y_tr, S_va, A_va, S_te, A_te, *, dropout, seed, epochs=AUDIO_EPOCHS
+):
+    """`AlignClassModel` (aligned_audio_reg_model.py): BiLSTM(100, seq) over text, BiLSTM(100,
+    seq) over audio, multi-head attention with Q = text, K = V = audio (5 heads, hidden 100,
+    no mask), BiLSTM(100) over the attended sequence, Linear(1). Adam 1e-3, batch 32,
+    1 epoch, last-epoch weights (their `last_epoch` flag). Returns (test, val) predictions."""
+    import torch
+    from torch import nn
+    from torch.nn.utils.rnn import pack_padded_sequence, pad_packed_sequence, pad_sequence
+
+    torch.manual_seed(seed)
+    np.random.seed(seed)
+    dev = "cuda" if torch.cuda.is_available() else "cpu"
+    d_audio = A_tr[0].shape[1]
+
+    class Net(nn.Module):
+        def __init__(self):
+            super().__init__()
+            self.text_enc = nn.LSTM(300, UNITS, batch_first=True, bidirectional=True)
+            self.speech_enc = nn.LSTM(d_audio, UNITS, batch_first=True, bidirectional=True)
+            self.wq = nn.Linear(2 * UNITS, ATT_HIDDEN)
+            self.wk = nn.Linear(2 * UNITS, ATT_HIDDEN)
+            self.wv = nn.Linear(2 * UNITS, ATT_HIDDEN)
+            self.wo = nn.Linear(ATT_HIDDEN, ATT_HIDDEN)
+            self.align_enc = nn.LSTM(ATT_HIDDEN, UNITS, batch_first=True, bidirectional=True)
+            self.do = nn.Dropout(dropout)
+            self.out = nn.Linear(2 * UNITS, 1)
+
+        def _seq(self, lstm, x, lengths):
+            packed = pack_padded_sequence(x, lengths.cpu(), batch_first=True, enforce_sorted=False)
+            out, _ = lstm(packed)
+            return pad_packed_sequence(out, batch_first=True)[0]
+
+        def forward(self, xt, lt, xa, la):
+            t = self.do(self._seq(self.text_enc, xt, lt))  # [b, T, 200]
+            a = self.do(self._seq(self.speech_enc, xa, la))  # [b, A, 200]
+            b, T, _ = t.shape
+            dh = ATT_HIDDEN // ATT_HEADS
+            q = self.wq(t).view(b, T, ATT_HEADS, dh).transpose(1, 2)
+            k = self.wk(a).view(b, a.shape[1], ATT_HEADS, dh).transpose(1, 2)
+            v = self.wv(a).view(b, a.shape[1], ATT_HEADS, dh).transpose(1, 2)
+            att = torch.softmax(q @ k.transpose(-1, -2) / dh**0.5, dim=-1) @ v
+            att = self.do(self.wo(att.transpose(1, 2).reshape(b, T, ATT_HIDDEN)))
+            packed = pack_padded_sequence(att, lt.cpu(), batch_first=True, enforce_sorted=False)
+            _, (h, _) = self.align_enc(packed)
+            return self.out(self.do(torch.cat([h[0], h[1]], -1))).squeeze(-1)
+
+    def batches(S, A, idx):
+        for i in range(0, len(idx), BATCH):
+            bb = idx[i : i + BATCH]
+            st = [torch.from_numpy(S[k]) for k in bb]
+            sa = [torch.from_numpy(A[k]) for k in bb]
+            yield (
+                pad_sequence(st, batch_first=True).to(dev),
+                torch.tensor([len(x) for x in st], device=dev),
+                pad_sequence(sa, batch_first=True).to(dev),
+                torch.tensor([len(x) for x in sa], device=dev),
+                bb,
+            )
+
+    def predict(S, A):
+        net.eval()
+        out = np.zeros(len(S))
+        with torch.no_grad():
+            for xt, lt, xa, la, bb in batches(S, A, np.arange(len(S))):
+                out[bb] = net(xt, lt, xa, la).cpu().numpy()
+        return out
+
+    net = Net().to(dev)
+    opt = torch.optim.Adam(net.parameters(), lr=LR)
+    y_t = torch.tensor(y_tr, dtype=torch.float32, device=dev)
+    for _ in range(epochs):
+        net.train()
+        for xt, lt, xa, la, bb in batches(S_tr, A_tr, np.random.permutation(len(S_tr))):
+            opt.zero_grad()
+            loss = nn.functional.mse_loss(net(xt, lt, xa, la), y_t[bb])
+            loss.backward()
+            opt.step()
+    return predict(S_te, A_te), predict(S_va, A_va)
+
+
+def ensemble3(p_text, p_audio, p_fin, y):
+    """Their `combined()`: α·text + β·audio + (1−α−β)·finance, 51-point grid, β ≤ 1−α."""
+    best = (np.inf, None, None)
+    for a in RATIO_GRID:
+        for bt in RATIO_GRID:
+            if bt <= 1 - a + 1e-12:
+                mse = float(M.mse(y, a * p_text + bt * p_audio + (1 - a - bt) * p_fin))
+                if mse < best[0]:
+                    best = (mse, float(a), float(bt))
+    return best[1], best[2]
+
+
+def audio_matrices(root: Path, call_ids, n_sentences: dict[str, int]) -> list[np.ndarray] | None:
+    """27 Praat features per sentence (H3/W3 cache), z-scored, NaN → 0; None if the cache
+    does not exist. Their audio is 26-d (18 Praat + 8 prosodic, unshipped): substitution."""
+    from ecvol.features.audio.praat import CACHE_FILE, sentence_audio
+
+    if not (root / "ec" / "cache" / CACHE_FILE).is_file():
+        return None
+    aud = sentence_audio(root, n_sentences)
+    allv = np.vstack(list(aud.values()))
+    mu, sd = np.nanmean(allv, 0), np.nanstd(allv, 0)
+    sd = np.where(sd > 0, sd, 1.0)
+    out = []
+    for c in call_ids:
+        a = aud.get(c)
+        if a is None:
+            a = np.zeros((max(n_sentences.get(c, 1), 1), allv.shape[1]), np.float32)
+        out.append(np.nan_to_num((a - mu) / sd).astype(np.float32)[:MAX_SENTENCES])
+    return out
+
+
 # --- driver ---------------------------------------------------------------------
 
 
@@ -292,6 +411,10 @@ def run_sawhney_port(
     stop = set(ENGLISH_STOP_WORDS)
     sents = ec_sentences(root)
     S = [sentence_matrix(sents.get(c, []), vec, stop) for c in df["call_id"]]
+    A = audio_matrices(
+        root, df["call_id"].tolist(), {c: len(sents.get(c, [])) for c in df["call_id"]}
+    )
+    log(f"  audio branch: {'27-d Praat per sentence' if A is not None else 'absent (no cache)'}")
     idx = {s: np.where(df["split"].to_numpy() == s)[0] for s in ("train", "val", "test")}
     tr, va, te = idx["train"], idx["val"], idx["test"]
     rows = []
@@ -338,6 +461,40 @@ def run_sawhney_port(
                     note="",
                 )
             )
+            if A is not None:
+                p_a_te, p_a_va = fit_aligned_audio(
+                    [S[i] for i in tr], [A[i] for i in tr], y[tr],
+                    [S[i] for i in va], [A[i] for i in va],
+                    [S[i] for i in te], [A[i] for i in te],
+                    dropout=AUDIO_DROPOUT[tau], seed=seed,
+                )  # fmt: skip
+                rows.append(
+                    dict(
+                        branch="aligned_audio",
+                        horizon=tau,
+                        seed=seed,
+                        mse=float(M.mse(y[te], p_a_te)),
+                        tuned_on="last_epoch",
+                        persistence_mse=pers,
+                        note="",
+                    )  # noqa: E501
+                )
+                for tuned, (aa, bb) in (
+                    ("test", ensemble3(p_te, p_a_te, p_fin_te, y[te])),
+                    ("val", ensemble3(p_va, p_a_va, p_fin_va, y[va])),
+                ):
+                    comb = aa * p_te + bb * p_a_te + (1 - aa - bb) * p_fin_te
+                    rows.append(
+                        dict(
+                            branch="ensemble_text_audio_finance",
+                            horizon=tau,
+                            seed=seed,
+                            mse=float(M.mse(y[te], comb)),
+                            tuned_on=tuned,
+                            persistence_mse=pers,
+                            note=f"alpha={aa:.2f} beta={bb:.2f}",
+                        )  # noqa: E501
+                    )
             a_test = ensemble(p_te, p_fin_te, y[te])
             a_val = ensemble(p_va, p_fin_va, y[va])
             for tuned, a in (("test", a_test), ("val", a_val)):
