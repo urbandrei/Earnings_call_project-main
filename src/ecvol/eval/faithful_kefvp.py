@@ -113,8 +113,8 @@ def patch_generator(src: str, dataset_dir: str, wanted_list: str) -> str:
 
 
 def prepare_build(root: Path) -> Path:
-    work = root / WORK_REL
-    repo = root / REPO_REL
+    work = (root / WORK_REL).resolve()  # absolute: the scripts run from their own cwd
+    repo = (root / REPO_REL).resolve()
     if not work.exists():
         shutil.copytree(repo, work, ignore=shutil.ignore_patterns("__pycache__", ".git"))
     proj = (work / "proj").as_posix()
@@ -157,7 +157,7 @@ def generate_maec_embeddings(root: Path, *, log=print) -> Path:
     gen.write_text(
         patch_generator(gen_src, (work / "dataset").as_posix(), wanted.as_posix()), encoding="utf-8"
     )
-    raw = (root / MAEC_RAW_REL).as_posix() + "/"
+    raw = (root / MAEC_RAW_REL).resolve().as_posix() + "/"
     cmd = [sys.executable, "-u", gen.name, "--ptm_type", "bert-base-uncased", "--data_path", raw,
            "--max_sent", "512", "--save_path", out.as_posix()]  # fmt: skip
     log(f"  generating MAEC BERT-base embeddings for {len(maec_folders(root))} folders …")
@@ -191,7 +191,7 @@ def run_dataset(root: Path, dataset: str, *, taus=TAUS, log=print) -> pd.DataFra
     )
     if not emb.is_file():
         raise FileNotFoundError(f"text embedding pickle missing: {emb}")
-    raw = (root / (EC_RAW_REL if dataset == "ec" else MAEC_RAW_REL)).as_posix() + "/"
+    raw = (root / (EC_RAW_REL if dataset == "ec" else MAEC_RAW_REL)).resolve().as_posix() + "/"
     for sub in ("log/" + ("ec_kept" if dataset == "ec" else f"maec{dataset}"), "preds_dir/reg"):
         (work / "proj" / sub).mkdir(parents=True, exist_ok=True)
     rows = []
