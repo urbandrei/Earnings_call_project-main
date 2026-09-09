@@ -1,0 +1,5 @@
+# Committed command config (T6R.3). `ecvol reproduce html-faithful` loads this by default.
+# Seeds drive the authors' RTransformer initialisation and the `code` condition's random
+# split; alpha is tuned on validation with the first seed.
+command: reproduce-html-faithful
+seeds: [0, 1, 2]

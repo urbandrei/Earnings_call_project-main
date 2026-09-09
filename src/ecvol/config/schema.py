@@ -118,6 +118,7 @@ class CommandConfig(StrictModel):
         "audit-substrate",
         "reproduce-html",
         "reproduce-scss",
+        "reproduce-html-faithful",
         "audit-code",
         "evaluate-lookahead",
     ]

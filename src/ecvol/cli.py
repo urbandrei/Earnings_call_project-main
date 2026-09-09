@@ -1133,6 +1133,37 @@ def reproduce_html(
     typer.echo(f"run artifact: {write_command_run(cfg, root)}")
 
 
+@reproduce_app.command("html-faithful")
+def reproduce_html_faithful(
+    root: Path = typer.Option(Path("data"), help="Data root directory."),  # noqa: B008
+    seeds: str | None = typer.Option(None, help="Comma-separated seeds; overrides the config."),
+    epochs: int = typer.Option(10, help="Epochs per fit (the authors' notebooks: 10)."),
+    conditions: str = typer.Option(
+        "code,paper,published_split", help="Comma-separated subset of the three conditions."
+    ),
+    config: Path | None = _CONFIG_OPT,
+) -> None:
+    """T6R.3: the authors' HTML classes verbatim on rebuilt WWM-BERT inputs → 6R-F entry."""
+    from ecvol.eval.faithful_html import run_html_faithful
+    from ecvol.tracking import resolve_command_config, write_command_run
+
+    cfg = resolve_command_config("reproduce-html-faithful", config, seeds)
+    table = run_html_faithful(
+        root,
+        conditions=tuple(c.strip() for c in conditions.split(",") if c.strip()),
+        seeds=tuple(cfg.seeds),
+        epochs=epochs,
+    )
+    for r in table.itertuples():
+        typer.echo(
+            f"  {r.condition:>15} tau={r.horizon:<2} n_test={r.n_test:<3} alpha={r.alpha:.1f} "
+            f"MSE={r.mse:.3f}±{r.mse_seed_std:.3f} (published {r.published_mse:.3f}, "
+            f"persistence {r.persistence_mse:.3f}, best epoch {r.best_epoch_mean:.1f})"
+        )
+    typer.echo("Result Table 6R-F (HTML faithful): data/results/result_table_6r_html_faithful.csv")
+    typer.echo(f"run artifact: {write_command_run(cfg, root)}")
+
+
 @reproduce_app.command("scss")
 def reproduce_scss(
     root: Path = typer.Option(Path("data"), help="Data root directory."),  # noqa: B008
