@@ -162,6 +162,8 @@ COMMAND_OUTPUTS: dict[str, tuple[str, ...]] = {
     "reproduce-html": ("results/result_table_6r.csv",),
     "reproduce-scss": ("results/result_table_6r_scss.csv",),
     "reproduce-html-faithful": ("results/result_table_6r_html_faithful.csv",),
+    "reproduce-scss-tsmixer": ("results/result_table_6r_scss_tsmixer.csv",),
+    "reproduce-scss-tmlp": ("results/result_table_6r_scss_tmlp.csv",),
     "audit-code": ("results/code_availability.csv",),
     "evaluate-lookahead": (
         "results/result_table_7.csv",

@@ -1164,6 +1164,54 @@ def reproduce_html_faithful(
     typer.echo(f"run artifact: {write_command_run(cfg, root)}")
 
 
+@reproduce_app.command("scss-tsmixer")
+def reproduce_scss_tsmixer(
+    root: Path = typer.Option(Path("data"), help="Data root directory."),  # noqa: B008
+    config: Path | None = _CONFIG_OPT,
+) -> None:
+    """T6R.3: SCSS's TSMixer baseline with the authors' code, 76 rolling cells on DEC."""
+    from ecvol.eval.faithful_scss import run_grid
+    from ecvol.tracking import resolve_command_config, write_command_run
+
+    cfg = resolve_command_config("reproduce-scss-tsmixer", config, None)
+    t = run_grid(root, "TSMixer", log=typer.echo)
+    typer.echo(
+        f"  {len(t)} cells; |ours - published| max={t['abs_diff'].max():.6f} "
+        f"median={t['abs_diff'].median():.6f}; cells within 1e-3: {(t['abs_diff'] < 1e-3).sum()}"
+    )
+    typer.echo("Result Table 6R-F (SCSS TSMixer): data/results/result_table_6r_scss_tsmixer.csv")
+    typer.echo(f"run artifact: {write_command_run(cfg, root)}")
+
+
+@reproduce_app.command("scss-tmlp")
+def reproduce_scss_tmlp(
+    root: Path = typer.Option(Path("data"), help="Data root directory."),  # noqa: B008
+    embeddings: str = typer.Option(
+        "DEC,DECRandomTicker,DECRandomAll",
+        help="Comma-separated `dataset/Embeddings/openai/*.npz`.",
+    ),
+    config: Path | None = _CONFIG_OPT,
+) -> None:
+    """T6R.3: SCSS's TMLP text model with the authors' code on their OpenAI embeddings."""
+    import pandas as pd
+
+    from ecvol.eval.faithful_scss import run_grid
+    from ecvol.tracking import resolve_command_config, write_command_run
+
+    cfg = resolve_command_config("reproduce-scss-tmlp", config, None)
+    parts = [
+        run_grid(root, "TMLP", emb_file=e.strip(), log=typer.echo) for e in embeddings.split(",")
+    ]
+    t = pd.concat(parts, ignore_index=True)
+    t.to_csv(root / "results" / "result_table_6r_scss_tmlp.csv", index=False, lineterminator="\n")
+    typer.echo(
+        f"  {len(t)} cells; |ours - published| max={t['abs_diff'].max():.6f} "
+        f"median={t['abs_diff'].median():.6f}"
+    )
+    typer.echo("Result Table 6R-F (SCSS TMLP): data/results/result_table_6r_scss_tmlp.csv")
+    typer.echo(f"run artifact: {write_command_run(cfg, root)}")
+
+
 @reproduce_app.command("scss")
 def reproduce_scss(
     root: Path = typer.Option(Path("data"), help="Data root directory."),  # noqa: B008

@@ -1,0 +1,4 @@
+# Committed command config (T6R.3). `ecvol reproduce scss-tsmixer` loads this by default.
+# The authors' run.py fixes its own seed (2021); this list records that single seed.
+command: reproduce-scss-tsmixer
+seeds: [2021]

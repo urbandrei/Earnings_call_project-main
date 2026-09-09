@@ -119,6 +119,8 @@ class CommandConfig(StrictModel):
         "reproduce-html",
         "reproduce-scss",
         "reproduce-html-faithful",
+        "reproduce-scss-tsmixer",
+        "reproduce-scss-tmlp",
         "audit-code",
         "evaluate-lookahead",
     ]
