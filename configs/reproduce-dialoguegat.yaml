@@ -1,0 +1,4 @@
+# Committed command config (T6R.3). `ecvol reproduce dialoguegat` loads this by default.
+# The authors fix seed 1234 in train.py; recorded here.
+command: reproduce-dialoguegat
+seeds: [1234]

@@ -1266,6 +1266,30 @@ def reproduce_sawhney(
     typer.echo(f"run artifact: {write_command_run(cfg, root)}")
 
 
+@reproduce_app.command("dialoguegat")
+def reproduce_dialoguegat(
+    root: Path = typer.Option(Path("data"), help="Data root directory."),  # noqa: B008
+    years: str = typer.Option("2019,2020,2021", help="Comma-separated FinCall years."),
+    taus: str = typer.Option("3,7,15,30", help="Comma-separated horizons."),
+    epochs: int = typer.Option(100, help="Max epochs (theirs: 100, patience 5)."),
+    config: Path | None = _CONFIG_OPT,
+) -> None:
+    """T6R.3: DialogueGAT ported (PyG) onto FinCall turns, their per-year protocol."""
+    from ecvol.eval.port_dialoguegat import run_dialoguegat_port
+    from ecvol.tracking import resolve_command_config, write_command_run
+
+    cfg = resolve_command_config("reproduce-dialoguegat", config, None)
+    run_dialoguegat_port(
+        root,
+        years=tuple(int(y) for y in years.split(",") if y.strip()),
+        taus=tuple(int(t) for t in taus.split(",") if t.strip()),
+        epochs=epochs,
+        log=typer.echo,
+    )
+    typer.echo("Result Table 6R-F (DialogueGAT port): data/results/result_table_6r_dialoguegat.csv")
+    typer.echo(f"run artifact: {write_command_run(cfg, root)}")
+
+
 @reproduce_app.command("scss")
 def reproduce_scss(
     root: Path = typer.Option(Path("data"), help="Data root directory."),  # noqa: B008

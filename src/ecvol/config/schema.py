@@ -123,6 +123,7 @@ class CommandConfig(StrictModel):
         "reproduce-scss-tmlp",
         "reproduce-kefvp",
         "reproduce-sawhney",
+        "reproduce-dialoguegat",
         "audit-code",
         "evaluate-lookahead",
     ]

@@ -1,0 +1,51 @@
+"""T6R.3 DialogueGAT port: corpus encoding, per-year split, graph batching (no PyG needed)."""
+
+import json
+
+import numpy as np
+import pandas as pd
+import pytest
+
+from ecvol.eval import port_dialoguegat as D
+
+
+def test_turns_and_encoding_drop_empty_and_unknown_tokens():
+    tj = json.dumps(
+        [
+            {"role": "management", "text": "Revenue grew strongly this quarter"},
+            {"role": "analyst", "text": ""},
+            {"role": "weird", "text": "zzz"},
+        ]
+    )
+    w2i = {"revenue": 1, "grew": 2, "quarter": 3}
+    ids, roles = D.encode_call(tj, w2i, stop={"this"})
+    assert roles == ["management"] and ids.shape == (1, D.MAX_TOKENS)
+    assert ids[0, :3].tolist() == [1, 2, 3] and ids[0, 3:].sum() == 0
+    assert D.turns(tj)[1][0] == "unknown"
+
+
+def test_year_split_is_chronological_70_10_20():
+    calls = pd.DataFrame(
+        {
+            "call_id": [str(i) for i in range(20)],
+            "ticker": ["T"] * 20,
+            "call_date": [f"2019-{1 + i // 2:02d}-{10 + i % 2:02d}" for i in range(20)],
+            "year": [2019] * 20,
+        }
+    )
+    d = D.year_split(calls, 2019)
+    assert d["split"].tolist() == ["train"] * 14 + ["val"] * 2 + ["test"] * 4
+    assert d["call_date"].is_monotonic_increasing
+
+
+def test_collate_builds_chain_and_speaker_edges():
+    torch = pytest.importorskip("torch")
+    items = [(np.ones((3, D.MAX_TOKENS), np.int64), ["management", "analyst", "management"])]
+    p2gid = {r: i for i, r in enumerate(D.ROLES)}
+    tok, ei, iu, pid, gid, ng = D.collate(items, p2gid, "cpu")
+    assert tok.shape == (3, D.MAX_TOKENS) and ng == 1
+    assert iu.tolist() == [True, True, True, False, False]  # 3 utterances + 2 speakers
+    # chain: 2 undirected edges = 4 directed; speaker: 3 utterances × 2 directions = 6
+    assert ei.shape == (2, 10)
+    assert set(pid.tolist()) == {p2gid["analyst"], p2gid["management"]}
+    assert torch.equal(gid, torch.zeros(5, dtype=torch.long))
