@@ -1,0 +1,4 @@
+# Committed command config (T6R.3). `ecvol reproduce sawhney` loads this by default.
+# The authors set no seed; five seeds give the spread of the 2-epoch BiLSTM.
+command: reproduce-sawhney
+seeds: [0, 1, 2, 3, 4]

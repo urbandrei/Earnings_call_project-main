@@ -122,6 +122,7 @@ class CommandConfig(StrictModel):
         "reproduce-scss-tsmixer",
         "reproduce-scss-tmlp",
         "reproduce-kefvp",
+        "reproduce-sawhney",
         "audit-code",
         "evaluate-lookahead",
     ]

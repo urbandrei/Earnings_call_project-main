@@ -1242,6 +1242,30 @@ def reproduce_kefvp(
     typer.echo(f"run artifact: {write_command_run(cfg, root)}")
 
 
+@reproduce_app.command("sawhney")
+def reproduce_sawhney(
+    root: Path = typer.Option(Path("data"), help="Data root directory."),  # noqa: B008
+    seeds: str | None = typer.Option(None, help="Comma-separated seeds; overrides the config."),
+    epochs: int = typer.Option(2, help="BiLSTM epochs (the authors' script: 2)."),
+    config: Path | None = _CONFIG_OPT,
+) -> None:
+    """T6R.3: Sawhney et al. 2020 (ACM MM) ported to PyTorch on EC with their labels/split."""
+    from ecvol.eval.port_sawhney import run_sawhney_port
+    from ecvol.tracking import resolve_command_config, write_command_run
+
+    cfg = resolve_command_config("reproduce-sawhney", config, seeds)
+    t = run_sawhney_port(root, seeds=tuple(cfg.seeds), epochs=epochs, log=typer.echo)
+    for (b, tuned, h), g in t.groupby(["branch", "tuned_on", "horizon"]):
+        typer.echo(
+            f"  {b:<22} tuned={tuned:<4} tau={h:<2} "
+            f"MSE {g['mse'].mean():.3f}±{g['mse'].std(ddof=0):.3f} "
+            f"(persistence {g['persistence_mse'].iloc[0]:.3f}, "
+            f"published {g['published_mse'].iloc[0]:.3f})"
+        )
+    typer.echo("Result Table 6R-F (Sawhney port): data/results/result_table_6r_sawhney.csv")
+    typer.echo(f"run artifact: {write_command_run(cfg, root)}")
+
+
 @reproduce_app.command("scss")
 def reproduce_scss(
     root: Path = typer.Option(Path("data"), help="Data root directory."),  # noqa: B008
