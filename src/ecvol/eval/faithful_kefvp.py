@@ -130,6 +130,18 @@ def prepare_build(root: Path) -> Path:
     (work / "kefvp" / "final_series_infer.py").write_text(
         patch_infer(infer.read_text(encoding="utf-8"), proj, dataset_dir), encoding="utf-8"
     )
+    # the released script does `from data_utils import set_seed`, but kefvp/data_utils.py
+    # never defines it (it lives in pretrain/data_utils_pretrain_with_kg.py) — copy theirs
+    du = work / "kefvp" / "data_utils.py"
+    if "def set_seed" not in du.read_text(encoding="utf-8"):
+        src = (repo / "pretrain" / "data_utils_pretrain_with_kg.py").read_text(encoding="utf-8")
+        start = src.index("def set_seed(seed: int):")
+        end = src.index("\ndef ", start + 1)
+        du.write_text(
+            du.read_text(encoding="utf-8").rstrip("\n") + "\n\n\n# patched in from pretrain/"
+            "data_utils_pretrain_with_kg.py (the authors' own function)\n" + src[start:end] + "\n",
+            encoding="utf-8",
+        )
     return work
 
 
