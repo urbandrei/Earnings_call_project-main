@@ -237,7 +237,9 @@ def generate_maec_embeddings(root: Path, *, log=print) -> Path:
     cmd = [sys.executable, "-u", gen.name, "--ptm_type", "bert-base-uncased", "--data_path", raw,
            "--max_sent", "512", "--save_path", out.as_posix()]  # fmt: skip
     log(f"  generating MAEC BERT-base embeddings for {len(maec_folders(root))} folders …")
-    proc = subprocess.run(cmd, cwd=gen.parent, capture_output=True, text=True)
+    proc = subprocess.run(
+        cmd, cwd=gen.parent, capture_output=True, text=True, encoding="utf-8", errors="replace"
+    )
     if proc.returncode != 0:
         raise RuntimeError(proc.stderr[-3000:])
     return out
@@ -286,6 +288,8 @@ def run_dataset(root: Path, dataset: str, *, taus=TAUS, log=print) -> pd.DataFra
             cwd=work / "kefvp",
             capture_output=True,
             text=True,
+            encoding="utf-8",
+            errors="replace",
         )
         if proc.returncode != 0:
             raise RuntimeError(f"KeFVP {dataset} tau={tau} failed:\n{proc.stderr[-3000:]}")

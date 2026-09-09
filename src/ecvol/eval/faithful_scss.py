@@ -158,7 +158,12 @@ def run_grid(root: Path, model: str, *, emb_file: str = "DEC", log=print) -> pd.
     for i, (w, y, q) in enumerate(cells, 1):
         args = tsmixer_args(w, y, q) if model == "TSMixer" else tmlp_args(w, y, q, emb_file)
         proc = subprocess.run(
-            [sys.executable, "-u", "run.py", *args], cwd=work, capture_output=True, text=True
+            [sys.executable, "-u", "run.py", *args],
+            cwd=work,
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+            errors="replace",
         )
         if proc.returncode != 0:
             raise RuntimeError(f"{model} win{w} {y}-{q} failed:\n{proc.stderr[-2000:]}")
