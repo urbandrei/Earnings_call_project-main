@@ -357,8 +357,8 @@
   - **HTML** (authors' `RTransformer` verbatim, driver rewritten — the shipped driver decorrelates X and y by three independent unseeded `train_test_split` calls):
     - [x] H1 BERT-WWM-Large sentence embeddings (layer −2 mean, `TextSequence.txt` lines) for 572 EC calls → `data/ec/cache/html_bert_wwm_large_l2_sentences.parquet` (89,722 sentences; 2026-09-09)
     - [~] H2 text-only faithful run (`ecvol reproduce html-faithful`, running 2026-09-09), three conditions: `code` (random 70/10/20, dropout 0 as shipped, min-over-epochs val), `paper` (chronological 7:1:2, dropout 0.5), `published_split` (VolTAGE split3) — vs 1.175/0.372/0.153/0.133
-    - [ ] H3 27 Praat sentence features from `CEO/*.mp3` (parselmouth) → text+audio run vs 0.845/0.349/0.251/0.158 *(shared with Sawhney W3)*
-    - [ ] H4 fix our port's auxiliary label (`our_labels` uses `future_3` at every τ; paper = single-day log|r| at day τ)
+    - [~] H3 27 Praat sentence features from `CEO/*.mp3` (parselmouth) — extracted 2026-09-09 (`data/ec/cache/praat27_sentences.parquet`, 89,722 clips = 89,722 transcript lines, exact positional alignment, ≤1.5% NaN per column); `html-faithful --modality text_audio` queued behind the text run → vs 0.845/0.349/0.251/0.158
+    - [x] H4 (2026-09-09) our port's auxiliary label = ln|r| on session +τ (verified = the shipped `future_Single_τ` to 3 decimals); `ecvol reproduce html` to be re-run for the `ours` rows
   - **KeFVP** (authors' `final_series_infer.py`, path/Windows patches; audio branch is commented out upstream, so text+price only is the faithful setting):
     - [!] K1 obtain the released EC KePt embedding pickle (Drive `1F83bjiJKEpq_MYrc0lzQb9rOLgooz-5E`): `gdown`, `curl` and browser-cookie routes all refused; the file opens in the user's browser → **user download, HANDOFF 2026-09-09**
     - [ ] K2 EC faithful run, 10 repeats × 4 τ → vs 0.610/0.291/0.183/0.114 (mean of 10)
@@ -375,7 +375,7 @@
   - **Sawhney 2020** (faithful impossible as shipped: no `stock_data.csv`, no price series, no lexicons, TF 2.1/Keras 2.3.1/TFA 0.8.3; the released code has no multi-task loss and tunes the ensemble on the test set):
     - [x] W1 (2026-09-09, run 20260909T055052Z) PyTorch port of the text BiLSTM — **finance SVR 0.712/0.370/0.218/0.154 vs published ensemble 0.601/0.308/0.181/0.119** (persistence 1.491/0.563/0.345/0.205); the 2-epoch text BiLSTM sits above persistence (2.14/1.58/1.38/1.40, five seeds) so the ensemble collapses onto finance (α=0 whether tuned on val or on test); 547 EC calls carry their labels (Mittens-retrofitted GloVe sentence means; plain GloVe first, Mittens if time) + SVR financial branch + (α,β) ensemble, their 60/20/20 split and mean-subtracted labels from our EC prices → vs 0.601/0.308/0.181/0.119 (second-hand, KeFVP Table 2)
     - [ ] W2 `[colab]`-free but slow: Mittens retrofit (1000 it on a 6.9k vocab)
-    - [ ] W3 audio branch (26-d Praat/prosodic per utterance, shared with H3) + cross-attention aligned model
+    - [x] W3 (2026-09-09, run 20260909T071241Z) audio branch (27 Praat features/sentence, `features/audio/praat.py`, shared with H3) + aligned cross-attention model: audio alone untrained after their 1 epoch (MSE ≈ 5–6); **3-way ensemble 0.639/0.298/0.175/0.102 test-tuned (α=0, β≈0.1) vs published 0.601/0.308/0.181/0.119** — the published cell is reachable with an untrained audio branch acting as an intercept on the finance SVR
 - **Fidelity ledger:** `docs/faithful_ledger.md` (one section per paper: verbatim / patched / substituted / reason-coded, with file:line of every patch).
 - **Notes:** third-party code stays under `D:\ecvol-data\raw\ref\repos\` (pinned in `data/manifests/repos.json`); patches are applied at run time into a scratch build dir, never committed.
 
