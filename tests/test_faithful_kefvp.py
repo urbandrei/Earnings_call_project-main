@@ -7,6 +7,7 @@ from ecvol.eval import faithful_kefvp as K
 INFER = (
     'log = strftime("%Y-%m-%d_%H:%M:%S", localtime())\n'
     "p = '/your/project/path/log/'\nb = '/your/dataset/path/'\n"
+    "                audio_matrix = audio_path.values\n"
     + "".join(
         f"x{t} = float(price_df[price_df.text_file_name == row['text_file_name']]"
         f"['future_label_{t}'])\n"
