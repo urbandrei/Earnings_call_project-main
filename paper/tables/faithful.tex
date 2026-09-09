@@ -42,7 +42,8 @@ Paper / setting & what ran & $\tau$=3 & 7 & 15 & 30 & $\tau$=3 & 7 & 15 & 30 \\
 \quad \quad persistence & --- & 1.429 & 0.566 & 0.289 & 0.139 & & & & \\
 \quad FinCall 2020 (their 2016 protocol) & port & 0.621 & 0.350 & 0.392 & 0.270 & 0.455 & 0.288 & 0.181 & --- \\
 \quad \quad persistence & --- & 1.409 & 0.335 & 0.184 & 0.101 & & & & \\
-\quad FinCall 2021 (their 2017--18 protocol) & port & \pending{D2} & & & & 0.409 & 0.289 & 0.204 & --- \\
+\quad FinCall 2021 (their 2017--18 protocol) & port & 0.794 & 0.344 & 0.182 & 0.082 & 0.409 & 0.289 & 0.204 & --- \\
+\quad \quad persistence & --- & 1.301 & 0.465 & 0.225 & 0.118 & & & & \\
 \bottomrule
 \end{tabular}
 \caption{\textbf{Reproductions with the authors' own code and data} (Result Table 6R-F, T6R.3). Every cell regenerates from one \texttt{ecvol reproduce} command; the fidelity ledger lists what is verbatim, patched, substituted or reason-coded per paper. Two of the five reproduce cleanly (TSMixer to $10^{-5}$; TMLP within single-seed noise, including the paper's real$\,\approx\,$ticker-shuffled finding). HTML's published recipe does not reach its published long-horizon cells on any split and never beats persistence at $\tau\ge 15$; Sawhney's published ensemble is reachable with untrained text and audio branches acting as an intercept on the finance SVR once the mixing weights are tuned on the test set, as the released code does.}
