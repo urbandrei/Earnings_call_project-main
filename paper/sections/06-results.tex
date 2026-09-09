@@ -157,7 +157,13 @@ authors' model classes verbatim on rebuilt inputs the published recipe (ten epoc
 learning rate $2{\times}10^{-5}$, raw log-volatility targets) is still converging at
 epoch ten---it beats the paper only at $\tau{=}3$ on a random split with dropout 0,
 never reaches persistence at $\tau\ge 15$ on any split, and on the VolTAGE split that
-every later paper inherited it is worse than persistence at every horizon.
+every later paper inherited it is worse than persistence at every horizon. The
+text$+$audio row is the one HTML cell that does reproduce: with the 27 Praat
+features concatenated, the shipped-code condition gives 0.658/0.347/0.244/0.165
+against the published 0.845/0.349/0.251/0.158---and the same inputs under the
+paper's chronological split or the VolTAGE split do not, so what reproduces is the
+random-split protocol the code implements, not the chronological one the paper
+describes.
 \textbf{Sawhney et al.} cannot run as released (an unshipped call inventory, price files
 and lexicons, a TensorFlow~2.1 stack), so we port it: the finance SVR alone gives
 0.712/0.370/0.218/0.154, the text and audio branches are untrained after the two and

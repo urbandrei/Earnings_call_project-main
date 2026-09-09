@@ -16,7 +16,9 @@ Paper / setting & what ran & $\tau$=3 & 7 & 15 & 30 & $\tau$=3 & 7 & 15 & 30 \\
 \quad paper: chronological 7:1:2, dropout 0.5 & text & 0.972 & 0.439 & 0.406 & 0.248 & & & & \\
 \quad published split (VolTAGE), dropout 0.5 & text & 1.231 & 1.122 & 1.063 & 1.479 & & & & \\
 \quad persistence on the shipped labels & --- & 1.485 & 0.570 & 0.340 & 0.202 & & & & \\
-\quad published split & text $+$ 27 Praat & \pending{H3} & & & & 0.845 & 0.349 & 0.251 & 0.158 \\
+\quad code: random 70/10/20, dropout 0 & text $+$ 27 Praat & 0.658 & 0.347 & 0.244 & 0.165 & 0.845 & 0.349 & 0.251 & 0.158 \\
+\quad paper: chronological 7:1:2, dropout 0.5 & text $+$ 27 Praat & 0.876 & 0.520 & 0.291 & 0.239 & & & & \\
+\quad published split (VolTAGE), dropout 0.5 & text $+$ 27 Praat & 2.701 & 1.195 & 1.436 & 1.411 & & & & \\
 \midrule
 \multicolumn{10}{l}{\textit{Same-Company-Same-Signal \citep{scss2024}, DEC --- authors' \texttt{run.py}, per-window means over 19 rolling quarters}} \\
 \quad TSMixer (price history only) & 76 cells & 0.561 & 0.252 & 0.210 & 0.257 & 0.561 & 0.252 & 0.211 & 0.256 \\
@@ -46,6 +48,6 @@ Paper / setting & what ran & $\tau$=3 & 7 & 15 & 30 & $\tau$=3 & 7 & 15 & 30 \\
 \quad \quad persistence & --- & 1.301 & 0.465 & 0.225 & 0.118 & & & & \\
 \bottomrule
 \end{tabular}
-\caption{\textbf{Reproductions with the authors' own code and data} (Result Table 6R-F, T6R.3). Every cell regenerates from one \texttt{ecvol reproduce} command; the fidelity ledger lists what is verbatim, patched, substituted or reason-coded per paper. Two of the five reproduce cleanly (TSMixer to $10^{-5}$; TMLP within single-seed noise, including the paper's real$\,\approx\,$ticker-shuffled finding). HTML's published recipe does not reach its published long-horizon cells on any split and never beats persistence at $\tau\ge 15$; Sawhney's published ensemble is reachable with untrained text and audio branches acting as an intercept on the finance SVR once the mixing weights are tuned on the test set, as the released code does.}
+\caption{\textbf{Reproductions with the authors' own code and data} (Result Table 6R-F, T6R.3). Every cell regenerates from one \texttt{ecvol reproduce} command; the fidelity ledger lists what is verbatim, patched, substituted or reason-coded per paper. Two of the five reproduce cleanly (TSMixer to $10^{-5}$; TMLP within single-seed noise, including the paper's real$\,\approx\,$ticker-shuffled finding). HTML's text-only recipe does not reach its published long-horizon cells on any split, while its text$+$audio row reproduces at $\tau\ge 7$ under the shipped-code condition (random split, dropout 0) and on no other; Sawhney's published ensemble is reachable with untrained text and audio branches acting as an intercept on the finance SVR once the mixing weights are tuned on the test set, as the released code does.}
 \label{tab:faithful}
 \end{table*}
