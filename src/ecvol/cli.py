@@ -1212,6 +1212,36 @@ def reproduce_scss_tmlp(
     typer.echo(f"run artifact: {write_command_run(cfg, root)}")
 
 
+@reproduce_app.command("kefvp")
+def reproduce_kefvp(
+    root: Path = typer.Option(Path("data"), help="Data root directory."),  # noqa: B008
+    dataset: str = typer.Option("ec", help="Comma-separated subset of ec,15,16."),
+    taus: str = typer.Option("3,7,15,30", help="Comma-separated horizons."),
+    config: Path | None = _CONFIG_OPT,
+) -> None:
+    """T6R.3: KeFVP with the authors' final_series_infer.py on its own data (10 repeats)."""
+    from ecvol.eval.faithful_kefvp import generate_maec_embeddings, run_dataset, write_table
+    from ecvol.tracking import resolve_command_config, write_command_run
+
+    cfg = resolve_command_config("reproduce-kefvp", config, None)
+    tau_list = tuple(int(t) for t in taus.split(",") if t.strip())
+    parts = []
+    for ds in [d.strip() for d in dataset.split(",") if d.strip()]:
+        if ds in ("15", "16"):
+            generate_maec_embeddings(root, log=typer.echo)
+        parts.append(run_dataset(root, ds, taus=tau_list, log=typer.echo))
+    out = write_table(root, parts)
+    t = parts[0] if len(parts) == 1 else __import__("pandas").concat(parts)
+    for (ds, h), g in t.groupby(["dataset", "horizon"]):
+        typer.echo(
+            f"  {ds:>3} tau={h:<2} MSE {g['mse'].mean():.3f}±{g['mse'].std():.3f} "
+            f"(best {g['mse'].min():.3f}; published {g['published_mse'].iloc[0]:.3f}"
+            f"±{g['published_std'].iloc[0]:.3f})"
+        )
+    typer.echo(f"Result Table 6R-F (KeFVP): {out}")
+    typer.echo(f"run artifact: {write_command_run(cfg, root)}")
+
+
 @reproduce_app.command("scss")
 def reproduce_scss(
     root: Path = typer.Option(Path("data"), help="Data root directory."),  # noqa: B008

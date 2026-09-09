@@ -1,0 +1,4 @@
+# Committed command config (T6R.3). `ecvol reproduce kefvp` loads this by default.
+# The authors' script seeds itself (--seed default) and repeats training 10x; recorded here.
+command: reproduce-kefvp
+seeds: [0]
