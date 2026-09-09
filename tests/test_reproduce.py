@@ -20,20 +20,37 @@ def test_our_labels_wide_table(tmp_path: Path):
             rows.append(
                 {
                     "call_id": cid,
+                    "ticker": "T",
+                    "as_of": "2017-01-05",
                     "horizon": h,
                     "v_post": -4.0 - h / 10,
                     "v_pre": -4.5,
                     "status": "ok",
                 }
             )
-    rows.append({"call_id": "c", "horizon": 3, "v_post": 0.0, "v_pre": 0.0, "status": "excluded"})
+    rows.append(
+        {
+            "call_id": "c",
+            "ticker": "T",
+            "as_of": "2017-01-05",
+            "horizon": 3,
+            "v_post": 0.0,
+            "v_pre": 0.0,
+            "status": "excluded",
+        }
+    )
     pd.DataFrame(rows).to_parquet(root / "x" / "targets.parquet")
+    (root / "prices").mkdir()
+    dates = [f"2017-01-{d:02d}" for d in range(2, 32)]  # 30 sessions; as_of = index 3
+    close = [100.0 * (1.02**k) for k in range(len(dates))]  # +2% every session
+    pd.DataFrame({"date": dates, "close": close}).to_parquet(root / "prices" / "T.parquet")
     lab = R.our_labels(root, "x")
     assert list(lab.index) == ["a", "b"]  # excluded rows dropped
     assert lab.loc["a", "future_7"] == -4.7 and lab.loc["a", "past_3"] == -4.5
-    assert (
-        lab.loc["a", "future_Single_30"] == lab.loc["a", "future_3"]
-    )  # auxiliary = shortest horizon
+    # auxiliary = ln|return on session +τ| (the KeFVP `future_Single_τ` definition)
+    assert np.isclose(lab.loc["a", "future_Single_3"], np.log(0.02))
+    assert np.isclose(lab.loc["a", "future_Single_15"], np.log(0.02))
+    assert np.isnan(lab.loc["a", "future_Single_30"])  # beyond the price series
 
 
 def test_chunk_sequences_follow_transcript_order(tmp_path: Path):

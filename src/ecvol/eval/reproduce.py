@@ -79,8 +79,27 @@ def our_labels(root: Path, dataset: str) -> pd.DataFrame:
     wide.columns = [f"future_{c}" for c in wide.columns]
     pre.columns = [f"past_{c}" for c in pre.columns]
     out = wide.join(pre)
+    # auxiliary single-day target, as in the paper and the shipped KeFVP file: ln|r| on
+    # session +τ after day 0 (verified against `future_Single_τ` to 3 decimals, 2026-09-09);
+    # earlier versions used future_3 for every τ (H4)
+    from ecvol.data.prices import load_close_series
+
+    meta = t.drop_duplicates("call_id").set_index("call_id")[["ticker", "as_of"]]
+    closes: dict[str, dict[str, float]] = {}
     for tau in TAUS:
-        out[f"future_Single_{tau}"] = wide["future_3"]  # auxiliary: the shortest horizon
+        col = []
+        for cid in out.index:
+            tk, day0 = meta.loc[cid, "ticker"], str(meta.loc[cid, "as_of"])
+            if tk not in closes:
+                closes[tk] = load_close_series(root / "prices", tk)
+            dates = sorted(closes[tk])
+            i = dates.index(day0) if day0 in dates else None
+            if i is None or i + tau >= len(dates):
+                col.append(np.nan)
+                continue
+            r = closes[tk][dates[i + tau]] / closes[tk][dates[i + tau - 1]] - 1.0
+            col.append(np.log(abs(r)) if r != 0 else np.nan)
+        out[f"future_Single_{tau}"] = col
     return out
 
 
