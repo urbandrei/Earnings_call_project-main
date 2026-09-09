@@ -349,6 +349,36 @@
   - [x] Code-availability audit table — `ecvol audit code` → `results/code_availability.csv` (run 20260902T173314Z): 17 papers, **2 runnable / 6 partial / 9 none**, live GitHub probe (status, code files, last push, licence, probe date) + curated reasons; `paper/tables/code_audit.tex`
 - **Notes:** DECISIONS 2026-08-23 §5. **Confound rule: each model runs on its own dataset**, else "the model fails" is indistinguishable from "the model does not transfer." Only 5 of ~20 papers released runnable code; the audit of the other 15 (ECC Analyzer closed/GPT-4, Sound of Risk figures-only, DeFVP repo 0 KB, ECHO-GL "cannot run", NumHTML no URL, GNA-Vol 404, AMA-LSTM stub, AT-FinGPT paywalled) is itself a deliverable. Consider adopting **FinTrust** (`yingpengma/FinTrust`, ACL 2023, by the HTML author) as a complementary perturbation-control axis.
 
+### T6R.3 Faithful-reproduction sprint (five papers) — `[~]` *(opened 2026-09-09; policy DECISIONS 2026-09-09; recon in JOURNAL 2026-09-09)*
+- **Goal:** each of the five slate papers running on its own data with the authors' code where it exists, the published number matched or the gap explained, *before* our controls are added (next sprint).
+- **End result:** one `ecvol reproduce <model>` command per paper (manifested), a per-model fidelity ledger (what is verbatim / patched / substituted / reason-coded), and a Result Table 6R-F (faithful) beside 6R.
+- **Acceptance test:** for every paper, either (a) a run of the authors' code (forward-port patches listed) on the authors' data reaching a stated tolerance of the published cell, or (b) a harness port with every substitution labelled and the published cell shown beside it, or (c) a reason code with the missing artefact named; no cell is called "reproduced" under (b) or (c).
+- **Subtasks (threads; order = certainty):**
+  - **HTML** (authors' `RTransformer` verbatim, driver rewritten — the shipped driver decorrelates X and y by three independent unseeded `train_test_split` calls):
+    - [ ] H1 BERT-WWM-Large sentence embeddings (layer −2 mean, `TextSequence.txt` lines) for 572 EC calls → cache
+    - [ ] H2 text-only faithful run, three conditions: `code` (random 70/10/20, dropout 0 as shipped, min-over-epochs val), `paper` (chronological 7:1:2, dropout 0.5), `published_split` (VolTAGE split3) — vs 1.175/0.372/0.153/0.133
+    - [ ] H3 27 Praat sentence features from `CEO/*.mp3` (parselmouth) → text+audio run vs 0.845/0.349/0.251/0.158 *(shared with Sawhney W3)*
+    - [ ] H4 fix our port's auxiliary label (`our_labels` uses `future_3` at every τ; paper = single-day log|r| at day τ)
+  - **KeFVP** (authors' `final_series_infer.py`, path/Windows patches; audio branch is commented out upstream, so text+price only is the faithful setting):
+    - [ ] K1 obtain the released EC KePt embedding pickle (Drive `1F83bjiJKEpq_MYrc0lzQb9rOLgooz-5E`; gdown refused — see HANDOFF if curl fails too)
+    - [ ] K2 EC faithful run, 10 repeats × 4 τ → vs 0.610/0.291/0.183/0.114 (mean of 10)
+    - [ ] K3 MAEC-15/16 with **regenerated** `raw_bert_base_uncased` sentence embeddings via the authors' `generatePtmEmbeddings.py` (upstream never released these) → vs 0.418/0.187/0.122/0.087 and 0.445/0.279/0.303/0.177 (Table 2 MAEC-16 row is internally inconsistent — noted)
+    - [ ] K4 `[colab]` KePt adaptive pre-training (BERT, 60 epochs, ~5 h GPU; needs the `kept_dataset` Drive pickles) — not run locally
+  - **SCSS** (authors' TSLib-style `run.py`):
+    - [ ] S1 restore the clone (filenames with `|` cannot exist on Windows → sparse checkout minus `earnings_results/`, index dumped to `raw/ref/scss/earnings_results_index.txt`, 304 published MSEs in the names)
+    - [ ] S2 TSMixer, 76 runs on DEC (no external asset) → vs the per-file MSEs
+    - [ ] S3 TMLP on the OpenAI `DEC.npz` embeddings (Drive-only; if unobtainable → HANDOFF; open-encoder substitute is a labelled deviation)
+    - [ ] S4 Aug_PEV / Aug_STPEV on EC + MAEC from the shipped `dataset/EC|MAEC/*.csv` (notebook formulas re-implemented) → vs 0.367/0.296 (EC), 0.283/0.225 (MAEC15), 0.229/0.247 (MAEC16)
+  - **DialogueGAT** (faithful impossible: training pickle unreleased, corpus = authors' private SeekingAlpha re-scrape with real speaker names, labels need CRSP, DGL has no wheels for this stack):
+    - [ ] D1 reason code confirmed with the missing artefacts named (`data/data_swd.pkl`, ~3,400 HTMLs, CRSP)
+    - [ ] D2 harness port: turn-graph GAT (PyG) over BGE-M3 turn embeddings + v_past, chain + speaker edges, on FinCall (named speakers) and MAEC person-label turns (anonymous ⇒ the paper's "w/o speaker" ablation); published 2015/2016/2017 cells shown as reference only
+  - **Sawhney 2020** (faithful impossible as shipped: no `stock_data.csv`, no price series, no lexicons, TF 2.1/Keras 2.3.1/TFA 0.8.3; the released code has no multi-task loss and tunes the ensemble on the test set):
+    - [ ] W1 PyTorch port of the text BiLSTM (Mittens-retrofitted GloVe sentence means; plain GloVe first, Mittens if time) + SVR financial branch + (α,β) ensemble, their 60/20/20 split and mean-subtracted labels from our EC prices → vs 0.601/0.308/0.181/0.119 (second-hand, KeFVP Table 2)
+    - [ ] W2 `[colab]`-free but slow: Mittens retrofit (1000 it on a 6.9k vocab)
+    - [ ] W3 audio branch (26-d Praat/prosodic per utterance, shared with H3) + cross-attention aligned model
+- **Fidelity ledger:** `docs/faithful_ledger.md` (one section per paper: verbatim / patched / substituted / reason-coded, with file:line of every patch).
+- **Notes:** third-party code stays under `D:\ecvol-data\raw\ref\repos\` (pinned in `data/manifests/repos.json`); patches are applied at run time into a scratch build dir, never committed.
+
 ---
 
 ## Phase 9 — Reframe work (benchmark-first) — *DECISIONS 2026-08-23*
