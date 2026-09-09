@@ -19,6 +19,7 @@ are never committed.
 | checked out | the repository's 304 result CSVs carry `|` in their names and cannot be checked out on Windows; the tree was materialised file-by-file with `git show`, and the published per-cell MSEs were read from the file names (`raw/ref/scss/earnings_results_index.txt`) |
 | **result** | **TSMixer, 76 cells: median \|ours − published\| = 1.6e-5, max 4.2e-3, 70/76 within 1e-3** (`result_table_6r_scss_tsmixer.csv`, run 20260909T054744Z) |
 | substituted (name only) | TMLP embeddings fetched from the authors' Drive `Embeddings/openai` (`DEC.npz`, `DEC2RandomTicker.npz`, `DECRandomAll.npz`, each 1800 × 3072 float64 with the same ids); the Drive file `DEC2RandomTicker` is staged as the script's `DECRandomTicker` |
+| **result** | **TMLP, 228 cells (3 embedding sets × 76): median \|ours − published\| 0.014, max 0.22 at single cells** (single seed 2021, GPU non-determinism); per-window means DEC 0.608/0.285/0.215/0.202 vs 0.587/0.283/0.211/0.205, RandomTicker 0.572/0.276/0.213/0.209 vs 0.565/0.273/0.204/0.200, RandomAll 0.646/0.315/0.259/0.249 vs 0.637/0.319/0.255/0.247 — the paper's finding (real ≈ ticker-shuffled embeddings, both below all-shuffled) reproduces (`result_table_6r_scss_tmlp.csv`, run 20260909T065848Z) |
 | earlier | PEV / STPEV reproduced to 3 decimals (`ecvol reproduce scss`, 2026-09-03) |
 
 ## HTML (Yang et al., WWW 2020) — `ecvol reproduce html-faithful`

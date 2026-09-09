@@ -367,7 +367,7 @@
   - **SCSS** (authors' TSLib-style `run.py`):
     - [x] S1 restore the clone (filenames with `|` cannot exist on Windows → sparse checkout minus `earnings_results/`, index dumped to `raw/ref/scss/earnings_results_index.txt`, 304 published MSEs in the names)
     - [x] S2 TSMixer, 76 runs on DEC → **median |ours − published| 1.6e-5, max 4.2e-3, 70/76 within 1e-3** (`result_table_6r_scss_tsmixer.csv`, run 20260909T054744Z)
-    - [~] S3 TMLP on the OpenAI embeddings — the Drive `Embeddings/openai/` subfolder was fetched with `gdown --folder` (`DEC.npz`, `DEC2RandomTicker.npz` ≙ script's `DECRandomTicker`, `DECRandomAll.npz`; 1800 × 3072); `ecvol reproduce scss-tmlp` running 2026-09-09
+    - [x] S3 TMLP on the OpenAI embeddings (Drive `Embeddings/openai/`: `DEC.npz`, `DEC2RandomTicker.npz` ≙ script's `DECRandomTicker`, `DECRandomAll.npz`; 1800 × 3072) — **228 cells, median |Δ| 0.014, window means within ~0.01; real ≈ ticker-shuffled < all-shuffled reproduces** (run 20260909T065848Z)
     - [ ] S4 Aug_PEV / Aug_STPEV on EC + MAEC from the shipped `dataset/EC|MAEC/*.csv` (notebook formulas re-implemented) → vs 0.367/0.296 (EC), 0.283/0.225 (MAEC15), 0.229/0.247 (MAEC16)
   - **DialogueGAT** (faithful impossible: training pickle unreleased, corpus = authors' private SeekingAlpha re-scrape with real speaker names, labels need CRSP, DGL has no wheels for this stack):
     - [x] D1 reason code confirmed with the missing artefacts named (`data/data_swd.pkl`, ~3,400 HTMLs, CRSP)
