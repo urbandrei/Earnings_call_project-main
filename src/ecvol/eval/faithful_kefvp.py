@@ -276,7 +276,25 @@ def run_dataset(root: Path, dataset: str, *, taus=TAUS, log=print) -> pd.DataFra
     for sub in (log_dir, "preds_dir/text_dir/reg"):
         (work / "proj" / sub).mkdir(parents=True, exist_ok=True)
     rows = []
+    out_dir = work / "proj" / "output"
     for tau in taus:
+        # resumable: the script's two output files are copied per (dataset, τ) and reused
+        avg_f = out_dir / f"kefvp_{dataset}_tau{tau}_avg.csv"
+        single_f = out_dir / f"kefvp_{dataset}_tau{tau}_single.csv"
+        if avg_f.is_file() and single_f.is_file():
+            log(f"  KeFVP {dataset} tau={tau}: cached outputs found, skipping the run")
+            avg, single = pd.read_csv(avg_f), pd.read_csv(single_f)
+            for i, (a, s) in enumerate(zip(avg.iloc[:, -1], single.iloc[:, -1], strict=True)):
+                rows.append(
+                    {
+                        "dataset": dataset,
+                        "horizon": tau,
+                        "run": i,
+                        "mse": float(a),
+                        "mse_single": float(s),
+                    }  # noqa: E501
+                )
+            continue
         log(f"  KeFVP {dataset} tau={tau}: {REPEATS} repeats × 200 epochs …")
         proc = subprocess.run(
             [
@@ -292,11 +310,10 @@ def run_dataset(root: Path, dataset: str, *, taus=TAUS, log=print) -> pd.DataFra
             errors="replace",
         )
         if proc.returncode != 0:
-            raise RuntimeError(f"KeFVP {dataset} tau={tau} failed:\n{proc.stderr[-3000:]}")
-        avg = pd.read_csv(work / "proj" / "output" / "3GCN_LSTM_boxplot_cond_avg_day_mse_df.csv")
-        single = pd.read_csv(
-            work / "proj" / "output" / "3GCN_LSTM_boxplot_cond_single_day_mse_df.csv"
-        )
+            raise RuntimeError(f"KeFVP {dataset} tau={tau} failed:\n{(proc.stderr or '')[-3000:]}")
+        shutil.copy(out_dir / "3GCN_LSTM_boxplot_cond_avg_day_mse_df.csv", avg_f)
+        shutil.copy(out_dir / "3GCN_LSTM_boxplot_cond_single_day_mse_df.csv", single_f)
+        avg, single = pd.read_csv(avg_f), pd.read_csv(single_f)
         for i, (a, s) in enumerate(zip(avg.iloc[:, -1], single.iloc[:, -1], strict=True)):
             rows.append(
                 {
