@@ -153,6 +153,22 @@ def prepare_build(root: Path) -> Path:
         "rcParams = {}\n\n\ndef __getattr__(name):\n    return lambda *a, **k: None\n",
         encoding="utf-8",
     )
+    # transformers_model/modules.py lost the `class GraphChannelAttLayer(nn.Module):` header
+    # in the release, so that class's __init__/forward were absorbed into TransformerBlock
+    # (overriding its own) → `NameError: GraphChannelAttLayer`. Restore the header.
+    mod = work / "kefvp" / "transformers_model" / "modules.py"
+    text = mod.read_text(encoding="utf-8")
+    stray = (
+        "    def __init__(self, num_channel, weights=None):\n"
+        "        super(GraphChannelAttLayer, self).__init__()"
+    )
+    if "class GraphChannelAttLayer(nn.Module):" not in text:
+        assert text.count(stray) == 1
+        text = text.replace(
+            stray,
+            "class GraphChannelAttLayer(nn.Module):  # patched: header missing upstream\n" + stray,
+        )
+        mod.write_text(text, encoding="utf-8")
     # transformers_model/__init__.py star-imports transformers_gpu.py, which imports two
     # classes the repository never defines (CrossAttention, GraphConvolution); the training
     # path only needs transformers_model.modules, so the package init is emptied
