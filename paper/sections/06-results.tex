@@ -137,9 +137,46 @@ issues of \S\ref{sec:substrate} do not explain the shortfall. Third, the
 published split with identical labels, collapsing its $R^2_{\mathrm{OOS}}$ against
 persistence at $\tau{=}15$ from 0.21 to 0.04, whereas the 30-session-embargoed
 temporal split costs nothing---the company-overlap confound, not the embargo, is
-what the published protocol leaves unmeasured. The second entry is Same-Company-Same-Signal \citep{scss2024} on its own DEC data: its training-free PEV and STPEV baselines reproduce to three decimals from the shipped file (2023 quarterly averages 0.240 / 0.253 / 0.227 / 0.246 for STPEV against the published 0.239 / 0.253 / 0.227 / 0.246), which confirms the paper's own point in the strongest form: STPEV is same-company history and has \emph{no definition} under a \tickerdisjoint{} evaluation, so the best model on DEC is one that cannot be run in the condition our controls require. The remaining three runnable repositories (KeFVP, DialogueGAT, Sawhney et al.\ 2020) carry reason codes in Table~\ref{tab:code-audit} (Appendix~\ref{app:complete}): each needs a multi-day environment or corpus rebuild (torch 1.12 and an uninstallable requirements file; a dialogue corpus that must be reconstructed; TF~2.1/Keras~2.3.1), and we did not port them. Of seventeen papers in the lineage, two ship code that runs as released, six ship code with a broken environment or missing data, and nine ship nothing usable.
+what the published protocol leaves unmeasured. The second entry is Same-Company-Same-Signal \citep{scss2024} on its own DEC data: its training-free PEV and STPEV baselines reproduce to three decimals from the shipped file (2023 quarterly averages 0.240 / 0.253 / 0.227 / 0.246 for STPEV against the published 0.239 / 0.253 / 0.227 / 0.246), which confirms the paper's own point in the strongest form: STPEV is same-company history and has \emph{no definition} under a \tickerdisjoint{} evaluation, so the best model on DEC is one that cannot be run in the condition our controls require. Of seventeen papers in the lineage, two ship code that runs as released, six ship code with a broken environment or missing data, and nine ship nothing usable (Table~\ref{tab:code-audit}, Appendix~\ref{app:complete}). The next subsection goes further for the five with usable code.
 
 \input{tables/repro}
+
+\subsection{Reproductions with the authors' own code}
+\label{sec:results-faithful}
+Table~\ref{tab:faithful} re-runs the five papers with usable code on their own data,
+with the authors' code wherever it runs and a line-by-line port where it cannot
+(\S\ref{sec:repro-protocol}); the fidelity ledger released with the code records every
+patch and substitution. The outcomes span the whole range. \textbf{Same-Company-Same-Signal}
+reproduces: its TSMixer baseline matches the 76 published cells to a median $10^{-5}$
+from the shipped data alone, and its TMLP text model on the authors' OpenAI embeddings
+matches per-window means within 0.01 and recovers the paper's own finding that
+embeddings shuffled \emph{within} a company do as well as the real ones. \textbf{HTML}
+does not: the released driver splits features and labels with three independent
+unseeded shuffles, so it cannot have produced the published table, and with the
+authors' model classes verbatim on rebuilt inputs the published recipe (ten epochs,
+learning rate $2{\times}10^{-5}$, raw log-volatility targets) is still converging at
+epoch ten---it beats the paper only at $\tau{=}3$ on a random split with dropout 0,
+never reaches persistence at $\tau\ge 15$ on any split, and on the VolTAGE split that
+every later paper inherited it is worse than persistence at every horizon.
+\textbf{Sawhney et al.} cannot run as released (an unshipped call inventory, price files
+and lexicons, a TensorFlow~2.1 stack), so we port it: the finance SVR alone gives
+0.712/0.370/0.218/0.154, the text and audio branches are untrained after the two and
+one epochs the scripts prescribe, and the published ensemble numbers are reproduced
+\emph{because} the released code tunes the mixing weights on the test set, where an
+untrained branch's near-constant output acts as an intercept. \textbf{DialogueGAT}'s
+corpus and labels were never released; ported onto FinCall's speaker turns under the
+paper's per-year protocol it beats persistence at short horizons and collapses on the
+2020 split like every model in \S\ref{sec:results}. \textbf{KeFVP}'s released script
+needed six import-level repairs before it would start (a missing function, a package
+initialiser importing undefined names, a dropped class header, an unreleased package);
+its MAEC rows use sentence embeddings regenerated with the authors' own generator
+because the released ones were never published \pending{K3 running; EC row waits for a
+1.2\,GB file that only a browser session can download}. The pattern the substrate audit
+predicted holds on the field's own code: the results that reproduce are those of
+price-only or same-company baselines, and the neural claims either do not reproduce or
+reproduce for reasons that have nothing to do with the modality they credit.
+
+\input{tables/faithful}
 
 \subsection{Audio by bitrate: the Stage-3 ladder on Earnings25}
 \label{sec:results-clean-audio}

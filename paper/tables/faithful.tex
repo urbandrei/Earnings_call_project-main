@@ -1,0 +1,50 @@
+% Curated from data/results/result_table_6r_{html_faithful,scss_tsmixer,scss_tmlp,sawhney,
+% kefvp,dialoguegat}.csv (T6R.3; run ids in docs/faithful_ledger.md). Test MSE; "ours" is
+% the authors' code on the authors' data unless marked port. Persistence = past_tau.
+\begin{table*}[t]
+\centering
+\small
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{llrrrrrrrr}
+\toprule
+& & \multicolumn{4}{c}{ours} & \multicolumn{4}{c}{published} \\
+\cmidrule(lr){3-6} \cmidrule(lr){7-10}
+Paper / setting & what ran & $\tau$=3 & 7 & 15 & 30 & $\tau$=3 & 7 & 15 & 30 \\
+\midrule
+\multicolumn{10}{l}{\textit{HTML \citep{yang2020html}, EC --- authors' model classes verbatim, inputs rebuilt (WWM-BERT layer $-2$), driver corrected}} \\
+\quad code: random 70/10/20, dropout 0 & text & 0.660 & 0.336 & 0.253 & 0.160 & 1.175 & 0.372 & 0.153 & 0.133 \\
+\quad paper: chronological 7:1:2, dropout 0.5 & text & 0.972 & 0.439 & 0.406 & 0.248 & & & & \\
+\quad published split (VolTAGE), dropout 0.5 & text & 1.231 & 1.122 & 1.063 & 1.479 & & & & \\
+\quad persistence on the shipped labels & --- & 1.485 & 0.570 & 0.340 & 0.202 & & & & \\
+\quad published split & text $+$ 27 Praat & \pending{H3} & & & & 0.845 & 0.349 & 0.251 & 0.158 \\
+\midrule
+\multicolumn{10}{l}{\textit{Same-Company-Same-Signal \citep{scss2024}, DEC --- authors' \texttt{run.py}, per-window means over 19 rolling quarters}} \\
+\quad TSMixer (price history only) & 76 cells & 0.561 & 0.252 & 0.210 & 0.257 & 0.561 & 0.252 & 0.211 & 0.256 \\
+\quad TMLP on OpenAI embeddings & 76 cells & 0.608 & 0.285 & 0.215 & 0.202 & 0.587 & 0.283 & 0.211 & 0.205 \\
+\quad TMLP, embeddings shuffled within ticker & 76 cells & 0.572 & 0.276 & 0.213 & 0.209 & 0.565 & 0.273 & 0.204 & 0.200 \\
+\quad TMLP, embeddings shuffled across all & 76 cells & 0.646 & 0.315 & 0.259 & 0.249 & 0.637 & 0.319 & 0.255 & 0.247 \\
+\midrule
+\multicolumn{10}{l}{\textit{KeFVP \citep{niu2023kefvp} --- authors' \texttt{final\_series\_infer.py} (six import-level release defects patched), 10 repeats}} \\
+\quad MAEC-15, regenerated BERT-base embeddings & text $+$ price & \pending{K3} & & & & 0.418 & 0.187 & 0.122 & 0.087 \\
+\quad MAEC-16, regenerated BERT-base embeddings & text $+$ price & \pending{K3} & & & & 0.445 & 0.279 & 0.303 & 0.177 \\
+\quad EC, released KePt embeddings & text $+$ price & \pending{K1: file needs a browser download} & & & & 0.610 & 0.291 & 0.183 & 0.114 \\
+\midrule
+\multicolumn{10}{l}{\textit{Sawhney et al.\ \citeyearpar{sawhney2020mm}, EC --- PyTorch port of the released scripts (their labels, split, branches); 5 seeds}} \\
+\quad finance SVR (30 past volatilities) & port & 0.712 & 0.370 & 0.218 & 0.154 & & & & \\
+\quad text BiLSTM, their 2 epochs & port & 2.135 & 1.580 & 1.384 & 1.401 & & & & \\
+\quad aligned audio, their 1 epoch & port & 6.514 & 5.295 & 5.368 & 5.130 & & & & \\
+\quad ensemble, $(\alpha,\beta)$ tuned on test (theirs) & port & 0.639 & 0.298 & 0.175 & 0.102 & 0.601 & 0.308 & 0.181 & 0.119 \\
+\quad ensemble, $(\alpha,\beta)$ tuned on validation & port & 0.686 & 0.324 & 0.187 & 0.117 & & & & \\
+\quad persistence on their labels & --- & 1.491 & 0.563 & 0.345 & 0.205 & & & & \\
+\midrule
+\multicolumn{10}{l}{\textit{DialogueGAT \citep{sang2022dialoguegat} --- PyG port on FinCall turns (role-typed speakers); published cells are on their unreleased corpus}} \\
+\quad FinCall 2019 (their 2015 protocol) & port & 0.694 & 0.320 & 0.206 & 0.134 & 0.453 & 0.324 & 0.190 & --- \\
+\quad \quad persistence & --- & 1.429 & 0.566 & 0.289 & 0.139 & & & & \\
+\quad FinCall 2020 (their 2016 protocol) & port & 0.621 & 0.350 & 0.392 & 0.270 & 0.455 & 0.288 & 0.181 & --- \\
+\quad \quad persistence & --- & 1.409 & 0.335 & 0.184 & 0.101 & & & & \\
+\quad FinCall 2021 (their 2017--18 protocol) & port & \pending{D2} & & & & 0.409 & 0.289 & 0.204 & --- \\
+\bottomrule
+\end{tabular}
+\caption{\textbf{Reproductions with the authors' own code and data} (Result Table 6R-F, T6R.3). Every cell regenerates from one \texttt{ecvol reproduce} command; the fidelity ledger lists what is verbatim, patched, substituted or reason-coded per paper. Two of the five reproduce cleanly (TSMixer to $10^{-5}$; TMLP within single-seed noise, including the paper's real$\,\approx\,$ticker-shuffled finding). HTML's published recipe does not reach its published long-horizon cells on any split and never beats persistence at $\tau\ge 15$; Sawhney's published ensemble is reachable with untrained text and audio branches acting as an intercept on the finance SVR once the mixing weights are tuned on the test set, as the released code does.}
+\label{tab:faithful}
+\end{table*}
