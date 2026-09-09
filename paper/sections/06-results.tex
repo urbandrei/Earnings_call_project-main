@@ -131,13 +131,14 @@ values (0.153, 0.133) are \emph{below the persistence floor of the shipped label
 (0.340, 0.202) and no configuration we ran approaches them---the head is worse than
 persistence at $\tau{=}30$ in every condition, as every model in
 \S\ref{sec:results} is on FinCall. Second, label source barely matters
-(0.77/0.44/0.29/0.22 vs.\ 0.74/0.40/0.28/0.22), so the convention and anchor
+(0.77/0.44/0.29/0.22 vs.\ 0.76/0.42/0.29/0.21), so the convention and anchor
 issues of \S\ref{sec:substrate} do not explain the shortfall. Third, the
-\tickerdisjoint{} split raises the head's MSE by 9\% / 23\% / 46\% / 36\% over the
+\tickerdisjoint{} split raises the head's MSE by 2\% / 20\% / 38\% / 36\% over the
 published split with identical labels, collapsing its $R^2_{\mathrm{OOS}}$ against
-persistence at $\tau{=}15$ from 0.21 to 0.04, whereas the 30-session-embargoed
-temporal split costs nothing---the company-overlap confound, not the embargo, is
-what the published protocol leaves unmeasured. The second entry is Same-Company-Same-Signal \citep{scss2024} on its own DEC data: its training-free PEV and STPEV baselines reproduce to three decimals from the shipped file (2023 quarterly averages 0.240 / 0.253 / 0.227 / 0.246 for STPEV against the published 0.239 / 0.253 / 0.227 / 0.246), which confirms the paper's own point in the strongest form: STPEV is same-company history and has \emph{no definition} under a \tickerdisjoint{} evaluation, so the best model on DEC is one that cannot be run in the condition our controls require. Of seventeen papers in the lineage, one ships code that runs as released, seven ship code that needs repair or missing inputs before it starts, and nine ship nothing usable (Table~\ref{tab:code-audit}, Appendix~\ref{app:complete}). The next subsection goes further for the five with usable code.
+persistence at $\tau{=}15$ from 0.20 to 0.06, whereas the 30-session-embargoed
+temporal split costs 2\% / 7\% / $-$2\% / 24\%---at the horizons where the head has
+any signal, the company-overlap confound, not the embargo, is what the published
+protocol leaves unmeasured. The second entry is Same-Company-Same-Signal \citep{scss2024} on its own DEC data: its training-free PEV and STPEV baselines reproduce to three decimals from the shipped file (2023 quarterly averages 0.240 / 0.253 / 0.227 / 0.246 for STPEV against the published 0.239 / 0.253 / 0.227 / 0.246), which confirms the paper's own point in the strongest form: STPEV is same-company history and has \emph{no definition} under a \tickerdisjoint{} evaluation, so the best model on DEC is one that cannot be run in the condition our controls require. Of seventeen papers in the lineage, one ships code that runs as released, seven ship code that needs repair or missing inputs before it starts, and nine ship nothing usable (Table~\ref{tab:code-audit}, Appendix~\ref{app:complete}). The next subsection goes further for the five with usable code.
 
 \input{tables/repro}
 

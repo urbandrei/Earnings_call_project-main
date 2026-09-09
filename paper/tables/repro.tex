@@ -1,4 +1,5 @@
-% Curated from data/results/result_table_6r.csv (run 20260902T153103Z-reproduce-html-1ac22d6e).
+% Curated from data/results/result_table_6r.csv (run 20260909T223252Z-reproduce-html-1ac22d6e;
+% auxiliary label = ln|r| on session +tau since T6R.3/H4; published-label rows unchanged).
 % HTML head (Yang et al. 2020 sentence-level transformer + multi-task loss) over frozen
 % BGE-M3 chunk sequences, on EC. "published" split = VolTAGE train/val/test files
 % (560 calls; the paper used 576). Test MSE, mean of 3 seeds; persistence = past_tau.
@@ -13,13 +14,13 @@ paper, published split, published labels & HTML (text, WWM-BERT) & 1.175 & 0.372
 \midrule
 published split, published labels & HTML head (BGE-M3) & 0.769 & 0.436 & 0.285 & 0.223 \\
  & persistence & 1.485 & 0.570 & 0.340 & 0.202 \\
-published split, our labels & HTML head (BGE-M3) & 0.739 & 0.395 & 0.277 & 0.218 \\
- & persistence & 1.825 & 0.585 & 0.333 & 0.183 \\
+published split, our labels & HTML head (BGE-M3) & 0.760 & 0.420 & 0.285 & 0.214 \\
+ & persistence & 1.826 & 0.590 & 0.333 & 0.183 \\
 \midrule
-embargoed temporal, our labels & HTML head (BGE-M3) & 0.745 & 0.418 & 0.273 & 0.231 \\
- & persistence & 1.946 & 0.623 & 0.353 & 0.192 \\
-\tickerdisjoint{}, our labels & HTML head (BGE-M3) & \textbf{0.808} & \textbf{0.486} & \textbf{0.404} & \textbf{0.296} \\
- & persistence & 1.670 & 0.731 & 0.418 & 0.213 \\
+embargoed temporal, our labels & HTML head (BGE-M3) & 0.778 & 0.448 & 0.278 & 0.265 \\
+ & persistence & 1.948 & 0.629 & 0.353 & 0.192 \\
+\tickerdisjoint{}, our labels & HTML head (BGE-M3) & \textbf{0.773} & \textbf{0.503} & \textbf{0.394} & \textbf{0.291} \\
+ & persistence & 1.670 & 0.728 & 0.418 & 0.213 \\
 \bottomrule
 \end{tabular}
 \caption{\textbf{Reproduced prior model under leakage-proof evaluation} (Result Table 6R,
@@ -28,6 +29,6 @@ at $\tau{=}3$ (and beats the published number) but not the published $\tau{=}15$
 $\tau{=}30$ values, which lie \emph{below the persistence floor} of the shipped labels
 themselves; at $\tau{=}30$ every condition is worse than persistence. Moving the
 same head and labels from the published split to a \tickerdisjoint{} split raises
-test MSE by 9\% / 23\% / 46\% / 36\%; the embargoed temporal split does not.}
+test MSE by 2\% / 20\% / 38\% / 36\%; the embargoed temporal split costs 2\% / 7\% / $-$2\% / 24\%.}
 \label{tab:repro}
 \end{table}
