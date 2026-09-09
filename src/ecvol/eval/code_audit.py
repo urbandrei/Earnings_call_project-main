@@ -56,9 +56,12 @@ PAPERS: tuple[Paper, ...] = (
         "Yang et al., HTML",
         "WWW 2020",
         "YangLinyi/HTML-Hierarchical-Transformer-based-Multi-task-Learning-for-Volatility-Prediction",
-        "runnable",
-        "PyTorch model code, no requirements file; head ported and run on EC",
-        "ecvol reproduce html",
+        "partial",
+        "model classes run verbatim; the released driver imports TensorFlow-1 set_random_seed "
+        "and torchtext and splits features and labels with independent unseeded shuffles; "
+        "inputs (WWM-BERT .npy, Praat features) behind dead Drive links — rebuilt; run with a "
+        "corrected driver (T6R.3)",
+        "ecvol reproduce html-faithful; ecvol reproduce html",
     ),
     Paper(
         "sawhney2020",
@@ -66,8 +69,10 @@ PAPERS: tuple[Paper, ...] = (
         "ACM MM 2020",
         "midas-research/multimodal-financial-forecasting",
         "partial",
-        "TF 2.1 / Keras 2.3.1 pins; last push 2020; not ported (multi-day environment rebuild)",
-        "",
+        "TF 2.1 / Keras 2.3.1 / tensorflow-addons 0.8.3 pins; unshipped call inventory, price "
+        "files and two lexicons; text-feature script returns after one record; no multi-task "
+        "loss in the released code; ported line by line to PyTorch (T6R.3)",
+        "ecvol reproduce sawhney (port)",
     ),
     Paper(
         "voltage2020",
@@ -85,18 +90,22 @@ PAPERS: tuple[Paper, ...] = (
         "EMNLP Findings 2023",
         "hankniu01/KeFVP",
         "partial",
-        "full code but requirements.txt does not install as written (spacy==.5.3, pickle); "
-        "torch 1.12 predates Blackwell; MAEC KePt embeddings unavailable upstream; not ported",
-        "",
+        "requirements.txt does not install as written; the script starts only after six "
+        "import-level repairs (missing set_seed, package init importing undefined names, a "
+        "dropped class header, an unreleased `latent` package, plotting imports); MAEC "
+        "embeddings never released (regenerated with the authors' generator); EC KePt pickle "
+        "Drive-only (T6R.3)",
+        "ecvol reproduce kefvp",
     ),
     Paper(
         "dialoguegat2023",
         "DialogueGAT",
-        "2023",
+        "Findings of EMNLP 2022",
         "sangyx/DialogueGAT",
         "partial",
-        "MIT code, tau<=15 only; the dialogue corpus must be rebuilt before it runs; not ported",
-        "",
+        "MIT code, tau<=15 only; training pickle, SeekingAlpha corpus and CRSP labels never "
+        "released; DGL has no wheels for torch 2.11; ported (PyG) onto FinCall turns (T6R.3)",
+        "ecvol reproduce dialoguegat (port)",
     ),
     Paper(
         "scss2025",
@@ -104,8 +113,9 @@ PAPERS: tuple[Paper, ...] = (
         "Findings of ACL 2025",
         "piqueyd/Same-Company-Same-Signal",
         "runnable",
-        "MIT; ships DEC with features and rolling masks; PEV/STPEV reproduced to 3 decimals",
-        "ecvol reproduce scss",
+        "MIT; ships DEC with features and rolling masks; PEV/STPEV to 3 decimals, TSMixer "
+        "76 cells to 1e-5, TMLP 228 cells within single-seed noise on the authors' embeddings",
+        "ecvol reproduce scss; scss-tsmixer; scss-tmlp",
     ),
     Paper(
         "fintrust2023",
