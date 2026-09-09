@@ -27,6 +27,11 @@ Verified 2026-09-02: a fresh clone + `uv sync` (CPU) passes the full gate and `e
 | prices | `ecvol prices pull` (2014–2022 archive) | yfinance + Tiingo fallback (`TIINGO_API_KEY` in `.env`) |
 | lineage files | mirrored under `data/raw/ref/lineage/` (see `lineage_manifest.json`) | KeFVP / VolTAGE / HTML repos pinned to commit SHAs |
 | DEC (SCSS) | `data/raw/ref/scss/DEC.csv` from the SCSS repository | CC-BY-4.0 fields |
+| lineage repositories (T6R.3) | full clones under `data/raw/ref/repos/{HTML,KeFVP,VolTAGE,DialogueGAT,Sawhney2020,SCSS}` at the commits in `data/manifests/repos.json`; SCSS materialised file-by-file (`git show`) because its result filenames contain `\|` | patched at run time into `data/work/`, never committed (`docs/faithful_ledger.md`) |
+| GloVe 6B | `data/raw/ref/glove/glove.6B.zip` (https://nlp.stanford.edu/data/glove.6B.zip) | Sawhney / DialogueGAT ports |
+| SCSS OpenAI embeddings | Drive folder `1s0NPA8RoPQ_MT70NLZDboToq3Enyh0bV` → `data/raw/ref/scss_drive/Embeddings/openai/*.npz` | TMLP |
+| KeFVP EC KePt embeddings | Drive file `1F83bjiJKEpq_MYrc0lzQb9rOLgooz-5E` → `data/work/kefvp/dataset/text_embedding/…` (browser download; see HANDOFF) | KeFVP EC row |
+| Praat sentence features (EC) | `python -c "from ecvol.features.audio.praat import extract_ec_praat; …"` (parselmouth, ~5 min on 6 cores) → `data/ec/cache/praat27_sentences.parquet` | HTML text+audio, Sawhney audio |
 
 Then: `ecvol targets build` · `ecvol splits build` · `ecvol timing build {fincall,maec,earnings25}` ·
 `ecvol timing targets {fincall,maec,earnings25}`.
@@ -60,6 +65,11 @@ ecvol audio emotion2vec --dataset {fincall,earnings25}
 | Earnings25 audio by bitrate | `ecvol evaluate-audio-earnings25` | `result_table_3_earnings25.csv`, `audio_*_earnings25.csv` | `configs/evaluate-audio-earnings25.yaml` |
 | Table 7 (lookahead) + anchor variant | `ecvol evaluate-lookahead` | `result_table_7.csv`, `result_table_7_measured.csv` | `configs/evaluate-lookahead.yaml` |
 | rendered md/tex | `ecvol report` | `result_table_{1..4}.{md,tex}` | — |
+| 6R-F: HTML faithful (authors' classes) | `ecvol reproduce html-faithful [--modality text_audio]` | `result_table_6r_html_faithful.csv` | `configs/reproduce-html-faithful.yaml` |
+| 6R-F: SCSS TSMixer / TMLP (authors' run.py) | `ecvol reproduce scss-tsmixer` · `scss-tmlp` | `result_table_6r_scss_{tsmixer,tmlp}.csv` | `configs/reproduce-scss-*.yaml` |
+| 6R-F: KeFVP (authors' final_series_infer.py) | `ecvol reproduce kefvp --dataset ec,15,16` | `result_table_6r_kefvp.csv` | `configs/reproduce-kefvp.yaml` |
+| 6R-F: Sawhney 2020 (PyTorch port) | `ecvol reproduce sawhney` | `result_table_6r_sawhney.csv` | `configs/reproduce-sawhney.yaml` |
+| 6R-F: DialogueGAT (PyG port on FinCall) | `uv run --with torch_geometric ecvol reproduce dialoguegat` | `result_table_6r_dialoguegat.csv` | `configs/reproduce-dialoguegat.yaml` |
 
 Curated paper tables under `paper/tables/*.tex` copy cells from these CSVs; the header comment of
 each names its source file and run id.
