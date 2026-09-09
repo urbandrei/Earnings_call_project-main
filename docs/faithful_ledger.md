@@ -30,7 +30,8 @@ are never committed.
 | **rewritten** | the driver `run_gpu.go`: as shipped it splits features, main labels and auxiliary labels with three independent, unseeded `train_test_split` calls (X and y decorrelated), seeds nothing, and its lr warm-up sets `opt.lr` (a no-op). Our driver keeps X/y aligned and seeds; three labelled conditions: `code` (random 70/10/20, dropout 0.0 as in the code, min-over-epochs on validation), `paper` (chronological 7:1:2, dropout 0.5 as in Table 1), `published_split` (VolTAGE split3) |
 | substituted | inputs: 1024-d sentence vectors recomputed as BERT-WWM-Large layer −2 token means over `TextSequence.txt` lines (the repo's `Bert-As-A-Service-Readme.md` recipe; the original `.npy` is behind a dead Drive link); labels from the lineage's shipped files (VolTAGE `future_τ/past_τ`, KeFVP `future_Single_τ`) |
 | pending | 27 Praat sentence features for the text+audio row (H3, shared with Sawhney W3) |
-| our port | `ecvol reproduce html` (2026-09-03) additionally substitutes the encoder (BGE-M3 chunks) and `nn.MultiheadAttention`; its auxiliary label used `future_3` for every τ — H4 fixes this |
+| our port | `ecvol reproduce html` (2026-09-03) additionally substitutes the encoder (BGE-M3 chunks) and `nn.MultiheadAttention`; its auxiliary label used `future_3` for every τ — **H4 (2026-09-09): now ln\|r\| on session +τ, the shipped `future_Single_τ` definition** |
+| verified (labels) | against our EC price store, to 3 decimals: the shipped `future_Single_τ` (KeFVP) = ln\|r\| on session +τ; the shipped `future_τ` (VolTAGE/KeFVP split3) = ln √(Σ(r−r̄)²/τ) over sessions +1…+τ — i.e. the **mean-subtracted** formula (Sawhney's), not Qin & Yang's un-demeaned Eq. 1; our trading-day `v_post` differs by the demeaning only |
 
 ## KeFVP (Niu et al., Findings of EMNLP 2023) — `ecvol reproduce kefvp`
 
