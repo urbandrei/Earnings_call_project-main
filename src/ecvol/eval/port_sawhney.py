@@ -509,7 +509,8 @@ def run_sawhney_port(
                         note=f"alpha={a:.2f}",
                     )
                 )
-        log(f"  tau={tau}: finance {rows[-1 - 3 * len(seeds)]['mse']:.3f}; persistence {pers:.3f}")
+        fin = next(r["mse"] for r in rows if r["branch"] == "finance_svr" and r["horizon"] == tau)
+        log(f"  tau={tau}: finance {fin:.3f}; persistence {pers:.3f}")
     t = pd.DataFrame(rows)
     t["n_test"] = len(te)
     t["published_mse"] = t["horizon"].map(PUBLISHED)
