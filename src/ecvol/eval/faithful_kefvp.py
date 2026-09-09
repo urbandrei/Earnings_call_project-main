@@ -268,7 +268,10 @@ def run_dataset(root: Path, dataset: str, *, taus=TAUS, log=print) -> pd.DataFra
     if not emb.is_file():
         raise FileNotFoundError(f"text embedding pickle missing: {emb}")
     raw = (root / (EC_RAW_REL if dataset == "ec" else MAEC_RAW_REL)).resolve().as_posix() + "/"
-    for sub in ("log/" + ("ec_kept" if dataset == "ec" else f"maec{dataset}"), "preds_dir/reg"):
+    # the script writes its logs under log/<log_save_path> and its per-epoch predictions
+    # under preds_dir/<pred_save_dir>/<run_mode> (pred_save_dir defaults to `text_dir`)
+    log_dir = "log/" + ("ec_kept" if dataset == "ec" else f"maec{dataset}")
+    for sub in (log_dir, "preds_dir/text_dir/reg"):
         (work / "proj" / sub).mkdir(parents=True, exist_ok=True)
     rows = []
     for tau in taus:
