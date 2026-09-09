@@ -65,6 +65,13 @@ def patch_infer(src: str, proj: str, dataset_dir: str) -> str:
     out = out.replace(
         'strftime("%Y-%m-%d_%H:%M:%S", localtime())', 'strftime("%Y-%m-%d_%H-%M-%S", localtime())'
     )
+    # pandas 3 keeps an object dtype after `.loc[:, k] = pd.to_numeric(...)`, so `.values`
+    # becomes an object array that torch.tensor refuses; cast (numerically identical)
+    old_vals = "                audio_matrix = audio_path.values\n"
+    assert src.count(old_vals) == 1
+    out = out.replace(
+        old_vals, "                audio_matrix = audio_path.values.astype(np.float64)  # patched\n"
+    )
     sel = "price_df[price_df.text_file_name == row['text_file_name']]"
     for tau in TAUS:
         old = f"float({sel}['future_label_{tau}'])"
