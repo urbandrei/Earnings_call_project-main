@@ -146,6 +146,13 @@ def prepare_build(root: Path) -> Path:
         "rcParams = {}\n\n\ndef __getattr__(name):\n    return lambda *a, **k: None\n",
         encoding="utf-8",
     )
+    # transformers_model/__init__.py star-imports transformers_gpu.py, which imports two
+    # classes the repository never defines (CrossAttention, GraphConvolution); the training
+    # path only needs transformers_model.modules, so the package init is emptied
+    (work / "kefvp" / "transformers_model" / "__init__.py").write_text(
+        "# patched: upstream star-import of transformers_gpu fails on undefined names\n",
+        encoding="utf-8",
+    )
     # `latent` (KumaGate / kumadist) is imported at module level but never shipped and never
     # instantiated on the CondAutoformer path: stub it so the import resolves, fail loudly if used
     lat = work / "kefvp" / "latent"
