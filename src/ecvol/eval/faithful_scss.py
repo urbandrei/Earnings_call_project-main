@@ -32,6 +32,7 @@ import pandas as pd
 TREE_REL = "raw/ref/repos/SCSS_tree/SameCompanySameSignal"
 INDEX_REL = "raw/ref/scss/earnings_results_index.txt"
 WORK_REL = "work/scss"
+EMBEDDINGS_REL = "raw/ref/scss_drive/Embeddings/openai"
 YEARS = (2019, 2020, 2021, 2022, 2023)
 QUARTERS = ("first", "second", "third", "fourth")
 WINDOWS = (3, 7, 15, 30)
@@ -79,6 +80,15 @@ def prepare_build(root: Path) -> Path:
     files = {rel: (work / rel).read_text(encoding="utf-8") for rel, _, _ in PATCHES}
     for rel, text in apply_patches(files).items():
         (work / rel).write_text(text, encoding="utf-8")
+    # the OpenAI embeddings (Drive-only, mirrored under raw/ref/scss_drive) go where the
+    # loader expects them; the Drive file `DEC2RandomTicker.npz` is the script's
+    # `DECRandomTicker` (same 1800 ids, same shape) — renamed on copy, recorded in the ledger
+    src = root / EMBEDDINGS_REL
+    if src.is_dir():
+        dst = work / "dataset" / "Embeddings" / "openai"
+        dst.mkdir(parents=True, exist_ok=True)
+        for f in src.glob("*.npz"):
+            shutil.copy2(f, dst / f.name.replace("DEC2RandomTicker", "DECRandomTicker"))
     return work
 
 
