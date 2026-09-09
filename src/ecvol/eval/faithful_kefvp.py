@@ -130,6 +130,40 @@ def prepare_build(root: Path) -> Path:
     (work / "kefvp" / "final_series_infer.py").write_text(
         patch_infer(infer.read_text(encoding="utf-8"), proj, dataset_dir), encoding="utf-8"
     )
+    # matplotlib/pylab are imported at module level by the attention layers but only used
+    # for plotting that the training path never reaches: shadow them with no-op stubs
+    stub = work / "kefvp" / "matplotlib"
+    stub.mkdir(exist_ok=True)
+    (stub / "__init__.py").write_text(
+        "# patched stub: plotting is never reached in training\n"
+        "def use(*a, **k):\n    return None\n",
+        encoding="utf-8",
+    )
+    (stub / "pyplot.py").write_text(
+        "def __getattr__(name):\n    return lambda *a, **k: None\n", encoding="utf-8"
+    )
+    (work / "kefvp" / "pylab.py").write_text(
+        "rcParams = {}\n\n\ndef __getattr__(name):\n    return lambda *a, **k: None\n",
+        encoding="utf-8",
+    )
+    # `latent` (KumaGate / kumadist) is imported at module level but never shipped and never
+    # instantiated on the CondAutoformer path: stub it so the import resolves, fail loudly if used
+    lat = work / "kefvp" / "latent"
+    (lat / "nn").mkdir(parents=True, exist_ok=True)
+    (lat / "__init__.py").write_text(
+        "# patched stub: package not released upstream\n", encoding="utf-8"
+    )
+    (lat / "nn" / "__init__.py").write_text("", encoding="utf-8")
+    unavailable = (
+        "class {name}:\n    def __init__(self, *a, **k):\n"
+        "        raise ImportError('KeFVP `latent` package is not released upstream')\n"
+    )
+    (lat / "nn" / "kuma_gate.py").write_text(unavailable.format(name="KumaGate"), encoding="utf-8")
+    (lat / "kumadist.py").write_text(
+        unavailable.format(name="IndependentLatentModel")
+        + unavailable.format(name="DependentLatentModel"),
+        encoding="utf-8",
+    )
     # the released script does `from data_utils import set_seed`, but kefvp/data_utils.py
     # never defines it (it lives in pretrain/data_utils_pretrain_with_kg.py) — copy theirs
     du = work / "kefvp" / "data_utils.py"
