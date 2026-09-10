@@ -310,7 +310,18 @@ def run_dataset(root: Path, dataset: str, *, taus=TAUS, log=print) -> pd.DataFra
             errors="replace",
         )
         if proc.returncode != 0:
-            raise RuntimeError(f"KeFVP {dataset} tau={tau} failed:\n{(proc.stderr or '')[-3000:]}")
+            err_f = work / "proj" / "log" / f"kefvp_{dataset}_tau{tau}_stderr.txt"
+            err_f.write_text(proc.stderr or "", encoding="utf-8")
+            # the tail is tqdm progress; report the last real lines instead
+            real = [
+                ln
+                for ln in (proc.stderr or "").splitlines()
+                if "it/s]" not in ln and "s/it]" not in ln
+            ]
+            raise RuntimeError(
+                f"KeFVP {dataset} tau={tau} failed (rc {proc.returncode}; full stderr: {err_f}):\n"
+                + "\n".join(real[-25:])
+            )
         shutil.copy(out_dir / "3GCN_LSTM_boxplot_cond_avg_day_mse_df.csv", avg_f)
         shutil.copy(out_dir / "3GCN_LSTM_boxplot_cond_single_day_mse_df.csv", single_f)
         avg, single = pd.read_csv(avg_f), pd.read_csv(single_f)
