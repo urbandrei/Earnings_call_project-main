@@ -177,11 +177,16 @@ paper's per-year protocol it beats persistence at short horizons and collapses o
 needed six import-level repairs before it would start (a missing function, a package
 initialiser importing undefined names, a dropped class header, an unreleased package);
 its MAEC rows use sentence embeddings regenerated with the authors' own generator
-because the released ones were never published \pending{K3 running; EC row waits for a
-1.2\,GB file that only a browser session can download}. The pattern the substrate audit
+because the released ones were never published---and they reproduce: seven of the
+eight MAEC cells fall within one published standard deviation of the published mean
+over ten repeats, with matching seed spreads (the eighth, MAEC-16 at $\tau{=}15$, is
+the row of their table that does not average to its own stated mean). The EC row
+waits on the released KePt embedding file \pending{K1: a 1.2\,GB file that only a
+browser session can download}. The pattern the substrate audit
 predicted holds on the field's own code: the results that reproduce are those of
-price-only or same-company baselines, and the neural claims either do not reproduce or
-reproduce for reasons that have nothing to do with the modality they credit.
+price-only or same-company baselines and of a price-series model conditioned on
+text (KeFVP, whose audio branch is disabled in its own code), and the claims that
+credit a modality either do not reproduce or reproduce for reasons unrelated to it.
 
 \input{tables/faithful}
 

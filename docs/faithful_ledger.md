@@ -45,6 +45,7 @@ are never committed.
 | noted | the audio branch is commented out in `CondInfer.forward` upstream, so the published model is text + price; the unshipped HuBERT audio pickle is replaced by zeros by the script's own `try/except` |
 | pending (user) | EC headline run needs the released KePt-BERT-large embedding pickle (`text_embedding`, Drive `1F83bjiJKEpq_MYrc0lzQb9rOLgooz-5E`): the file is visible in the browser but `gdown`/`curl` are refused — HANDOFF |
 | substituted | MAEC-15/16: `raw_bert_base_uncased` sentence embeddings regenerated with the authors' `generatePtmEmbeddings.py` (`bert-base-uncased` pooler output, 512 sentences × 768); patched: `Text.txt` → MAEC's `text.txt`, chunked encoding (64 sentences at a time, numerically identical), only the 2,165 split folders encoded |
+| **result (MAEC)** | ten repeats × 200 epochs, `raw_bert_base_uncased` regenerated: **MAEC-15 0.419±0.007 / 0.185±0.002 / 0.123±0.005 / 0.086±0.002 vs published 0.418±0.012 / 0.187±0.003 / 0.122±0.003 / 0.087±0.002; MAEC-16 0.442±0.074 / 0.288±0.040 / 0.363±0.038 / 0.188±0.032 vs 0.445±0.064 / 0.279±0.044 / 0.303±0.036 / 0.177±0.033** — 7/8 cells within one published std, seed spreads match; the miss is the MAEC-16 τ=15 cell of a row that does not average to its stated mean (`result_table_6r_kefvp.csv`, run 20260911T044848Z) |
 | `[colab]` | KePt adaptive pre-training (BERT, 60 epochs, ~5 h GPU, needs the `kept_dataset` Drive pickles) — not run locally |
 
 ## Sawhney et al. (ACM MM 2020) — `ecvol reproduce sawhney` (harness port)
