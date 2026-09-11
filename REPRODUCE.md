@@ -69,7 +69,7 @@ ecvol audio emotion2vec --dataset {fincall,earnings25}
 | 6R-F: SCSS TSMixer / TMLP (authors' run.py) | `ecvol reproduce scss-tsmixer` · `scss-tmlp` | `result_table_6r_scss_{tsmixer,tmlp}.csv` | `configs/reproduce-scss-*.yaml` |
 | 6R-F: KeFVP (authors' final_series_infer.py) | `ecvol reproduce kefvp --dataset ec,15,16` | `result_table_6r_kefvp.csv` | `configs/reproduce-kefvp.yaml` |
 | 6R-F: Sawhney 2020 (PyTorch port) | `ecvol reproduce sawhney` | `result_table_6r_sawhney.csv` | `configs/reproduce-sawhney.yaml` |
-| 6R-F: DialogueGAT (PyG port on FinCall) | `uv run --with torch_geometric ecvol reproduce dialoguegat` | `result_table_6r_dialoguegat.csv` | `configs/reproduce-dialoguegat.yaml` |
+| 6R-F: DialogueGAT (PyG port on FinCall) | `ecvol reproduce dialoguegat` (gpu group) | `result_table_6r_dialoguegat.csv` | `configs/reproduce-dialoguegat.yaml` |
 
 Curated paper tables under `paper/tables/*.tex` copy cells from these CSVs; the header comment of
 each names its source file and run id.

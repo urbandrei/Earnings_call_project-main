@@ -241,3 +241,9 @@ These come from the backlog scan; the loop will move each into **Active** when i
   --dataset ec` runs the headline EC reproduction (10 repeats × 4 horizons, ~1 h GPU). While it
   is missing, the EC row of Table 6R-F stays a reason code and the MAEC rows carry regenerated
   BERT-base embeddings (labelled).
+- **2026-09-11 · Disk — C: hit 0 bytes twice during the sprint.** Neither time was the project's data: the HuggingFace
+  cache (31.7 GB, now on `D:\hf-cache\hub` behind a junction) and then user-side directories (Windows Store
+  packages ~53 GB, `AppData\Local\Programs` ~23 GB, CapCut ~10 GB, Downloads ~13 GB). `data/work` now lives on
+  `D:\ecvol-data\work_repo` behind a junction. With <4 GB free, `git` and `uv` fail mid-write; please free
+  C: before the next long run (nothing in this repository needs to be deleted).
+
