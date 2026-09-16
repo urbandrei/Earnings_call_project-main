@@ -53,3 +53,15 @@ def test_sentence_matrix_pads_and_means():
 def test_ensemble_picks_best_alpha():
     y = np.array([1.0, 2.0, 3.0])
     assert P.ensemble(y, np.zeros(3), y) == 1.0 and P.ensemble(np.zeros(3), y, y) == 0.0
+
+
+def test_condition_splits_map_committed_splits_and_exclude_the_rest(tmp_path):
+    (tmp_path / "splits").mkdir()
+    pd.DataFrame(
+        {"call_id": ["a", "b", "c"], "ticker": ["A", "B", "C"], "as_of": ["x"] * 3,
+         "split": ["train", "embargo", "test"]}
+    ).to_csv(tmp_path / "splits" / "ec_temporal.csv", index=False)  # fmt: skip
+    df = pd.DataFrame({"call_id": ["a", "b", "c", "d"], "split": ["train", "val", "test", "test"]})
+    out = P.condition_splits(tmp_path, df, ("their", "embargoed"))
+    assert out["their"].tolist() == ["train", "val", "test", "test"]
+    assert out["embargoed"].tolist() == ["train", "embargo", "test", "excluded"]

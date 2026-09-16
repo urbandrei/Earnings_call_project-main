@@ -1139,7 +1139,8 @@ def reproduce_html_faithful(
     seeds: str | None = typer.Option(None, help="Comma-separated seeds; overrides the config."),
     epochs: int = typer.Option(10, help="Epochs per fit (the authors' notebooks: 10)."),
     conditions: str = typer.Option(
-        "code,paper,published_split", help="Comma-separated subset of the three conditions."
+        "code,paper,published_split",
+        help="Comma-separated subset of code, paper, published_split, embargoed, ticker_disjoint.",
     ),
     modality: str = typer.Option("text", help="text | text_audio (27 Praat features/sentence)."),
     config: Path | None = _CONFIG_OPT,
@@ -1270,6 +1271,9 @@ def reproduce_sawhney(
     root: Path = typer.Option(Path("data"), help="Data root directory."),  # noqa: B008
     seeds: str | None = typer.Option(None, help="Comma-separated seeds; overrides the config."),
     epochs: int = typer.Option(2, help="BiLSTM epochs (the authors' script: 2)."),
+    conditions: str = typer.Option(
+        "their,embargoed,ticker_disjoint", help="Split conditions (T6R.4 controls)."
+    ),
     config: Path | None = _CONFIG_OPT,
 ) -> None:
     """T6R.3: Sawhney et al. 2020 (ACM MM) ported to PyTorch on EC with their labels/split."""
@@ -1277,10 +1281,16 @@ def reproduce_sawhney(
     from ecvol.tracking import resolve_command_config, write_command_run
 
     cfg = resolve_command_config("reproduce-sawhney", config, seeds)
-    t = run_sawhney_port(root, seeds=tuple(cfg.seeds), epochs=epochs, log=typer.echo)
-    for (b, tuned, h), g in t.groupby(["branch", "tuned_on", "horizon"]):
+    t = run_sawhney_port(
+        root,
+        seeds=tuple(cfg.seeds),
+        epochs=epochs,
+        conditions=tuple(c.strip() for c in conditions.split(",") if c.strip()),
+        log=typer.echo,
+    )
+    for (cond, b, tuned, h), g in t.groupby(["condition", "branch", "tuned_on", "horizon"]):
         typer.echo(
-            f"  {b:<22} tuned={tuned:<4} tau={h:<2} "
+            f"  {cond:<15} {b:<22} tuned={tuned:<4} tau={h:<2} "
             f"MSE {g['mse'].mean():.3f}±{g['mse'].std(ddof=0):.3f} "
             f"(persistence {g['persistence_mse'].iloc[0]:.3f}, "
             f"published {g['published_mse'].iloc[0]:.3f})"

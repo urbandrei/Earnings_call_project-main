@@ -54,6 +54,14 @@ CLIP = 1.0
 ALPHAS = tuple(round(a, 1) for a in np.arange(0.1, 1.05, 0.1))
 PUBLISHED_TEXT_MSE = {3: 1.175, 7: 0.372, 15: 0.153, 30: 0.133}
 CONDITIONS = {"code": 0.0, "paper": 0.5, "published_split": 0.5}  # → dropout
+# T6R.4 controls: the `code` anchor's hyperparameters, only the split changes (DECISIONS
+# 2026-09-16). `embargo` rows of the temporal split are dropped like any non-split label.
+CONDITIONS.update({"embargoed": 0.0, "ticker_disjoint": 0.0})
+SPLIT_FILES = {
+    "published_split": "ec_published.csv",
+    "embargoed": "ec_temporal.csv",
+    "ticker_disjoint": "ec_ticker_disjoint.csv",
+}
 
 
 # --- the authors' classes, verbatim -------------------------------------------
@@ -312,7 +320,7 @@ def run_html_faithful(
                 elif cond == "paper":
                     split = chronological_split(labels, ids)
                 else:
-                    split = pd.read_csv(root / "splits" / "ec_published.csv", dtype=str)
+                    split = pd.read_csv(root / "splits" / SPLIT_FILES[cond], dtype=str)
                     split = split[split["call_id"].isin(ids)]
                 pos = {c: i for i, c in enumerate(ids)}
                 idx = {
@@ -368,9 +376,10 @@ def run_html_faithful(
     out = root / "results"
     out.mkdir(parents=True, exist_ok=True)
     path = out / "result_table_6r_html_faithful.csv"
-    if path.is_file():  # keep the other modality's rows
+    if path.is_file():  # keep every (model, condition) this invocation did not re-run
         prev = pd.read_csv(path)
-        prev = prev[prev["model"] != f"html_{modality}_faithful"]
+        rerun = (prev["model"] == f"html_{modality}_faithful") & prev["condition"].isin(conditions)
+        prev = prev[~rerun]
         table = pd.concat([prev, table], ignore_index=True)
     table.to_csv(path, index=False, lineterminator="\n")
     return table

@@ -60,3 +60,11 @@ def test_pad_zero_fills_to_longest():
 @pytest.mark.parametrize("cond", list(FH.CONDITIONS))
 def test_conditions_have_dropout(cond):
     assert FH.CONDITIONS[cond] in (0.0, 0.5)
+
+
+def test_controlled_conditions_change_only_the_split():
+    # DECISIONS 2026-09-16: same hyperparameters as the `code` anchor, a committed split file
+    for cond in ("embargoed", "ticker_disjoint"):
+        assert FH.CONDITIONS[cond] == FH.CONDITIONS["code"]
+        assert FH.SPLIT_FILES[cond].startswith("ec_")
+    assert set(FH.SPLIT_FILES) == set(FH.CONDITIONS) - {"code", "paper"}

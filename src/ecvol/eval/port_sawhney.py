@@ -396,8 +396,30 @@ def build_frame(root: Path) -> tuple[pd.DataFrame, dict[str, dict[str, float]]]:
     return df, closes
 
 
+# T6R.4 controls (DECISIONS 2026-09-16): only the split changes; calls a split file does not
+# place in train/val/test (absent, or `embargo`) are excluded from that condition.
+CONTROL_SPLITS = {"embargoed": "ec_temporal.csv", "ticker_disjoint": "ec_ticker_disjoint.csv"}
+CONDITIONS = ("their", *CONTROL_SPLITS)
+
+
+def condition_splits(root: Path, df: pd.DataFrame, conditions=CONDITIONS) -> dict[str, np.ndarray]:
+    out = {}
+    for cond in conditions:
+        if cond == "their":
+            out[cond] = df["split"].to_numpy()
+            continue
+        s = pd.read_csv(root / "splits" / CONTROL_SPLITS[cond], dtype={"call_id": str})
+        out[cond] = df["call_id"].map(s.set_index("call_id")["split"]).fillna("excluded").to_numpy()
+    return out
+
+
 def run_sawhney_port(
-    root: Path, *, seeds=(0, 1, 2, 3, 4), epochs: int = EPOCHS, log=print
+    root: Path,
+    *,
+    seeds=(0, 1, 2, 3, 4),
+    epochs: int = EPOCHS,
+    conditions=CONDITIONS,
+    log=print,
 ) -> pd.DataFrame:
     from sklearn.feature_extraction.text import ENGLISH_STOP_WORDS
 
@@ -415,104 +437,112 @@ def run_sawhney_port(
         root, df["call_id"].tolist(), {c: len(sents.get(c, [])) for c in df["call_id"]}
     )
     log(f"  audio branch: {'27-d Praat per sentence' if A is not None else 'absent (no cache)'}")
-    idx = {s: np.where(df["split"].to_numpy() == s)[0] for s in ("train", "val", "test")}
-    tr, va, te = idx["train"], idx["val"], idx["test"]
     rows = []
-    for tau in TAUS:
-        y = df[f"future_{tau}"].to_numpy(dtype=float)
-        pers = float(M.mse(y[te], df.loc[te, f"past_{tau}"].to_numpy(dtype=float)))
-        X = np.vstack(
-            [
-                past_vol_vector(closes[t], d, tau)
-                for t, d in zip(df["ticker"], df["call_date"], strict=True)
-            ]
-        )
-        p_fin_te, p_fin_va, params = fit_svr(X[tr], y[tr], X[te], X[va])
-        rows.append(
-            dict(
-                branch="finance_svr",
-                horizon=tau,
-                seed=-1,
-                mse=float(M.mse(y[te], p_fin_te)),
-                tuned_on="cv",
-                persistence_mse=pers,
-                note=str(params),
+    for cond, split in condition_splits(root, df, conditions).items():
+        idx = {s: np.where(split == s)[0] for s in ("train", "val", "test")}
+        tr, va, te = idx["train"], idx["val"], idx["test"]
+        log(f"  condition {cond}: train {len(tr)} / val {len(va)} / test {len(te)}")
+        start = len(rows)
+        for tau in TAUS:
+            y = df[f"future_{tau}"].to_numpy(dtype=float)
+            pers = float(M.mse(y[te], df.loc[te, f"past_{tau}"].to_numpy(dtype=float)))
+            X = np.vstack(
+                [
+                    past_vol_vector(closes[t], d, tau)
+                    for t, d in zip(df["ticker"], df["call_date"], strict=True)
+                ]
             )
-        )
-        for seed in seeds:
-            p_te, p_va = fit_text_bilstm(
-                [S[i] for i in tr],
-                y[tr],
-                [S[i] for i in va],
-                y[va],
-                [S[i] for i in te],
-                dropout=DROPOUT[tau],
-                seed=seed,
-                epochs=epochs,
-            )
+            p_fin_te, p_fin_va, params = fit_svr(X[tr], y[tr], X[te], X[va])
             rows.append(
                 dict(
-                    branch="text_bilstm",
+                    branch="finance_svr",
                     horizon=tau,
-                    seed=seed,
-                    mse=float(M.mse(y[te], p_te)),
-                    tuned_on="val",
+                    seed=-1,
+                    mse=float(M.mse(y[te], p_fin_te)),
+                    tuned_on="cv",
                     persistence_mse=pers,
-                    note="",
+                    note=str(params),
                 )
             )
-            if A is not None:
-                p_a_te, p_a_va = fit_aligned_audio(
-                    [S[i] for i in tr], [A[i] for i in tr], y[tr],
-                    [S[i] for i in va], [A[i] for i in va],
-                    [S[i] for i in te], [A[i] for i in te],
-                    dropout=AUDIO_DROPOUT[tau], seed=seed,
-                )  # fmt: skip
+            for seed in seeds:
+                p_te, p_va = fit_text_bilstm(
+                    [S[i] for i in tr],
+                    y[tr],
+                    [S[i] for i in va],
+                    y[va],
+                    [S[i] for i in te],
+                    dropout=DROPOUT[tau],
+                    seed=seed,
+                    epochs=epochs,
+                )
                 rows.append(
                     dict(
-                        branch="aligned_audio",
+                        branch="text_bilstm",
                         horizon=tau,
                         seed=seed,
-                        mse=float(M.mse(y[te], p_a_te)),
-                        tuned_on="last_epoch",
+                        mse=float(M.mse(y[te], p_te)),
+                        tuned_on="val",
                         persistence_mse=pers,
                         note="",
-                    )  # noqa: E501
+                    )
                 )
-                for tuned, (aa, bb) in (
-                    ("test", ensemble3(p_te, p_a_te, p_fin_te, y[te])),
-                    ("val", ensemble3(p_va, p_a_va, p_fin_va, y[va])),
-                ):
-                    comb = aa * p_te + bb * p_a_te + (1 - aa - bb) * p_fin_te
+                if A is not None:
+                    p_a_te, p_a_va = fit_aligned_audio(
+                        [S[i] for i in tr], [A[i] for i in tr], y[tr],
+                        [S[i] for i in va], [A[i] for i in va],
+                        [S[i] for i in te], [A[i] for i in te],
+                        dropout=AUDIO_DROPOUT[tau], seed=seed,
+                    )  # fmt: skip
                     rows.append(
                         dict(
-                            branch="ensemble_text_audio_finance",
+                            branch="aligned_audio",
                             horizon=tau,
                             seed=seed,
-                            mse=float(M.mse(y[te], comb)),
-                            tuned_on=tuned,
+                            mse=float(M.mse(y[te], p_a_te)),
+                            tuned_on="last_epoch",
                             persistence_mse=pers,
-                            note=f"alpha={aa:.2f} beta={bb:.2f}",
+                            note="",
                         )  # noqa: E501
                     )
-            a_test = ensemble(p_te, p_fin_te, y[te])
-            a_val = ensemble(p_va, p_fin_va, y[va])
-            for tuned, a in (("test", a_test), ("val", a_val)):
-                rows.append(
-                    dict(
-                        branch="ensemble_text_finance",
-                        horizon=tau,
-                        seed=seed,
-                        mse=float(M.mse(y[te], a * p_te + (1 - a) * p_fin_te)),
-                        tuned_on=tuned,
-                        persistence_mse=pers,
-                        note=f"alpha={a:.2f}",
+                    for tuned, (aa, bb) in (
+                        ("test", ensemble3(p_te, p_a_te, p_fin_te, y[te])),
+                        ("val", ensemble3(p_va, p_a_va, p_fin_va, y[va])),
+                    ):
+                        comb = aa * p_te + bb * p_a_te + (1 - aa - bb) * p_fin_te
+                        rows.append(
+                            dict(
+                                branch="ensemble_text_audio_finance",
+                                horizon=tau,
+                                seed=seed,
+                                mse=float(M.mse(y[te], comb)),
+                                tuned_on=tuned,
+                                persistence_mse=pers,
+                                note=f"alpha={aa:.2f} beta={bb:.2f}",
+                            )  # noqa: E501
+                        )
+                a_test = ensemble(p_te, p_fin_te, y[te])
+                a_val = ensemble(p_va, p_fin_va, y[va])
+                for tuned, a in (("test", a_test), ("val", a_val)):
+                    rows.append(
+                        dict(
+                            branch="ensemble_text_finance",
+                            horizon=tau,
+                            seed=seed,
+                            mse=float(M.mse(y[te], a * p_te + (1 - a) * p_fin_te)),
+                            tuned_on=tuned,
+                            persistence_mse=pers,
+                            note=f"alpha={a:.2f}",
+                        )
                     )
-                )
-        fin = next(r["mse"] for r in rows if r["branch"] == "finance_svr" and r["horizon"] == tau)
-        log(f"  tau={tau}: finance {fin:.3f}; persistence {pers:.3f}")
+            fin = next(
+                r["mse"]
+                for r in rows[start:]
+                if r["branch"] == "finance_svr" and r["horizon"] == tau
+            )
+            log(f"  tau={tau}: finance {fin:.3f}; persistence {pers:.3f}")
+        for r in rows[start:]:
+            r["condition"], r["n_test"] = cond, len(te)
     t = pd.DataFrame(rows)
-    t["n_test"] = len(te)
     t["published_mse"] = t["horizon"].map(PUBLISHED)
     t["text_features"] = "glove6b_mean_union_vocab"
     out = root / "results"
