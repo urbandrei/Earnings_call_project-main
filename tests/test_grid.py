@@ -90,6 +90,24 @@ def test_build_grid_consolidates_and_holm(tmp_path: Path):
     assert s1["holm_p_vs_stage1"].isna().all()
 
 
+def test_build_grid_keeps_only_trading_day_rows_of_table1(tmp_path: Path):
+    # T9.1 appended calendar-convention rows to Table 1; Stages 2–4 are trading-day only,
+    # so the grid must not pick the calendar rows up as duplicate S0/S1 cells.
+    root = tmp_path / "data"
+    base = {"dataset": "fincall", "split": "temporal", "target": "dv", "horizon": 3}
+    rows1 = [
+        {**base, "model": "har", "segment": "test", "n": n, "mse": m, "r2_oos": 0.1,
+         "convention": conv}
+        for conv, n, m in (("trading", 92, 0.69), ("calendar", 53, 1.02))
+    ]  # fmt: skip
+    (root / "results").mkdir(parents=True)
+    pd.DataFrame(rows1).to_csv(root / "results" / "result_table_1.csv", index=False)
+    _stage_csv(root, "result_table_2.csv", "ridge_text_pastvol", dm=0.01)
+    g = grid.build_grid(root)
+    har = g[g.stage == "S0_HAR"]
+    assert har[["n", "mse"]].values.tolist() == [[92, 0.69]]
+
+
 def test_render_table4_holm_star():
     rows = []
     for stage in R.TABLE4_STAGE_ORDER:

@@ -38,6 +38,8 @@ def build_grid(root: Path) -> pd.DataFrame:
         if not path.is_file():
             continue
         df = pd.read_csv(path)
+        if "convention" in df.columns:  # Stages 2–4 are trading-day only (T9.1)
+            df = df[df["convention"] == "trading"]
         sel = df[df["model"] == model].copy()
         if sel.empty:
             continue
