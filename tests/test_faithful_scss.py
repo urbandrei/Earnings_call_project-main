@@ -52,3 +52,59 @@ def test_grid_has_76_cells_and_args_match_script():
     a = FS.tsmixer_args(7, 2021, "second")
     assert a[a.index("--prediction_window") + 1] == "7"
     assert a[a.index("--d_model") + 1] == "512"
+
+
+PRINTED = """Overlapping Earnings per Ticker (OET): 19.775 (2195 / 111)
+
+Volatility Prediction Error Comparison
+============================================================
+Method       | Mean     | 3-day    | 7-day    | 15-day   | 30-day
+------------------------------------------------------------
+PEV          | 0.399    | 0.743    | 0.389    | 0.262    | 0.201
+Aug_STPEV    | 0.296    | 0.569    | 0.293    | 0.201    | 0.122
+============================================================
+"""
+
+
+def test_parse_printed_table_drops_the_mean_column():
+    t = FS.parse_printed_table(PRINTED)
+    assert t == {"PEV": [0.743, 0.389, 0.262, 0.201], "Aug_STPEV": [0.569, 0.293, 0.201, 0.122]}
+
+
+def _cell(src, text=""):
+    outs = [{"output_type": "stream", "text": [text]}] if text else []
+    return {"cell_type": "code", "source": [src], "outputs": outs}
+
+
+def test_notebook_functions_load_verbatim_and_published_maps_by_file():
+    nb = {
+        "cells": [
+            _cell("def build_aug_stpev_mean(e, h):\n    return pd.DataFrame({'a': [1]})\n"),
+            _cell("def run_pev_stpev(e, w, a):\n    return np.float64(w)\n"),
+            _cell("def run_EC_MAEC(e, a):\n    return 'ok'\n"),
+            _cell(
+                "x = pd.read_csv(f'{dataset_dir}/MAEC/MAEC16_earnings.csv')\n"
+                "results = run_EC_MAEC(x, y)\n",
+                PRINTED,
+            ),
+        ]
+    }
+    ns = FS.load_notebook_functions(nb)
+    assert ns["run_pev_stpev"](None, 7, None) == 7.0 and ns["run_EC_MAEC"](0, 0) == "ok"
+    assert FS.published_aug(nb) == {"maec16": FS.parse_printed_table(PRINTED)}
+
+
+def test_history_window_crossings_counts_targets_reaching_the_test_period():
+    import pandas as pd
+
+    earnings = pd.DataFrame(
+        {"cate": ["train", "test", "test"], "ticker": ["A", "A", "B"],
+         "day_earnings": ["2017-01-02", "2017-03-06", "2017-03-08"]}  # Monday 6 March
+    )  # fmt: skip
+    history = pd.DataFrame(
+        {"ticker": ["A", "A", "B", "C", "A"],
+         "day_earnings": ["2017-02-27", "2017-03-01", "2017-01-02", "2017-03-03", "2017-03-06"]}
+    )  # fmt: skip
+    # used: A 02-27 (Mon), A 03-01 (Wed), B 01-02; C is not a test ticker, A 03-06 is not < first
+    assert FS.history_window_crossings(earnings, history, 3) == (3, 1)  # Wed+3bd = Mon 03-06
+    assert FS.history_window_crossings(earnings, history, 7) == (3, 2)  # Mon 02-27+7bd = 03-08

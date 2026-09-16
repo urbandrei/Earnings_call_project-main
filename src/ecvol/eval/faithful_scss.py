@@ -189,3 +189,127 @@ def run_grid(root: Path, model: str, *, emb_file: str = "DEC", log=print) -> pd.
         out / f"result_table_6r_scss_{model.lower()}.csv", index=False, lineterminator="\n"
     )
     return table
+
+
+# --- S4: Aug_PEV / Aug_STPEV on EC and MAEC (the authors' notebook `SS.ipynb`) ---------
+#
+# The notebook's three functions (`build_aug_stpev_mean`, `run_pev_stpev`, `run_EC_MAEC`)
+# are exec-loaded from their cells unchanged and run on the shipped `dataset/EC|MAEC`
+# files exactly as the notebook's driver cells do. The published MSEs are the tables the
+# notebook printed when the authors ran it (stored cell outputs); their code rounds every
+# MSE to 3 decimals, so "reproduced" here means equal at that precision.
+
+NOTEBOOK_REL = "raw/ref/repos/SCSS_tree/SS.ipynb"
+AUG_FUNCTIONS = ("build_aug_stpev_mean", "run_pev_stpev", "run_EC_MAEC")
+AUG_METHODS = ("PEV", "STPEV", "Aug_PEV", "Aug_STPEV")
+AUG_DATASETS = {  # key → (earnings file, augmented history file) under dataset/
+    "ec": ("EC/EC_earnings.csv", "EC/augmented_EC_earnings_history.csv"),
+    "maec15": ("MAEC/MAEC15_earnings.csv", "MAEC/augmented_MAEC15_earnings_history.csv"),
+    "maec16": ("MAEC/MAEC16_earnings.csv", "MAEC/augmented_MAEC16_earnings_history.csv"),
+}
+_TABLE_ROW = re.compile(r"^(PEV|STPEV|Aug_PEV|Aug_STPEV)\s*\|((?:\s*[\d.]+\s*\|?)+)$")
+
+
+def parse_printed_table(text: str) -> dict[str, list[float]]:
+    """{method: [mse τ=3, 7, 15, 30]} from the notebook's printed comparison table."""
+    out = {}
+    for line in text.splitlines():
+        m = _TABLE_ROW.match(line.strip())
+        if m:
+            vals = [float(v) for v in m[2].split("|") if v.strip()]
+            out[m[1]] = vals[1:]  # first column is the mean over windows
+    return out
+
+
+def load_notebook_functions(nb: dict) -> dict:
+    """Exec the code cells that define the three functions, verbatim."""
+    import numpy as np
+
+    ns: dict = {"pd": pd, "np": np}
+    for name in AUG_FUNCTIONS:
+        cells = [
+            "".join(c["source"])
+            for c in nb["cells"]
+            if c["cell_type"] == "code" and f"def {name}(" in "".join(c["source"])
+        ]
+        assert len(cells) == 1, f"{name}: expected one defining cell, found {len(cells)}"
+        exec(cells[0], ns)  # noqa: S102 — third-party code, pinned commit, see ledger
+    return ns
+
+
+def published_aug(nb: dict) -> dict[str, dict[str, list[float]]]:
+    """{dataset: {method: [4 MSEs]}} from the stored outputs of the notebook's driver cells."""
+    out = {}
+    for c in nb["cells"]:
+        src = "".join(c["source"])
+        if c["cell_type"] != "code" or "results = run_EC_MAEC(" not in src:
+            continue
+        key = next(k for k, (f, _) in AUG_DATASETS.items() if f.split("/")[-1] in src)
+        text = "".join("".join(o.get("text", [])) for o in c.get("outputs", []))
+        out[key] = parse_printed_table(text)
+    return out
+
+
+def history_window_crossings(
+    earnings: pd.DataFrame, history: pd.DataFrame, tau: int
+) -> tuple[int, int]:
+    """(history rows the notebook uses, of which the τ-session window reaches the test period).
+
+    Mirrors `build_aug_stpev_mean`'s filter (`day_earnings < min test date`, test tickers);
+    a row "crosses" when day_earnings + τ business days ≥ the first test date (weekday
+    approximation, no holiday calendar) — i.e. its target overlaps the test window.
+    """
+    import numpy as np
+
+    test = earnings[earnings["cate"] == "test"]
+    first = min(test["day_earnings"])
+    used = history[(history["day_earnings"] < first) & history["ticker"].isin(test["ticker"])]
+    days = used["day_earnings"].to_numpy(dtype="datetime64[D]")
+    ends = np.busday_offset(days, tau, roll="forward")
+    return int(len(used)), int((ends >= np.datetime64(first, "D")).sum())
+
+
+def run_aug_baselines(root: Path) -> pd.DataFrame:
+    import contextlib
+    import io
+    import json
+
+    nb = json.loads((root / NOTEBOOK_REL).read_text(encoding="utf-8"))
+    ns = load_notebook_functions(nb)
+    published = published_aug(nb)
+    data = root / TREE_REL / "dataset"
+    rows = []
+    for key, (earn_file, hist_file) in AUG_DATASETS.items():
+        earnings = pd.read_csv(data / earn_file)
+        if key != "ec":  # the notebook's MAEC driver cells
+            earnings["day_earnings"] = earnings["time"]
+        history = pd.read_csv(data / hist_file)
+        printed = io.StringIO()
+        with contextlib.redirect_stdout(printed):
+            aug = ns["build_aug_stpev_mean"](earnings, history)
+            results = ns["run_EC_MAEC"](earnings, aug)
+        n_test = int((earnings["cate"] == "test").sum())
+        for method, mses in zip(AUG_METHODS, results, strict=True):
+            for tau, mse in zip(WINDOWS, mses, strict=True):
+                n_hist, n_cross = history_window_crossings(earnings, history, tau)
+                pub = published[key][method][WINDOWS.index(tau)]
+                rows.append(
+                    {
+                        "dataset": key,
+                        "method": method,
+                        "window": tau,
+                        "mse": float(mse),
+                        "published_mse": pub,
+                        "abs_diff": abs(float(mse) - pub),
+                        "n_test": n_test,
+                        "n_aug_history": n_hist if method.startswith("Aug") else 0,
+                        "n_aug_history_window_crosses_test": n_cross
+                        if method.startswith("Aug")
+                        else 0,
+                    }
+                )
+    table = pd.DataFrame(rows)
+    out = root / "results"
+    out.mkdir(parents=True, exist_ok=True)
+    table.to_csv(out / "result_table_6r_scss_aug.csv", index=False, lineterminator="\n")
+    return table

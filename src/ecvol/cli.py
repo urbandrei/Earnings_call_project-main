@@ -1214,6 +1214,27 @@ def reproduce_scss_tmlp(
     typer.echo(f"run artifact: {write_command_run(cfg, root)}")
 
 
+@reproduce_app.command("scss-aug")
+def reproduce_scss_aug(
+    root: Path = typer.Option(Path("data"), help="Data root directory."),  # noqa: B008
+    config: Path | None = _CONFIG_OPT,
+) -> None:
+    """T6R.3: SCSS's PEV/STPEV/Aug_PEV/Aug_STPEV on EC + MAEC with the authors' notebook code."""
+    from ecvol.eval.faithful_scss import run_aug_baselines
+    from ecvol.tracking import resolve_command_config, write_command_run
+
+    cfg = resolve_command_config("reproduce-scss-aug", config, None)
+    t = run_aug_baselines(root)
+    for (ds, method), g in t.groupby(["dataset", "method"], sort=False):
+        typer.echo(
+            f"  {ds:>6} {method:<9} mean {g['mse'].mean():.3f} "
+            f"(published {g['published_mse'].mean():.3f}); max |diff| {g['abs_diff'].max():.3f}"
+        )
+    typer.echo(f"  {len(t)} cells; exact at 3 decimals: {(t['abs_diff'] < 5e-4).sum()}")
+    typer.echo("Result Table 6R-F (SCSS Aug baselines): data/results/result_table_6r_scss_aug.csv")
+    typer.echo(f"run artifact: {write_command_run(cfg, root)}")
+
+
 @reproduce_app.command("kefvp")
 def reproduce_kefvp(
     root: Path = typer.Option(Path("data"), help="Data root directory."),  # noqa: B008

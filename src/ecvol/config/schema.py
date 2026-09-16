@@ -121,6 +121,7 @@ class CommandConfig(StrictModel):
         "reproduce-html-faithful",
         "reproduce-scss-tsmixer",
         "reproduce-scss-tmlp",
+        "reproduce-scss-aug",
         "reproduce-kefvp",
         "reproduce-sawhney",
         "reproduce-dialoguegat",

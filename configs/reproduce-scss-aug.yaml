@@ -1,0 +1,4 @@
+# Committed command config (T6R.3/S4). `ecvol reproduce scss-aug` loads this by default.
+# Deterministic (training-free baselines from the authors' notebook); seeds unused.
+command: reproduce-scss-aug
+seeds: [0]
