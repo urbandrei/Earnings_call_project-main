@@ -616,3 +616,5 @@ ef\edgar_submissions\`. Consistent with Earnings25's measured call times (45% be
 - **Found:** the user's CI run was red — 2 failed / 349 passed. Neither came from today's work: `test_faithful_html::test_loader_execs_only_the_class_block` imports torch (CI is torch-free; since 2026-09-09), and `run_config`'s `weights_file` used `Path(...).name`, which on Linux does not split `D:\x\W.gguf` (since 2026-08-09). Both were invisible locally because the main venv has the gpu group and runs on Windows — the "local gate = faithful CI mirror" claim in LOOP.md was false, and no CI run had happened since before either commit.
 - **Done:** `pytest.importorskip("torch")`; `PureWindowsPath(...).name`. Verified in a fresh torch-free venv (`UV_PROJECT_ENVIRONMENT=D:\ecvol-ci-venv`, `uv sync --locked`): 353 passed, 6 skipped; main venv 359 passed. LOOP.md step 5 amended with the torch-free run before CI checkpoints.
 - **Next:** user re-runs CI and reports.
+
+- **2026-09-16 (CI, later):** user reports CI green on `5187aeb` (all 56 commits since the previous checkpoint). Agent-doable backlog empty; remaining items are user decisions/actions (HANDOFF).
