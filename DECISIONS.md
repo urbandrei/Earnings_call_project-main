@@ -164,3 +164,8 @@ Per the sprint policy (2026-09-09), these were decided without stopping; each is
 4. **Persistence on every cell**, and seed spread reported, so a delta is read against both the floor and the noise.
 
 **Rejected:** re-tuning hyperparameters per controlled split (would confound the split effect with a tuning effect); evaluating on our FinCall/MAEC splits for models trained on EC/MAEC-15/16 (the 2026-08-23 confound rule — each model on its own data).
+
+## 2026-09-16 (later) — T6R.4 refinement: DialogueGAT controls inside its per-year protocol
+
+**Decision (decide-log-continue, sprint policy).** The 2026-09-16 entry said "DialogueGAT — FinCall temporal/ticker-disjoint vs its per-year anchor". The committed FinCall splits pool years (train 2019–2020 → test 2021), so they would change the training years and set size as well as the split, violating rule 1 (change only the split). Instead the SCSS construction is applied inside each year's chronological 70/10/20: `anchor_heldout` (test restricted to a seeded held-out third of that year's tickers), `ticker_disjoint` (same test calls; the held-out tickers leave train/val), `embargoed` (train/val calls whose 30-session window reaches the year's first test call removed). Same seed (`CONTROL_SEED` 20260916) and helper as SCSS.
+**Rejected:** the pooled committed splits (confounds split with training years — the port's own 2020 collapse shows how strongly year matters).
