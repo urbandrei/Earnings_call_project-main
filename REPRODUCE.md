@@ -67,6 +67,7 @@ ecvol audio emotion2vec --dataset {fincall,earnings25}
 | rendered md/tex | `ecvol report` | `result_table_{1..4}.{md,tex}` | — |
 | 6R-F: HTML faithful (authors' classes) | `ecvol reproduce html-faithful [--modality text_audio]` | `result_table_6r_html_faithful.csv` | `configs/reproduce-html-faithful.yaml` |
 | 6R-F: SCSS TSMixer / TMLP (authors' run.py) | `ecvol reproduce scss-tsmixer` · `scss-tmlp` | `result_table_6r_scss_{tsmixer,tmlp}.csv` | `configs/reproduce-scss-*.yaml` |
+| 6R-F: SCSS Aug_PEV / Aug_STPEV on EC + MAEC (authors' notebook) | `ecvol reproduce scss-aug` | `result_table_6r_scss_aug.csv` | `configs/reproduce-scss-aug.yaml` |
 | 6R-F: KeFVP (authors' final_series_infer.py) | `ecvol reproduce kefvp --dataset ec,15,16` | `result_table_6r_kefvp.csv` | `configs/reproduce-kefvp.yaml` |
 | 6R-F: Sawhney 2020 (PyTorch port) | `ecvol reproduce sawhney` | `result_table_6r_sawhney.csv` | `configs/reproduce-sawhney.yaml` |
 | 6R-F: DialogueGAT (PyG port on FinCall) | `ecvol reproduce dialoguegat` (gpu group) | `result_table_6r_dialoguegat.csv` | `configs/reproduce-dialoguegat.yaml` |
