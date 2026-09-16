@@ -313,3 +313,111 @@ def run_aug_baselines(root: Path) -> pd.DataFrame:
     out.mkdir(parents=True, exist_ok=True)
     table.to_csv(out / "result_table_6r_scss_aug.csv", index=False, lineterminator="\n")
     return table
+
+
+# --- T6R.4 controls: TSMixer / TMLP with only DEC's rolling masks rewritten ------------
+#
+# DECISIONS 2026-09-16. The authors' code is untouched; each condition is a copy of DEC.csv
+# (same rows, same order — TMLP indexes its embeddings by row) whose
+# `rolling_test_on_*_cate` columns are rewritten, passed via `--data_path`:
+#   anchor_heldout  — their masks, test restricted to a seeded held-out third of tickers
+#                     (the paired anchor: same test calls as `ticker_disjoint`);
+#   ticker_disjoint — as anchor_heldout, and the held-out tickers' history leaves train/val;
+#   embargoed       — their masks with train/val calls whose τ≤30-session window reaches the
+#                     test quarter's first call removed (weekday approximation).
+
+CONTROL_CONDITIONS = ("anchor_heldout", "ticker_disjoint", "embargoed")
+CONTROL_SEED = 20260916
+EMBARGO_SESSIONS = 30
+
+
+def heldout_tickers(tickers, seed: int = CONTROL_SEED) -> set[str]:
+    import numpy as np
+
+    uniq = sorted(set(tickers))
+    perm = np.random.RandomState(seed).permutation(len(uniq))
+    return {uniq[i] for i in perm[: len(uniq) // 3]}
+
+
+def control_masks(dec: pd.DataFrame, condition: str, seed: int = CONTROL_SEED) -> pd.DataFrame:
+    import numpy as np
+
+    out = dec.copy()
+    held = out["ticker"].isin(heldout_tickers(out["ticker"], seed))
+    days = out["day_earnings"].to_numpy(dtype="datetime64[D]")
+    for col in [c for c in out.columns if c.startswith("rolling_test_on_")]:
+        cate = out[col].to_numpy(dtype=object).copy()
+        fit = np.isin(cate, ["train", "val"])
+        if condition in ("anchor_heldout", "ticker_disjoint"):
+            cate[(cate == "test") & ~held.to_numpy()] = "none"
+            if condition == "ticker_disjoint":
+                cate[fit & held.to_numpy()] = "none"
+        elif condition == "embargoed":
+            first = days[cate == "test"].min()
+            reach = np.busday_offset(days, EMBARGO_SESSIONS, roll="forward") >= first
+            cate[fit & reach] = "none"
+        else:
+            raise ValueError(condition)
+        out[col] = cate
+    return out
+
+
+def _with(args: list[str], flag: str, value: str) -> list[str]:
+    out = list(args)
+    out[out.index(flag) + 1] = value
+    return out
+
+
+def run_controls(root: Path, model: str, *, log=print) -> pd.DataFrame:
+    import numpy as np
+
+    work = prepare_build(root)
+    dec = pd.read_csv(work / "dataset" / "DEC.csv")
+    for cond in CONTROL_CONDITIONS:
+        control_masks(dec, cond).to_csv(work / "dataset" / f"DEC_{cond}.csv", index=False)
+    results_dir = work / "earnings_results" / model
+    if results_dir.exists():
+        shutil.rmtree(results_dir)
+    cells = [
+        (c, w, y, q)
+        for c in CONTROL_CONDITIONS
+        for w in WINDOWS
+        for y in YEARS
+        for q in QUARTERS
+        if not (y == 2019 and q == "first")
+    ]
+    for i, (cond, w, y, q) in enumerate(cells, 1):
+        args = tsmixer_args(w, y, q) if model == "TSMixer" else tmlp_args(w, y, q, "DEC")
+        base_id = args[args.index("--model_id") + 1]
+        args = _with(args, "--data_path", f"DEC_{cond}.csv")
+        args = _with(args, "--model_id", base_id.replace("_dDEC", f"_dDEC_{cond}"))
+        proc = subprocess.run(
+            [sys.executable, "-u", "run.py", *args],
+            cwd=work,
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+            errors="replace",
+        )
+        if proc.returncode != 0:
+            raise RuntimeError(f"{model} {cond} win{w} {y}-{q} failed:\n{proc.stderr[-2000:]}")
+        log(f"  [{i:3d}/{len(cells)}] {model} {cond} win{w:<2} {y}-{q}")
+    rows = []
+    for f in sorted(results_dir.rglob("*.csv")):
+        rec = parse_name(f.name)
+        if not rec:
+            continue
+        cond = next(c for c in CONTROL_CONDITIONS if f"_dDEC_{c}" in rec["model_id"])
+        pred = pd.read_csv(f).merge(dec, on="id", how="left")
+        w = rec["window"]
+        rec.update(
+            model=model,
+            condition=cond,
+            n_test=int(len(pred)),
+            persistence_mse=float(np.mean((pred["trues"] - pred[f"lv{w}_past_1"]) ** 2)),
+        )
+        rows.append(rec)
+    table = pd.DataFrame(rows).sort_values(["condition", "window", "year", "quarter"])
+    out = root / "results" / f"result_table_6r_scss_{model.lower()}_controls.csv"
+    table.reset_index(drop=True).to_csv(out, index=False, lineterminator="\n")
+    return table

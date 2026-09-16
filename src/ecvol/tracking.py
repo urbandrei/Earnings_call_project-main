@@ -165,6 +165,10 @@ COMMAND_OUTPUTS: dict[str, tuple[str, ...]] = {
     "reproduce-scss-tsmixer": ("results/result_table_6r_scss_tsmixer.csv",),
     "reproduce-scss-tmlp": ("results/result_table_6r_scss_tmlp.csv",),
     "reproduce-scss-aug": ("results/result_table_6r_scss_aug.csv",),
+    "reproduce-scss-controls": (
+        "results/result_table_6r_scss_tsmixer_controls.csv",
+        "results/result_table_6r_scss_tmlp_controls.csv",
+    ),
     "reproduce-kefvp": ("results/result_table_6r_kefvp.csv",),
     "reproduce-sawhney": ("results/result_table_6r_sawhney.csv",),
     "reproduce-dialoguegat": ("results/result_table_6r_dialoguegat.csv",),

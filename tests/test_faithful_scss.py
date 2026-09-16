@@ -108,3 +108,38 @@ def test_history_window_crossings_counts_targets_reaching_the_test_period():
     # used: A 02-27 (Mon), A 03-01 (Wed), B 01-02; C is not a test ticker, A 03-06 is not < first
     assert FS.history_window_crossings(earnings, history, 3) == (3, 1)  # Wed+3bd = Mon 03-06
     assert FS.history_window_crossings(earnings, history, 7) == (3, 2)  # Mon 02-27+7bd = 03-08
+
+
+def _dec():
+    import pandas as pd
+
+    tickers = [f"T{i}" for i in range(6)]
+    rows = []
+    for t in tickers:
+        for day, cate in (("2022-01-03", "train"), ("2022-03-25", "val"), ("2022-04-11", "test")):
+            rows.append({"id": f"{t}_{day}", "ticker": t, "day_earnings": day,
+                         "rolling_test_on_2022_second_cate": cate})  # fmt: skip
+    return pd.DataFrame(rows)
+
+
+def test_heldout_third_is_seeded_and_a_third():
+    held = FS.heldout_tickers([f"T{i}" for i in range(6)] * 3)
+    assert len(held) == 2 and held == FS.heldout_tickers([f"T{i}" for i in range(6)])
+
+
+def test_control_masks_keep_rows_and_change_only_masks():
+    dec = _dec()
+    col = "rolling_test_on_2022_second_cate"
+    held = FS.heldout_tickers(dec["ticker"])
+    a = FS.control_masks(dec, "anchor_heldout")
+    t = FS.control_masks(dec, "ticker_disjoint")
+    for m in (a, t):
+        assert m["id"].tolist() == dec["id"].tolist()  # row order = embedding order
+        assert set(m.loc[m[col] == "test", "ticker"]) == held
+    assert a.loc[a[col] == "test", "id"].tolist() == t.loc[t[col] == "test", "id"].tolist()
+    assert not set(t.loc[t[col].isin(["train", "val"]), "ticker"]) & held
+    assert set(a.loc[a[col].isin(["train", "val"]), "ticker"]) & held  # anchor keeps history
+    e = FS.control_masks(dec, "embargoed")
+    # 2022-03-25 + 30 business days reaches 2022-04-11; 2022-01-03 + 30 does not
+    assert set(e.loc[e[col].isin(["train", "val"]), "day_earnings"]) == {"2022-01-03"}
+    assert (e[col] == "test").sum() == 6

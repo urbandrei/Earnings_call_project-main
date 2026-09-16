@@ -1,0 +1,4 @@
+# Committed command config (T6R.4/C3). `ecvol reproduce scss-controls` loads this by default.
+# The authors' run.py fixes its own seed (2021); the held-out ticker third uses CONTROL_SEED.
+command: reproduce-scss-controls
+seeds: [2021]

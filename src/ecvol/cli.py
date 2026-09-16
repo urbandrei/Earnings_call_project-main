@@ -1215,6 +1215,28 @@ def reproduce_scss_tmlp(
     typer.echo(f"run artifact: {write_command_run(cfg, root)}")
 
 
+@reproduce_app.command("scss-controls")
+def reproduce_scss_controls(
+    root: Path = typer.Option(Path("data"), help="Data root directory."),  # noqa: B008
+    models: str = typer.Option("TSMixer,TMLP", help="Comma-separated SCSS models."),
+    config: Path | None = _CONFIG_OPT,
+) -> None:
+    """T6R.4: SCSS TSMixer/TMLP with only DEC's rolling masks rewritten (3 conditions)."""
+    from ecvol.eval.faithful_scss import run_controls
+    from ecvol.tracking import resolve_command_config, write_command_run
+
+    cfg = resolve_command_config("reproduce-scss-controls", config, None)
+    for model in [m.strip() for m in models.split(",") if m.strip()]:
+        t = run_controls(root, model, log=typer.echo)
+        for (cond, w), g in t.groupby(["condition", "window"]):
+            typer.echo(
+                f"  {model:<7} {cond:<15} win{w:<2} MSE {g['mse'].mean():.3f} "
+                f"(persistence {g['persistence_mse'].mean():.3f}, n_test {g['n_test'].mean():.0f})"
+            )
+    typer.echo("Result Table 6R-F controls: data/results/result_table_6r_scss_*_controls.csv")
+    typer.echo(f"run artifact: {write_command_run(cfg, root)}")
+
+
 @reproduce_app.command("scss-aug")
 def reproduce_scss_aug(
     root: Path = typer.Option(Path("data"), help="Data root directory."),  # noqa: B008
