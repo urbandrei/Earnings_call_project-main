@@ -58,9 +58,15 @@ MAEC_RAW_REL = "raw/maec/repo/MAEC_Dataset"
 EC_RAW_REL = "raw/ec/extracted/ACL19_Release"
 
 
-def patch_infer(src: str, proj: str, dataset_dir: str) -> str:
-    """Forward-port patches for `kefvp/final_series_infer.py` (paths are POSIX-style)."""
+def patch_infer(src: str, proj: str, dataset_dir: str, repeats: int = REPEATS) -> str:
+    """Forward-port patches for `kefvp/final_series_infer.py` (paths are POSIX-style).
+    `repeats` ≠ 10 is the one protocol change, used only by the T6R.4 controls (labelled)."""
     out = src.replace("/your/project/path/", proj.rstrip("/") + "/")
+    if repeats != REPEATS:
+        assert src.count("    for i in range(10):\n") == 1
+        out = out.replace(
+            "    for i in range(10):\n", f"    for i in range({repeats}):  # patched: T6R.4\n"
+        )
     out = out.replace("/your/dataset/path/", dataset_dir.rstrip("/") + "/")
     out = out.replace(
         'strftime("%Y-%m-%d_%H:%M:%S", localtime())', 'strftime("%Y-%m-%d_%H-%M-%S", localtime())'
@@ -119,7 +125,7 @@ def patch_generator(src: str, dataset_dir: str, wanted_list: str) -> str:
     return out
 
 
-def prepare_build(root: Path) -> Path:
+def prepare_build(root: Path, repeats: int = REPEATS) -> Path:
     work = (root / WORK_REL).resolve()  # absolute: the scripts run from their own cwd
     repo = (root / REPO_REL).resolve()
     if not work.exists():
@@ -135,7 +141,8 @@ def prepare_build(root: Path) -> Path:
         shutil.copytree(repo / "data_process", work / "dataset" / "data_process")
     infer = repo / "kefvp" / "final_series_infer.py"
     (work / "kefvp" / "final_series_infer.py").write_text(
-        patch_infer(infer.read_text(encoding="utf-8"), proj, dataset_dir), encoding="utf-8"
+        patch_infer(infer.read_text(encoding="utf-8"), proj, dataset_dir, repeats),
+        encoding="utf-8",
     )
     # matplotlib/pylab are imported at module level by the attention layers but only used
     # for plotting that the training path never reaches: shadow them with no-op stubs

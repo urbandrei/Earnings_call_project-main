@@ -339,9 +339,24 @@ def heldout_tickers(tickers, seed: int = CONTROL_SEED) -> set[str]:
     return {uniq[i] for i in perm[: len(uniq) // 3]}
 
 
-def control_split(split, tickers, days, condition: str, *, seed: int = CONTROL_SEED, drop="none"):
+def control_split(
+    split,
+    tickers,
+    days,
+    condition: str,
+    *,
+    seed: int = CONTROL_SEED,
+    drop="none",
+    chrono_val: bool = False,
+):
     """One split column under a T6R.4 condition; removed calls get `drop`. Shared by the
-    SCSS masks and the DialogueGAT per-year splits (DECISIONS 2026-09-16)."""
+    SCSS masks, the DialogueGAT per-year splits and the KeFVP MAEC re-splits.
+
+    `chrono_val` (DialogueGAT, KeFVP: validation is the latest slice before test): under
+    `embargoed`, validation is re-carved as the latest surviving calls in the original
+    val share, and train calls reaching the first val call are removed too — otherwise
+    the embargo would delete the whole validation set. SCSS's val is a random third of
+    history, so it keeps `chrono_val=False` (DECISIONS 2026-09-16 (later))."""
     import numpy as np
 
     cate = np.asarray(split, dtype=object).copy()
@@ -353,8 +368,18 @@ def control_split(split, tickers, days, condition: str, *, seed: int = CONTROL_S
         if condition == "ticker_disjoint":
             cate[fit & held] = drop
     elif condition == "embargoed":
-        first = days[cate == "test"].min()
-        cate[fit & (np.busday_offset(days, EMBARGO_SESSIONS, roll="forward") >= first)] = drop
+        ends = np.busday_offset(days, EMBARGO_SESSIONS, roll="forward")
+        val_share = (cate == "val").sum() / max(fit.sum(), 1)
+        cate[fit & (ends >= days[cate == "test"].min())] = drop
+        if chrono_val:
+            keep = np.where(np.isin(cate, ["train", "val"]))[0]
+            keep = keep[np.argsort(days[keep], kind="stable")]
+            n_val = int(round(val_share * len(keep)))
+            cate[keep] = "train"
+            if n_val:
+                cate[keep[-n_val:]] = "val"
+                reach_val = (cate == "train") & (ends >= days[keep[-n_val:]].min())
+                cate[reach_val] = drop
     else:
         raise ValueError(condition)
     return cate

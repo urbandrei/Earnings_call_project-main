@@ -294,7 +294,9 @@ def condition_split(d: pd.DataFrame, condition: str) -> np.ndarray:
 
     if condition == "their":
         return d["split"].to_numpy()
-    return control_split(d["split"], d["ticker"], d["call_date"], condition, drop="excluded")
+    return control_split(
+        d["split"], d["ticker"], d["call_date"], condition, drop="excluded", chrono_val=True
+    )
 
 
 def run_dialoguegat_port(

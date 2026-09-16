@@ -56,7 +56,16 @@ def test_condition_split_rewrites_only_the_year_split():
     d = pd.DataFrame(
         {
             "ticker": tickers * 3,
-            "call_date": ["2019-01-02"] * 6 + ["2019-06-03"] * 6 + ["2019-06-17"] * 6,
+            "call_date": [
+                "2019-01-02",
+                "2019-01-16",
+                "2019-02-01",
+                "2019-02-15",
+                "2019-03-01",
+                "2019-03-15",
+            ]
+            + ["2019-06-03"] * 6
+            + ["2019-06-17"] * 6,  # fmt: skip
             "split": ["train"] * 6 + ["val"] * 6 + ["test"] * 6,
         }
     )
@@ -67,4 +76,9 @@ def test_condition_split_rewrites_only_the_year_split():
         d.loc[t == "test", "ticker"]
     )
     e = D.condition_split(d, "embargoed")
-    assert (e == "val").sum() == 0 and (e == "train").sum() == 6 and (e == "excluded").sum() == 6
+    # val (06-03) reaches test (06-17) → dropped; validation is re-carved from the latest
+    # survivors at the original 50% share (02-15, 03-01, 03-15), and train calls whose
+    # 30-session window reaches 02-15 go too (01-16, 02-01) — validation never vanishes
+    assert d.loc[e == "val", "call_date"].tolist() == ["2019-02-15", "2019-03-01", "2019-03-15"]
+    assert d.loc[e == "train", "call_date"].tolist() == ["2019-01-02"]
+    assert (e == "test").sum() == 6 and (e == "excluded").sum() == 8
