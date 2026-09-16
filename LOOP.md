@@ -42,7 +42,11 @@ The loop's job: advance the backlog one task at a time with minimal human interv
    uv run ruff format --check .
    uv run pytest -q
    ```
-   This is a faithful mirror of CI (`.github/workflows/ci.yml`). Red → fix; never commit red.
+   Red → fix; never commit red. **Not a full CI mirror on its own** (found 2026-09-16): the
+   main venv carries the `gpu` group (torch), CI does not, and CI runs on Linux. Before a
+   push checkpoint, also run the tests in a torch-free venv —
+   `$env:UV_PROJECT_ENVIRONMENT='D:\ecvol-ci-venv'; uv sync --locked; uv run pytest -q` —
+   and write path handling that holds for both `\` and `/`.
 6. **Commit locally** (small, focused, one logical change, charter message format — see below).
    Then update governance as part of the same task:
    - TASKS.md: status `[x]`, subtask checkboxes, dated notes + artifact links.
