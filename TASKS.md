@@ -380,6 +380,18 @@
 - **Fidelity ledger:** `docs/faithful_ledger.md` (one section per paper: verbatim / patched / substituted / reason-coded, with file:line of every patch).
 - **Notes:** third-party code stays under `D:\ecvol-data\raw\ref\repos\` (pinned in `data/manifests/repos.json`); patches are applied at run time into a scratch build dir, never committed.
 
+### T6R.4 Controls sprint — the five reproduced models under embargoed + ticker-disjoint splits — `[~]` *(opened 2026-09-16; scope + protocol DECISIONS 2026-09-16)*
+- **Goal:** answer RQ3 on the field's own code: does each reproduced model keep its advantage when only the split changes?
+- **End result:** per model, anchor vs `embargoed` vs `ticker_disjoint` rows (same code, same inputs, persistence + seed spread on every cell) in its `result_table_6r_*.csv`, and a controlled block in the paper.
+- **Acceptance test:** every model has either both controlled conditions beside its re-run anchor, or a reason code naming why a condition is undefined; no hyperparameter differs between anchor and controlled rows; all runs manifested.
+- **Subtasks (cheap first):**
+  - [ ] C1 HTML faithful: `embargoed` / `ticker_disjoint` (EC splits), dropout 0 as the `code` anchor, text and text+audio
+  - [ ] C2 Sawhney port: EC splits, val-tuned ensemble (test-tuned for parity)
+  - [ ] C3 SCSS TSMixer/TMLP: DEC masks rewritten (quarter embargo; seeded held-out ticker third, anchor re-scored on the same third)
+  - [ ] C4 DialogueGAT port: FinCall temporal / ticker-disjoint vs per-year anchor
+  - [ ] C5 KeFVP MAEC-15/16: re-split within their call sets, 3 repeats
+  - [ ] C6 Paper: controlled block in Table 6R-F + §6 text
+
 ---
 
 ## Phase 9 — Reframe work (benchmark-first) — *DECISIONS 2026-08-23*
