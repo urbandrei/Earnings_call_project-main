@@ -371,3 +371,130 @@ def write_table(root: Path, parts: list[pd.DataFrame]) -> Path:
     out.parent.mkdir(parents=True, exist_ok=True)
     new.to_csv(out, index=False, lineterminator="\n")
     return out
+
+
+# --- T6R.4 controls: MAEC-15/16 re-split inside their own call sets ----------------------
+#
+# DECISIONS 2026-09-16. Only the part membership of the shipped split files changes: the
+# three file kinds are pooled (train/dev/test) and re-assigned with the shared
+# `control_split` (chronological validation re-carved under the embargo), written in one
+# call order (the script pairs the avg and single-day files by position), swapped into the
+# build for the run, and the shipped files restored afterwards. 3 repeats per (condition, τ)
+# instead of 10 — the one protocol change, labelled. The full-test-set anchor is the K3 run
+# (same build, 10 repeats); `anchor_heldout` is the paired anchor for `ticker_disjoint`.
+
+CONTROL_REPEATS = 3
+CONTROL_CONDITIONS = ("anchor_heldout", "ticker_disjoint", "embargoed")
+MAEC_KINDS = ("avg_val", "single_val", "price_label")
+MAEC_PARTS = {"train": "train", "dev": "val", "test": "test"}  # file part → split label
+
+
+def maec_resplit(frames: dict[str, dict[str, pd.DataFrame]], condition: str):
+    """{kind: {part: df}} → the same structure re-split under `condition`."""
+    from ecvol.eval.faithful_scss import control_split
+
+    pooled = {
+        k: pd.concat(
+            [f.assign(_part=p) for p, f in frames[k].items()], ignore_index=True
+        ).drop_duplicates("text_file_name")
+        for k in MAEC_KINDS
+    }
+    avg = pooled["avg_val"].sort_values(["time", "text_file_name"], kind="stable")
+    labels = control_split(
+        avg["_part"].map(MAEC_PARTS),
+        avg["ticker"],
+        avg["time"],
+        condition,
+        drop="excluded",
+        chrono_val=True,
+    )
+    part_of = dict(zip(avg["text_file_name"], labels, strict=True))
+    inverse = {v: k for k, v in MAEC_PARTS.items()}
+    order = avg["text_file_name"].tolist()
+    out = {}
+    for k in MAEC_KINDS:
+        df = pooled[k].set_index("text_file_name").loc[order].reset_index()
+        new = df["text_file_name"].map(part_of)
+        out[k] = {
+            inverse[s]: df[new == s].drop(columns="_part").reset_index(drop=True)
+            for s in MAEC_PARTS.values()
+        }
+    return out
+
+
+def _maec_files(dir_: Path, ds: str) -> dict[str, dict[str, Path]]:
+    return {k: {p: dir_ / f"maec{ds}_{p}_{k}.csv" for p in MAEC_PARTS} for k in MAEC_KINDS}
+
+
+def run_controls(root: Path, dataset: str, *, taus=TAUS, conditions=CONTROL_CONDITIONS, log=print):
+    import numpy as np
+
+    work = prepare_build(root, repeats=CONTROL_REPEATS)
+    shipped = root / REPO_REL / "price_data" / "maec" / dataset
+    live = work / "dataset" / "price_data" / "maec" / dataset
+    frames = {
+        k: {p: pd.read_csv(f) for p, f in parts.items()}
+        for k, parts in _maec_files(shipped, dataset).items()
+    }
+    raw = (root / MAEC_RAW_REL).resolve().as_posix() + "/"
+    out_dir = work / "proj" / "output"
+    for sub in (f"log/maec{dataset}", "preds_dir/text_dir/reg"):
+        (work / "proj" / sub).mkdir(parents=True, exist_ok=True)
+    rows = []
+    try:
+        for cond in conditions:
+            split = maec_resplit(frames, cond)
+            for k, parts in _maec_files(live, dataset).items():
+                for p, f in parts.items():
+                    split[k][p].to_csv(f, index=False)
+            test = split["avg_val"]["test"]
+            n = {p: len(split["avg_val"][p]) for p in MAEC_PARTS}
+            log(f"  KeFVP {dataset} {cond}: train {n['train']} / dev {n['dev']} / test {n['test']}")
+            for tau in taus:
+                avg_f = out_dir / f"kefvp_{dataset}_{cond}_tau{tau}_avg.csv"
+                single_f = out_dir / f"kefvp_{dataset}_{cond}_tau{tau}_single.csv"
+                if not (avg_f.is_file() and single_f.is_file()):
+                    log(f"    tau={tau}: {CONTROL_REPEATS} repeats × 200 epochs …")
+                    proc = subprocess.run(
+                        [sys.executable, "-u", "final_series_infer.py",
+                         *infer_args(dataset, tau, raw_data_path=raw)],
+                        cwd=work / "kefvp", capture_output=True, text=True,
+                        encoding="utf-8", errors="replace",
+                    )  # fmt: skip
+                    if proc.returncode != 0:
+                        err_f = (
+                            work / "proj" / "log" / f"kefvp_{dataset}_{cond}_tau{tau}_stderr.txt"
+                        )
+                        err_f.write_text(proc.stderr or "", encoding="utf-8")
+                        raise RuntimeError(f"KeFVP {dataset} {cond} tau={tau} failed: {err_f}")
+                    shutil.copy(out_dir / "3GCN_LSTM_boxplot_cond_avg_day_mse_df.csv", avg_f)
+                    shutil.copy(out_dir / "3GCN_LSTM_boxplot_cond_single_day_mse_df.csv", single_f)
+                avg, single = pd.read_csv(avg_f), pd.read_csv(single_f)
+                y, past = (test[f"future_{tau}"].astype(float), test[f"past_{tau}"].astype(float))
+                ok = np.isfinite(y) & np.isfinite(past)
+                pers = float(np.mean((y[ok] - past[ok]) ** 2))
+                for i, (a, s) in enumerate(zip(avg.iloc[:, -1], single.iloc[:, -1], strict=True)):
+                    rows.append({"dataset": dataset, "condition": cond, "horizon": tau, "run": i,
+                                 "mse": float(a), "mse_single": float(s), "n_train": n["train"],
+                                 "n_dev": n["dev"], "n_test": n["test"],
+                                 "persistence_mse": pers})  # fmt: skip
+                log(f"    tau={tau}: MSE {avg.iloc[:, -1].mean():.3f} (persistence {pers:.3f})")
+    finally:  # the shipped split files go back whatever happened
+        for k, parts in _maec_files(live, dataset).items():
+            for p, f in parts.items():
+                shutil.copy(_maec_files(shipped, dataset)[k][p], f)
+    return pd.DataFrame(rows)
+
+
+def write_controls_table(root: Path, parts: list[pd.DataFrame]) -> Path:
+    out = root / "results" / "result_table_6r_kefvp_controls.csv"
+    new = pd.concat(parts, ignore_index=True)
+    new["dataset"] = new["dataset"].astype(str)
+    if out.is_file():  # keep datasets not re-run
+        prev = pd.read_csv(out, dtype={"dataset": str})
+        new = pd.concat([prev[~prev["dataset"].isin(new["dataset"])], new], ignore_index=True)
+    new["repeats"] = CONTROL_REPEATS
+    new["text_embedding"] = "regenerated_bert_base_pooler"
+    new = new.sort_values(["dataset", "condition", "horizon", "run"]).reset_index(drop=True)
+    new.to_csv(out, index=False, lineterminator="\n")
+    return out

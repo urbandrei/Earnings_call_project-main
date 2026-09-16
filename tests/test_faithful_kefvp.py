@@ -1,5 +1,6 @@
 """T6R.3 KeFVP faithful: patch functions are exact and leave no placeholders."""
 
+import pandas as pd
 import pytest
 
 from ecvol.eval import faithful_kefvp as K
@@ -38,3 +39,48 @@ def test_infer_args_follow_the_shell_scripts():
 def test_published_table_complete():
     assert set(K.PUBLISHED) == {"ec", "15", "16"}
     assert all(set(v) == set(K.TAUS) for v in K.PUBLISHED.values())
+
+
+def _maec_frames():
+    import pandas as pd
+
+    days = pd.bdate_range("2015-01-01", periods=60).strftime("%Y-%m-%d").tolist()
+    parts = {"train": range(0, 42), "dev": range(42, 48), "test": range(48, 60)}
+    frames = {}
+    for kind in K.MAEC_KINDS:
+        frames[kind] = {
+            p: pd.DataFrame(
+                {
+                    "ticker": [f"T{i % 9}" for i in idx],
+                    "time": [days[i] for i in idx],
+                    "text_file_name": [f"c{i}" for i in idx],
+                    "future_3": 0.1,
+                    "past_3": 0.2,
+                    "kind": kind,
+                }
+            )  # fmt: skip
+            for p, idx in parts.items()
+        }
+    return frames
+
+
+def test_maec_resplit_keeps_kinds_aligned_and_validation_alive():
+    frames = _maec_frames()
+    for cond in K.CONTROL_CONDITIONS:
+        out = K.maec_resplit(frames, cond)
+        for p in K.MAEC_PARTS:  # the script pairs avg and single rows by position
+            names = [out[k][p]["text_file_name"].tolist() for k in K.MAEC_KINDS]
+            assert names[0] == names[1] == names[2]
+        assert len(out["avg_val"]["dev"]) > 0 and len(out["avg_val"]["test"]) > 0
+    a, t = K.maec_resplit(frames, "anchor_heldout"), K.maec_resplit(frames, "ticker_disjoint")
+    assert a["avg_val"]["test"].equals(t["avg_val"]["test"])
+    fit = pd.concat([t["avg_val"]["train"], t["avg_val"]["dev"]])
+    assert not set(fit["ticker"]) & set(t["avg_val"]["test"]["ticker"])
+    e = K.maec_resplit(frames, "embargoed")["avg_val"]
+    assert len(e["test"]) == 12 and e["dev"]["time"].max() < e["test"]["time"].min()
+
+
+def test_patch_infer_repeats_hook():
+    src = INFER + "    for i in range(10):\n"
+    assert "range(10)" in K.patch_infer(src, "p", "d")
+    assert "range(3)" in K.patch_infer(src, "p", "d", repeats=3)

@@ -1288,6 +1288,28 @@ def reproduce_kefvp(
     typer.echo(f"run artifact: {write_command_run(cfg, root)}")
 
 
+@reproduce_app.command("kefvp-controls")
+def reproduce_kefvp_controls(
+    root: Path = typer.Option(Path("data"), help="Data root directory."),  # noqa: B008
+    dataset: str = typer.Option("15,16", help="Comma-separated subset of 15,16 (MAEC)."),
+    taus: str = typer.Option("3,7,15,30", help="Comma-separated horizons."),
+    config: Path | None = _CONFIG_OPT,
+) -> None:
+    """T6R.4: KeFVP (authors' script, 3 repeats) with MAEC-15/16 re-split per condition."""
+    from ecvol.eval.faithful_kefvp import run_controls, write_controls_table
+    from ecvol.tracking import resolve_command_config, write_command_run
+
+    cfg = resolve_command_config("reproduce-kefvp-controls", config, None)
+    tau_list = tuple(int(t) for t in taus.split(",") if t.strip())
+    parts = [
+        run_controls(root, ds.strip(), taus=tau_list, log=typer.echo)
+        for ds in dataset.split(",")
+        if ds.strip()
+    ]
+    typer.echo(f"Result Table 6R-F controls (KeFVP): {write_controls_table(root, parts)}")
+    typer.echo(f"run artifact: {write_command_run(cfg, root)}")
+
+
 @reproduce_app.command("sawhney")
 def reproduce_sawhney(
     root: Path = typer.Option(Path("data"), help="Data root directory."),  # noqa: B008

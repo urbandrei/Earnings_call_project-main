@@ -124,6 +124,7 @@ class CommandConfig(StrictModel):
         "reproduce-scss-aug",
         "reproduce-scss-controls",
         "reproduce-kefvp",
+        "reproduce-kefvp-controls",
         "reproduce-sawhney",
         "reproduce-dialoguegat",
         "audit-code",

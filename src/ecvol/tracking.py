@@ -170,6 +170,7 @@ COMMAND_OUTPUTS: dict[str, tuple[str, ...]] = {
         "results/result_table_6r_scss_tmlp_controls.csv",
     ),
     "reproduce-kefvp": ("results/result_table_6r_kefvp.csv",),
+    "reproduce-kefvp-controls": ("results/result_table_6r_kefvp_controls.csv",),
     "reproduce-sawhney": ("results/result_table_6r_sawhney.csv",),
     "reproduce-dialoguegat": ("results/result_table_6r_dialoguegat.csv",),
     "audit-code": ("results/code_availability.csv",),
