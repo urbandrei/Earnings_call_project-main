@@ -284,8 +284,28 @@ def fit_eval(model, data, y, vp, idx, *, epochs=EPOCHS, seed=SEED, log=print):
     return float(M.mse(y[idx["test"]], p_te)), best, best_epoch, p_te
 
 
+# T6R.4 controls inside the per-year protocol (DECISIONS 2026-09-16 (later)): `their` is the
+# anchor; the others rewrite only the year's split via the shared SCSS helper.
+CONDITIONS = ("their", "anchor_heldout", "ticker_disjoint", "embargoed")
+
+
+def condition_split(d: pd.DataFrame, condition: str) -> np.ndarray:
+    from ecvol.eval.faithful_scss import control_split
+
+    if condition == "their":
+        return d["split"].to_numpy()
+    return control_split(d["split"], d["ticker"], d["call_date"], condition, drop="excluded")
+
+
 def run_dialoguegat_port(
-    root: Path, *, dataset: str = "fincall", years=YEARS, taus=TAUS, epochs=EPOCHS, log=print
+    root: Path,
+    *,
+    dataset: str = "fincall",
+    years=YEARS,
+    taus=TAUS,
+    epochs=EPOCHS,
+    conditions=CONDITIONS,
+    log=print,
 ) -> pd.DataFrame:
     import torch
     from sklearn.feature_extraction.text import ENGLISH_STOP_WORDS
@@ -306,41 +326,46 @@ def run_dialoguegat_port(
             for c, tj in zip(d["call_id"], d["transcript_json"], strict=True)
         }
         d = d[[len(enc[c][1]) > 0 for c in d["call_id"]]].reset_index(drop=True)
-        for tau in taus:
-            t = targets[targets["horizon"] == tau].set_index("call_id")
-            dd = d[d["call_id"].isin(t.index)].reset_index(drop=True)
-            y = t.loc[dd["call_id"], "v_post"].to_numpy(dtype=float)
-            vp = t.loc[dd["call_id"], "v_pre"].to_numpy(dtype=float)
-            data = [enc[c] for c in dd["call_id"]]
-            idx = {s: np.where(dd["split"].to_numpy() == s)[0] for s in ("train", "val", "test")}
-            model = build_model(W, len(ROLES)).to(dev)
-            test_mse, val_mse, best_epoch, _ = fit_eval(
-                model, data, y, vp, idx, epochs=epochs, log=log
-            )
-            pers = float(M.mse(y[idx["test"]], vp[idx["test"]]))
-            rows.append(
-                {
-                    "dataset": dataset,
-                    "year": year,
-                    "horizon": tau,
-                    "n_train": len(idx["train"]),
-                    "n_val": len(idx["val"]),
-                    "n_test": len(idx["test"]),
-                    "mse": test_mse,
-                    "val_mse": val_mse,
-                    "best_epoch": best_epoch,
-                    "persistence_mse": pers,
-                    "speaker_nodes": "role_typed_global",
-                    "text_encoder": "textcnn_glove6b",
-                    "published_reference": PUBLISHED.get(
-                        {2019: 2015, 2020: 2016, 2021: 2017}[year], {}
-                    ).get(tau, np.nan),
-                }
-            )
-            log(
-                f"  {year} tau={tau:<2} MSE {test_mse:.3f} (val {val_mse:.3f}, "
-                f"epoch {best_epoch}, persistence {pers:.3f})"
-            )
+        for cond in conditions:
+            split = condition_split(d, cond)
+            for tau in taus:
+                t = targets[targets["horizon"] == tau].set_index("call_id")
+                dd = d[d["call_id"].isin(t.index)].reset_index(drop=True)
+                y = t.loc[dd["call_id"], "v_post"].to_numpy(dtype=float)
+                vp = t.loc[dd["call_id"], "v_pre"].to_numpy(dtype=float)
+                data = [enc[c] for c in dd["call_id"]]
+                keep = d["call_id"].isin(t.index).to_numpy()
+                sp = split[keep]
+                idx = {s: np.where(sp == s)[0] for s in ("train", "val", "test")}
+                model = build_model(W, len(ROLES)).to(dev)
+                test_mse, val_mse, best_epoch, _ = fit_eval(
+                    model, data, y, vp, idx, epochs=epochs, log=log
+                )
+                pers = float(M.mse(y[idx["test"]], vp[idx["test"]]))
+                rows.append(
+                    {
+                        "dataset": dataset,
+                        "year": year,
+                        "condition": cond,
+                        "horizon": tau,
+                        "n_train": len(idx["train"]),
+                        "n_val": len(idx["val"]),
+                        "n_test": len(idx["test"]),
+                        "mse": test_mse,
+                        "val_mse": val_mse,
+                        "best_epoch": best_epoch,
+                        "persistence_mse": pers,
+                        "speaker_nodes": "role_typed_global",
+                        "text_encoder": "textcnn_glove6b",
+                        "published_reference": PUBLISHED.get(
+                            {2019: 2015, 2020: 2016, 2021: 2017}[year], {}
+                        ).get(tau, np.nan),
+                    }
+                )
+                log(
+                    f"  {cond:<15} {year} tau={tau:<2} MSE {test_mse:.3f} (val {val_mse:.3f}, "
+                    f"epoch {best_epoch}, persistence {pers:.3f})"
+                )
     table = pd.DataFrame(rows)
     out = root / "results"
     out.mkdir(parents=True, exist_ok=True)

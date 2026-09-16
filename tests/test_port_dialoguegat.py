@@ -49,3 +49,22 @@ def test_collate_builds_chain_and_speaker_edges():
     assert ei.shape == (2, 10)
     assert set(pid.tolist()) == {p2gid["analyst"], p2gid["management"]}
     assert torch.equal(gid, torch.zeros(5, dtype=torch.long))
+
+
+def test_condition_split_rewrites_only_the_year_split():
+    tickers = [f"T{i}" for i in range(6)]
+    d = pd.DataFrame(
+        {
+            "ticker": tickers * 3,
+            "call_date": ["2019-01-02"] * 6 + ["2019-06-03"] * 6 + ["2019-06-17"] * 6,
+            "split": ["train"] * 6 + ["val"] * 6 + ["test"] * 6,
+        }
+    )
+    assert D.condition_split(d, "their").tolist() == d["split"].tolist()
+    a, t = D.condition_split(d, "anchor_heldout"), D.condition_split(d, "ticker_disjoint")
+    assert (a == "test").sum() == 2 and ((a == "test") == (t == "test")).all()
+    assert not set(d.loc[np.isin(t, ["train", "val"]), "ticker"]) & set(
+        d.loc[t == "test", "ticker"]
+    )
+    e = D.condition_split(d, "embargoed")
+    assert (e == "val").sum() == 0 and (e == "train").sum() == 6 and (e == "excluded").sum() == 6

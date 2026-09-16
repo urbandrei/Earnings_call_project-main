@@ -1327,6 +1327,9 @@ def reproduce_dialoguegat(
     years: str = typer.Option("2019,2020,2021", help="Comma-separated FinCall years."),
     taus: str = typer.Option("3,7,15,30", help="Comma-separated horizons."),
     epochs: int = typer.Option(100, help="Max epochs (theirs: 100, patience 5)."),
+    conditions: str = typer.Option(
+        "their,anchor_heldout,ticker_disjoint,embargoed", help="Split conditions (T6R.4)."
+    ),
     config: Path | None = _CONFIG_OPT,
 ) -> None:
     """T6R.3: DialogueGAT ported (PyG) onto FinCall turns, their per-year protocol."""
@@ -1339,6 +1342,7 @@ def reproduce_dialoguegat(
         years=tuple(int(y) for y in years.split(",") if y.strip()),
         taus=tuple(int(t) for t in taus.split(",") if t.strip()),
         epochs=epochs,
+        conditions=tuple(c.strip() for c in conditions.split(",") if c.strip()),
         log=typer.echo,
     )
     typer.echo("Result Table 6R-F (DialogueGAT port): data/results/result_table_6r_dialoguegat.csv")

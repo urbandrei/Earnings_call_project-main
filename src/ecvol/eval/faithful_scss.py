@@ -339,26 +339,31 @@ def heldout_tickers(tickers, seed: int = CONTROL_SEED) -> set[str]:
     return {uniq[i] for i in perm[: len(uniq) // 3]}
 
 
-def control_masks(dec: pd.DataFrame, condition: str, seed: int = CONTROL_SEED) -> pd.DataFrame:
+def control_split(split, tickers, days, condition: str, *, seed: int = CONTROL_SEED, drop="none"):
+    """One split column under a T6R.4 condition; removed calls get `drop`. Shared by the
+    SCSS masks and the DialogueGAT per-year splits (DECISIONS 2026-09-16)."""
     import numpy as np
 
+    cate = np.asarray(split, dtype=object).copy()
+    held = pd.Series(tickers).isin(heldout_tickers(tickers, seed)).to_numpy()
+    days = np.asarray(days, dtype="datetime64[D]")
+    fit = np.isin(cate, ["train", "val"])
+    if condition in ("anchor_heldout", "ticker_disjoint"):
+        cate[(cate == "test") & ~held] = drop
+        if condition == "ticker_disjoint":
+            cate[fit & held] = drop
+    elif condition == "embargoed":
+        first = days[cate == "test"].min()
+        cate[fit & (np.busday_offset(days, EMBARGO_SESSIONS, roll="forward") >= first)] = drop
+    else:
+        raise ValueError(condition)
+    return cate
+
+
+def control_masks(dec: pd.DataFrame, condition: str, seed: int = CONTROL_SEED) -> pd.DataFrame:
     out = dec.copy()
-    held = out["ticker"].isin(heldout_tickers(out["ticker"], seed))
-    days = out["day_earnings"].to_numpy(dtype="datetime64[D]")
     for col in [c for c in out.columns if c.startswith("rolling_test_on_")]:
-        cate = out[col].to_numpy(dtype=object).copy()
-        fit = np.isin(cate, ["train", "val"])
-        if condition in ("anchor_heldout", "ticker_disjoint"):
-            cate[(cate == "test") & ~held.to_numpy()] = "none"
-            if condition == "ticker_disjoint":
-                cate[fit & held.to_numpy()] = "none"
-        elif condition == "embargoed":
-            first = days[cate == "test"].min()
-            reach = np.busday_offset(days, EMBARGO_SESSIONS, roll="forward") >= first
-            cate[fit & reach] = "none"
-        else:
-            raise ValueError(condition)
-        out[col] = cate
+        out[col] = control_split(out[col], out["ticker"], out["day_earnings"], condition, seed=seed)
     return out
 
 
