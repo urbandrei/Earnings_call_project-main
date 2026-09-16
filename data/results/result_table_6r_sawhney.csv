@@ -1,125 +1,373 @@
-branch,horizon,seed,mse,tuned_on,persistence_mse,note,n_test,published_mse,text_features
-finance_svr,3,-1,0.7120938149419802,cv,1.4905435123059598,"{'C': 1, 'gamma': 0.001}",110,0.601,glove6b_mean_union_vocab
-text_bilstm,3,0,2.061349958947519,val,1.4905435123059598,,110,0.601,glove6b_mean_union_vocab
-aligned_audio,3,0,7.097477774961301,last_epoch,1.4905435123059598,,110,0.601,glove6b_mean_union_vocab
-ensemble_text_audio_finance,3,0,0.6364673263798387,test,1.4905435123059598,alpha=0.00 beta=0.10,110,0.601,glove6b_mean_union_vocab
-ensemble_text_audio_finance,3,0,0.6842722526150795,val,1.4905435123059598,alpha=0.00 beta=0.02,110,0.601,glove6b_mean_union_vocab
-ensemble_text_finance,3,0,0.7120938149419802,test,1.4905435123059598,alpha=0.00,110,0.601,glove6b_mean_union_vocab
-ensemble_text_finance,3,0,0.7120938149419802,val,1.4905435123059598,alpha=0.00,110,0.601,glove6b_mean_union_vocab
-text_bilstm,3,1,2.0294077336112517,val,1.4905435123059598,,110,0.601,glove6b_mean_union_vocab
-aligned_audio,3,1,4.76667545610484,last_epoch,1.4905435123059598,,110,0.601,glove6b_mean_union_vocab
-ensemble_text_audio_finance,3,1,0.6408785234547354,test,1.4905435123059598,alpha=0.00 beta=0.12,110,0.601,glove6b_mean_union_vocab
-ensemble_text_audio_finance,3,1,0.6896608669587504,val,1.4905435123059598,alpha=0.00 beta=0.02,110,0.601,glove6b_mean_union_vocab
-ensemble_text_finance,3,1,0.7120938149419802,test,1.4905435123059598,alpha=0.00,110,0.601,glove6b_mean_union_vocab
-ensemble_text_finance,3,1,0.7120938149419802,val,1.4905435123059598,alpha=0.00,110,0.601,glove6b_mean_union_vocab
-text_bilstm,3,2,2.177904607201156,val,1.4905435123059598,,110,0.601,glove6b_mean_union_vocab
-aligned_audio,3,2,7.250923024337022,last_epoch,1.4905435123059598,,110,0.601,glove6b_mean_union_vocab
-ensemble_text_audio_finance,3,2,0.6384375544554686,test,1.4905435123059598,alpha=0.00 beta=0.10,110,0.601,glove6b_mean_union_vocab
-ensemble_text_audio_finance,3,2,0.6844285329526599,val,1.4905435123059598,alpha=0.00 beta=0.02,110,0.601,glove6b_mean_union_vocab
-ensemble_text_finance,3,2,0.7120938149419802,test,1.4905435123059598,alpha=0.00,110,0.601,glove6b_mean_union_vocab
-ensemble_text_finance,3,2,0.7120938149419802,val,1.4905435123059598,alpha=0.00,110,0.601,glove6b_mean_union_vocab
-text_bilstm,3,3,2.117141739180552,val,1.4905435123059598,,110,0.601,glove6b_mean_union_vocab
-aligned_audio,3,3,5.891771360920702,last_epoch,1.4905435123059598,,110,0.601,glove6b_mean_union_vocab
-ensemble_text_audio_finance,3,3,0.644756928882076,test,1.4905435123059598,alpha=0.00 beta=0.10,110,0.601,glove6b_mean_union_vocab
-ensemble_text_audio_finance,3,3,0.6882210218960835,val,1.4905435123059598,alpha=0.00 beta=0.02,110,0.601,glove6b_mean_union_vocab
-ensemble_text_finance,3,3,0.7120938149419802,test,1.4905435123059598,alpha=0.00,110,0.601,glove6b_mean_union_vocab
-ensemble_text_finance,3,3,0.7120938149419802,val,1.4905435123059598,alpha=0.00,110,0.601,glove6b_mean_union_vocab
-text_bilstm,3,4,2.2901167707300205,val,1.4905435123059598,,110,0.601,glove6b_mean_union_vocab
-aligned_audio,3,4,7.564472004355737,last_epoch,1.4905435123059598,,110,0.601,glove6b_mean_union_vocab
-ensemble_text_audio_finance,3,4,0.6353281746648841,test,1.4905435123059598,alpha=0.00 beta=0.10,110,0.601,glove6b_mean_union_vocab
-ensemble_text_audio_finance,3,4,0.6831939587226772,val,1.4905435123059598,alpha=0.00 beta=0.02,110,0.601,glove6b_mean_union_vocab
-ensemble_text_finance,3,4,0.7120938149419802,test,1.4905435123059598,alpha=0.00,110,0.601,glove6b_mean_union_vocab
-ensemble_text_finance,3,4,0.7120938149419802,val,1.4905435123059598,alpha=0.00,110,0.601,glove6b_mean_union_vocab
-finance_svr,7,-1,0.3703751427984854,cv,0.563477012731576,"{'C': 10, 'gamma': 0.001}",110,0.308,glove6b_mean_union_vocab
-text_bilstm,7,0,1.4798869604762073,val,0.563477012731576,,110,0.308,glove6b_mean_union_vocab
-aligned_audio,7,0,5.517390269944151,last_epoch,0.563477012731576,,110,0.308,glove6b_mean_union_vocab
-ensemble_text_audio_finance,7,0,0.29700978897409297,test,0.563477012731576,alpha=0.06 beta=0.12,110,0.308,glove6b_mean_union_vocab
-ensemble_text_audio_finance,7,0,0.32582512012764586,val,0.563477012731576,alpha=0.00 beta=0.04,110,0.308,glove6b_mean_union_vocab
-ensemble_text_finance,7,0,0.3703751427984854,test,0.563477012731576,alpha=0.00,110,0.308,glove6b_mean_union_vocab
-ensemble_text_finance,7,0,0.3703751427984854,val,0.563477012731576,alpha=0.00,110,0.308,glove6b_mean_union_vocab
-text_bilstm,7,1,1.572559013923893,val,0.563477012731576,,110,0.308,glove6b_mean_union_vocab
-aligned_audio,7,1,3.7057062036351516,last_epoch,0.563477012731576,,110,0.308,glove6b_mean_union_vocab
-ensemble_text_audio_finance,7,1,0.29851916228452313,test,0.563477012731576,alpha=0.04 beta=0.14,110,0.308,glove6b_mean_union_vocab
-ensemble_text_audio_finance,7,1,0.31868339388133937,val,0.563477012731576,alpha=0.00 beta=0.06,110,0.308,glove6b_mean_union_vocab
-ensemble_text_finance,7,1,0.3703751427984854,test,0.563477012731576,alpha=0.00,110,0.308,glove6b_mean_union_vocab
-ensemble_text_finance,7,1,0.3703751427984854,val,0.563477012731576,alpha=0.00,110,0.308,glove6b_mean_union_vocab
-text_bilstm,7,2,1.5959542810157592,val,0.563477012731576,,110,0.308,glove6b_mean_union_vocab
-aligned_audio,7,2,6.016447925316447,last_epoch,0.563477012731576,,110,0.308,glove6b_mean_union_vocab
-ensemble_text_audio_finance,7,2,0.2973071495572905,test,0.563477012731576,alpha=0.06 beta=0.12,110,0.308,glove6b_mean_union_vocab
-ensemble_text_audio_finance,7,2,0.324586699778164,val,0.563477012731576,alpha=0.00 beta=0.04,110,0.308,glove6b_mean_union_vocab
-ensemble_text_finance,7,2,0.3703751427984854,test,0.563477012731576,alpha=0.00,110,0.308,glove6b_mean_union_vocab
-ensemble_text_finance,7,2,0.3703751427984854,val,0.563477012731576,alpha=0.00,110,0.308,glove6b_mean_union_vocab
-text_bilstm,7,3,1.6620780627786933,val,0.563477012731576,,110,0.308,glove6b_mean_union_vocab
-aligned_audio,7,3,4.836527917358382,last_epoch,0.563477012731576,,110,0.308,glove6b_mean_union_vocab
-ensemble_text_audio_finance,7,3,0.30346617371158385,test,0.563477012731576,alpha=0.04 beta=0.12,110,0.308,glove6b_mean_union_vocab
-ensemble_text_audio_finance,7,3,0.3300998273456263,val,0.563477012731576,alpha=0.00 beta=0.04,110,0.308,glove6b_mean_union_vocab
-ensemble_text_finance,7,3,0.3703751427984854,test,0.563477012731576,alpha=0.00,110,0.308,glove6b_mean_union_vocab
-ensemble_text_finance,7,3,0.3703751427984854,val,0.563477012731576,alpha=0.00,110,0.308,glove6b_mean_union_vocab
-text_bilstm,7,4,1.5917670122263585,val,0.563477012731576,,110,0.308,glove6b_mean_union_vocab
-aligned_audio,7,4,6.397978543183463,last_epoch,0.563477012731576,,110,0.308,glove6b_mean_union_vocab
-ensemble_text_audio_finance,7,4,0.2942339324055246,test,0.563477012731576,alpha=0.14 beta=0.14,110,0.308,glove6b_mean_union_vocab
-ensemble_text_audio_finance,7,4,0.3228541134191491,val,0.563477012731576,alpha=0.00 beta=0.04,110,0.308,glove6b_mean_union_vocab
-ensemble_text_finance,7,4,0.3703751427984854,test,0.563477012731576,alpha=0.00,110,0.308,glove6b_mean_union_vocab
-ensemble_text_finance,7,4,0.3703751427984854,val,0.563477012731576,alpha=0.00,110,0.308,glove6b_mean_union_vocab
-finance_svr,15,-1,0.21812134456263194,cv,0.3452021191934287,"{'C': 10, 'gamma': 0.001}",110,0.181,glove6b_mean_union_vocab
-text_bilstm,15,0,1.3204396527614066,val,0.3452021191934287,,110,0.181,glove6b_mean_union_vocab
-aligned_audio,15,0,5.652333968753344,last_epoch,0.3452021191934287,,110,0.181,glove6b_mean_union_vocab
-ensemble_text_audio_finance,15,0,0.17415093583763347,test,0.3452021191934287,alpha=0.00 beta=0.08,110,0.181,glove6b_mean_union_vocab
-ensemble_text_audio_finance,15,0,0.18572945718577927,val,0.3452021191934287,alpha=0.00 beta=0.04,110,0.181,glove6b_mean_union_vocab
-ensemble_text_finance,15,0,0.21812134456263194,test,0.3452021191934287,alpha=0.00,110,0.181,glove6b_mean_union_vocab
-ensemble_text_finance,15,0,0.21812134456263194,val,0.3452021191934287,alpha=0.00,110,0.181,glove6b_mean_union_vocab
-text_bilstm,15,1,1.3817622566837109,val,0.3452021191934287,,110,0.181,glove6b_mean_union_vocab
-aligned_audio,15,1,3.7141484388655037,last_epoch,0.3452021191934287,,110,0.181,glove6b_mean_union_vocab
-ensemble_text_audio_finance,15,1,0.17502322220937944,test,0.3452021191934287,alpha=0.00 beta=0.10,110,0.181,glove6b_mean_union_vocab
-ensemble_text_audio_finance,15,1,0.1904100734404365,val,0.3452021191934287,alpha=0.00 beta=0.04,110,0.181,glove6b_mean_union_vocab
-ensemble_text_finance,15,1,0.21812134456263194,test,0.3452021191934287,alpha=0.00,110,0.181,glove6b_mean_union_vocab
-ensemble_text_finance,15,1,0.21812134456263194,val,0.3452021191934287,alpha=0.00,110,0.181,glove6b_mean_union_vocab
-text_bilstm,15,2,1.4022343699858595,val,0.3452021191934287,,110,0.181,glove6b_mean_union_vocab
-aligned_audio,15,2,6.099438088780769,last_epoch,0.3452021191934287,,110,0.181,glove6b_mean_union_vocab
-ensemble_text_audio_finance,15,2,0.17439273916363873,test,0.3452021191934287,alpha=0.00 beta=0.08,110,0.181,glove6b_mean_union_vocab
-ensemble_text_audio_finance,15,2,0.1850780430601691,val,0.3452021191934287,alpha=0.00 beta=0.04,110,0.181,glove6b_mean_union_vocab
-ensemble_text_finance,15,2,0.21812134456263194,test,0.3452021191934287,alpha=0.00,110,0.181,glove6b_mean_union_vocab
-ensemble_text_finance,15,2,0.21812134456263194,val,0.3452021191934287,alpha=0.00,110,0.181,glove6b_mean_union_vocab
-text_bilstm,15,3,1.445684752232995,val,0.3452021191934287,,110,0.181,glove6b_mean_union_vocab
-aligned_audio,15,3,4.852063994429796,last_epoch,0.3452021191934287,,110,0.181,glove6b_mean_union_vocab
-ensemble_text_audio_finance,15,3,0.17767276741189322,test,0.3452021191934287,alpha=0.00 beta=0.08,110,0.181,glove6b_mean_union_vocab
-ensemble_text_audio_finance,15,3,0.1889587083972601,val,0.3452021191934287,alpha=0.00 beta=0.04,110,0.181,glove6b_mean_union_vocab
-ensemble_text_finance,15,3,0.21812134456263194,test,0.3452021191934287,alpha=0.00,110,0.181,glove6b_mean_union_vocab
-ensemble_text_finance,15,3,0.21812134456263194,val,0.3452021191934287,alpha=0.00,110,0.181,glove6b_mean_union_vocab
-text_bilstm,15,4,1.367958636468739,val,0.3452021191934287,,110,0.181,glove6b_mean_union_vocab
-aligned_audio,15,4,6.520115220268122,last_epoch,0.3452021191934287,,110,0.181,glove6b_mean_union_vocab
-ensemble_text_audio_finance,15,4,0.1729297075744375,test,0.3452021191934287,alpha=0.02 beta=0.08,110,0.181,glove6b_mean_union_vocab
-ensemble_text_audio_finance,15,4,0.1836006149868907,val,0.3452021191934287,alpha=0.00 beta=0.04,110,0.181,glove6b_mean_union_vocab
-ensemble_text_finance,15,4,0.21812134456263194,test,0.3452021191934287,alpha=0.00,110,0.181,glove6b_mean_union_vocab
-ensemble_text_finance,15,4,0.21812134456263194,val,0.3452021191934287,alpha=0.00,110,0.181,glove6b_mean_union_vocab
-finance_svr,30,-1,0.1544816552964909,cv,0.20465644019241636,"{'C': 10, 'gamma': 0.001}",110,0.119,glove6b_mean_union_vocab
-text_bilstm,30,0,1.334034454031584,val,0.20465644019241636,,110,0.119,glove6b_mean_union_vocab
-aligned_audio,30,0,5.367029167362232,last_epoch,0.20465644019241636,,110,0.119,glove6b_mean_union_vocab
-ensemble_text_audio_finance,30,0,0.10169199784153453,test,0.20465644019241636,alpha=0.00 beta=0.10,110,0.119,glove6b_mean_union_vocab
-ensemble_text_audio_finance,30,0,0.11805794141686753,val,0.20465644019241636,alpha=0.00 beta=0.04,110,0.119,glove6b_mean_union_vocab
-ensemble_text_finance,30,0,0.1544816552964909,test,0.20465644019241636,alpha=0.00,110,0.119,glove6b_mean_union_vocab
-ensemble_text_finance,30,0,0.1544816552964909,val,0.20465644019241636,alpha=0.00,110,0.119,glove6b_mean_union_vocab
-text_bilstm,30,1,1.387916856676126,val,0.20465644019241636,,110,0.119,glove6b_mean_union_vocab
-aligned_audio,30,1,3.521071329200389,last_epoch,0.20465644019241636,,110,0.119,glove6b_mean_union_vocab
-ensemble_text_audio_finance,30,1,0.10298737139836736,test,0.20465644019241636,alpha=0.00 beta=0.10,110,0.119,glove6b_mean_union_vocab
-ensemble_text_audio_finance,30,1,0.11323433158992303,val,0.20465644019241636,alpha=0.00 beta=0.06,110,0.119,glove6b_mean_union_vocab
-ensemble_text_finance,30,1,0.1544816552964909,test,0.20465644019241636,alpha=0.00,110,0.119,glove6b_mean_union_vocab
-ensemble_text_finance,30,1,0.1544816552964909,val,0.20465644019241636,alpha=0.00,110,0.119,glove6b_mean_union_vocab
-text_bilstm,30,2,1.4694371194208409,val,0.20465644019241636,,110,0.119,glove6b_mean_union_vocab
-aligned_audio,30,2,5.8674666976564955,last_epoch,0.20465644019241636,,110,0.119,glove6b_mean_union_vocab
-ensemble_text_audio_finance,30,2,0.10148499870509961,test,0.20465644019241636,alpha=0.00 beta=0.08,110,0.119,glove6b_mean_union_vocab
-ensemble_text_audio_finance,30,2,0.11689559960992145,val,0.20465644019241636,alpha=0.00 beta=0.04,110,0.119,glove6b_mean_union_vocab
-ensemble_text_finance,30,2,0.1544816552964909,test,0.20465644019241636,alpha=0.00,110,0.119,glove6b_mean_union_vocab
-ensemble_text_finance,30,2,0.1544816552964909,val,0.20465644019241636,alpha=0.00,110,0.119,glove6b_mean_union_vocab
-text_bilstm,30,3,1.3504950645245404,val,0.20465644019241636,,110,0.119,glove6b_mean_union_vocab
-aligned_audio,30,3,4.659173128112228,last_epoch,0.20465644019241636,,110,0.119,glove6b_mean_union_vocab
-ensemble_text_audio_finance,30,3,0.104901793481538,test,0.20465644019241636,alpha=0.00 beta=0.10,110,0.119,glove6b_mean_union_vocab
-ensemble_text_audio_finance,30,3,0.12131507032793562,val,0.20465644019241636,alpha=0.00 beta=0.04,110,0.119,glove6b_mean_union_vocab
-ensemble_text_finance,30,3,0.1544816552964909,test,0.20465644019241636,alpha=0.00,110,0.119,glove6b_mean_union_vocab
-ensemble_text_finance,30,3,0.1544816552964909,val,0.20465644019241636,alpha=0.00,110,0.119,glove6b_mean_union_vocab
-text_bilstm,30,4,1.4613882537463745,val,0.20465644019241636,,110,0.119,glove6b_mean_union_vocab
-aligned_audio,30,4,6.23468233761913,last_epoch,0.20465644019241636,,110,0.119,glove6b_mean_union_vocab
-ensemble_text_audio_finance,30,4,0.1006013448353111,test,0.20465644019241636,alpha=0.00 beta=0.08,110,0.119,glove6b_mean_union_vocab
-ensemble_text_audio_finance,30,4,0.11579592691270552,val,0.20465644019241636,alpha=0.00 beta=0.04,110,0.119,glove6b_mean_union_vocab
-ensemble_text_finance,30,4,0.1544816552964909,test,0.20465644019241636,alpha=0.00,110,0.119,glove6b_mean_union_vocab
-ensemble_text_finance,30,4,0.1544816552964909,val,0.20465644019241636,alpha=0.00,110,0.119,glove6b_mean_union_vocab
+branch,horizon,seed,mse,tuned_on,persistence_mse,note,condition,n_test,published_mse,text_features
+finance_svr,3,-1,0.7120938149419802,cv,1.4905435123059598,"{'C': 1, 'gamma': 0.001}",their,110,0.601,glove6b_mean_union_vocab
+text_bilstm,3,0,2.061349958947519,val,1.4905435123059598,,their,110,0.601,glove6b_mean_union_vocab
+aligned_audio,3,0,7.097477774961301,last_epoch,1.4905435123059598,,their,110,0.601,glove6b_mean_union_vocab
+ensemble_text_audio_finance,3,0,0.6364673263798387,test,1.4905435123059598,alpha=0.00 beta=0.10,their,110,0.601,glove6b_mean_union_vocab
+ensemble_text_audio_finance,3,0,0.6842722526150795,val,1.4905435123059598,alpha=0.00 beta=0.02,their,110,0.601,glove6b_mean_union_vocab
+ensemble_text_finance,3,0,0.7120938149419802,test,1.4905435123059598,alpha=0.00,their,110,0.601,glove6b_mean_union_vocab
+ensemble_text_finance,3,0,0.7120938149419802,val,1.4905435123059598,alpha=0.00,their,110,0.601,glove6b_mean_union_vocab
+text_bilstm,3,1,2.0294077336112517,val,1.4905435123059598,,their,110,0.601,glove6b_mean_union_vocab
+aligned_audio,3,1,4.76667545610484,last_epoch,1.4905435123059598,,their,110,0.601,glove6b_mean_union_vocab
+ensemble_text_audio_finance,3,1,0.6408785234547354,test,1.4905435123059598,alpha=0.00 beta=0.12,their,110,0.601,glove6b_mean_union_vocab
+ensemble_text_audio_finance,3,1,0.6896608669587504,val,1.4905435123059598,alpha=0.00 beta=0.02,their,110,0.601,glove6b_mean_union_vocab
+ensemble_text_finance,3,1,0.7120938149419802,test,1.4905435123059598,alpha=0.00,their,110,0.601,glove6b_mean_union_vocab
+ensemble_text_finance,3,1,0.7120938149419802,val,1.4905435123059598,alpha=0.00,their,110,0.601,glove6b_mean_union_vocab
+text_bilstm,3,2,2.177904607201156,val,1.4905435123059598,,their,110,0.601,glove6b_mean_union_vocab
+aligned_audio,3,2,7.250923024337022,last_epoch,1.4905435123059598,,their,110,0.601,glove6b_mean_union_vocab
+ensemble_text_audio_finance,3,2,0.6384375544554686,test,1.4905435123059598,alpha=0.00 beta=0.10,their,110,0.601,glove6b_mean_union_vocab
+ensemble_text_audio_finance,3,2,0.6844285329526599,val,1.4905435123059598,alpha=0.00 beta=0.02,their,110,0.601,glove6b_mean_union_vocab
+ensemble_text_finance,3,2,0.7120938149419802,test,1.4905435123059598,alpha=0.00,their,110,0.601,glove6b_mean_union_vocab
+ensemble_text_finance,3,2,0.7120938149419802,val,1.4905435123059598,alpha=0.00,their,110,0.601,glove6b_mean_union_vocab
+text_bilstm,3,3,2.117141739180552,val,1.4905435123059598,,their,110,0.601,glove6b_mean_union_vocab
+aligned_audio,3,3,5.891771360920702,last_epoch,1.4905435123059598,,their,110,0.601,glove6b_mean_union_vocab
+ensemble_text_audio_finance,3,3,0.644756928882076,test,1.4905435123059598,alpha=0.00 beta=0.10,their,110,0.601,glove6b_mean_union_vocab
+ensemble_text_audio_finance,3,3,0.6882210218960835,val,1.4905435123059598,alpha=0.00 beta=0.02,their,110,0.601,glove6b_mean_union_vocab
+ensemble_text_finance,3,3,0.7120938149419802,test,1.4905435123059598,alpha=0.00,their,110,0.601,glove6b_mean_union_vocab
+ensemble_text_finance,3,3,0.7120938149419802,val,1.4905435123059598,alpha=0.00,their,110,0.601,glove6b_mean_union_vocab
+text_bilstm,3,4,2.2901167707300205,val,1.4905435123059598,,their,110,0.601,glove6b_mean_union_vocab
+aligned_audio,3,4,7.564472004355737,last_epoch,1.4905435123059598,,their,110,0.601,glove6b_mean_union_vocab
+ensemble_text_audio_finance,3,4,0.6353281746648841,test,1.4905435123059598,alpha=0.00 beta=0.10,their,110,0.601,glove6b_mean_union_vocab
+ensemble_text_audio_finance,3,4,0.6831939587226772,val,1.4905435123059598,alpha=0.00 beta=0.02,their,110,0.601,glove6b_mean_union_vocab
+ensemble_text_finance,3,4,0.7120938149419802,test,1.4905435123059598,alpha=0.00,their,110,0.601,glove6b_mean_union_vocab
+ensemble_text_finance,3,4,0.7120938149419802,val,1.4905435123059598,alpha=0.00,their,110,0.601,glove6b_mean_union_vocab
+finance_svr,7,-1,0.3703751427984854,cv,0.563477012731576,"{'C': 10, 'gamma': 0.001}",their,110,0.308,glove6b_mean_union_vocab
+text_bilstm,7,0,1.4798869604762073,val,0.563477012731576,,their,110,0.308,glove6b_mean_union_vocab
+aligned_audio,7,0,5.517390269944151,last_epoch,0.563477012731576,,their,110,0.308,glove6b_mean_union_vocab
+ensemble_text_audio_finance,7,0,0.29700978897409297,test,0.563477012731576,alpha=0.06 beta=0.12,their,110,0.308,glove6b_mean_union_vocab
+ensemble_text_audio_finance,7,0,0.32582512012764586,val,0.563477012731576,alpha=0.00 beta=0.04,their,110,0.308,glove6b_mean_union_vocab
+ensemble_text_finance,7,0,0.3703751427984854,test,0.563477012731576,alpha=0.00,their,110,0.308,glove6b_mean_union_vocab
+ensemble_text_finance,7,0,0.3703751427984854,val,0.563477012731576,alpha=0.00,their,110,0.308,glove6b_mean_union_vocab
+text_bilstm,7,1,1.572559013923893,val,0.563477012731576,,their,110,0.308,glove6b_mean_union_vocab
+aligned_audio,7,1,3.7057062036351516,last_epoch,0.563477012731576,,their,110,0.308,glove6b_mean_union_vocab
+ensemble_text_audio_finance,7,1,0.29851916228452313,test,0.563477012731576,alpha=0.04 beta=0.14,their,110,0.308,glove6b_mean_union_vocab
+ensemble_text_audio_finance,7,1,0.31868339388133937,val,0.563477012731576,alpha=0.00 beta=0.06,their,110,0.308,glove6b_mean_union_vocab
+ensemble_text_finance,7,1,0.3703751427984854,test,0.563477012731576,alpha=0.00,their,110,0.308,glove6b_mean_union_vocab
+ensemble_text_finance,7,1,0.3703751427984854,val,0.563477012731576,alpha=0.00,their,110,0.308,glove6b_mean_union_vocab
+text_bilstm,7,2,1.5959542810157592,val,0.563477012731576,,their,110,0.308,glove6b_mean_union_vocab
+aligned_audio,7,2,6.016447925316447,last_epoch,0.563477012731576,,their,110,0.308,glove6b_mean_union_vocab
+ensemble_text_audio_finance,7,2,0.2973071495572905,test,0.563477012731576,alpha=0.06 beta=0.12,their,110,0.308,glove6b_mean_union_vocab
+ensemble_text_audio_finance,7,2,0.324586699778164,val,0.563477012731576,alpha=0.00 beta=0.04,their,110,0.308,glove6b_mean_union_vocab
+ensemble_text_finance,7,2,0.3703751427984854,test,0.563477012731576,alpha=0.00,their,110,0.308,glove6b_mean_union_vocab
+ensemble_text_finance,7,2,0.3703751427984854,val,0.563477012731576,alpha=0.00,their,110,0.308,glove6b_mean_union_vocab
+text_bilstm,7,3,1.6620780627786933,val,0.563477012731576,,their,110,0.308,glove6b_mean_union_vocab
+aligned_audio,7,3,4.836527917358382,last_epoch,0.563477012731576,,their,110,0.308,glove6b_mean_union_vocab
+ensemble_text_audio_finance,7,3,0.30346617371158385,test,0.563477012731576,alpha=0.04 beta=0.12,their,110,0.308,glove6b_mean_union_vocab
+ensemble_text_audio_finance,7,3,0.3300998273456263,val,0.563477012731576,alpha=0.00 beta=0.04,their,110,0.308,glove6b_mean_union_vocab
+ensemble_text_finance,7,3,0.3703751427984854,test,0.563477012731576,alpha=0.00,their,110,0.308,glove6b_mean_union_vocab
+ensemble_text_finance,7,3,0.3703751427984854,val,0.563477012731576,alpha=0.00,their,110,0.308,glove6b_mean_union_vocab
+text_bilstm,7,4,1.5917670122263585,val,0.563477012731576,,their,110,0.308,glove6b_mean_union_vocab
+aligned_audio,7,4,6.397978543183463,last_epoch,0.563477012731576,,their,110,0.308,glove6b_mean_union_vocab
+ensemble_text_audio_finance,7,4,0.2942339324055246,test,0.563477012731576,alpha=0.14 beta=0.14,their,110,0.308,glove6b_mean_union_vocab
+ensemble_text_audio_finance,7,4,0.3228541134191491,val,0.563477012731576,alpha=0.00 beta=0.04,their,110,0.308,glove6b_mean_union_vocab
+ensemble_text_finance,7,4,0.3703751427984854,test,0.563477012731576,alpha=0.00,their,110,0.308,glove6b_mean_union_vocab
+ensemble_text_finance,7,4,0.3703751427984854,val,0.563477012731576,alpha=0.00,their,110,0.308,glove6b_mean_union_vocab
+finance_svr,15,-1,0.21812134456263194,cv,0.3452021191934287,"{'C': 10, 'gamma': 0.001}",their,110,0.181,glove6b_mean_union_vocab
+text_bilstm,15,0,1.3204396527614066,val,0.3452021191934287,,their,110,0.181,glove6b_mean_union_vocab
+aligned_audio,15,0,5.652333968753344,last_epoch,0.3452021191934287,,their,110,0.181,glove6b_mean_union_vocab
+ensemble_text_audio_finance,15,0,0.17415093583763347,test,0.3452021191934287,alpha=0.00 beta=0.08,their,110,0.181,glove6b_mean_union_vocab
+ensemble_text_audio_finance,15,0,0.18572945718577927,val,0.3452021191934287,alpha=0.00 beta=0.04,their,110,0.181,glove6b_mean_union_vocab
+ensemble_text_finance,15,0,0.21812134456263194,test,0.3452021191934287,alpha=0.00,their,110,0.181,glove6b_mean_union_vocab
+ensemble_text_finance,15,0,0.21812134456263194,val,0.3452021191934287,alpha=0.00,their,110,0.181,glove6b_mean_union_vocab
+text_bilstm,15,1,1.3817622566837109,val,0.3452021191934287,,their,110,0.181,glove6b_mean_union_vocab
+aligned_audio,15,1,3.7141484388655037,last_epoch,0.3452021191934287,,their,110,0.181,glove6b_mean_union_vocab
+ensemble_text_audio_finance,15,1,0.17502322220937944,test,0.3452021191934287,alpha=0.00 beta=0.10,their,110,0.181,glove6b_mean_union_vocab
+ensemble_text_audio_finance,15,1,0.1904100734404365,val,0.3452021191934287,alpha=0.00 beta=0.04,their,110,0.181,glove6b_mean_union_vocab
+ensemble_text_finance,15,1,0.21812134456263194,test,0.3452021191934287,alpha=0.00,their,110,0.181,glove6b_mean_union_vocab
+ensemble_text_finance,15,1,0.21812134456263194,val,0.3452021191934287,alpha=0.00,their,110,0.181,glove6b_mean_union_vocab
+text_bilstm,15,2,1.4022343699858595,val,0.3452021191934287,,their,110,0.181,glove6b_mean_union_vocab
+aligned_audio,15,2,6.099438088780769,last_epoch,0.3452021191934287,,their,110,0.181,glove6b_mean_union_vocab
+ensemble_text_audio_finance,15,2,0.17439273916363873,test,0.3452021191934287,alpha=0.00 beta=0.08,their,110,0.181,glove6b_mean_union_vocab
+ensemble_text_audio_finance,15,2,0.1850780430601691,val,0.3452021191934287,alpha=0.00 beta=0.04,their,110,0.181,glove6b_mean_union_vocab
+ensemble_text_finance,15,2,0.21812134456263194,test,0.3452021191934287,alpha=0.00,their,110,0.181,glove6b_mean_union_vocab
+ensemble_text_finance,15,2,0.21812134456263194,val,0.3452021191934287,alpha=0.00,their,110,0.181,glove6b_mean_union_vocab
+text_bilstm,15,3,1.445684752232995,val,0.3452021191934287,,their,110,0.181,glove6b_mean_union_vocab
+aligned_audio,15,3,4.852063994429796,last_epoch,0.3452021191934287,,their,110,0.181,glove6b_mean_union_vocab
+ensemble_text_audio_finance,15,3,0.17767276741189322,test,0.3452021191934287,alpha=0.00 beta=0.08,their,110,0.181,glove6b_mean_union_vocab
+ensemble_text_audio_finance,15,3,0.1889587083972601,val,0.3452021191934287,alpha=0.00 beta=0.04,their,110,0.181,glove6b_mean_union_vocab
+ensemble_text_finance,15,3,0.21812134456263194,test,0.3452021191934287,alpha=0.00,their,110,0.181,glove6b_mean_union_vocab
+ensemble_text_finance,15,3,0.21812134456263194,val,0.3452021191934287,alpha=0.00,their,110,0.181,glove6b_mean_union_vocab
+text_bilstm,15,4,1.367958636468739,val,0.3452021191934287,,their,110,0.181,glove6b_mean_union_vocab
+aligned_audio,15,4,6.520115220268122,last_epoch,0.3452021191934287,,their,110,0.181,glove6b_mean_union_vocab
+ensemble_text_audio_finance,15,4,0.1729297075744375,test,0.3452021191934287,alpha=0.02 beta=0.08,their,110,0.181,glove6b_mean_union_vocab
+ensemble_text_audio_finance,15,4,0.1836006149868907,val,0.3452021191934287,alpha=0.00 beta=0.04,their,110,0.181,glove6b_mean_union_vocab
+ensemble_text_finance,15,4,0.21812134456263194,test,0.3452021191934287,alpha=0.00,their,110,0.181,glove6b_mean_union_vocab
+ensemble_text_finance,15,4,0.21812134456263194,val,0.3452021191934287,alpha=0.00,their,110,0.181,glove6b_mean_union_vocab
+finance_svr,30,-1,0.1544816552964909,cv,0.20465644019241636,"{'C': 10, 'gamma': 0.001}",their,110,0.119,glove6b_mean_union_vocab
+text_bilstm,30,0,1.334034454031584,val,0.20465644019241636,,their,110,0.119,glove6b_mean_union_vocab
+aligned_audio,30,0,5.367029167362232,last_epoch,0.20465644019241636,,their,110,0.119,glove6b_mean_union_vocab
+ensemble_text_audio_finance,30,0,0.10169199784153453,test,0.20465644019241636,alpha=0.00 beta=0.10,their,110,0.119,glove6b_mean_union_vocab
+ensemble_text_audio_finance,30,0,0.11805794141686753,val,0.20465644019241636,alpha=0.00 beta=0.04,their,110,0.119,glove6b_mean_union_vocab
+ensemble_text_finance,30,0,0.1544816552964909,test,0.20465644019241636,alpha=0.00,their,110,0.119,glove6b_mean_union_vocab
+ensemble_text_finance,30,0,0.1544816552964909,val,0.20465644019241636,alpha=0.00,their,110,0.119,glove6b_mean_union_vocab
+text_bilstm,30,1,1.387916856676126,val,0.20465644019241636,,their,110,0.119,glove6b_mean_union_vocab
+aligned_audio,30,1,3.521071329200389,last_epoch,0.20465644019241636,,their,110,0.119,glove6b_mean_union_vocab
+ensemble_text_audio_finance,30,1,0.10298737139836736,test,0.20465644019241636,alpha=0.00 beta=0.10,their,110,0.119,glove6b_mean_union_vocab
+ensemble_text_audio_finance,30,1,0.11323433158992303,val,0.20465644019241636,alpha=0.00 beta=0.06,their,110,0.119,glove6b_mean_union_vocab
+ensemble_text_finance,30,1,0.1544816552964909,test,0.20465644019241636,alpha=0.00,their,110,0.119,glove6b_mean_union_vocab
+ensemble_text_finance,30,1,0.1544816552964909,val,0.20465644019241636,alpha=0.00,their,110,0.119,glove6b_mean_union_vocab
+text_bilstm,30,2,1.4694371194208409,val,0.20465644019241636,,their,110,0.119,glove6b_mean_union_vocab
+aligned_audio,30,2,5.8674666976564955,last_epoch,0.20465644019241636,,their,110,0.119,glove6b_mean_union_vocab
+ensemble_text_audio_finance,30,2,0.10148499870509961,test,0.20465644019241636,alpha=0.00 beta=0.08,their,110,0.119,glove6b_mean_union_vocab
+ensemble_text_audio_finance,30,2,0.11689559960992145,val,0.20465644019241636,alpha=0.00 beta=0.04,their,110,0.119,glove6b_mean_union_vocab
+ensemble_text_finance,30,2,0.1544816552964909,test,0.20465644019241636,alpha=0.00,their,110,0.119,glove6b_mean_union_vocab
+ensemble_text_finance,30,2,0.1544816552964909,val,0.20465644019241636,alpha=0.00,their,110,0.119,glove6b_mean_union_vocab
+text_bilstm,30,3,1.3504950645245404,val,0.20465644019241636,,their,110,0.119,glove6b_mean_union_vocab
+aligned_audio,30,3,4.659173128112228,last_epoch,0.20465644019241636,,their,110,0.119,glove6b_mean_union_vocab
+ensemble_text_audio_finance,30,3,0.104901793481538,test,0.20465644019241636,alpha=0.00 beta=0.10,their,110,0.119,glove6b_mean_union_vocab
+ensemble_text_audio_finance,30,3,0.12131507032793562,val,0.20465644019241636,alpha=0.00 beta=0.04,their,110,0.119,glove6b_mean_union_vocab
+ensemble_text_finance,30,3,0.1544816552964909,test,0.20465644019241636,alpha=0.00,their,110,0.119,glove6b_mean_union_vocab
+ensemble_text_finance,30,3,0.1544816552964909,val,0.20465644019241636,alpha=0.00,their,110,0.119,glove6b_mean_union_vocab
+text_bilstm,30,4,1.4613882537463745,val,0.20465644019241636,,their,110,0.119,glove6b_mean_union_vocab
+aligned_audio,30,4,6.23468233761913,last_epoch,0.20465644019241636,,their,110,0.119,glove6b_mean_union_vocab
+ensemble_text_audio_finance,30,4,0.1006013448353111,test,0.20465644019241636,alpha=0.00 beta=0.08,their,110,0.119,glove6b_mean_union_vocab
+ensemble_text_audio_finance,30,4,0.11579592691270552,val,0.20465644019241636,alpha=0.00 beta=0.04,their,110,0.119,glove6b_mean_union_vocab
+ensemble_text_finance,30,4,0.1544816552964909,test,0.20465644019241636,alpha=0.00,their,110,0.119,glove6b_mean_union_vocab
+ensemble_text_finance,30,4,0.1544816552964909,val,0.20465644019241636,alpha=0.00,their,110,0.119,glove6b_mean_union_vocab
+finance_svr,3,-1,0.7483335975257858,cv,1.6125838515482658,"{'C': 1, 'gamma': 0.001}",embargoed,100,0.601,glove6b_mean_union_vocab
+text_bilstm,3,0,1.8668793293097605,val,1.6125838515482658,,embargoed,100,0.601,glove6b_mean_union_vocab
+aligned_audio,3,0,11.611207053743469,last_epoch,1.6125838515482658,,embargoed,100,0.601,glove6b_mean_union_vocab
+ensemble_text_audio_finance,3,0,0.6803809173856618,test,1.6125838515482658,alpha=0.02 beta=0.08,embargoed,100,0.601,glove6b_mean_union_vocab
+ensemble_text_audio_finance,3,0,0.7153558946050623,val,1.6125838515482658,alpha=0.76 beta=0.24,embargoed,100,0.601,glove6b_mean_union_vocab
+ensemble_text_finance,3,0,0.7483335975257858,test,1.6125838515482658,alpha=0.00,embargoed,100,0.601,glove6b_mean_union_vocab
+ensemble_text_finance,3,0,0.7483335975257858,val,1.6125838515482658,alpha=0.00,embargoed,100,0.601,glove6b_mean_union_vocab
+text_bilstm,3,1,1.7533209745143785,val,1.6125838515482658,,embargoed,100,0.601,glove6b_mean_union_vocab
+aligned_audio,3,1,9.628201117589692,last_epoch,1.6125838515482658,,embargoed,100,0.601,glove6b_mean_union_vocab
+ensemble_text_audio_finance,3,1,0.6807279205127559,test,1.6125838515482658,alpha=0.00 beta=0.08,embargoed,100,0.601,glove6b_mean_union_vocab
+ensemble_text_audio_finance,3,1,0.7255275118329212,val,1.6125838515482658,alpha=0.76 beta=0.24,embargoed,100,0.601,glove6b_mean_union_vocab
+ensemble_text_finance,3,1,0.7483335975257858,test,1.6125838515482658,alpha=0.00,embargoed,100,0.601,glove6b_mean_union_vocab
+ensemble_text_finance,3,1,0.7483335975257858,val,1.6125838515482658,alpha=0.00,embargoed,100,0.601,glove6b_mean_union_vocab
+text_bilstm,3,2,1.418077207048337,val,1.6125838515482658,,embargoed,100,0.601,glove6b_mean_union_vocab
+aligned_audio,3,2,11.663097720569112,last_epoch,1.6125838515482658,,embargoed,100,0.601,glove6b_mean_union_vocab
+ensemble_text_audio_finance,3,2,0.6809010636484979,test,1.6125838515482658,alpha=0.02 beta=0.08,embargoed,100,0.601,glove6b_mean_union_vocab
+ensemble_text_audio_finance,3,2,0.7231896483464803,val,1.6125838515482658,alpha=0.82 beta=0.18,embargoed,100,0.601,glove6b_mean_union_vocab
+ensemble_text_finance,3,2,0.7483335975257858,test,1.6125838515482658,alpha=0.00,embargoed,100,0.601,glove6b_mean_union_vocab
+ensemble_text_finance,3,2,0.7483335975257858,val,1.6125838515482658,alpha=0.00,embargoed,100,0.601,glove6b_mean_union_vocab
+text_bilstm,3,3,1.1546569946695477,val,1.6125838515482658,,embargoed,100,0.601,glove6b_mean_union_vocab
+aligned_audio,3,3,11.275341811307662,last_epoch,1.6125838515482658,,embargoed,100,0.601,glove6b_mean_union_vocab
+ensemble_text_audio_finance,3,3,0.6820231627682424,test,1.6125838515482658,alpha=0.00 beta=0.08,embargoed,100,0.601,glove6b_mean_union_vocab
+ensemble_text_audio_finance,3,3,0.721501118430361,val,1.6125838515482658,alpha=0.84 beta=0.16,embargoed,100,0.601,glove6b_mean_union_vocab
+ensemble_text_finance,3,3,0.7483335975257858,test,1.6125838515482658,alpha=0.00,embargoed,100,0.601,glove6b_mean_union_vocab
+ensemble_text_finance,3,3,0.7483335975257858,val,1.6125838515482658,alpha=0.00,embargoed,100,0.601,glove6b_mean_union_vocab
+text_bilstm,3,4,2.302737248560718,val,1.6125838515482658,,embargoed,100,0.601,glove6b_mean_union_vocab
+aligned_audio,3,4,11.659420541150986,last_epoch,1.6125838515482658,,embargoed,100,0.601,glove6b_mean_union_vocab
+ensemble_text_audio_finance,3,4,0.6804534853171963,test,1.6125838515482658,alpha=0.02 beta=0.08,embargoed,100,0.601,glove6b_mean_union_vocab
+ensemble_text_audio_finance,3,4,0.7103232119668926,val,1.6125838515482658,alpha=0.66 beta=0.24,embargoed,100,0.601,glove6b_mean_union_vocab
+ensemble_text_finance,3,4,0.7483335975257858,test,1.6125838515482658,alpha=0.00,embargoed,100,0.601,glove6b_mean_union_vocab
+ensemble_text_finance,3,4,0.7483335975257858,val,1.6125838515482658,alpha=0.00,embargoed,100,0.601,glove6b_mean_union_vocab
+finance_svr,7,-1,0.37961581100664094,cv,0.6045295493420395,"{'C': 1, 'gamma': 0.001}",embargoed,100,0.308,glove6b_mean_union_vocab
+text_bilstm,7,0,1.5755420380600307,val,0.6045295493420395,,embargoed,100,0.308,glove6b_mean_union_vocab
+aligned_audio,7,0,10.399297554134915,last_epoch,0.6045295493420395,,embargoed,100,0.308,glove6b_mean_union_vocab
+ensemble_text_audio_finance,7,0,0.30258551586434573,test,0.6045295493420395,alpha=0.00 beta=0.08,embargoed,100,0.308,glove6b_mean_union_vocab
+ensemble_text_audio_finance,7,0,0.3055058911169622,val,0.6045295493420395,alpha=0.02 beta=0.10,embargoed,100,0.308,glove6b_mean_union_vocab
+ensemble_text_finance,7,0,0.37961581100664094,test,0.6045295493420395,alpha=0.00,embargoed,100,0.308,glove6b_mean_union_vocab
+ensemble_text_finance,7,0,0.37961581100664094,val,0.6045295493420395,alpha=0.00,embargoed,100,0.308,glove6b_mean_union_vocab
+text_bilstm,7,1,1.5314127487063742,val,0.6045295493420395,,embargoed,100,0.308,glove6b_mean_union_vocab
+aligned_audio,7,1,8.539971544942007,last_epoch,0.6045295493420395,,embargoed,100,0.308,glove6b_mean_union_vocab
+ensemble_text_audio_finance,7,1,0.30417883071431573,test,0.6045295493420395,alpha=0.00 beta=0.08,embargoed,100,0.308,glove6b_mean_union_vocab
+ensemble_text_audio_finance,7,1,0.3051094073533853,val,0.6045295493420395,alpha=0.00 beta=0.10,embargoed,100,0.308,glove6b_mean_union_vocab
+ensemble_text_finance,7,1,0.37961581100664094,test,0.6045295493420395,alpha=0.00,embargoed,100,0.308,glove6b_mean_union_vocab
+ensemble_text_finance,7,1,0.37961581100664094,val,0.6045295493420395,alpha=0.00,embargoed,100,0.308,glove6b_mean_union_vocab
+text_bilstm,7,2,1.260338953035812,val,0.6045295493420395,,embargoed,100,0.308,glove6b_mean_union_vocab
+aligned_audio,7,2,10.572979065666186,last_epoch,0.6045295493420395,,embargoed,100,0.308,glove6b_mean_union_vocab
+ensemble_text_audio_finance,7,2,0.30389037936426555,test,0.6045295493420395,alpha=0.00 beta=0.08,embargoed,100,0.308,glove6b_mean_union_vocab
+ensemble_text_audio_finance,7,2,0.3068216226923679,val,0.6045295493420395,alpha=0.04 beta=0.10,embargoed,100,0.308,glove6b_mean_union_vocab
+ensemble_text_finance,7,2,0.37961581100664094,test,0.6045295493420395,alpha=0.00,embargoed,100,0.308,glove6b_mean_union_vocab
+ensemble_text_finance,7,2,0.37961581100664094,val,0.6045295493420395,alpha=0.00,embargoed,100,0.308,glove6b_mean_union_vocab
+text_bilstm,7,3,0.9375560198506996,val,0.6045295493420395,,embargoed,100,0.308,glove6b_mean_union_vocab
+aligned_audio,7,3,10.167567578490674,last_epoch,0.6045295493420395,,embargoed,100,0.308,glove6b_mean_union_vocab
+ensemble_text_audio_finance,7,3,0.3050074476645135,test,0.6045295493420395,alpha=0.00 beta=0.08,embargoed,100,0.308,glove6b_mean_union_vocab
+ensemble_text_audio_finance,7,3,0.3096609140230265,val,0.6045295493420395,alpha=0.00 beta=0.10,embargoed,100,0.308,glove6b_mean_union_vocab
+ensemble_text_finance,7,3,0.37961581100664094,test,0.6045295493420395,alpha=0.00,embargoed,100,0.308,glove6b_mean_union_vocab
+ensemble_text_finance,7,3,0.37961581100664094,val,0.6045295493420395,alpha=0.00,embargoed,100,0.308,glove6b_mean_union_vocab
+text_bilstm,7,4,1.9149043495614686,val,0.6045295493420395,,embargoed,100,0.308,glove6b_mean_union_vocab
+aligned_audio,7,4,10.624735383653745,last_epoch,0.6045295493420395,,embargoed,100,0.308,glove6b_mean_union_vocab
+ensemble_text_audio_finance,7,4,0.30392908151112435,test,0.6045295493420395,alpha=0.00 beta=0.08,embargoed,100,0.308,glove6b_mean_union_vocab
+ensemble_text_audio_finance,7,4,0.30392908151112435,val,0.6045295493420395,alpha=0.00 beta=0.08,embargoed,100,0.308,glove6b_mean_union_vocab
+ensemble_text_finance,7,4,0.37961581100664094,test,0.6045295493420395,alpha=0.00,embargoed,100,0.308,glove6b_mean_union_vocab
+ensemble_text_finance,7,4,0.37961581100664094,val,0.6045295493420395,alpha=0.00,embargoed,100,0.308,glove6b_mean_union_vocab
+finance_svr,15,-1,0.22526733697944085,cv,0.36701394418366085,"{'C': 1, 'gamma': 0.1}",embargoed,100,0.181,glove6b_mean_union_vocab
+text_bilstm,15,0,1.4087499379132877,val,0.36701394418366085,,embargoed,100,0.181,glove6b_mean_union_vocab
+aligned_audio,15,0,10.553201747327266,last_epoch,0.36701394418366085,,embargoed,100,0.181,glove6b_mean_union_vocab
+ensemble_text_audio_finance,15,0,0.18227517689525174,test,0.36701394418366085,alpha=0.08 beta=0.08,embargoed,100,0.181,glove6b_mean_union_vocab
+ensemble_text_audio_finance,15,0,0.18271269222872621,val,0.36701394418366085,alpha=0.06 beta=0.08,embargoed,100,0.181,glove6b_mean_union_vocab
+ensemble_text_finance,15,0,0.22526733697944085,test,0.36701394418366085,alpha=0.00,embargoed,100,0.181,glove6b_mean_union_vocab
+ensemble_text_finance,15,0,0.22526733697944085,val,0.36701394418366085,alpha=0.00,embargoed,100,0.181,glove6b_mean_union_vocab
+text_bilstm,15,1,1.3414338197596722,val,0.36701394418366085,,embargoed,100,0.181,glove6b_mean_union_vocab
+aligned_audio,15,1,8.67686570892564,last_epoch,0.36701394418366085,,embargoed,100,0.181,glove6b_mean_union_vocab
+ensemble_text_audio_finance,15,1,0.18252369646767716,test,0.36701394418366085,alpha=0.06 beta=0.08,embargoed,100,0.181,glove6b_mean_union_vocab
+ensemble_text_audio_finance,15,1,0.1828456010883736,val,0.36701394418366085,alpha=0.04 beta=0.08,embargoed,100,0.181,glove6b_mean_union_vocab
+ensemble_text_finance,15,1,0.22526733697944085,test,0.36701394418366085,alpha=0.00,embargoed,100,0.181,glove6b_mean_union_vocab
+ensemble_text_finance,15,1,0.22526733697944085,val,0.36701394418366085,alpha=0.00,embargoed,100,0.181,glove6b_mean_union_vocab
+text_bilstm,15,2,1.0801912109265743,val,0.36701394418366085,,embargoed,100,0.181,glove6b_mean_union_vocab
+aligned_audio,15,2,10.735046283333116,last_epoch,0.36701394418366085,,embargoed,100,0.181,glove6b_mean_union_vocab
+ensemble_text_audio_finance,15,2,0.18277892954152095,test,0.36701394418366085,alpha=0.10 beta=0.08,embargoed,100,0.181,glove6b_mean_union_vocab
+ensemble_text_audio_finance,15,2,0.18383407665394358,val,0.36701394418366085,alpha=0.00 beta=0.06,embargoed,100,0.181,glove6b_mean_union_vocab
+ensemble_text_finance,15,2,0.22526733697944085,test,0.36701394418366085,alpha=0.00,embargoed,100,0.181,glove6b_mean_union_vocab
+ensemble_text_finance,15,2,0.22526733697944085,val,0.36701394418366085,alpha=0.00,embargoed,100,0.181,glove6b_mean_union_vocab
+text_bilstm,15,3,0.7714186810492619,val,0.36701394418366085,,embargoed,100,0.181,glove6b_mean_union_vocab
+aligned_audio,15,3,10.240161789904812,last_epoch,0.36701394418366085,,embargoed,100,0.181,glove6b_mean_union_vocab
+ensemble_text_audio_finance,15,3,0.18368359763585468,test,0.36701394418366085,alpha=0.12 beta=0.08,embargoed,100,0.181,glove6b_mean_union_vocab
+ensemble_text_audio_finance,15,3,0.18447465338784103,val,0.36701394418366085,alpha=0.00 beta=0.06,embargoed,100,0.181,glove6b_mean_union_vocab
+ensemble_text_finance,15,3,0.22526733697944085,test,0.36701394418366085,alpha=0.00,embargoed,100,0.181,glove6b_mean_union_vocab
+ensemble_text_finance,15,3,0.22526733697944085,val,0.36701394418366085,alpha=0.00,embargoed,100,0.181,glove6b_mean_union_vocab
+text_bilstm,15,4,1.7081500142916501,val,0.36701394418366085,,embargoed,100,0.181,glove6b_mean_union_vocab
+aligned_audio,15,4,10.766470098529616,last_epoch,0.36701394418366085,,embargoed,100,0.181,glove6b_mean_union_vocab
+ensemble_text_audio_finance,15,4,0.18284976704266698,test,0.36701394418366085,alpha=0.08 beta=0.08,embargoed,100,0.181,glove6b_mean_union_vocab
+ensemble_text_audio_finance,15,4,0.18383042276493586,val,0.36701394418366085,alpha=0.00 beta=0.06,embargoed,100,0.181,glove6b_mean_union_vocab
+ensemble_text_finance,15,4,0.22526733697944085,test,0.36701394418366085,alpha=0.00,embargoed,100,0.181,glove6b_mean_union_vocab
+ensemble_text_finance,15,4,0.22526733697944085,val,0.36701394418366085,alpha=0.00,embargoed,100,0.181,glove6b_mean_union_vocab
+finance_svr,30,-1,0.1503463840295931,cv,0.20976071821947795,"{'C': 10, 'gamma': 0.001}",embargoed,100,0.119,glove6b_mean_union_vocab
+text_bilstm,30,0,1.3541992293106748,val,0.20976071821947795,,embargoed,100,0.119,glove6b_mean_union_vocab
+aligned_audio,30,0,10.37085017208378,last_epoch,0.20976071821947795,,embargoed,100,0.119,glove6b_mean_union_vocab
+ensemble_text_audio_finance,30,0,0.10090363266178741,test,0.20976071821947795,alpha=0.00 beta=0.06,embargoed,100,0.119,glove6b_mean_union_vocab
+ensemble_text_audio_finance,30,0,0.1067205949585064,val,0.20976071821947795,alpha=0.12 beta=0.08,embargoed,100,0.119,glove6b_mean_union_vocab
+ensemble_text_finance,30,0,0.1503463840295931,test,0.20976071821947795,alpha=0.00,embargoed,100,0.119,glove6b_mean_union_vocab
+ensemble_text_finance,30,0,0.1503463840295931,val,0.20976071821947795,alpha=0.00,embargoed,100,0.119,glove6b_mean_union_vocab
+text_bilstm,30,1,1.2541215917598036,val,0.20976071821947795,,embargoed,100,0.119,glove6b_mean_union_vocab
+aligned_audio,30,1,8.483210724839882,last_epoch,0.20976071821947795,,embargoed,100,0.119,glove6b_mean_union_vocab
+ensemble_text_audio_finance,30,1,0.10166915287194285,test,0.20976071821947795,alpha=0.02 beta=0.08,embargoed,100,0.119,glove6b_mean_union_vocab
+ensemble_text_audio_finance,30,1,0.10678817893303368,val,0.20976071821947795,alpha=0.10 beta=0.08,embargoed,100,0.119,glove6b_mean_union_vocab
+ensemble_text_finance,30,1,0.1503463840295931,test,0.20976071821947795,alpha=0.00,embargoed,100,0.119,glove6b_mean_union_vocab
+ensemble_text_finance,30,1,0.1503463840295931,val,0.20976071821947795,alpha=0.00,embargoed,100,0.119,glove6b_mean_union_vocab
+text_bilstm,30,2,0.9980357452579218,val,0.20976071821947795,,embargoed,100,0.119,glove6b_mean_union_vocab
+aligned_audio,30,2,10.536085712505294,last_epoch,0.20976071821947795,,embargoed,100,0.119,glove6b_mean_union_vocab
+ensemble_text_audio_finance,30,2,0.10147705178449039,test,0.20976071821947795,alpha=0.00 beta=0.06,embargoed,100,0.119,glove6b_mean_union_vocab
+ensemble_text_audio_finance,30,2,0.1079538624546978,val,0.20976071821947795,alpha=0.08 beta=0.06,embargoed,100,0.119,glove6b_mean_union_vocab
+ensemble_text_finance,30,2,0.1503463840295931,test,0.20976071821947795,alpha=0.00,embargoed,100,0.119,glove6b_mean_union_vocab
+ensemble_text_finance,30,2,0.1503463840295931,val,0.20976071821947795,alpha=0.00,embargoed,100,0.119,glove6b_mean_union_vocab
+text_bilstm,30,3,0.685593128565483,val,0.20976071821947795,,embargoed,100,0.119,glove6b_mean_union_vocab
+aligned_audio,30,3,10.103281780842185,last_epoch,0.20976071821947795,,embargoed,100,0.119,glove6b_mean_union_vocab
+ensemble_text_audio_finance,30,3,0.10209484579427251,test,0.20976071821947795,alpha=0.00 beta=0.06,embargoed,100,0.119,glove6b_mean_union_vocab
+ensemble_text_audio_finance,30,3,0.10688924331204441,val,0.20976071821947795,alpha=0.08 beta=0.06,embargoed,100,0.119,glove6b_mean_union_vocab
+ensemble_text_finance,30,3,0.1503463840295931,test,0.20976071821947795,alpha=0.00,embargoed,100,0.119,glove6b_mean_union_vocab
+ensemble_text_finance,30,3,0.1503463840295931,val,0.20976071821947795,alpha=0.00,embargoed,100,0.119,glove6b_mean_union_vocab
+text_bilstm,30,4,1.6803899292689248,val,0.20976071821947795,,embargoed,100,0.119,glove6b_mean_union_vocab
+aligned_audio,30,4,10.572736421287564,last_epoch,0.20976071821947795,,embargoed,100,0.119,glove6b_mean_union_vocab
+ensemble_text_audio_finance,30,4,0.10153753492935459,test,0.20976071821947795,alpha=0.00 beta=0.06,embargoed,100,0.119,glove6b_mean_union_vocab
+ensemble_text_audio_finance,30,4,0.10824470801474308,val,0.20976071821947795,alpha=0.00 beta=0.04,embargoed,100,0.119,glove6b_mean_union_vocab
+ensemble_text_finance,30,4,0.1503463840295931,test,0.20976071821947795,alpha=0.00,embargoed,100,0.119,glove6b_mean_union_vocab
+ensemble_text_finance,30,4,0.1503463840295931,val,0.20976071821947795,alpha=0.00,embargoed,100,0.119,glove6b_mean_union_vocab
+finance_svr,3,-1,0.7004440618656272,cv,1.408728294616436,"{'C': 0.1, 'gamma': 0.01}",ticker_disjoint,109,0.601,glove6b_mean_union_vocab
+text_bilstm,3,0,1.3526756029483744,val,1.408728294616436,,ticker_disjoint,109,0.601,glove6b_mean_union_vocab
+aligned_audio,3,0,4.905242393864491,last_epoch,1.408728294616436,,ticker_disjoint,109,0.601,glove6b_mean_union_vocab
+ensemble_text_audio_finance,3,0,0.6895553521464985,test,1.408728294616436,alpha=0.00 beta=0.04,ticker_disjoint,109,0.601,glove6b_mean_union_vocab
+ensemble_text_audio_finance,3,0,0.7689665400976959,val,1.408728294616436,alpha=0.00 beta=0.18,ticker_disjoint,109,0.601,glove6b_mean_union_vocab
+ensemble_text_finance,3,0,0.7004440618656272,test,1.408728294616436,alpha=0.00,ticker_disjoint,109,0.601,glove6b_mean_union_vocab
+ensemble_text_finance,3,0,0.7004440618656272,val,1.408728294616436,alpha=0.00,ticker_disjoint,109,0.601,glove6b_mean_union_vocab
+text_bilstm,3,1,1.333358131939596,val,1.408728294616436,,ticker_disjoint,109,0.601,glove6b_mean_union_vocab
+aligned_audio,3,1,3.162222830053321,last_epoch,1.408728294616436,,ticker_disjoint,109,0.601,glove6b_mean_union_vocab
+ensemble_text_audio_finance,3,1,0.6887386342033527,test,1.408728294616436,alpha=0.00 beta=0.06,ticker_disjoint,109,0.601,glove6b_mean_union_vocab
+ensemble_text_audio_finance,3,1,0.7757252774958335,val,1.408728294616436,alpha=0.00 beta=0.24,ticker_disjoint,109,0.601,glove6b_mean_union_vocab
+ensemble_text_finance,3,1,0.7004440618656272,test,1.408728294616436,alpha=0.00,ticker_disjoint,109,0.601,glove6b_mean_union_vocab
+ensemble_text_finance,3,1,0.7004440618656272,val,1.408728294616436,alpha=0.00,ticker_disjoint,109,0.601,glove6b_mean_union_vocab
+text_bilstm,3,2,1.4672251207830158,val,1.408728294616436,,ticker_disjoint,109,0.601,glove6b_mean_union_vocab
+aligned_audio,3,2,5.3594013684765445,last_epoch,1.408728294616436,,ticker_disjoint,109,0.601,glove6b_mean_union_vocab
+ensemble_text_audio_finance,3,2,0.6899409241034745,test,1.408728294616436,alpha=0.00 beta=0.04,ticker_disjoint,109,0.601,glove6b_mean_union_vocab
+ensemble_text_audio_finance,3,2,0.7823702553908883,val,1.408728294616436,alpha=0.00 beta=0.18,ticker_disjoint,109,0.601,glove6b_mean_union_vocab
+ensemble_text_finance,3,2,0.7004440618656272,test,1.408728294616436,alpha=0.00,ticker_disjoint,109,0.601,glove6b_mean_union_vocab
+ensemble_text_finance,3,2,0.7004440618656272,val,1.408728294616436,alpha=0.00,ticker_disjoint,109,0.601,glove6b_mean_union_vocab
+text_bilstm,3,3,1.688220331283745,val,1.408728294616436,,ticker_disjoint,109,0.601,glove6b_mean_union_vocab
+aligned_audio,3,3,4.218601959623235,last_epoch,1.408728294616436,,ticker_disjoint,109,0.601,glove6b_mean_union_vocab
+ensemble_text_audio_finance,3,3,0.6912555912932815,test,1.408728294616436,alpha=0.00 beta=0.04,ticker_disjoint,109,0.601,glove6b_mean_union_vocab
+ensemble_text_audio_finance,3,3,0.7794306977394385,val,1.408728294616436,alpha=0.00 beta=0.20,ticker_disjoint,109,0.601,glove6b_mean_union_vocab
+ensemble_text_finance,3,3,0.7004440618656272,test,1.408728294616436,alpha=0.00,ticker_disjoint,109,0.601,glove6b_mean_union_vocab
+ensemble_text_finance,3,3,0.7004440618656272,val,1.408728294616436,alpha=0.00,ticker_disjoint,109,0.601,glove6b_mean_union_vocab
+text_bilstm,3,4,1.3364435840809188,val,1.408728294616436,,ticker_disjoint,109,0.601,glove6b_mean_union_vocab
+aligned_audio,3,4,5.760855597758344,last_epoch,1.408728294616436,,ticker_disjoint,109,0.601,glove6b_mean_union_vocab
+ensemble_text_audio_finance,3,4,0.6907135399084363,test,1.408728294616436,alpha=0.00 beta=0.04,ticker_disjoint,109,0.601,glove6b_mean_union_vocab
+ensemble_text_audio_finance,3,4,0.767595465733313,val,1.408728294616436,alpha=0.00 beta=0.16,ticker_disjoint,109,0.601,glove6b_mean_union_vocab
+ensemble_text_finance,3,4,0.7004440618656272,test,1.408728294616436,alpha=0.00,ticker_disjoint,109,0.601,glove6b_mean_union_vocab
+ensemble_text_finance,3,4,0.7004440618656272,val,1.408728294616436,alpha=0.00,ticker_disjoint,109,0.601,glove6b_mean_union_vocab
+finance_svr,7,-1,0.3650314425118516,cv,0.545565477037801,"{'C': 10, 'gamma': 0.001}",ticker_disjoint,109,0.308,glove6b_mean_union_vocab
+text_bilstm,7,0,0.8431798314877397,val,0.545565477037801,,ticker_disjoint,109,0.308,glove6b_mean_union_vocab
+aligned_audio,7,0,3.9066552711129865,last_epoch,0.545565477037801,,ticker_disjoint,109,0.308,glove6b_mean_union_vocab
+ensemble_text_audio_finance,7,0,0.3608629001782257,test,0.545565477037801,alpha=0.00 beta=0.04,ticker_disjoint,109,0.308,glove6b_mean_union_vocab
+ensemble_text_audio_finance,7,0,0.42127402091618377,val,0.545565477037801,alpha=0.00 beta=0.16,ticker_disjoint,109,0.308,glove6b_mean_union_vocab
+ensemble_text_finance,7,0,0.3650314425118516,test,0.545565477037801,alpha=0.00,ticker_disjoint,109,0.308,glove6b_mean_union_vocab
+ensemble_text_finance,7,0,0.3650314425118516,val,0.545565477037801,alpha=0.00,ticker_disjoint,109,0.308,glove6b_mean_union_vocab
+text_bilstm,7,1,0.9185988731145125,val,0.545565477037801,,ticker_disjoint,109,0.308,glove6b_mean_union_vocab
+aligned_audio,7,1,2.3270242547796154,last_epoch,0.545565477037801,,ticker_disjoint,109,0.308,glove6b_mean_union_vocab
+ensemble_text_audio_finance,7,1,0.36087277357506925,test,0.545565477037801,alpha=0.00 beta=0.04,ticker_disjoint,109,0.308,glove6b_mean_union_vocab
+ensemble_text_audio_finance,7,1,0.4131034156841843,val,0.545565477037801,alpha=0.00 beta=0.20,ticker_disjoint,109,0.308,glove6b_mean_union_vocab
+ensemble_text_finance,7,1,0.3650314425118516,test,0.545565477037801,alpha=0.00,ticker_disjoint,109,0.308,glove6b_mean_union_vocab
+ensemble_text_finance,7,1,0.3650314425118516,val,0.545565477037801,alpha=0.00,ticker_disjoint,109,0.308,glove6b_mean_union_vocab
+text_bilstm,7,2,0.9407911027589004,val,0.545565477037801,,ticker_disjoint,109,0.308,glove6b_mean_union_vocab
+aligned_audio,7,2,4.352995410284604,last_epoch,0.545565477037801,,ticker_disjoint,109,0.308,glove6b_mean_union_vocab
+ensemble_text_audio_finance,7,2,0.36206927145577933,test,0.545565477037801,alpha=0.00 beta=0.02,ticker_disjoint,109,0.308,glove6b_mean_union_vocab
+ensemble_text_audio_finance,7,2,0.41520034547208357,val,0.545565477037801,alpha=0.00 beta=0.14,ticker_disjoint,109,0.308,glove6b_mean_union_vocab
+ensemble_text_finance,7,2,0.3650314425118516,test,0.545565477037801,alpha=0.00,ticker_disjoint,109,0.308,glove6b_mean_union_vocab
+ensemble_text_finance,7,2,0.3650314425118516,val,0.545565477037801,alpha=0.00,ticker_disjoint,109,0.308,glove6b_mean_union_vocab
+text_bilstm,7,3,1.092618851793009,val,0.545565477037801,,ticker_disjoint,109,0.308,glove6b_mean_union_vocab
+aligned_audio,7,3,3.1101614777349913,last_epoch,0.545565477037801,,ticker_disjoint,109,0.308,glove6b_mean_union_vocab
+ensemble_text_audio_finance,7,3,0.36200138185951247,test,0.545565477037801,alpha=0.00 beta=0.04,ticker_disjoint,109,0.308,glove6b_mean_union_vocab
+ensemble_text_audio_finance,7,3,0.4093288309331275,val,0.545565477037801,alpha=0.00 beta=0.16,ticker_disjoint,109,0.308,glove6b_mean_union_vocab
+ensemble_text_finance,7,3,0.3650314425118516,test,0.545565477037801,alpha=0.00,ticker_disjoint,109,0.308,glove6b_mean_union_vocab
+ensemble_text_finance,7,3,0.3650314425118516,val,0.545565477037801,alpha=0.00,ticker_disjoint,109,0.308,glove6b_mean_union_vocab
+text_bilstm,7,4,0.8498204668865659,val,0.545565477037801,,ticker_disjoint,109,0.308,glove6b_mean_union_vocab
+aligned_audio,7,4,4.58711533196695,last_epoch,0.545565477037801,,ticker_disjoint,109,0.308,glove6b_mean_union_vocab
+ensemble_text_audio_finance,7,4,0.36231706468269764,test,0.545565477037801,alpha=0.00 beta=0.02,ticker_disjoint,109,0.308,glove6b_mean_union_vocab
+ensemble_text_audio_finance,7,4,0.42073598823770764,val,0.545565477037801,alpha=0.00 beta=0.14,ticker_disjoint,109,0.308,glove6b_mean_union_vocab
+ensemble_text_finance,7,4,0.3650314425118516,test,0.545565477037801,alpha=0.00,ticker_disjoint,109,0.308,glove6b_mean_union_vocab
+ensemble_text_finance,7,4,0.3650314425118516,val,0.545565477037801,alpha=0.00,ticker_disjoint,109,0.308,glove6b_mean_union_vocab
+finance_svr,15,-1,0.25570166999425165,cv,0.33463643490935563,"{'C': 10, 'gamma': 0.001}",ticker_disjoint,109,0.181,glove6b_mean_union_vocab
+text_bilstm,15,0,0.7825547955438406,val,0.33463643490935563,,ticker_disjoint,109,0.181,glove6b_mean_union_vocab
+aligned_audio,15,0,3.7554079553112545,last_epoch,0.33463643490935563,,ticker_disjoint,109,0.181,glove6b_mean_union_vocab
+ensemble_text_audio_finance,15,0,0.25153579421278216,test,0.33463643490935563,alpha=0.00 beta=0.04,ticker_disjoint,109,0.181,glove6b_mean_union_vocab
+ensemble_text_audio_finance,15,0,0.2593827623641583,val,0.33463643490935563,alpha=0.00 beta=0.08,ticker_disjoint,109,0.181,glove6b_mean_union_vocab
+ensemble_text_finance,15,0,0.25570166999425165,test,0.33463643490935563,alpha=0.00,ticker_disjoint,109,0.181,glove6b_mean_union_vocab
+ensemble_text_finance,15,0,0.25570166999425165,val,0.33463643490935563,alpha=0.00,ticker_disjoint,109,0.181,glove6b_mean_union_vocab
+text_bilstm,15,1,0.8702537505213255,val,0.33463643490935563,,ticker_disjoint,109,0.181,glove6b_mean_union_vocab
+aligned_audio,15,1,2.1551286630089503,last_epoch,0.33463643490935563,,ticker_disjoint,109,0.181,glove6b_mean_union_vocab
+ensemble_text_audio_finance,15,1,0.25179564225537304,test,0.33463643490935563,alpha=0.00 beta=0.04,ticker_disjoint,109,0.181,glove6b_mean_union_vocab
+ensemble_text_audio_finance,15,1,0.2639543636424825,val,0.33463643490935563,alpha=0.00 beta=0.12,ticker_disjoint,109,0.181,glove6b_mean_union_vocab
+ensemble_text_finance,15,1,0.25570166999425165,test,0.33463643490935563,alpha=0.00,ticker_disjoint,109,0.181,glove6b_mean_union_vocab
+ensemble_text_finance,15,1,0.25570166999425165,val,0.33463643490935563,alpha=0.00,ticker_disjoint,109,0.181,glove6b_mean_union_vocab
+text_bilstm,15,2,0.8967909207796665,val,0.33463643490935563,,ticker_disjoint,109,0.181,glove6b_mean_union_vocab
+aligned_audio,15,2,4.119782799824439,last_epoch,0.33463643490935563,,ticker_disjoint,109,0.181,glove6b_mean_union_vocab
+ensemble_text_audio_finance,15,2,0.2523130994523438,test,0.33463643490935563,alpha=0.00 beta=0.04,ticker_disjoint,109,0.181,glove6b_mean_union_vocab
+ensemble_text_audio_finance,15,2,0.2620871802216955,val,0.33463643490935563,alpha=0.00 beta=0.08,ticker_disjoint,109,0.181,glove6b_mean_union_vocab
+ensemble_text_finance,15,2,0.25570166999425165,test,0.33463643490935563,alpha=0.00,ticker_disjoint,109,0.181,glove6b_mean_union_vocab
+ensemble_text_finance,15,2,0.25570166999425165,val,0.33463643490935563,alpha=0.00,ticker_disjoint,109,0.181,glove6b_mean_union_vocab
+text_bilstm,15,3,1.0335331139969197,val,0.33463643490935563,,ticker_disjoint,109,0.181,glove6b_mean_union_vocab
+aligned_audio,15,3,3.0339719503571922,last_epoch,0.33463643490935563,,ticker_disjoint,109,0.181,glove6b_mean_union_vocab
+ensemble_text_audio_finance,15,3,0.25195414379559167,test,0.33463643490935563,alpha=0.00 beta=0.04,ticker_disjoint,109,0.181,glove6b_mean_union_vocab
+ensemble_text_audio_finance,15,3,0.26428259471841087,val,0.33463643490935563,alpha=0.00 beta=0.10,ticker_disjoint,109,0.181,glove6b_mean_union_vocab
+ensemble_text_finance,15,3,0.25570166999425165,test,0.33463643490935563,alpha=0.00,ticker_disjoint,109,0.181,glove6b_mean_union_vocab
+ensemble_text_finance,15,3,0.25570166999425165,val,0.33463643490935563,alpha=0.00,ticker_disjoint,109,0.181,glove6b_mean_union_vocab
+text_bilstm,15,4,0.7746596651665885,val,0.33463643490935563,,ticker_disjoint,109,0.181,glove6b_mean_union_vocab
+aligned_audio,15,4,4.502369398088515,last_epoch,0.33463643490935563,,ticker_disjoint,109,0.181,glove6b_mean_union_vocab
+ensemble_text_audio_finance,15,4,0.25252842859611785,test,0.33463643490935563,alpha=0.00 beta=0.02,ticker_disjoint,109,0.181,glove6b_mean_union_vocab
+ensemble_text_audio_finance,15,4,0.2645858299429453,val,0.33463643490935563,alpha=0.00 beta=0.08,ticker_disjoint,109,0.181,glove6b_mean_union_vocab
+ensemble_text_finance,15,4,0.25570166999425165,test,0.33463643490935563,alpha=0.00,ticker_disjoint,109,0.181,glove6b_mean_union_vocab
+ensemble_text_finance,15,4,0.25570166999425165,val,0.33463643490935563,alpha=0.00,ticker_disjoint,109,0.181,glove6b_mean_union_vocab
+finance_svr,30,-1,0.15847764470666592,cv,0.19068117481067948,"{'C': 10, 'gamma': 0.01}",ticker_disjoint,109,0.119,glove6b_mean_union_vocab
+text_bilstm,30,0,0.70297606824698,val,0.19068117481067948,,ticker_disjoint,109,0.119,glove6b_mean_union_vocab
+aligned_audio,30,0,3.5846936573446206,last_epoch,0.19068117481067948,,ticker_disjoint,109,0.119,glove6b_mean_union_vocab
+ensemble_text_audio_finance,30,0,0.15756351199396562,test,0.19068117481067948,alpha=0.00 beta=0.02,ticker_disjoint,109,0.119,glove6b_mean_union_vocab
+ensemble_text_audio_finance,30,0,0.15948360185128396,val,0.19068117481067948,alpha=0.00 beta=0.04,ticker_disjoint,109,0.119,glove6b_mean_union_vocab
+ensemble_text_finance,30,0,0.15847764470666592,test,0.19068117481067948,alpha=0.00,ticker_disjoint,109,0.119,glove6b_mean_union_vocab
+ensemble_text_finance,30,0,0.15847764470666592,val,0.19068117481067948,alpha=0.00,ticker_disjoint,109,0.119,glove6b_mean_union_vocab
+text_bilstm,30,1,0.7676973594906071,val,0.19068117481067948,,ticker_disjoint,109,0.119,glove6b_mean_union_vocab
+aligned_audio,30,1,2.0252681897865665,last_epoch,0.19068117481067948,,ticker_disjoint,109,0.119,glove6b_mean_union_vocab
+ensemble_text_audio_finance,30,1,0.15776266795021118,test,0.19068117481067948,alpha=0.00 beta=0.02,ticker_disjoint,109,0.119,glove6b_mean_union_vocab
+ensemble_text_audio_finance,30,1,0.16099199455869592,val,0.19068117481067948,alpha=0.00 beta=0.06,ticker_disjoint,109,0.119,glove6b_mean_union_vocab
+ensemble_text_finance,30,1,0.15847764470666592,test,0.19068117481067948,alpha=0.00,ticker_disjoint,109,0.119,glove6b_mean_union_vocab
+ensemble_text_finance,30,1,0.15847764470666592,val,0.19068117481067948,alpha=0.00,ticker_disjoint,109,0.119,glove6b_mean_union_vocab
+text_bilstm,30,2,0.8181112928899974,val,0.19068117481067948,,ticker_disjoint,109,0.119,glove6b_mean_union_vocab
+aligned_audio,30,2,3.9925026505764665,last_epoch,0.19068117481067948,,ticker_disjoint,109,0.119,glove6b_mean_union_vocab
+ensemble_text_audio_finance,30,2,0.15801262543551886,test,0.19068117481067948,alpha=0.00 beta=0.02,ticker_disjoint,109,0.119,glove6b_mean_union_vocab
+ensemble_text_audio_finance,30,2,0.1606964028741083,val,0.19068117481067948,alpha=0.00 beta=0.04,ticker_disjoint,109,0.119,glove6b_mean_union_vocab
+ensemble_text_finance,30,2,0.15847764470666592,test,0.19068117481067948,alpha=0.00,ticker_disjoint,109,0.119,glove6b_mean_union_vocab
+ensemble_text_finance,30,2,0.15847764470666592,val,0.19068117481067948,alpha=0.00,ticker_disjoint,109,0.119,glove6b_mean_union_vocab
+text_bilstm,30,3,0.9804882717129987,val,0.19068117481067948,,ticker_disjoint,109,0.119,glove6b_mean_union_vocab
+aligned_audio,30,3,2.794884473474832,last_epoch,0.19068117481067948,,ticker_disjoint,109,0.119,glove6b_mean_union_vocab
+ensemble_text_audio_finance,30,3,0.15795288133766205,test,0.19068117481067948,alpha=0.00 beta=0.02,ticker_disjoint,109,0.119,glove6b_mean_union_vocab
+ensemble_text_audio_finance,30,3,0.16342411785814845,val,0.19068117481067948,alpha=0.00 beta=0.06,ticker_disjoint,109,0.119,glove6b_mean_union_vocab
+ensemble_text_finance,30,3,0.15847764470666592,test,0.19068117481067948,alpha=0.00,ticker_disjoint,109,0.119,glove6b_mean_union_vocab
+ensemble_text_finance,30,3,0.15847764470666592,val,0.19068117481067948,alpha=0.00,ticker_disjoint,109,0.119,glove6b_mean_union_vocab
+text_bilstm,30,4,0.6991318076325591,val,0.19068117481067948,,ticker_disjoint,109,0.119,glove6b_mean_union_vocab
+aligned_audio,30,4,4.204108178884536,last_epoch,0.19068117481067948,,ticker_disjoint,109,0.119,glove6b_mean_union_vocab
+ensemble_text_audio_finance,30,4,0.1583085182005684,test,0.19068117481067948,alpha=0.00 beta=0.02,ticker_disjoint,109,0.119,glove6b_mean_union_vocab
+ensemble_text_audio_finance,30,4,0.16144885035527318,val,0.19068117481067948,alpha=0.00 beta=0.04,ticker_disjoint,109,0.119,glove6b_mean_union_vocab
+ensemble_text_finance,30,4,0.15847764470666592,test,0.19068117481067948,alpha=0.00,ticker_disjoint,109,0.119,glove6b_mean_union_vocab
+ensemble_text_finance,30,4,0.15847764470666592,val,0.19068117481067948,alpha=0.00,ticker_disjoint,109,0.119,glove6b_mean_union_vocab
