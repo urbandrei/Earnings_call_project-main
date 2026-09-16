@@ -151,7 +151,13 @@ patch and substitution. The outcomes span the whole range. \textbf{Same-Company-
 reproduces: its TSMixer baseline matches the 76 published cells to a median $10^{-5}$
 from the shipped data alone, and its TMLP text model on the authors' OpenAI embeddings
 matches per-window means within 0.01 and recovers the paper's own finding that
-embeddings shuffled \emph{within} a company do as well as the real ones. \textbf{HTML}
+embeddings shuffled \emph{within} a company do as well as the real ones. Its
+training-free baselines on EC and MAEC, run from the authors' notebook, reproduce all
+48 published cells at the notebook's three-decimal rounding; with an augmented
+same-ticker earnings history (outside the benchmark's own training set, all dated
+before the first test call), Aug\_STPEV---no text, no training---lands within 0.05 of
+KeFVP's published MSE at every horizon on EC and MAEC-15 and below it at
+$\tau\ge 7$ on MAEC-16. \textbf{HTML}
 does not: the released driver splits features and labels with three independent
 unseeded shuffles, so it cannot have produced the published table, and with the
 authors' model classes verbatim on rebuilt inputs the published recipe (ten epochs,

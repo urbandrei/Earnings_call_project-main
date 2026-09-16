@@ -1,4 +1,4 @@
-% Curated from data/results/result_table_6r_{html_faithful,scss_tsmixer,scss_tmlp,sawhney,
+% Curated from data/results/result_table_6r_{html_faithful,scss_tsmixer,scss_tmlp,scss_aug,sawhney,
 % kefvp,dialoguegat}.csv (T6R.3; run ids in docs/faithful_ledger.md). Test MSE; "ours" is
 % the authors' code on the authors' data unless marked port. Persistence = past_tau.
 \begin{table*}[t]
@@ -25,6 +25,10 @@ Paper / setting & what ran & $\tau$=3 & 7 & 15 & 30 & $\tau$=3 & 7 & 15 & 30 \\
 \quad TMLP on OpenAI embeddings & 76 cells & 0.608 & 0.285 & 0.215 & 0.202 & 0.587 & 0.283 & 0.211 & 0.205 \\
 \quad TMLP, embeddings shuffled within ticker & 76 cells & 0.572 & 0.276 & 0.213 & 0.209 & 0.565 & 0.273 & 0.204 & 0.200 \\
 \quad TMLP, embeddings shuffled across all & 76 cells & 0.646 & 0.315 & 0.259 & 0.249 & 0.637 & 0.319 & 0.255 & 0.247 \\
+\multicolumn{10}{l}{\textit{Same-Company-Same-Signal, EC / MAEC --- authors' notebook, training-free, augmented same-ticker earnings history}} \\
+\quad EC, Aug\_STPEV & no training & 0.569 & 0.293 & 0.201 & 0.122 & 0.569 & 0.293 & 0.201 & 0.122 \\
+\quad MAEC-15, Aug\_STPEV & no training & 0.443 & 0.214 & 0.130 & 0.112 & 0.443 & 0.214 & 0.130 & 0.112 \\
+\quad MAEC-16, Aug\_STPEV & no training & 0.470 & 0.238 & 0.168 & 0.113 & 0.470 & 0.238 & 0.168 & 0.113 \\
 \midrule
 \multicolumn{10}{l}{\textit{KeFVP \citep{niu2023kefvp} --- authors' \texttt{final\_series\_infer.py} (six import-level release defects patched), 10 repeats}} \\
 \quad MAEC-15, regenerated BERT-base embeddings & text $+$ price & 0.419 & 0.185 & 0.123 & 0.086 & 0.418 & 0.187 & 0.122 & 0.087 \\

@@ -21,6 +21,10 @@ are never committed.
 | substituted (name only) | TMLP embeddings fetched from the authors' Drive `Embeddings/openai` (`DEC.npz`, `DEC2RandomTicker.npz`, `DECRandomAll.npz`, each 1800 × 3072 float64 with the same ids); the Drive file `DEC2RandomTicker` is staged as the script's `DECRandomTicker` |
 | **result** | **TMLP, 228 cells (3 embedding sets × 76): median \|ours − published\| 0.014, max 0.22 at single cells** (single seed 2021, GPU non-determinism); per-window means DEC 0.608/0.285/0.215/0.202 vs 0.587/0.283/0.211/0.205, RandomTicker 0.572/0.276/0.213/0.209 vs 0.565/0.273/0.204/0.200, RandomAll 0.646/0.315/0.259/0.249 vs 0.637/0.319/0.255/0.247 — the paper's finding (real ≈ ticker-shuffled embeddings, both below all-shuffled) reproduces (`result_table_6r_scss_tmlp.csv`, run 20260909T065848Z) |
 | earlier | PEV / STPEV reproduced to 3 decimals (`ecvol reproduce scss`, 2026-09-03) |
+| verbatim (S4) | `SS.ipynb` functions `build_aug_stpev_mean`, `run_pev_stpev`, `run_EC_MAEC`, exec-loaded from their cells unchanged, run on the shipped `dataset/EC/*.csv` and `dataset/MAEC/*.csv` exactly as the notebook's driver cells (MAEC: `day_earnings = time`); no patches needed under pandas 3.0.3 |
+| published source (S4) | the comparison tables the notebook printed when the authors ran it (stored cell outputs), parsed — not hand-copied |
+| **result (S4)** | **48/48 cells (EC, MAEC-15, MAEC-16 × PEV/STPEV/Aug_PEV/Aug_STPEV × τ) equal at the notebook's own 3-decimal rounding**; means Aug_PEV 0.367 / 0.283 / 0.229, Aug_STPEV 0.296 / 0.225 / 0.247 (`result_table_6r_scss_aug.csv`, run 20260916T163850Z) |
+| audit notes (S4) | the augmented history is extra same-ticker earnings outside the benchmark's training set, filtered to `day_earnings < first test date` and to test tickers — so **Aug_PEV is a mean of the test tickers' per-ticker means**, i.e. it too uses test-set identity; windows reaching the first test date (weekday approximation): τ≤15 none, τ=30 EC 4/2195, MAEC-15 8/3192, MAEC-16 0/5033 — negligible |
 
 ## HTML (Yang et al., WWW 2020) — `ecvol reproduce html-faithful`
 
