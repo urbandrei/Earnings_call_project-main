@@ -57,8 +57,9 @@ environment fingerprint, and the file's SHA-256---and both \texttt{ecvol report}
 and CI refuse a result file whose bytes match no manifest; one committed config
 per result-producing command is the record of how it was run. Every data file
 carries a SHA-256 manifest entry; targets are unit-tested against hand-computed
-values; and the splits are guarded by leakage assertions in CI. Manifests written
-for results that predate this mechanism are labelled \emph{backfill} until their
-producing command is re-run. \texttt{REPRODUCE.md} lists the one command per
+values; and the splits are guarded by leakage assertions in CI. Every result that
+predated this mechanism has since been re-run by its producing command and
+reproduced its committed file byte for byte, five-seed MLP heads included.
+\texttt{REPRODUCE.md} lists the one command per
 table; a clean-machine regeneration of Table~\ref{tab:baselines} is part of the
 release checklist.
