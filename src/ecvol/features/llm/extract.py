@@ -23,7 +23,7 @@ import urllib.error
 import urllib.request
 from dataclasses import dataclass
 from datetime import UTC, datetime
-from pathlib import Path
+from pathlib import Path, PureWindowsPath
 
 import pandas as pd
 import pyarrow as pa
@@ -442,7 +442,10 @@ def run_config(model_id: str, revision: str, engine: str, engine_kwargs: dict) -
         "load_in_4bit": engine_kwargs.get("load_in_4bit"),
         # basename only: the absolute path is machine-specific, the weights file is not
         "weights_file": (
-            Path(engine_kwargs["gguf_path"]).name if engine_kwargs.get("gguf_path") else None
+            # PureWindowsPath splits on both `\` and `/`, so this holds on Linux CI too
+            PureWindowsPath(engine_kwargs["gguf_path"]).name
+            if engine_kwargs.get("gguf_path")
+            else None
         ),
     }
     return {k: v for k, v in cfg.items() if v is not None}

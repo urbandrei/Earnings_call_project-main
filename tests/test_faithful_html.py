@@ -21,6 +21,7 @@ class RTransformer:
 
 
 def test_loader_execs_only_the_class_block():
+    pytest.importorskip("torch")  # gpu dependency group; CI is torch-free
     RT = FH.load_authors_classes(STUB)
     m = RT(emb=4, heads=2, depth=2, seq_length=5, num_tokens=0, num_classes=1, dropout=0.5)
     assert (m.emb, m.dropout) == (4, 0.5) and m.uses[1]() in ("cuda", "cpu")
