@@ -84,3 +84,12 @@ def test_patch_infer_repeats_hook():
     src = INFER + "    for i in range(10):\n"
     assert "range(10)" in K.patch_infer(src, "p", "d")
     assert "range(3)" in K.patch_infer(src, "p", "d", repeats=3)
+
+
+def test_with_embedding_swaps_only_the_embedding_name():
+    a = K.infer_args("15", 3, raw_data_path="r/")
+    b = K._with_embedding(a, "raw_bert_base_uncased_maec15")
+    assert b[b.index("--text_embedding") + 1] == "raw_bert_base_uncased_maec15"
+    assert [x for x in a if x != K.MAEC_EMBEDDING] == [
+        x for x in b if x != "raw_bert_base_uncased_maec15"
+    ]

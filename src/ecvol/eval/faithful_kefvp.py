@@ -428,6 +428,31 @@ def _maec_files(dir_: Path, ds: str) -> dict[str, dict[str, Path]]:
     return {k: {p: dir_ / f"maec{ds}_{p}_{k}.csv" for p in MAEC_PARTS} for k in MAEC_KINDS}
 
 
+def subset_embeddings(work: Path, dataset: str, frames) -> str:
+    """Write `<MAEC_EMBEDDING>_maec<ds>.pkl` holding only this dataset's calls (the shared
+    pickle covers MAEC-15 and -16, 3.4 GB); the script looks vectors up by call name, so the
+    subset is numerically identical and cuts ~2 GB of peak RAM (the run was twice killed for
+    low memory on 2026-09-16)."""
+    import pickle
+
+    name = f"{MAEC_EMBEDDING}_maec{dataset}"
+    out = work / "dataset" / "text_embedding" / f"{name}.pkl"
+    if not out.is_file():
+        names = {n for parts in frames["avg_val"].values() for n in parts["text_file_name"]}
+        with open(work / "dataset" / "text_embedding" / f"{MAEC_EMBEDDING}.pkl", "rb") as f:
+            full = pickle.load(f)
+        with open(out, "wb") as f:
+            pickle.dump({k: v for k, v in full.items() if k in names}, f)
+        del full
+    return name
+
+
+def _with_embedding(args: list[str], name: str) -> list[str]:
+    out = list(args)
+    out[out.index("--text_embedding") + 1] = name
+    return out
+
+
 def run_controls(root: Path, dataset: str, *, taus=TAUS, conditions=CONTROL_CONDITIONS, log=print):
     import numpy as np
 
@@ -439,6 +464,7 @@ def run_controls(root: Path, dataset: str, *, taus=TAUS, conditions=CONTROL_COND
         for k, parts in _maec_files(shipped, dataset).items()
     }
     raw = (root / MAEC_RAW_REL).resolve().as_posix() + "/"
+    emb_name = subset_embeddings(work, dataset, frames)
     out_dir = work / "proj" / "output"
     for sub in (f"log/maec{dataset}", "preds_dir/text_dir/reg"):
         (work / "proj" / sub).mkdir(parents=True, exist_ok=True)
@@ -459,7 +485,8 @@ def run_controls(root: Path, dataset: str, *, taus=TAUS, conditions=CONTROL_COND
                     log(f"    tau={tau}: {CONTROL_REPEATS} repeats × 200 epochs …")
                     proc = subprocess.run(
                         [sys.executable, "-u", "final_series_infer.py",
-                         *infer_args(dataset, tau, raw_data_path=raw)],
+                         *_with_embedding(infer_args(dataset, tau, raw_data_path=raw),
+                                          emb_name)],
                         cwd=work / "kefvp", capture_output=True, text=True,
                         encoding="utf-8", errors="replace",
                     )  # fmt: skip
