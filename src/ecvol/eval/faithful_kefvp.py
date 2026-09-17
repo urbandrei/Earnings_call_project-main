@@ -268,6 +268,8 @@ def infer_args(dataset: str, tau: int, *, raw_data_path: str) -> list[str]:
 
 def run_dataset(root: Path, dataset: str, *, taus=TAUS, log=print) -> pd.DataFrame:
     work = prepare_build(root)
+    if dataset != "ec":  # never train on split files a killed T6R.4 controls run left behind
+        restore_maec_splits(root, work, dataset)
     emb = (
         work
         / "dataset"
@@ -479,11 +481,17 @@ def run_controls(root: Path, dataset: str, *, taus=TAUS, conditions=CONTROL_COND
                                  "n_dev": n["dev"], "n_test": n["test"],
                                  "persistence_mse": pers})  # fmt: skip
                 log(f"    tau={tau}: MSE {avg.iloc[:, -1].mean():.3f} (persistence {pers:.3f})")
-    finally:  # the shipped split files go back whatever happened
-        for k, parts in _maec_files(live, dataset).items():
-            for p, f in parts.items():
-                shutil.copy(_maec_files(shipped, dataset)[k][p], f)
+    finally:  # the shipped split files go back whatever happened (a hard kill skips this,
+        restore_maec_splits(root, work, dataset)  # so run_dataset restores them first too)
     return pd.DataFrame(rows)
+
+
+def restore_maec_splits(root: Path, work: Path, dataset: str) -> None:
+    shipped = root / REPO_REL / "price_data" / "maec" / dataset
+    live = work / "dataset" / "price_data" / "maec" / dataset
+    for k, parts in _maec_files(live, dataset).items():
+        for p, f in parts.items():
+            shutil.copy(_maec_files(shipped, dataset)[k][p], f)
 
 
 def write_controls_table(root: Path, parts: list[pd.DataFrame]) -> Path:
