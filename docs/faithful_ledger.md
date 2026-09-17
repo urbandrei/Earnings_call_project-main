@@ -72,3 +72,19 @@ are never committed.
 | substituted | corpus FinCall 2019/2020/2021 (their 2015/2016/2017-18); speaker nodes role-typed (management/analyst/operator) instead of named persons — the paper's "random speaker embedding" ablation is the nearest published row; GloVe 6B instead of 840B; PyG `GATConv` instead of DGL; labels our trading-day `v_post/v_pre` |
 | published (reference only) | τ=3/7/15: 2015 0.4530/0.3236/0.1898; 2016 0.4549/0.2884/0.1810; 2017-18 0.4090/0.2886/0.2036 |
 | **result** | FinCall, seed 1234, τ=3/7/15/30: **2019 0.694/0.320/0.206/0.134** (persistence 1.429/0.566/0.289/0.139; best epochs 40/53/44/28); **2020 0.621/0.350/0.392/0.270** (persistence 1.409/0.335/0.184/0.101; every horizon stopped at epoch 0 — validation never improved after the first pass across the COVID-spring → autumn boundary); **2021 0.794/0.344/0.182/0.082** (persistence 1.301/0.465/0.225/0.118; epochs 3/20/22/43). Beats persistence in 9 of 12 cells, loses at 2020 τ≥7 (`result_table_6r_dialoguegat.csv`, run 20260909T090023Z) |
+
+## Controls (T6R.4) — only the split changes
+
+Protocol: DECISIONS 2026-09-16 (+ two same-day refinements). Every model keeps the configuration of its faithful/port run above; its anchor split is re-run in the same invocation and matches the T6R.3 numbers (bit-identical for HTML, Sawhney, SCSS; within 0.0014 for the PyG DialogueGAT port). `embargoed` = no train/val call whose 30-session target window reaches the first evaluation call (validation re-carved where it is chronological); `ticker_disjoint` = no evaluation ticker in train/val, compared against `anchor_heldout` (the anchor scored on the same held-out calls) wherever the controlled test set is a subset. MSE at τ = 3 / 7 / 15 / 30.
+
+| model (data) | anchor | embargoed | ticker-disjoint (paired anchor) | reading |
+|---|---|---|---|---|
+| HTML text, faithful (EC; seeds 0–2) | code split 0.660 / 0.336 / 0.253 / 0.160 | 0.726 / 0.347 / 0.246 / 0.178 | 0.777 / 0.522 / 0.393 / 0.291 (vs code split; different test calls) | +18 / +55 / +55 / +82%; above persistence at τ ≥ 15 |
+| HTML text+audio, faithful (EC) | 0.658 / 0.347 / 0.244 / 0.165 | 0.684 / 0.345 / 0.232 / 0.186 | 0.789 / 0.500 / 0.394 / 0.281 | +20 / +44 / +61 / +70% |
+| Sawhney port, val-tuned 3-way ensemble (EC; 5 seeds) | their split 0.686 / 0.324 / 0.187 / 0.117 | 0.719 / 0.306 / 0.184 / 0.107 | 0.775 / 0.416 / 0.263 / 0.161 | +13 / +28 / +41 / +38%; worse than its own finance SVR at τ ≥ 7 |
+| SCSS TMLP, authors' code (DEC; seed 2021, 19 quarters) | 0.608 / 0.285 / 0.215 / 0.202 | 0.585 / 0.287 / 0.216 / 0.208 | 0.660 / 0.354 / 0.280 / 0.267 vs 0.591 / 0.288 / 0.224 / 0.211 | +12 / +23 / +25 / +27%, worse in 16 / 17 / 17 / 18 of 19 quarters |
+| SCSS TSMixer, authors' code (DEC; price only) | 0.561 / 0.252 / 0.210 / 0.257 | 0.570 / 0.251 / 0.205 / 0.232 | 0.556 / 0.254 / 0.194 / 0.233 vs 0.519 / 0.241 / 0.206 / 0.252 | mixed (worse in 14 / 13 / 8 / 10 of 19) |
+| DialogueGAT port (FinCall per year; seed 1234) | see T6R.3 row | 2019 +11 / +14 / +10 / +23%; 2021 −7 / −6 / +52 / 0%; 2020 τ=30 diverges (1.187) | 2019 +15 / +7 / +18 / +8%; 2021 ≈ 0; 2020 mixed | inconclusive (one seed, 42–60 held-out calls/year, role-typed speakers) |
+| KeFVP (MAEC-15/16; 3 repeats) | — | running | running | — |
+
+Substitutions specific to the controls: SCSS and KeFVP masks/split files are rewritten outside the authors' code (row order preserved — TMLP indexes embeddings by row, KeFVP pairs its avg and single-day files by position); KeFVP runs 3 repeats instead of 10 (a patched loop bound, labelled); the held-out third is `CONTROL_SEED` 20260916.
