@@ -428,6 +428,13 @@ def _maec_files(dir_: Path, ds: str) -> dict[str, dict[str, Path]]:
     return {k: {p: dir_ / f"maec{ds}_{p}_{k}.csv" for p in MAEC_PARTS} for k in MAEC_KINDS}
 
 
+def persistence_column(tau: int) -> str:
+    """MAEC split files number their pre-call windows backwards: `past_k` spans 30 − k
+    sessions (`past_29` is the 1-day value, `past_0` the 30-day one — their variances match
+    `future_1` and `future_30`), so the τ-session persistence forecast is `past_{30−τ}`."""
+    return f"past_{30 - tau}"
+
+
 def subset_embeddings(work: Path, dataset: str, frames) -> str:
     """Write `<MAEC_EMBEDDING>_maec<ds>.pkl` holding only this dataset's calls (the shared
     pickle covers MAEC-15 and -16, 3.4 GB); the script looks vectors up by call name, so the
@@ -499,7 +506,8 @@ def run_controls(root: Path, dataset: str, *, taus=TAUS, conditions=CONTROL_COND
                     shutil.copy(out_dir / "3GCN_LSTM_boxplot_cond_avg_day_mse_df.csv", avg_f)
                     shutil.copy(out_dir / "3GCN_LSTM_boxplot_cond_single_day_mse_df.csv", single_f)
                 avg, single = pd.read_csv(avg_f), pd.read_csv(single_f)
-                y, past = (test[f"future_{tau}"].astype(float), test[f"past_{tau}"].astype(float))
+                y = test[f"future_{tau}"].astype(float)
+                past = test[persistence_column(tau)].astype(float)
                 ok = np.isfinite(y) & np.isfinite(past)
                 pers = float(np.mean((y[ok] - past[ok]) ** 2))
                 for i, (a, s) in enumerate(zip(avg.iloc[:, -1], single.iloc[:, -1], strict=True)):

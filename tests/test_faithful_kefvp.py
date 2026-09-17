@@ -55,7 +55,7 @@ def _maec_frames():
                     "time": [days[i] for i in idx],
                     "text_file_name": [f"c{i}" for i in idx],
                     "future_3": 0.1,
-                    "past_3": 0.2,
+                    "past_27": 0.2,
                     "kind": kind,
                 }
             )  # fmt: skip
@@ -93,3 +93,7 @@ def test_with_embedding_swaps_only_the_embedding_name():
     assert [x for x in a if x != K.MAEC_EMBEDDING] == [
         x for x in b if x != "raw_bert_base_uncased_maec15"
     ]
+
+
+def test_persistence_column_counts_windows_backwards():
+    assert [K.persistence_column(t) for t in K.TAUS] == ["past_27", "past_23", "past_15", "past_0"]
