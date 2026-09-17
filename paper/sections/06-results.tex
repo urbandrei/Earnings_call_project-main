@@ -196,6 +196,31 @@ credit a modality either do not reproduce or reproduce for reasons unrelated to 
 
 \input{tables/faithful}
 
+\subsection{The reproduced models under our controls}
+\label{sec:results-controls}
+Table~\ref{tab:repro-controls} answers RQ3 on the field's own code. Each model keeps the
+configuration of Table~\ref{tab:faithful}; only the split changes, and wherever the
+controlled test set is a subset the unchanged model is scored on exactly those calls.
+\textbf{Removing same-company history costs every text model.} HTML loses 18--82\%
+(text) and 20--70\% (text$+$audio) and falls behind persistence at $\tau\ge 15$;
+Sawhney's validation-tuned ensemble loses 13--41\% and becomes worse than its own
+finance branch at $\tau\ge 7$; SCSS's TMLP loses 12--27\% and is worse in 16 to 18 of
+19 rolling quarters. \textbf{The price-dominated models do not move}: TSMixer, trained
+on the same reduced ticker set as TMLP, is mixed around zero, and KeFVP---a price series
+conditioned on text, its audio branch disabled upstream---is no worse on either MAEC
+year (within its repeat spread on MAEC-15, slightly better on MAEC-16). Training size
+does not explain the split: on EC the \tickerdisjoint training sets are as large as the
+anchors' or larger, on DEC TMLP and TSMixer lose the same third of their training calls,
+and KeFVP loses a third on MAEC without penalty. \textbf{The 30-session embargo matters
+little} on EC and DEC: HTML and Sawhney, which lose 14--27\% of their training calls to
+it, change by at most 13\% in either direction, and SCSS by at most 10\%; on MAEC it
+removes half to two thirds of the training calls, and those rows (ledger) cannot
+separate leakage from data loss. DialogueGAT's port gives no consistent direction under
+either control (one seed, 42--60 held-out calls per year). The advantage the text models
+report is, on their own code and data, largely an advantage of having seen the company.
+
+\input{tables/repro_controls}
+
 \subsection{Audio by bitrate: the Stage-3 ladder on Earnings25}
 \label{sec:results-clean-audio}
 Earnings25 audio is webcast MP3 at 64 kbps for 281 calls and at 24 kbps or

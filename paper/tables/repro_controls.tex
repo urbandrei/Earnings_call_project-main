@@ -1,0 +1,46 @@
+% Curated from data/results/result_table_6r_{html_faithful,sawhney,scss_tsmixer_controls,
+% scss_tmlp_controls,dialoguegat,kefvp_controls}.csv (T6R.4; run ids in docs/faithful_ledger.md).
+% Test MSE; only the split differs between rows of a block. n_tr = training calls (SCSS: train+val
+% per rolling quarter). Paired anchors are the anchor model scored on the ticker-disjoint test calls.
+\begin{table*}[t]
+\centering
+\small
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{lrrrrrr}
+\toprule
+Model / condition & $n_{\mathrm{tr}}$ & $n_{\mathrm{te}}$ & $\tau$=3 & 7 & 15 & 30 \\
+\midrule
+\multicolumn{7}{l}{\textit{HTML, authors' classes (EC; seeds 0--2)}} \\
+\quad text --- shipped-code random split (anchor) & $\approx$390 & 112 & 0.660 & 0.336 & 0.253 & 0.160 \\
+\quad text --- embargoed & 285 & 101 & 0.726 & 0.347 & 0.246 & 0.178 \\
+\quad text --- \tickerdisjoint & 386 & 109 & 0.777 & 0.522 & 0.393 & 0.291 \\
+\quad \quad persistence on the \tickerdisjoint test set & --- & 109 & 1.452 & 0.550 & 0.327 & 0.188 \\
+\quad text$+$audio --- anchor & $\approx$390 & 112 & 0.658 & 0.347 & 0.244 & 0.165 \\
+\quad text$+$audio --- embargoed & 285 & 101 & 0.684 & 0.345 & 0.232 & 0.186 \\
+\quad text$+$audio --- \tickerdisjoint & 386 & 109 & 0.789 & 0.500 & 0.394 & 0.281 \\
+\midrule
+\multicolumn{7}{l}{\textit{Sawhney et al., port --- ensemble with $(\alpha,\beta)$ tuned on validation (EC; 5 seeds)}} \\
+\quad their split (anchor) & 328 & 110 & 0.686 & 0.324 & 0.187 & 0.117 \\
+\quad embargoed & 283 & 100 & 0.719 & 0.306 & 0.184 & 0.107 \\
+\quad \tickerdisjoint & 383 & 109 & 0.775 & 0.416 & 0.263 & 0.161 \\
+\quad \quad its own finance SVR, \tickerdisjoint & 383 & 109 & 0.700 & 0.365 & 0.256 & 0.158 \\
+\midrule
+\multicolumn{7}{l}{\textit{Same-Company-Same-Signal, authors' \texttt{run.py} (DEC; seed 2021; means over 19 rolling quarters)}} \\
+\quad TMLP (text) --- paired anchor & 900 & 30 & 0.591 & 0.288 & 0.224 & 0.211 \\
+\quad TMLP (text) --- \tickerdisjoint & 600 & 30 & 0.660 & 0.354 & 0.280 & 0.267 \\
+\quad TMLP (text) --- embargoed (vs anchor 0.608 / 0.285 / 0.215 / 0.202) & 895 & 90 & 0.585 & 0.287 & 0.216 & 0.208 \\
+\quad TSMixer (price) --- paired anchor & 900 & 30 & 0.519 & 0.241 & 0.206 & 0.252 \\
+\quad TSMixer (price) --- \tickerdisjoint & 600 & 30 & 0.556 & 0.254 & 0.194 & 0.233 \\
+\quad \quad persistence on the held-out calls & --- & 30 & 1.258 & 0.457 & 0.252 & 0.224 \\
+\midrule
+\multicolumn{7}{l}{\textit{KeFVP, authors' script (MAEC, regenerated BERT-base embeddings; 3 repeats)}} \\
+\quad MAEC-15 --- paired anchor & 535 & 48 & 0.470 & 0.192 & 0.145 & 0.114 \\
+\quad MAEC-15 --- \tickerdisjoint & 353 & 48 & 0.458 & 0.199 & 0.150 & 0.113 \\
+\quad MAEC-16 --- paired anchor & 980 & 92 & 0.416 & 0.248 & 0.347 & 0.186 \\
+\quad MAEC-16 --- \tickerdisjoint & 661 & 92 & 0.378 & 0.241 & 0.312 & 0.178 \\
+\quad \quad persistence on the MAEC-16 held-out calls & --- & 92 & 0.622 & 0.265 & 0.170 & 0.116 \\
+\bottomrule
+\end{tabular}
+\caption{\textbf{The reproduced models under our controls} (Result Table 6R-C, T6R.4). Each block keeps the configuration of Table~\ref{tab:faithful} and changes only the split; paired anchors score the unchanged model on exactly the \tickerdisjoint test calls. Removing same-company history costs the three text models 12--82\% (HTML, Sawhney, TMLP; TMLP is worse in 16--18 of 19 quarters) and leaves both price-dominated models unchanged (TSMixer, KeFVP), although the \tickerdisjoint training sets are as large (EC) or cut by the same third (DEC, MAEC) in both groups. The 30-session embargo moves HTML, Sawhney and SCSS by at most 13\% in either direction; KeFVP's embargoed MAEC re-splits keep only a half or a third of its training calls, cannot separate leakage from data loss, and are reported in the ledger, not here. DialogueGAT (one seed, 42--60 held-out calls per year) shows no consistent direction and is also left to the ledger.}
+\label{tab:repro-controls}
+\end{table*}
