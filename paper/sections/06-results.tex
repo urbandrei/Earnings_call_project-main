@@ -205,7 +205,14 @@ controlled test set is a subset the unchanged model is scored on exactly those c
 (text) and 20--70\% (text$+$audio) and falls behind persistence at $\tau\ge 15$;
 Sawhney's validation-tuned ensemble loses 13--41\% and becomes worse than its own
 finance branch at $\tau\ge 7$; SCSS's TMLP loses 12--27\% and is worse in 16 to 18 of
-19 rolling quarters. \textbf{The price-dominated models do not move}: TSMixer, trained
+19 rolling quarters. The transcript shuffle of \S\ref{sec:results}, applied to HTML's
+own trained model, says why: giving each test call the transcript of \emph{another call
+of the same company} changes its MSE by at most 4\% (text; 3\% with audio), whereas a
+call of a \emph{different} company costs 9--23\% (16--26\% with audio). Two thirds of
+those same-company substitutes are calls the model trained on; under the
+\tickerdisjoint split none is, the same-company swap still changes nothing (under 1\%),
+and even the different-company swap costs the text model under 5\%. What HTML reads
+from a transcript is which company is speaking. \textbf{The price-dominated models do not move}: TSMixer, trained
 on the same reduced ticker set as TMLP, is mixed around zero, and KeFVP---a price series
 conditioned on text, its audio branch disabled upstream---is no worse on either MAEC
 year (within its repeat spread on MAEC-15, slightly better on MAEC-16). Training size
