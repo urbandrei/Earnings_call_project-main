@@ -240,10 +240,13 @@ def fit_eval(
     dropout: float,
     seed: int,
     epochs: int = EPOCHS,
-) -> tuple[float, float, int]:
+    test_variants: dict | None = None,
+) -> tuple[float, float, int, dict]:
     """Train as `run_gpu.go` does (Adam 2e-5, batch 4, clip 1.0, MSE multi-task loss,
     no warm-up, no shuffling between epochs) and return (val_mse_min, test_mse_at_that
-    epoch, best_epoch)."""
+    epoch, best_epoch, variant MSEs at that epoch). `test_variants` maps a name to
+    (input arrays aligned with idx["test"], boolean mask): the same trained model is
+    scored on substituted test inputs over the masked calls (§7.3 shuffle control)."""
     import torch
     import torch.nn.functional as F
 
@@ -254,17 +257,19 @@ def fit_eval(
     opt = torch.optim.Adam(model.parameters(), lr=LR)
     tr = idx["train"]
 
-    def predict(ids: np.ndarray) -> np.ndarray:
+    def predict(ids: np.ndarray, arrays: list | None = None) -> np.ndarray:
         model.train(False)
+        arrays = [S[k] for k in ids] if arrays is None else arrays
         out = []
         with torch.no_grad():
-            for i in range(0, len(ids), 16):
-                xb = torch.from_numpy(_pad([S[k] for k in ids[i : i + 16]])).to(dev)
+            for i in range(0, len(arrays), 16):
+                xb = torch.from_numpy(_pad(arrays[i : i + 16])).to(dev)
                 pa, _ = model(xb)
                 out.append(pa.reshape(-1).cpu().numpy())
         return np.concatenate(out)
 
-    best = (np.inf, np.nan, -1)
+    best = (np.inf, np.nan, -1, {})
+    y_te = y[idx["test"]]
     for e in range(epochs):
         model.train(True)
         for i in range(0, len(tr), BATCH):
@@ -282,8 +287,30 @@ def fit_eval(
             opt.step()
         val_mse = float(M.mse(y[idx["val"]], predict(idx["val"])))
         if val_mse < best[0]:
-            best = (val_mse, float(M.mse(y[idx["test"]], predict(idx["test"]))), e)
+            variants = {
+                name: float(M.mse(y_te[mask], predict(idx["test"], arrays)[mask]))
+                for name, (arrays, mask) in (test_variants or {}).items()
+            }
+            best = (val_mse, float(M.mse(y_te, predict(idx["test"]))), e, variants)
     return best
+
+
+# --- §7.3 shuffle control on the authors' model ------------------------------------
+
+
+def shuffle_partners(tickers: np.ndarray, test_pos: np.ndarray, mode: str, seed: int):
+    """For each test call, the position of the call whose transcript replaces its own:
+    `within` = a different call of the same ticker (any split; DESIGN §7.3), `global` = a
+    call of a different ticker. Returns (partner positions, has-partner mask)."""
+    rng = np.random.RandomState(seed)
+    partners, ok = test_pos.copy(), np.zeros(len(test_pos), dtype=bool)
+    for j, p in enumerate(test_pos):
+        same = tickers == tickers[p]
+        pool = np.where(same if mode == "within" else ~same)[0]
+        pool = pool[pool != p]
+        if len(pool):
+            partners[j], ok[j] = pool[rng.randint(len(pool))], True
+    return partners, ok
 
 
 PUBLISHED_AUDIO_MSE = {3: 0.845, 7: 0.349, 15: 0.251, 30: 0.158}  # Table 2, WWM-BERT+Audio
@@ -297,11 +324,14 @@ def run_html_faithful(
     epochs: int = EPOCHS,
     alphas=ALPHAS,
     modality: str = "text",
+    shuffle: bool = False,
 ) -> pd.DataFrame:
     seqs = sentence_arrays(root, modality)
     labels = published_labels(root)
     labels = labels[labels.index.isin(seqs)]
     call_ids = labels.index.tolist()
+    tk = pd.read_csv(root / "splits" / "ec_published.csv", dtype=str)
+    tk = tk.drop_duplicates("call_id").set_index("call_id")
     rows = []
     for cond in conditions:
         dropout = CONDITIONS[cond]
@@ -327,30 +357,30 @@ def run_html_faithful(
                     s: np.array([pos[c] for c in split.loc[split["split"] == s, "call_id"]], int)
                     for s in ("train", "val", "test")
                 }
+                variants = None
+                if shuffle:  # one trained model, test transcripts substituted
+                    tickers = np.array([tk["ticker"].get(c, c) for c in ids])
+                    w, w_ok = shuffle_partners(tickers, idx["test"], "within", seed)
+                    g, _ = shuffle_partners(tickers, idx["test"], "global", seed)
+                    variants = {
+                        "real": ([S[k] for k in idx["test"]], w_ok),
+                        "within": ([S[k] for k in w], w_ok),
+                        "global": ([S[k] for k in g], w_ok),
+                    }
+                kw = dict(dropout=dropout, seed=seed, epochs=epochs, test_variants=variants)
                 # α on validation with seed 0 of this condition, then held fixed
                 if seed == seeds[0]:
-                    scores = {
-                        a: fit_eval(
-                            root, S, y, ya, idx, alpha=a, dropout=dropout, seed=seed, epochs=epochs
-                        )
-                        for a in alphas
-                    }
+                    scores = {a: fit_eval(root, S, y, ya, idx, alpha=a, **kw) for a in alphas}
                     best_alpha = min(scores, key=lambda a: scores[a][0])
-                    val_mse, test_mse, ep = scores[best_alpha]
+                    val_mse, test_mse, ep, var = scores[best_alpha]
                 else:
-                    val_mse, test_mse, ep = fit_eval(
-                        root,
-                        S,
-                        y,
-                        ya,
-                        idx,
-                        alpha=best_alpha,
-                        dropout=dropout,
-                        seed=seed,
-                        epochs=epochs,
+                    val_mse, test_mse, ep, var = fit_eval(
+                        root, S, y, ya, idx, alpha=best_alpha, **kw
                     )
                 pers = float(M.mse(y[idx["test"]], base[idx["test"]]))
-                per_seed.append((val_mse, test_mse, ep, pers, len(idx["test"])))
+                n_sh = int(variants["real"][1].sum()) if variants else 0
+                in_tr = float(np.isin(w[w_ok], idx["train"]).mean()) if variants else np.nan
+                per_seed.append((val_mse, test_mse, ep, pers, len(idx["test"]), var, n_sh, in_tr))
             arr = np.array([p[:2] for p in per_seed])
             rows.append(
                 {
@@ -370,6 +400,13 @@ def run_html_faithful(
                         PUBLISHED_TEXT_MSE if modality == "text" else PUBLISHED_AUDIO_MSE
                     )[tau],
                     "n_seeds": len(seeds),
+                    "n_shufflable": per_seed[0][6],
+                    # a within-ticker partner the model trained on could be memorised
+                    "frac_partner_in_train": float(np.mean([p[7] for p in per_seed])),
+                    **{
+                        f"mse_{v}_shufflable": float(np.mean([p[5][v] for p in per_seed]))
+                        for v in (per_seed[0][5] or {})
+                    },
                 }
             )
     table = pd.DataFrame(rows)

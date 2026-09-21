@@ -1143,6 +1143,9 @@ def reproduce_html_faithful(
         help="Comma-separated subset of code, paper, published_split, embargoed, ticker_disjoint.",
     ),
     modality: str = typer.Option("text", help="text | text_audio (27 Praat features/sentence)."),
+    shuffle: bool = typer.Option(
+        False, help="Also score same-ticker / other-ticker test shuffles."
+    ),
     config: Path | None = _CONFIG_OPT,
 ) -> None:
     """T6R.3: the authors' HTML classes verbatim on rebuilt WWM-BERT inputs → 6R-F entry."""
@@ -1156,6 +1159,7 @@ def reproduce_html_faithful(
         seeds=tuple(cfg.seeds),
         epochs=epochs,
         modality=modality,
+        shuffle=shuffle,
     )
     for r in table[table["model"] == f"html_{modality}_faithful"].itertuples():
         typer.echo(

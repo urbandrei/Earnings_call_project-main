@@ -68,3 +68,14 @@ def test_controlled_conditions_change_only_the_split():
         assert FH.CONDITIONS[cond] == FH.CONDITIONS["code"]
         assert FH.SPLIT_FILES[cond].startswith("ec_")
     assert set(FH.SPLIT_FILES) == set(FH.CONDITIONS) - {"code", "paper"}
+
+
+def test_shuffle_partners_within_same_ticker_and_global_other_ticker():
+    tickers = np.array(["A", "A", "A", "B", "C", "C"])
+    test_pos = np.array([0, 3, 4])
+    w, w_ok = FH.shuffle_partners(tickers, test_pos, "within", seed=0)
+    assert w_ok.tolist() == [True, False, True]  # B has no other call
+    assert w[0] in (1, 2) and w[1] == 3 and w[2] == 5  # never itself; partner may be any split
+    g, g_ok = FH.shuffle_partners(tickers, test_pos, "global", seed=0)
+    assert g_ok.all() and all(tickers[p] != tickers[t] for p, t in zip(g, test_pos, strict=True))
+    assert FH.shuffle_partners(tickers, test_pos, "within", seed=0)[0].tolist() == w.tolist()
