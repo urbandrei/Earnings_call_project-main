@@ -97,3 +97,15 @@ def test_with_embedding_swaps_only_the_embedding_name():
 
 def test_persistence_column_counts_windows_backwards():
     assert [K.persistence_column(t) for t in K.TAUS] == ["past_27", "past_23", "past_15", "past_0"]
+
+
+def test_patch_generator_picks_the_corpus_text_file():
+    src = (
+        "text_path = args.data_path + data_dir + '/Text.txt'   # For ec\n"
+        "    data_list = os.listdir(args.data_path)\n    output_dct = {}\n    all_sent_num = []\n"
+        "        with torch.no_grad():\n"
+        "            model_out = model(input['input_ids'].cuda(), input['attention_mask'].cuda())\n"
+    )
+    assert "/text.txt'" in K.patch_generator(src, "d", "w.txt")
+    ec = K.patch_generator(src, "d", "w.txt", maec=False)
+    assert "/TextSequence.txt'" in ec and "_wanted" in ec and "_outs" in ec

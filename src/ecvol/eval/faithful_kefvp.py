@@ -54,6 +54,10 @@ PUBLISHED_STD = {
 }
 EC_EMBEDDING = "emnlp_202308_bert_large_unfreeze_6layers/ec_embed_bert_large_uncased_kept_epoch_6"
 MAEC_EMBEDDING = "raw_bert_base_uncased"
+# K2 (DECISIONS 2026-09-21): the released EC pickle is unavailable upstream (its Drive folder
+# is empty), so EC runs on raw BERT-large pooler outputs from the authors' generator — 1024-d
+# like the KePt-BERT-large they replace, so `run_ec_for_kept.sh` is otherwise unchanged.
+EC_REGENERATED = "raw_bert_large_uncased"
 MAEC_RAW_REL = "raw/maec/repo/MAEC_Dataset"
 EC_RAW_REL = "raw/ec/extracted/ACL19_Release"
 
@@ -88,11 +92,15 @@ def patch_infer(src: str, proj: str, dataset_dir: str, repeats: int = REPEATS) -
     return out
 
 
-def patch_generator(src: str, dataset_dir: str, wanted_list: str) -> str:
+def patch_generator(src: str, dataset_dir: str, wanted_list: str, maec: bool = True) -> str:
     """`pretrain/generatePtmEmbeddings.py`: MAEC file name, chunked encoding, folder subset."""
+    # the script reads `<call>/Text.txt`; MAEC ships `text.txt`, our ACL19 EC release
+    # `TextSequence.txt` (one sentence per line, the same content) — file name only
+    name = "text.txt" if maec else "TextSequence.txt"
+    old_path = "text_path = args.data_path + data_dir + '/Text.txt'   # For ec"
+    assert src.count(old_path) == 1
     out = src.replace(
-        "text_path = args.data_path + data_dir + '/Text.txt'   # For ec",
-        "text_path = args.data_path + data_dir + '/text.txt'   # patched: MAEC",
+        old_path, f"text_path = args.data_path + data_dir + '/{name}'   # patched: file name"
     )
     out = out.replace("data_dir = '/your/dataset/path'", f"data_dir = '{dataset_dir.rstrip('/')}/'")
     old_list = (
@@ -225,25 +233,41 @@ def maec_folders(root: Path) -> list[str]:
     return sorted(names)
 
 
-def generate_maec_embeddings(root: Path, *, log=print) -> Path:
-    """Regenerate `dataset/text_embedding/raw_bert_base_uncased.pkl` with the authors' script."""
+def ec_folders(root: Path) -> list[str]:
+    names: set[str] = set()
+    for part in ("train", "val", "test"):
+        f = root / REPO_REL / "price_data" / f"{part}_split_Avg_Series_WITH_LOG.csv"
+        names |= set(pd.read_csv(f, usecols=["text_file_name"])["text_file_name"].astype(str))
+    return sorted(names)
+
+
+def generate_embeddings(root: Path, dataset: str = "maec", *, log=print) -> Path:
+    """Regenerate the sentence-embedding pickle with the authors' script: MAEC →
+    `raw_bert_base_uncased.pkl`, EC → `raw_bert_large_uncased.pkl` (the K2 substitution)."""
     work = prepare_build(root)
-    out = work / "dataset" / "text_embedding" / f"{MAEC_EMBEDDING}.pkl"
+    maec = dataset != "ec"
+    name, ptm = (
+        (MAEC_EMBEDDING, "bert-base-uncased") if maec else (EC_REGENERATED, "bert-large-uncased")
+    )
+    out = work / "dataset" / "text_embedding" / f"{name}.pkl"
     if out.is_file():
         return out
-    wanted = work / "maec_split_folders.txt"
-    wanted.write_text("\n".join(maec_folders(root)), encoding="utf-8")
+    folders = maec_folders(root) if maec else ec_folders(root)
+    tag = "maec" if maec else "ec"
+    wanted = work / f"{tag}_split_folders.txt"
+    wanted.write_text("\n".join(folders), encoding="utf-8")
     gen_src = (root / REPO_REL / "pretrain" / "generatePtmEmbeddings.py").read_text(
         encoding="utf-8"
     )
-    gen = work / "pretrain" / "generatePtmEmbeddings_maec.py"
+    gen = work / "pretrain" / f"generatePtmEmbeddings_{tag}.py"
     gen.write_text(
-        patch_generator(gen_src, (work / "dataset").as_posix(), wanted.as_posix()), encoding="utf-8"
+        patch_generator(gen_src, (work / "dataset").as_posix(), wanted.as_posix(), maec=maec),
+        encoding="utf-8",
     )
-    raw = (root / MAEC_RAW_REL).resolve().as_posix() + "/"
-    cmd = [sys.executable, "-u", gen.name, "--ptm_type", "bert-base-uncased", "--data_path", raw,
+    raw = (root / (MAEC_RAW_REL if maec else EC_RAW_REL)).resolve().as_posix() + "/"
+    cmd = [sys.executable, "-u", gen.name, "--ptm_type", ptm, "--data_path", raw,
            "--max_sent", "512", "--save_path", out.as_posix()]  # fmt: skip
-    log(f"  generating MAEC BERT-base embeddings for {len(maec_folders(root))} folders …")
+    log(f"  generating {ptm} embeddings for {len(folders)} {tag} folders …")
     proc = subprocess.run(
         cmd, cwd=gen.parent, capture_output=True, text=True, encoding="utf-8", errors="replace"
     )
@@ -266,7 +290,9 @@ def infer_args(dataset: str, tau: int, *, raw_data_path: str) -> list[str]:
                      "--log_save_path", f"maec{dataset}"]  # fmt: skip
 
 
-def run_dataset(root: Path, dataset: str, *, taus=TAUS, log=print) -> pd.DataFrame:
+def run_dataset(
+    root: Path, dataset: str, *, taus=TAUS, ec_embedding: str = EC_EMBEDDING, log=print
+) -> pd.DataFrame:
     work = prepare_build(root)
     if dataset != "ec":  # never train on split files a killed T6R.4 controls run left behind
         restore_maec_splits(root, work, dataset)
@@ -274,7 +300,7 @@ def run_dataset(root: Path, dataset: str, *, taus=TAUS, log=print) -> pd.DataFra
         work
         / "dataset"
         / "text_embedding"
-        / f"{EC_EMBEDDING if dataset == 'ec' else MAEC_EMBEDDING}.pkl"
+        / f"{ec_embedding if dataset == 'ec' else MAEC_EMBEDDING}.pkl"
     )
     if not emb.is_file():
         raise FileNotFoundError(f"text embedding pickle missing: {emb}")
@@ -310,8 +336,11 @@ def run_dataset(root: Path, dataset: str, *, taus=TAUS, log=print) -> pd.DataFra
                 sys.executable,
                 "-u",
                 "final_series_infer.py",
-                *infer_args(dataset, tau, raw_data_path=raw),
-            ],  # noqa: E501
+                *_with_embedding(
+                    infer_args(dataset, tau, raw_data_path=raw),
+                    ec_embedding if dataset == "ec" else MAEC_EMBEDDING,
+                ),
+            ],
             cwd=work / "kefvp",
             capture_output=True,
             text=True,
@@ -356,7 +385,11 @@ def run_dataset(root: Path, dataset: str, *, taus=TAUS, log=print) -> pd.DataFra
         PUBLISHED_STD[d][h] for d, h in zip(t["dataset"], t["horizon"], strict=True)
     ]
     t["text_embedding"] = (
-        "released_kept_bert_large" if dataset == "ec" else "regenerated_bert_base_pooler"
+        "regenerated_bert_base_pooler"
+        if dataset != "ec"
+        else "regenerated_bert_large_pooler"
+        if ec_embedding == EC_REGENERATED
+        else "released_kept_bert_large"
     )
     return t
 
