@@ -31,6 +31,7 @@ mse, mse_single) long rows plus per-(dataset, horizon) summary columns.
 
 from __future__ import annotations
 
+import os
 import shutil
 import subprocess
 import sys
@@ -268,8 +269,16 @@ def generate_embeddings(root: Path, dataset: str = "maec", *, log=print) -> Path
     cmd = [sys.executable, "-u", gen.name, "--ptm_type", ptm, "--data_path", raw,
            "--max_sent", "512", "--save_path", out.as_posix()]  # fmt: skip
     log(f"  generating {ptm} embeddings for {len(folders)} {tag} folders …")
+    # the script's bare `open()` would decode with the Windows ANSI code page; the corpora are
+    # UTF-8 (EC has curly quotes), so the child runs in Python's UTF-8 mode — no code patch
     proc = subprocess.run(
-        cmd, cwd=gen.parent, capture_output=True, text=True, encoding="utf-8", errors="replace"
+        cmd,
+        cwd=gen.parent,
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+        errors="replace",
+        env={**os.environ, "PYTHONUTF8": "1"},
     )
     if proc.returncode != 0:
         raise RuntimeError(proc.stderr[-3000:])
