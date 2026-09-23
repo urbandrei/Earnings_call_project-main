@@ -1,0 +1,133 @@
+horizon,check,metric,value,n,note
+3,split_integrity,n_train,485.0,,
+3,split_integrity,n_val,235.0,,
+3,split_integrity,n_test,120.0,,
+3,split_integrity,test_calls_ticker_in_fit_pct,0.0,120.0,
+3,split_integrity,test_tickers_in_fit_pct,0.0,30.0,
+3,split_integrity,gap_business_days,19.0,,last train/val call → first test call; negative = interleaved
+3,split_integrity,fit_windows_reaching_test,0.0,720.0,train/val calls whose horizon-session window reaches the first test call
+3,floors,mse_model,0.732879474193835,120.0,
+3,floors,mse_persistence,1.581126799153019,120.0,
+3,floors,r2_oos_vs_persistence,0.5364827953163369,120.0,
+3,floors,mse_ticker_only,0.7068683821804026,120.0,
+3,floors,r2_oos_vs_ticker_only,-0.036797645317221184,120.0,
+3,floors,mse_train_mean,0.7068683821804026,120.0,
+3,floors,r2_oos_vs_train_mean,-0.036797645317221184,120.0,
+3,seen_vs_unseen,mse_seen_ticker,,0.0,
+3,seen_vs_unseen,mse_unseen_ticker,0.732879474193835,120.0,
+3,prediction_shuffle,n_shufflable,120.0,120.0,
+3,prediction_shuffle,mse_real,0.732879474193835,120.0,
+3,prediction_shuffle,mse_within_ticker_swap,0.7231688217643648,120.0,mean of 50
+3,prediction_shuffle,mse_other_ticker_swap,0.7380433146569874,120.0,mean of 50
+3,prediction_shuffle,within_swap_change_pct,-1.3249999176402016,,
+3,prediction_shuffle,other_swap_change_pct,0.7045961368794762,,
+3,identity_share,ticker_variance_share_y_pred,0.7128158368412603,120.0,tickers with ≥2 test calls
+3,identity_share,ticker_variance_share_y_true,0.4376937407422134,120.0,tickers with ≥2 test calls
+3,significance,dm_p_vs_persistence,3.9375478196252915e-05,120.0,+ve stat ⇒ model worse
+3,significance,dm_stat_vs_persistence,-4.271000091668081,120.0,
+3,significance,dm_p_vs_ticker_only,0.5878770093353056,120.0,+ve stat ⇒ model worse
+3,significance,dm_stat_vs_ticker_only,0.5433911274208394,120.0,
+3,significance,dm_p_vs_train_mean,0.5878770093353056,120.0,+ve stat ⇒ model worse
+3,significance,dm_stat_vs_train_mean,0.5433911274208394,120.0,
+3,significance,sqerr_diff_vs_ticker_only_mean,0.026011092013432432,120.0,model − ticker-only; <0 = model better
+3,significance,sqerr_diff_vs_ticker_only_ci_lo,-0.08066958173205474,120.0,ticker-clustered 95% bootstrap
+3,significance,sqerr_diff_vs_ticker_only_ci_hi,0.1543719953310655,120.0,
+7,split_integrity,n_train,485.0,,
+7,split_integrity,n_val,235.0,,
+7,split_integrity,n_test,120.0,,
+7,split_integrity,test_calls_ticker_in_fit_pct,0.0,120.0,
+7,split_integrity,test_tickers_in_fit_pct,0.0,30.0,
+7,split_integrity,gap_business_days,19.0,,last train/val call → first test call; negative = interleaved
+7,split_integrity,fit_windows_reaching_test,0.0,720.0,train/val calls whose horizon-session window reaches the first test call
+7,floors,mse_model,0.38026712052575184,120.0,
+7,floors,mse_persistence,0.42735990372370386,120.0,
+7,floors,r2_oos_vs_persistence,0.1101946691479938,120.0,
+7,floors,mse_ticker_only,0.3837135799496694,120.0,
+7,floors,r2_oos_vs_ticker_only,0.008981854185013738,120.0,
+7,floors,mse_train_mean,0.3837135799496694,120.0,
+7,floors,r2_oos_vs_train_mean,0.008981854185013738,120.0,
+7,seen_vs_unseen,mse_seen_ticker,,0.0,
+7,seen_vs_unseen,mse_unseen_ticker,0.38026712052575184,120.0,
+7,prediction_shuffle,n_shufflable,120.0,120.0,
+7,prediction_shuffle,mse_real,0.38026712052575184,120.0,
+7,prediction_shuffle,mse_within_ticker_swap,0.3756107815067834,120.0,mean of 50
+7,prediction_shuffle,mse_other_ticker_swap,0.4033814212982747,120.0,mean of 50
+7,prediction_shuffle,within_swap_change_pct,-1.224491618557677,,
+7,prediction_shuffle,other_swap_change_pct,6.078437899276001,,
+7,identity_share,ticker_variance_share_y_pred,0.734247015009927,120.0,tickers with ≥2 test calls
+7,identity_share,ticker_variance_share_y_true,0.5826776205393231,120.0,tickers with ≥2 test calls
+7,significance,dm_p_vs_persistence,0.4455552261501883,120.0,+ve stat ⇒ model worse
+7,significance,dm_stat_vs_persistence,-0.7653891258323203,120.0,
+7,significance,dm_p_vs_ticker_only,0.9036861720876603,120.0,+ve stat ⇒ model worse
+7,significance,dm_stat_vs_ticker_only,-0.12126436191555802,120.0,
+7,significance,dm_p_vs_train_mean,0.9036861720876603,120.0,+ve stat ⇒ model worse
+7,significance,dm_stat_vs_train_mean,-0.12126436191555802,120.0,
+7,significance,sqerr_diff_vs_ticker_only_mean,-0.0034464594239175714,120.0,model − ticker-only; <0 = model better
+7,significance,sqerr_diff_vs_ticker_only_ci_lo,-0.07403376713844223,120.0,ticker-clustered 95% bootstrap
+7,significance,sqerr_diff_vs_ticker_only_ci_hi,0.07377971673230267,120.0,
+15,split_integrity,n_train,485.0,,
+15,split_integrity,n_val,235.0,,
+15,split_integrity,n_test,120.0,,
+15,split_integrity,test_calls_ticker_in_fit_pct,0.0,120.0,
+15,split_integrity,test_tickers_in_fit_pct,0.0,30.0,
+15,split_integrity,gap_business_days,19.0,,last train/val call → first test call; negative = interleaved
+15,split_integrity,fit_windows_reaching_test,0.0,720.0,train/val calls whose horizon-session window reaches the first test call
+15,floors,mse_model,0.28301360245119483,120.0,
+15,floors,mse_persistence,0.18232971869287637,120.0,
+15,floors,r2_oos_vs_persistence,-0.5522077502237279,120.0,
+15,floors,mse_ticker_only,0.28435614982252017,120.0,
+15,floors,r2_oos_vs_ticker_only,0.004721358662941766,120.0,
+15,floors,mse_train_mean,0.28435614982252017,120.0,
+15,floors,r2_oos_vs_train_mean,0.004721358662941766,120.0,
+15,seen_vs_unseen,mse_seen_ticker,,0.0,
+15,seen_vs_unseen,mse_unseen_ticker,0.28301360245119483,120.0,
+15,prediction_shuffle,n_shufflable,120.0,120.0,
+15,prediction_shuffle,mse_real,0.28301360245119483,120.0,
+15,prediction_shuffle,mse_within_ticker_swap,0.2792646244220914,120.0,mean of 50
+15,prediction_shuffle,mse_other_ticker_swap,0.29923873661826045,120.0,mean of 50
+15,prediction_shuffle,within_swap_change_pct,-1.3246635485479774,,
+15,prediction_shuffle,other_swap_change_pct,5.73298739938255,,
+15,identity_share,ticker_variance_share_y_pred,0.7385512106843686,120.0,tickers with ≥2 test calls
+15,identity_share,ticker_variance_share_y_true,0.6259119899470925,120.0,tickers with ≥2 test calls
+15,significance,dm_p_vs_persistence,0.01314088135301224,120.0,+ve stat ⇒ model worse
+15,significance,dm_stat_vs_persistence,2.517715306451712,120.0,
+15,significance,dm_p_vs_ticker_only,0.9464494069915518,120.0,+ve stat ⇒ model worse
+15,significance,dm_stat_vs_ticker_only,-0.06730807444433748,120.0,
+15,significance,dm_p_vs_train_mean,0.9464494069915518,120.0,+ve stat ⇒ model worse
+15,significance,dm_stat_vs_train_mean,-0.06730807444433748,120.0,
+15,significance,sqerr_diff_vs_ticker_only_mean,-0.0013425473713253625,120.0,model − ticker-only; <0 = model better
+15,significance,sqerr_diff_vs_ticker_only_ci_lo,-0.05174919290126478,120.0,ticker-clustered 95% bootstrap
+15,significance,sqerr_diff_vs_ticker_only_ci_hi,0.052988506784646616,120.0,
+30,split_integrity,n_train,485.0,,
+30,split_integrity,n_val,235.0,,
+30,split_integrity,n_test,120.0,,
+30,split_integrity,test_calls_ticker_in_fit_pct,0.0,120.0,
+30,split_integrity,test_tickers_in_fit_pct,0.0,30.0,
+30,split_integrity,gap_business_days,19.0,,last train/val call → first test call; negative = interleaved
+30,split_integrity,fit_windows_reaching_test,5.0,720.0,train/val calls whose horizon-session window reaches the first test call
+30,floors,mse_model,0.20475923055227685,120.0,
+30,floors,mse_persistence,0.10587106523656821,120.0,
+30,floors,r2_oos_vs_persistence,-0.9340433582560417,120.0,
+30,floors,mse_ticker_only,0.1941256125369394,120.0,
+30,floors,r2_oos_vs_ticker_only,-0.054776996586753945,120.0,
+30,floors,mse_train_mean,0.1941256125369394,120.0,
+30,floors,r2_oos_vs_train_mean,-0.054776996586753945,120.0,
+30,seen_vs_unseen,mse_seen_ticker,,0.0,
+30,seen_vs_unseen,mse_unseen_ticker,0.20475923055227685,120.0,
+30,prediction_shuffle,n_shufflable,120.0,120.0,
+30,prediction_shuffle,mse_real,0.20475923055227685,120.0,
+30,prediction_shuffle,mse_within_ticker_swap,0.19947049212413753,120.0,mean of 50
+30,prediction_shuffle,mse_other_ticker_swap,0.2147618406392998,120.0,mean of 50
+30,prediction_shuffle,within_swap_change_pct,-2.5829059885967176,,
+30,prediction_shuffle,other_swap_change_pct,4.8850594232279,,
+30,identity_share,ticker_variance_share_y_pred,0.7377473870191898,120.0,tickers with ≥2 test calls
+30,identity_share,ticker_variance_share_y_true,0.7262304191277519,120.0,tickers with ≥2 test calls
+30,significance,dm_p_vs_persistence,0.0028250956652796757,120.0,+ve stat ⇒ model worse
+30,significance,dm_stat_vs_persistence,3.04958013344116,120.0,
+30,significance,dm_p_vs_ticker_only,0.4747592814795067,120.0,+ve stat ⇒ model worse
+30,significance,dm_stat_vs_ticker_only,0.7170321624132718,120.0,
+30,significance,dm_p_vs_train_mean,0.4747592814795067,120.0,+ve stat ⇒ model worse
+30,significance,dm_stat_vs_train_mean,0.7170321624132718,120.0,
+30,significance,sqerr_diff_vs_ticker_only_mean,0.010633618015337454,120.0,model − ticker-only; <0 = model better
+30,significance,sqerr_diff_vs_ticker_only_ci_lo,-0.028393160347633135,120.0,ticker-clustered 95% bootstrap
+30,significance,sqerr_diff_vs_ticker_only_ci_hi,0.05161215390429878,120.0,

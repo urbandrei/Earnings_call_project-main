@@ -30,7 +30,7 @@ Verified 2026-09-02: a fresh clone + `uv sync` (CPU) passes the full gate and `e
 | lineage repositories (T6R.3) | full clones under `data/raw/ref/repos/{HTML,KeFVP,VolTAGE,DialogueGAT,Sawhney2020,SCSS}` at the commits in `data/manifests/repos.json`; SCSS materialised file-by-file (`git show`) because its result filenames contain `\|` | patched at run time into `data/work/`, never committed (`docs/faithful_ledger.md`) |
 | GloVe 6B | `data/raw/ref/glove/glove.6B.zip` (https://nlp.stanford.edu/data/glove.6B.zip) | Sawhney / DialogueGAT ports |
 | SCSS OpenAI embeddings | Drive folder `1s0NPA8RoPQ_MT70NLZDboToq3Enyh0bV` → `data/raw/ref/scss_drive/Embeddings/openai/*.npz` | TMLP |
-| KeFVP EC KePt embeddings | Drive file `1F83bjiJKEpq_MYrc0lzQb9rOLgooz-5E` → `data/work/kefvp/dataset/text_embedding/…` (browser download; see HANDOFF) | KeFVP EC row |
+| KeFVP EC embeddings | the released KePt pickle is unavailable upstream (Drive folder `1F83bjiJKEpq_MYrc0lzQb9rOLgooz-5E` is empty, 2026-09-21); `ecvol reproduce kefvp --dataset ec --ec-regenerated` regenerates raw BERT-large pooler embeddings with the authors' generator (labelled substitution, DECISIONS 2026-09-21) | KeFVP EC row |
 | Praat sentence features (EC) | `python -c "from ecvol.features.audio.praat import extract_ec_praat; …"` (parselmouth, ~5 min on 6 cores) → `data/ec/cache/praat27_sentences.parquet` | HTML text+audio, Sawhney audio |
 
 Then: `ecvol targets build` · `ecvol splits build` · `ecvol timing build {fincall,maec,earnings25}` ·
@@ -86,6 +86,16 @@ ecvol data verify                                        # every data file ↔ i
 Determinism: ridge/HAR/persistence/GARCH runs are byte-identical across re-runs (Table 1 was
 re-run live on 2026-08-26 and 2026-09-02 and matched the committed bytes). MLP heads and the
 HTML head carry seeds; their cells report the seed standard deviation.
+
+## Auditing your own predictions
+
+```
+ecvol audit predictions predictions.csv      # split integrity, floors, prediction shuffles, identity share, DM
+```
+
+The identity-control suite on a prediction file (call_id, ticker, date, split, horizon,
+y_true, y_pred [, y_persistence]) — no model or features needed. Contract, checks and a
+worked example on Same-Company-Same-Signal's TMLP: `docs/audit_predictions.md`.
 
 ## Release archives
 

@@ -11,6 +11,10 @@
 !/data/coverage/
 !/data/splits/
 !/data/results/
+# `ecvol audit predictions` demo frame + reports (small; their manifests are committed)
+!/data/audits/
+/data/audits/*
+!/data/audits/demo/
 
 # Run outputs
 /artifacts/*
