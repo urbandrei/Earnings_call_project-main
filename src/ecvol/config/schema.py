@@ -128,6 +128,7 @@ class CommandConfig(StrictModel):
         "reproduce-sawhney",
         "reproduce-dialoguegat",
         "audit-code",
+        "audit-predictions",
         "evaluate-lookahead",
     ]
     seeds: list[int] = Field(default=[0, 1, 2, 3, 4], min_length=1)

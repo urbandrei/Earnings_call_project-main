@@ -1080,6 +1080,41 @@ audit_app = typer.Typer(no_args_is_help=True, help="Benchmark substrate audit (T
 app.add_typer(audit_app, name="audit")
 
 
+_FRAME_ARG = typer.Argument(..., help="Prediction frame (CSV/parquet; docs/audit_predictions.md).")
+_OUT_OPT = typer.Option(None, help="Output directory (default data/audits/<name>).")
+_NAME_OPT = typer.Option(None, help="Audit name (default: the frame's file stem).")
+_ROOT_OPT = typer.Option(Path("data"), help="Data root (default output dir + manifest).")
+
+
+@audit_app.command("predictions")
+def audit_predictions(
+    frame: Path = _FRAME_ARG,
+    out: Path | None = _OUT_OPT,
+    name: str | None = _NAME_OPT,
+    root: Path = _ROOT_OPT,
+    config: Path | None = _CONFIG_OPT,
+) -> None:
+    """Identity-control audit of anyone's predictions: split integrity, training-free floors,
+    seen/unseen tickers, prediction shuffles, identity share, significance (DESIGN §7.3)."""
+    from ecvol.eval.audit_predictions import run_audit
+    from ecvol.tracking import resolve_command_config, write_command_run
+
+    cfg = resolve_command_config("audit-predictions", config, None)
+    name = name or frame.stem
+    out_dir = out or (root / "audits" / name)
+    run_audit(frame, out_dir, name=name, seed=cfg.seeds[0])
+    typer.echo((out_dir / "report.md").read_text(encoding="utf-8"))
+    typer.echo(f"report: {out_dir / 'report.csv'}, {out_dir / 'report.md'}")
+    try:
+        rel = [
+            (out_dir / f).resolve().relative_to(root.resolve()).as_posix()
+            for f in ("report.csv", "report.md")
+        ]
+        typer.echo(f"run artifact: {write_command_run(cfg, root, outputs=rel)}")
+    except ValueError:  # output outside the data root: no manifest, say so
+        typer.echo("run artifact: none (output directory is outside the data root)")
+
+
 @audit_app.command("substrate")
 def audit_substrate(
     root: Path = typer.Option(Path("data"), help="Data root directory."),  # noqa: B008

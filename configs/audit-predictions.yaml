@@ -1,0 +1,4 @@
+# Committed command config. `ecvol audit predictions <frame>` loads this by default.
+# The seed drives the prediction-shuffle permutations; the report is otherwise deterministic.
+command: audit-predictions
+seeds: [0]
