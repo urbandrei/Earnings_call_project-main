@@ -29,11 +29,13 @@ each call; they place most test calls' companies in the training set, and no pap
 reports the ticker-disjoint condition; they carry degenerate label cells; and they
 encode a horizon convention (calendar days) that the downstream literature
 describes as trading days. On such a substrate a model cannot be told apart from a
-memory of which company it is looking at. Meanwhile the corpus with the best
-license and the only raw audio, FinCall-Surprise \citep{fincall2025}, ships with
-\emph{no} ticker, company, date, or speaker metadata at all---so the identity
-controls that would expose the confound cannot even be run on it without first
-reconstructing the identity the dataset omits.
+memory of which company it is looking at. Meanwhile the open corpus our audio results rest on, FinCall-Surprise
+\citep{fincall2025}, ships with \emph{no} ticker, company, date, or speaker
+metadata at all---so the identity controls that would expose the confound cannot
+even be run on it without first reconstructing the identity the dataset omits. A
+successor release from the same group, MM-FinEval \citep{mmfineval2026}, adds
+ticker and date fields and calendar-day volatility labels, but specifies no embargoed or
+company-disjoint split, past-volatility baseline, or identity control.
 
 We therefore build and release \ecvol-bench, an open benchmark that supplies what
 the substrate lacks, and we use it to re-examine the task's central claims. The

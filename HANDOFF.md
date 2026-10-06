@@ -22,7 +22,7 @@ Each entry: date · task ID · what the user must do · what unblocks when it's 
 - **2026-09-03 · T8.2 — review + venue.** The draft (26 pp, no pending stubs) is ready for advisor/co-author
   review; ACL/ARR deadline + anonymity-vs-preprint question from 2026-08-23 still open.
 
-- **2026-09-03 · DECISION — re-baseline on measured day-0 anchors, or keep them as a variant?** T9.2 measured the
+- **[RESOLVED 2026-10-06 → B, see Resolved]** **2026-09-03 · DECISION — re-baseline on measured day-0 anchors, or keep them as a variant?** T9.2 measured the
   information boundary for 89% of FinCall / 69% of MAEC / 99.8% of Earnings25 calls from EDGAR 8-K Item 2.02
   acceptance times. Under it, **day 0 moves one session earlier for 53% of FinCall and 59% of MAEC calls**
   (releases before the open are the norm), so the primary targets — and every released label set in the
@@ -172,6 +172,11 @@ Each entry: date · task ID · what the user must do · what unblocks when it's 
   (an `ingest/` PDF's path exceeds 260 chars). If you would rather rename that file, it is yours to rename.
 
 ### Resolved
+- **2026-10-06 · T9.2 re-baseline — DONE (option B, user: "do everything you suggested").** Measured
+  day-0 anchors are now the primary targets; the call-date / assume-after-hours set ships as the
+  `targets_assumed*` variant. Splits and every table regenerated; the paper follows (DECISIONS 2026-10-06).
+- **2026-09-21 · T6R.3/K1 — option (a) chosen (user).** KeFVP EC runs on regenerated raw BERT-large
+  embeddings, labelled (DECISIONS 2026-09-21); run completed 2026-10-06 (K2).
 - **2026-07-04 · T6.2 — OSC route SUPERSEDED by Colab Pro+.** The OSC allocation + funds lapsed;
   the corpus compute moved to Colab Pro+ (DECISIONS 2026-07-04). The 2026-06-24 $1000 OSC spend
   approval is void (never used — no money spent). `cloud/osc/` is kept as reference; the live path
@@ -247,4 +252,4 @@ These come from the backlog scan; the loop will move each into **Active** when i
   `D:\ecvol-data\work_repo` behind a junction. With <4 GB free, `git` and `uv` fail mid-write; please free
   C: before the next long run (nothing in this repository needs to be deleted).
 
-- **2026-09-21 · T6R.3/K1 — CORRECTION: the 2026-09-09 request above cannot be fulfilled; no download is needed from you.** The Drive id `1F83bjiJKEpq_MYrc0lzQb9rOLgooz-5E` is a **folder** (`text_embedding`; the KeFVP README links it as `drive/folders/…`), which I had mis-recorded as a file link — that is why the page showed "No preview available" and no Download item. Opened as a folder in the signed-in browser it is **empty** ("Drop files here"): the authors' EC KePt embeddings are no longer (or never were) shared. The sibling folder `processed_dataset_for_kept` (`1Xe7Y64F04X9GkWMOSZmSmpV1f5I1ySgM`) *is* populated (~80 MB of pre-training pickles). Options now: (a) EC run with regenerated raw BERT embeddings via the authors' generator (the MAEC precedent, ~1–2 h, labelled substitution); (b) re-run their KePt pre-training from the populated folder, then embed EC (K4, several GPU hours, closest to the published setting); (c) reason-code the EC row as "released embeddings unavailable upstream". Awaiting your choice.
+- **[RESOLVED 2026-09-21 → (a), see Resolved]** **2026-09-21 · T6R.3/K1 — CORRECTION: the 2026-09-09 request above cannot be fulfilled; no download is needed from you.** The Drive id `1F83bjiJKEpq_MYrc0lzQb9rOLgooz-5E` is a **folder** (`text_embedding`; the KeFVP README links it as `drive/folders/…`), which I had mis-recorded as a file link — that is why the page showed "No preview available" and no Download item. Opened as a folder in the signed-in browser it is **empty** ("Drop files here"): the authors' EC KePt embeddings are no longer (or never were) shared. The sibling folder `processed_dataset_for_kept` (`1Xe7Y64F04X9GkWMOSZmSmpV1f5I1ySgM`) *is* populated (~80 MB of pre-training pickles). Options now: (a) EC run with regenerated raw BERT embeddings via the authors' generator (the MAEC precedent, ~1–2 h, labelled substitution); (b) re-run their KePt pre-training from the populated folder, then embed EC (K4, several GPU hours, closest to the published setting); (c) reason-code the EC row as "released embeddings unavailable upstream". Awaiting your choice.

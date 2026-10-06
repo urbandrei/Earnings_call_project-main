@@ -27,7 +27,9 @@ Nearly every paper above evaluates on label and split files derived from
 recomputing targets from prices. \citet{scss2024} are the first to report that
 training-free baselines built on a company's own past volatility beat every
 transcript model on these files, and release augmented earnings histories that make
-such baselines easy to build. No prior work audits the files themselves---embargo,
+such baselines easy to build; their follow-up \citep{fastnumbers2026} times
+earnings releases from 8-K filings, but for return prediction on a new corpus rather than
+as an audit of the volatility label sets. No prior work audits the files themselves---embargo,
 train/test company overlap, label integrity, or the horizon convention---which is
 the gap \S\ref{sec:substrate} fills.
 
