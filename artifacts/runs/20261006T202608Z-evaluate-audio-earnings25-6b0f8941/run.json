@@ -1,0 +1,50 @@
+{
+  "command": "evaluate-audio-earnings25",
+  "config": {
+    "command": "evaluate-audio-earnings25",
+    "seeds": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ]
+  },
+  "config_hash": "6b0f8941a34bfd15320677cb94cd404335cd1eed69ebb3256a3adf6379eef8f9",
+  "created_at": "2026-10-06T20:26:08+00:00",
+  "env": {
+    "gpus": [
+      "NVIDIA GeForce RTX 5060 Ti, 591.86"
+    ],
+    "lockfile_sha256": "06e8d07efbd62850db174a90adadf4b263225a86801f72d29aa026ca04809abd",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "python": "3.12.8"
+  },
+  "git": {
+    "dirty": true,
+    "sha": "e14ce8fc68cfcf8f4dc1fd707e44d9eb8c3a0daa"
+  },
+  "outputs": {
+    "results/audio_shuffle_earnings25.csv": {
+      "bytes": 1997,
+      "sha256": "7a3372aafebaf8c2c3400041e23a6835fc3e81aa655fe1e1d326e79e4cac9757"
+    },
+    "results/audio_strata_earnings25.csv": {
+      "bytes": 1214,
+      "sha256": "32d76dd9ff1c84a6fcf82979936e9755d3d6fa9398b85b07ea44634c109f6f6f"
+    },
+    "results/result_table_3_earnings25.csv": {
+      "bytes": 317698,
+      "sha256": "a7a3a6b3d198c537c76b55373e86d18b6542ba5152f132467fcc87f790c2c8a5"
+    }
+  },
+  "provenance": "run",
+  "run_id": "20261006T202608Z-evaluate-audio-earnings25-6b0f8941",
+  "seeds": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "command": "grid",
+  "config": {
+    "command": "grid",
+    "seeds": [
+      0
+    ]
+  },
+  "config_hash": "fa094db79ce70eea844dd7e727d2127408d0a22633fc0928164519fae5c4f789",
+  "created_at": "2026-10-06T20:22:50+00:00",
+  "env": {
+    "gpus": [
+      "NVIDIA GeForce RTX 5060 Ti, 591.86"
+    ],
+    "lockfile_sha256": "06e8d07efbd62850db174a90adadf4b263225a86801f72d29aa026ca04809abd",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "python": "3.12.8"
+  },
+  "git": {
+    "dirty": true,
+    "sha": "e14ce8fc68cfcf8f4dc1fd707e44d9eb8c3a0daa"
+  },
+  "outputs": {
+    "results/result_table_4.csv": {
+      "bytes": 63144,
+      "sha256": "8797600caaa105ece2a2cc743d22521bf5a3233416c4b6649b1e977e44de97df"
+    },
+    "results/result_table_4_peryear.csv": {
+      "bytes": 425,
+      "sha256": "879b8a9ba619f006352a604a83db8534608479c0c0e83ce15c48a928aa61dcd3"
+    }
+  },
+  "provenance": "run",
+  "run_id": "20261006T202250Z-grid-fa094db7",
+  "seeds": [
+    0
+  ]
+}
