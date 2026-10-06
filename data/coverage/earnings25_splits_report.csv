@@ -4,11 +4,11 @@ horizon,30
 embargo,30
 seed,0
 temporal:train,5
-temporal:test,93
-temporal:embargo,377
+temporal:test,83
+temporal:embargo,387
 ticker_disjoint:train,333
 ticker_disjoint:val,47
 ticker_disjoint:test,95
 combined:train,2
-combined:test,21
-combined:excluded,452
+combined:test,17
+combined:excluded,456
