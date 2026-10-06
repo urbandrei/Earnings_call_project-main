@@ -457,13 +457,13 @@ def timing_targets(
     dataset: str = typer.Argument(help="Dataset: fincall | maec | earnings25."),
     root: Path = typer.Option(Path("data"), help="Data root directory."),  # noqa: B008
 ) -> None:
-    """Measured-anchor target variant → data/{dataset}/targets_measured{,_calendar}.parquet."""
-    from ecvol.data.timing import build_measured_targets
+    """Call-date (assume-after-hours) variant → data/{dataset}/targets_assumed{,_calendar}."""
+    from ecvol.data.timing import build_assumed_targets
 
-    s = build_measured_targets(root, dataset)
+    s = build_assumed_targets(root, dataset)
     typer.echo(
-        f"{dataset}: {s['calls']} calls, {s['measured']} with a measured anchor; "
-        f"{s['ok_rows']} ok trading rows → data/{dataset}/targets_measured.parquet"
+        f"{dataset}: {s['calls']} calls ({s['measured']} measured in the primary); "
+        f"{s['ok_rows']} ok trading rows → data/{dataset}/targets_assumed.parquet"
     )
 
 
@@ -1475,20 +1475,20 @@ def evaluate_lookahead(
 
     cfg = resolve_command_config("evaluate-lookahead", config, None)
     tables = run_lookahead(root, n_resamples=resamples)
-    t = tables["assumed"]
+    t = tables["measured"]
     for r in t[t["target"] == "dv"].itertuples():
         typer.echo(
             f"  {r.stage:<22} dv tau={r.horizon:<2} R2 in={r.r2_oos_in:+.3f} "
             f"post={r.r2_oos_post:+.3f} [{r.r2_oos_post_lo:+.3f},{r.r2_oos_post_hi:+.3f}] "
             f"deg={r.degradation:+.3f} (n_post={r.n_post})"
         )
-    m = tables["measured"]
+    m = tables["assumed"]
     for r in m[(m["target"] == "dv") & (m["stage"] != "persistence")].itertuples():
         typer.echo(
-            f"  [measured anchor] {r.stage:<22} dv tau={r.horizon:<2} "
+            f"  [assumed anchor] {r.stage:<22} dv tau={r.horizon:<2} "
             f"R2 in={r.r2_oos_in:+.3f} post={r.r2_oos_post:+.3f} deg={r.degradation:+.3f}"
         )
-    typer.echo("Result Table 7 (lookahead): data/results/result_table_7.csv (+ _measured.csv)")
+    typer.echo("Result Table 7 (lookahead): data/results/result_table_7.csv (+ _assumed.csv)")
     typer.echo(f"run artifact: {write_command_run(cfg, root)}")
 
 

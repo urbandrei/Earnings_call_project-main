@@ -22,7 +22,8 @@ to the target machinery as a real timestamp, so this is the first corpus where
 the after-hours rule runs on measured times (`time_known=True`,
 `assumed_after_hours=False`). The per-call times are written to
 `coverage/earnings25_call_times.csv` (provenance tier `earnings25_metadata`) for
-T9.2.
+T9.2; since the re-baseline (DECISIONS 2026-10-06) the EDGAR release time in
+`coverage/earnings25_timing.csv` outranks the call start where one exists.
 
 Prices live in their own store (`prices_earnings25/`, 2025-06 → 2026-03) so the
 2014–2022 archive the FinCall/MAEC targets were validated against is untouched.
@@ -352,7 +353,12 @@ def bitrate_stratum(kbps: float) -> str:
 # --- targets -----------------------------------------------------------------
 
 
-def compute_targets(calls: list[Earnings25Call], prices_dir: Path, *, horizons, convention):
+def compute_targets(
+    calls: list[Earnings25Call], prices_dir: Path, *, horizons, convention, stamps=None
+):
+    """Day 0 from the measured release boundary (`stamps`, DECISIONS 2026-10-06), else the
+    call start time."""
+    stamps = stamps or {}
     close_cache: dict[str, dict[str, float]] = {}
     rows = []
     for c in calls:
@@ -366,7 +372,7 @@ def compute_targets(calls: list[Earnings25Call], prices_dir: Path, *, horizons, 
             "ticker": r.ticker,
             "date": r.call_date,
             "call_type": r.call_type,
-            "timestamp": datetime.fromisoformat(c.call_datetime_et),
+            "timestamp": stamps.get(str(r.call_id)) or datetime.fromisoformat(c.call_datetime_et),
         }
         rows.extend(
             compute_call_targets(
@@ -473,8 +479,12 @@ def ingest_earnings25(
 
     prices_dir = root / PRICES_REL
     target_paths = {c: out_dir / TARGET_FILES[c] for c in CONVENTIONS}
+    from ecvol.data.timing import measured_stamps
+
+    stamps = measured_stamps(root, SOURCE)
     target_rows = {
-        c: compute_targets(calls, prices_dir, horizons=horizons, convention=c) for c in CONVENTIONS
+        c: compute_targets(calls, prices_dir, horizons=horizons, convention=c, stamps=stamps)
+        for c in CONVENTIONS
     }
     for c in CONVENTIONS:
         write_targets_parquet(target_rows[c], target_paths[c], id_type=pa.string())

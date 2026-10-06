@@ -448,7 +448,12 @@ def build_targets(root: Path, *, horizons: tuple[int, ...] = HORIZONS) -> dict[s
     one coverage report each, and one manifest listing both. Returns the summary
     per convention.
     """
+    from ecvol.data.timing import measured_stamps
+
     calls = _read_identity(root)
+    stamps = measured_stamps(root, "fincall")  # day 0 on the measured boundary (2026-10-06)
+    for call in calls:
+        call["timestamp"] = stamps.get(str(call["call_id"]))
     prices_dir = root / "prices"
     close_cache: dict[str, dict[str, float]] = {}
     for call in calls:

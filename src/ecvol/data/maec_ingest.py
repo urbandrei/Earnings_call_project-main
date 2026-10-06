@@ -178,9 +178,16 @@ def _excluded_record(call_id: str, reason: str) -> CallRecord:
 
 
 def compute_targets(
-    records: list[CallRecord], prices_dir: Path, *, horizons=HORIZONS, convention="trading"
+    records: list[CallRecord],
+    prices_dir: Path,
+    *,
+    horizons=HORIZONS,
+    convention="trading",
+    stamps: dict | None = None,
 ):
-    """Targets for every parsed MAEC call, reusing the FinCall target math."""
+    """Targets for every parsed MAEC call, reusing the FinCall target math; day 0 from
+    the measured `stamps` ({call_id: timestamp}) where present (DECISIONS 2026-10-06)."""
+    stamps = stamps or {}
     close_cache: dict[str, dict[str, float]] = {}
     rows = []
     for r in records:
@@ -193,6 +200,7 @@ def compute_targets(
             "ticker": r.ticker,
             "date": r.call_date,
             "call_type": r.call_type,
+            "timestamp": stamps.get(str(r.call_id)),
         }
         rows.extend(
             compute_call_targets(
@@ -259,11 +267,16 @@ def ingest_maec(root: Path, *, horizons=HORIZONS) -> MaecSummary:
 
     # Targets (price/target join), same machinery as FinCall; both conventions
     # (T9.1). The join audit below is over the trading-day set.
-    target_rows = compute_targets(records, root / "prices", horizons=horizons)
+    from ecvol.data.timing import measured_stamps
+
+    stamps = measured_stamps(root, SOURCE)
+    target_rows = compute_targets(records, root / "prices", horizons=horizons, stamps=stamps)
     target_paths = {c: root / SOURCE / TARGET_FILES[c] for c in CONVENTIONS}
     write_targets_parquet(target_rows, target_paths["trading"], id_type=pa.string())
     write_targets_parquet(
-        compute_targets(records, root / "prices", horizons=horizons, convention="calendar"),
+        compute_targets(
+            records, root / "prices", horizons=horizons, convention="calendar", stamps=stamps
+        ),
         target_paths["calendar"],
         id_type=pa.string(),
     )

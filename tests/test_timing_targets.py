@@ -1,4 +1,4 @@
-"""T9.2: measured-anchor target variant and the fallback-vs-measured sensitivity table."""
+"""T9.2: measured-anchor primary targets, the assumed-anchor variant, and the sensitivity table."""
 
 from datetime import date, timedelta
 from pathlib import Path
@@ -10,8 +10,9 @@ import pyarrow.parquet as pq
 from ecvol.data import timing as T
 from ecvol.data.calendar import sessions_in_range
 from ecvol.data.calls import CallRecord, write_calls_parquet
+from ecvol.data.maec_ingest import compute_targets
 from ecvol.data.prices import write_price_parquet
-from ecvol.data.targets import compute_call_targets, write_targets_parquet
+from ecvol.data.targets import write_targets_parquet
 
 DAY0 = date(2021, 1, 15)  # Friday session
 
@@ -49,16 +50,6 @@ def _seed(root: Path) -> None:
     write_price_parquet(rows, root / "prices" / "AAA.parquet")
     calls = [_call("1", "AAA", DAY0.isoformat()), _call("2", "AAA", DAY0.isoformat())]
     write_calls_parquet(calls, root / "maec" / "calls.parquet", id_type=pa.string())
-    # primary (fallback) targets for both calls
-    trows = []
-    for c in calls:
-        close = {r["date"]: r["close"] for r in rows}
-        trows += compute_call_targets(
-            {"call_id": c.call_id, "ticker": "AAA", "date": c.call_date, "call_type": "earnings"},
-            close,
-            horizons=(3, 30),
-        )
-    write_targets_parquet(trows, root / "maec" / "targets.parquet", id_type=pa.string())
     # timing: call 1 released before the open → day 0 is the prior session; call 2 fallback
     (root / "coverage").mkdir(parents=True, exist_ok=True)
     T.write_call_times(
@@ -72,35 +63,41 @@ def _seed(root: Path) -> None:
         ],
         root / "coverage" / "maec_timing.csv",
     )
+    # primary (measured-anchor) targets through MAEC's own builder (DECISIONS 2026-10-06)
+    trows = compute_targets(
+        calls, root / "prices", horizons=(3, 30), stamps=T.measured_stamps(root, "maec")
+    )
+    write_targets_parquet(trows, root / "maec" / "targets.parquet", id_type=pa.string())
     # a ticker-disjoint split with both calls in test and a train set of the same calls'
     # siblings is impossible with 2 calls; give the sensitivity a train set via extra calls
     (root / "splits").mkdir(exist_ok=True)
 
 
-def test_measured_targets_move_day0_only_for_measured_calls(tmp_path: Path):
+def test_primary_moves_day0_only_for_measured_calls_and_variant_assumes(tmp_path: Path):
     root = tmp_path / "data"
     _seed(root)
-    s = T.build_measured_targets(root, "maec", horizons=(3, 30))
+    s = T.build_assumed_targets(root, "maec", horizons=(3, 30))
     assert s == {"calls": 2, "measured": 1, "ok_rows": 4}
-    m = pq.read_table(root / "maec" / "targets_measured.parquet").to_pandas()
+    a = pq.read_table(root / "maec" / "targets_assumed.parquet").to_pandas()
     p = pq.read_table(root / "maec" / "targets.parquet").to_pandas()
     prior = sessions_in_range(DAY0 - timedelta(days=5), DAY0 - timedelta(days=1))[-1]
-    assert set(m[m.call_id == "1"].as_of) == {prior.isoformat()}  # moved one session back
-    assert set(m[m.call_id == "2"].as_of) == {DAY0.isoformat()}  # fallback unchanged
-    assert set(p.as_of) == {DAY0.isoformat()}
-    assert bool(m[m.call_id == "1"].assumed_after_hours.iloc[0]) is False
-    assert (root / "maec" / "targets_measured_calendar.parquet").is_file()
-    assert (root / "manifests" / "maec_targets_measured.json").is_file()
+    assert set(p[p.call_id == "1"].as_of) == {prior.isoformat()}  # moved one session back
+    assert set(p[p.call_id == "2"].as_of) == {DAY0.isoformat()}  # fallback unchanged
+    assert bool(p[p.call_id == "1"].assumed_after_hours.iloc[0]) is False
+    assert set(a.as_of) == {DAY0.isoformat()}  # the variant ignores the timing table
+    assert bool(a.assumed_after_hours.all())
+    assert (root / "maec" / "targets_assumed_calendar.parquet").is_file()
+    assert (root / "manifests" / "maec_targets_assumed.json").is_file()
     # deterministic
-    b = (root / "maec" / "targets_measured.parquet").read_bytes()
-    T.build_measured_targets(root, "maec", horizons=(3, 30))
-    assert (root / "maec" / "targets_measured.parquet").read_bytes() == b
+    b = (root / "maec" / "targets_assumed.parquet").read_bytes()
+    T.build_assumed_targets(root, "maec", horizons=(3, 30))
+    assert (root / "maec" / "targets_assumed.parquet").read_bytes() == b
 
 
 def test_sensitivity_reports_shift_share_and_baselines(tmp_path: Path):
     root = tmp_path / "data"
     _seed(root)
-    T.build_measured_targets(root, "maec", horizons=(3, 30))
+    T.build_assumed_targets(root, "maec", horizons=(3, 30))
     # a split assigning both calls to test; no train rows → baseline rows skipped, shift kept
     pd.DataFrame({"call_id": ["1", "2"], "split": ["test", "test"]}).to_csv(
         root / "splits" / "maec_ticker_disjoint.csv", index=False

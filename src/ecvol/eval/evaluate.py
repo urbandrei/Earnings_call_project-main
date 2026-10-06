@@ -51,16 +51,16 @@ DEFAULT_SEEDS = (0, 1, 2, 3, 4)
 
 
 def load_eval_frame(
-    root: Path, dataset: str, convention: str = "trading", anchor: str = "assumed"
+    root: Path, dataset: str, convention: str = "trading", anchor: str = "measured"
 ) -> pd.DataFrame:
     """ok target rows joined with call metadata; one row per (call, horizon).
 
-    `anchor` selects the primary (assume-after-hours) target files or the measured
-    EDGAR-anchored variant of T9.2 (`targets_measured{,_calendar}.parquet`).
+    `anchor` selects the primary (measured-anchor) target files or the call-date /
+    assume-after-hours variant (`targets_assumed{,_calendar}.parquet`; DECISIONS 2026-10-06).
     """
-    from ecvol.data.timing import MEASURED_FILES
+    from ecvol.data.timing import ASSUMED_FILES
 
-    files = T.TARGET_FILES if anchor == "assumed" else MEASURED_FILES
+    files = T.TARGET_FILES if anchor == "measured" else ASSUMED_FILES
     targets = pd.read_parquet(root / dataset / files[convention])
     targets = targets[targets["status"] == "ok"].copy()
     targets["convention"] = convention

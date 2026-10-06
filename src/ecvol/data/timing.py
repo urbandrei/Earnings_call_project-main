@@ -303,21 +303,30 @@ def load_call_times(path: Path) -> dict[str, datetime]:
     return out
 
 
-# --- measured-anchor targets (variant) + sensitivity ---------------------------
+# --- assumed-anchor targets (variant) + sensitivity ----------------------------
+#
+# DECISIONS 2026-10-06 (re-baseline): the primary targets anchor on the measured
+# boundary (`measured_stamps`, read by the primary builders); the call-date /
+# assume-after-hours anchor of every released label set is kept as this variant.
 
-MEASURED_FILES = {
-    "trading": "targets_measured.parquet",
-    "calendar": "targets_measured_calendar.parquet",
+ASSUMED_FILES = {
+    "trading": "targets_assumed.parquet",
+    "calendar": "targets_assumed_calendar.parquet",
 }
 PRICE_DIRS = {"fincall": "prices", "maec": "prices", "earnings25": "prices_earnings25"}
 
 
-def build_measured_targets(root: Path, dataset: str, *, horizons=None) -> dict[str, int]:
-    """Targets for `dataset` with day 0 anchored on the measured timestamp where one
-    exists (`coverage/{dataset}_timing.csv`), the fallback elsewhere — written beside
-    the primary files as `targets_measured{,_calendar}.parquet` + manifest.
+def measured_stamps(root: Path, dataset: str) -> dict[str, datetime]:
+    """{call_id: day-0 timestamp} from the committed `coverage/{dataset}_timing.csv`."""
+    return load_call_times(root / "coverage" / f"{dataset}_timing.csv")
 
-    Returns {"calls": n, "measured": n_with_timestamp, "ok_rows": n}.
+
+def build_assumed_targets(root: Path, dataset: str, *, horizons=None) -> dict[str, int]:
+    """Targets for `dataset` with day 0 on the call date under the assume-after-hours
+    rule for every call (no timestamps) — the literature's anchor — over the primary's
+    call set, written beside it as `targets_assumed{,_calendar}.parquet` + manifest.
+
+    Returns {"calls": n, "measured": n_with_timestamp_in_the_primary, "ok_rows": n}.
     """
     import pyarrow as pa
 
@@ -332,11 +341,13 @@ def build_measured_targets(root: Path, dataset: str, *, horizons=None) -> dict[s
     )
 
     horizons = horizons or HORIZONS
-    stamps = load_call_times(root / "coverage" / f"{dataset}_timing.csv")
+    stamps = measured_stamps(root, dataset)
     calls = pd.read_parquet(
         root / dataset / "calls.parquet", columns=["call_id", "ticker", "call_date", "call_type"]
     )
     calls = calls[(calls["ticker"] != "") & (calls["call_date"] != "")]
+    primary = pd.read_parquet(root / dataset / "targets.parquet", columns=["call_id"])
+    calls = calls[calls["call_id"].astype(str).isin(set(primary["call_id"].astype(str)))]
     id_type = pa.int64() if dataset == "fincall" else pa.string()
     prices_dir = root / PRICE_DIRS[dataset]
     close_cache: dict[str, dict[str, float]] = {}
@@ -352,14 +363,14 @@ def build_measured_targets(root: Path, dataset: str, *, horizons=None) -> dict[s
                 "ticker": r.ticker,
                 "date": r.call_date,
                 "call_type": r.call_type,
-                "timestamp": stamps.get(str(r.call_id)),
+                "timestamp": None,
             }
             rows.extend(
                 compute_call_targets(
                     call, close_cache[r.ticker], horizons=horizons, convention=convention
                 )
             )
-        path = root / dataset / MEASURED_FILES[convention]
+        path = root / dataset / ASSUMED_FILES[convention]
         write_targets_parquet(rows, path, id_type=id_type)
         if convention == "trading":
             ok_rows = sum(1 for x in rows if x.status == "ok")
@@ -367,12 +378,12 @@ def build_measured_targets(root: Path, dataset: str, *, horizons=None) -> dict[s
             make_entry(
                 path,
                 root,
-                source_url=f"computed: ecvol timing targets {dataset} (DECISIONS 2026-09-03)",
+                source_url=f"computed: ecvol timing targets {dataset} (DECISIONS 2026-10-06)",
                 license=TARGETS_LICENSE,
             )
         )
     (root / "manifests").mkdir(parents=True, exist_ok=True)
-    write_manifest(entries, root / "manifests" / f"{dataset}_targets_measured.json")
+    write_manifest(entries, root / "manifests" / f"{dataset}_targets_assumed.json")
     measured = sum(1 for c in calls["call_id"].astype(str) if c in stamps)
     return {"calls": int(len(calls)), "measured": int(measured), "ok_rows": int(ok_rows)}
 
@@ -383,7 +394,7 @@ def sensitivity(root: Path, datasets=("fincall", "maec", "earnings25")) -> pd.Da
 
     Rows: (dataset, anchor, split, target, horizon, model) with n / mse / r2_oos, plus
     (dataset, anchor="shift") rows giving the share of calls whose `as_of` moved.
-    Uses the committed splits (defined on the fallback cohort) for both anchors.
+    Uses the committed splits (defined on the primary, measured-anchor cohort) for both.
     """
     from ecvol.eval import evaluate as E
     from ecvol.eval import metrics as M
@@ -391,12 +402,12 @@ def sensitivity(root: Path, datasets=("fincall", "maec", "earnings25")) -> pd.Da
 
     rows = []
     for dataset in datasets:
-        primary = root / dataset / "targets.parquet"
-        measured = root / dataset / MEASURED_FILES["trading"]
-        if not (primary.is_file() and measured.is_file()):
+        assumed = root / dataset / ASSUMED_FILES["trading"]
+        measured = root / dataset / "targets.parquet"
+        if not (assumed.is_file() and measured.is_file()):
             continue
         frames = {}
-        for anchor, path in (("fallback", primary), ("measured", measured)):
+        for anchor, path in (("fallback", assumed), ("measured", measured)):
             t = pd.read_parquet(path)
             t = t[t["status"] == "ok"].copy()
             t["call_id"] = t["call_id"].astype(str)

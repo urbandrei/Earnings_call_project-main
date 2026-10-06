@@ -2,15 +2,15 @@
   {
     "license": "Derived artifact \u2014 computed from price data (DESIGN \u00a75.3); no external source",
     "path": "maec/targets.parquet",
-    "retrieved_at": "2026-09-02T03:58:59+00:00",
-    "sha256": "90ce6dd4aded9cce33fc1f96227caf6006330b4f818cd3b6a7460bd0af654a72",
+    "retrieved_at": "2026-10-06T19:06:26+00:00",
+    "sha256": "421128bd5d0e1f8ba4a63ec0b6b7fcfedad602e2a1b08ce0f16aa80b44f94d72",
     "source_url": "computed: ecvol data ingest maec / targets (DESIGN \u00a75.3)"
   },
   {
     "license": "Derived artifact \u2014 computed from price data (DESIGN \u00a75.3); no external source",
     "path": "maec/targets_calendar.parquet",
-    "retrieved_at": "2026-09-02T03:58:59+00:00",
-    "sha256": "e6b94c38b2ca33e36c2d6f57bcbeadc3d7e67786c36a39bad536bc7ee927ef53",
+    "retrieved_at": "2026-10-06T19:06:26+00:00",
+    "sha256": "27c0e4242495102ca79a5de6454cd82a005e24eded35befe193dbe6b9f71be34",
     "source_url": "computed: ecvol data ingest maec / targets (DESIGN \u00a75.3)"
   }
 ]

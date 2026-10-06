@@ -1,0 +1,16 @@
+[
+  {
+    "license": "Derived artifact \u2014 computed from price data (DESIGN \u00a75.3); no external source",
+    "path": "fincall/targets_assumed.parquet",
+    "retrieved_at": "2026-10-06T19:08:21+00:00",
+    "sha256": "2a667559565d3ce8dceaea8e518abde96dcccc41d8b72be2297c182b152e32a3",
+    "source_url": "computed: ecvol timing targets fincall (DECISIONS 2026-10-06)"
+  },
+  {
+    "license": "Derived artifact \u2014 computed from price data (DESIGN \u00a75.3); no external source",
+    "path": "fincall/targets_assumed_calendar.parquet",
+    "retrieved_at": "2026-10-06T19:08:22+00:00",
+    "sha256": "61e2eb8917fb485dd3164435d4eedc8e54cfdcc7e9c5f8b9c683c6eb2c1d33d2",
+    "source_url": "computed: ecvol timing targets fincall (DECISIONS 2026-10-06)"
+  }
+]

@@ -176,7 +176,7 @@ COMMAND_OUTPUTS: dict[str, tuple[str, ...]] = {
     "audit-code": ("results/code_availability.csv",),
     "evaluate-lookahead": (
         "results/result_table_7.csv",
-        "results/result_table_7_measured.csv",
+        "results/result_table_7_assumed.csv",
     ),
     "evaluate-audio-earnings25": (
         "results/result_table_3_earnings25.csv",

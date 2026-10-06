@@ -24,9 +24,9 @@ itself the point of DESIGN §3.1). Degradation per (stage, target, τ) is the
 post-cutoff minus in-cutoff R²_OOS against persistence, with a cluster-bootstrap
 CI (clusters = calendar month of day 0) on the post-cutoff R². The table is
 computed twice with the anchor rule held fixed on both sides: on the primary
-(assume-after-hours) targets → `results/result_table_7.csv`, and on the measured
-EDGAR-anchored variant of T9.2 → `results/result_table_7_measured.csv` (input to
-the re-baselining decision, DECISIONS 2026-09-03; not a change of the primary).
+(measured-anchor) targets → `results/result_table_7.csv`, and on the call-date /
+assume-after-hours variant → `results/result_table_7_assumed.csv` (DECISIONS
+2026-10-06 re-baseline; the variant is the literature's anchor).
 """
 
 from __future__ import annotations
@@ -49,7 +49,7 @@ TRAIN_DATASET = "fincall"
 POST_DATASET = "earnings25"
 TARGETS = ("v", "dv")
 STAGES = ("persistence", "har", "ridge_text_pastvol", "ridge_wavlm_pastvol", "ridge_fusion_pastvol")
-ANCHOR_FILES = {"assumed": "result_table_7.csv", "measured": "result_table_7_measured.csv"}
+ANCHOR_FILES = {"measured": "result_table_7.csv", "assumed": "result_table_7_assumed.csv"}
 
 
 def _features(root: Path, dataset: str):

@@ -1,0 +1,16 @@
+[
+  {
+    "license": "Derived artifact \u2014 computed from price data (DESIGN \u00a75.3); no external source",
+    "path": "maec/targets_assumed.parquet",
+    "retrieved_at": "2026-10-06T19:08:27+00:00",
+    "sha256": "3d2cb062b59c984ce8416d57f4da130d66f5a8890c4ba3729060c7e28803bbea",
+    "source_url": "computed: ecvol timing targets maec (DECISIONS 2026-10-06)"
+  },
+  {
+    "license": "Derived artifact \u2014 computed from price data (DESIGN \u00a75.3); no external source",
+    "path": "maec/targets_assumed_calendar.parquet",
+    "retrieved_at": "2026-10-06T19:08:28+00:00",
+    "sha256": "bf92acee8a6c3f2d54516bbe7f527c657b16cae8338f6ab5d74e2af89924cd39",
+    "source_url": "computed: ecvol timing targets maec (DECISIONS 2026-10-06)"
+  }
+]

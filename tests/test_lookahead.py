@@ -28,7 +28,7 @@ def test_bootstrap_over_indices_reproduces_r2():
     assert set(L.STAGES) >= {"persistence", "har", "ridge_fusion_pastvol"}
 
 
-def test_load_eval_frame_anchor_selects_measured_files(tmp_path):
+def test_load_eval_frame_anchor_selects_assumed_files(tmp_path):
     import pandas as pd
 
     from ecvol.eval import evaluate as E
@@ -37,10 +37,10 @@ def test_load_eval_frame_anchor_selects_measured_files(tmp_path):
     d.mkdir()
     base = {"horizon": [3], "status": ["ok"], "n_post": [3]}
     pd.DataFrame({"call_id": ["a"], **base}).to_parquet(d / "targets.parquet")
-    pd.DataFrame({"call_id": ["b"], **base}).to_parquet(d / "targets_measured.parquet")
+    pd.DataFrame({"call_id": ["b"], **base}).to_parquet(d / "targets_assumed.parquet")
     pd.DataFrame({"call_id": ["a", "b"], "n_turns": [1, 1], "n_chars": [1, 1]}).to_parquet(
         d / "calls.parquet"
     )
     assert E.load_eval_frame(tmp_path, "x")["call_id"].tolist() == ["a"]
-    assert E.load_eval_frame(tmp_path, "x", anchor="measured")["call_id"].tolist() == ["b"]
+    assert E.load_eval_frame(tmp_path, "x", anchor="assumed")["call_id"].tolist() == ["b"]
     assert set(L.ANCHOR_FILES) == {"assumed", "measured"}
