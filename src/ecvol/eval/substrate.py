@@ -180,9 +180,13 @@ def maec_interleaved_binary(lineage: Path, v: str) -> list[dict]:
 
 
 def maec_label_diff(root: Path, lineage: Path) -> pd.DataFrame:
-    """KeFVP's shipped MAEC test labels vs our calendar-day v_post on the same calls."""
+    """KeFVP's shipped MAEC test labels vs our calendar-day v_post on the same calls.
+
+    Like for like: the shipped labels anchor day 0 on the call date, so they are compared
+    with our call-date (assume-after-hours) variant, not the measured-anchor primary
+    (DECISIONS 2026-10-06)."""
     ours = pd.read_parquet(
-        root / "maec" / "targets_calendar.parquet",
+        root / "maec" / "targets_assumed_calendar.parquet",
         columns=["call_id", "horizon", "v_post", "status"],
     )
     ours = ours[ours["status"] == "ok"]

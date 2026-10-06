@@ -1,0 +1,38 @@
+{
+  "command": "audit-substrate",
+  "config": {
+    "command": "audit-substrate",
+    "seeds": [
+      0
+    ]
+  },
+  "config_hash": "48b9432a0e8ec104c5ff2d5a1adc4c373a02d68952f301478bb3a6879ce84534",
+  "created_at": "2026-10-06T20:28:21+00:00",
+  "env": {
+    "gpus": [
+      "NVIDIA GeForce RTX 5060 Ti, 591.86"
+    ],
+    "lockfile_sha256": "06e8d07efbd62850db174a90adadf4b263225a86801f72d29aa026ca04809abd",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "python": "3.12.8"
+  },
+  "git": {
+    "dirty": true,
+    "sha": "3040215fec5b4be771ebe4406617d2f10a4a6a20"
+  },
+  "outputs": {
+    "results/result_table_5r.csv": {
+      "bytes": 6519,
+      "sha256": "f48b50b9fbef936b972d51c9aabe3e549b160775030dd05989979e6ddc3d5828"
+    },
+    "results/result_table_5r_labels.csv": {
+      "bytes": 1309,
+      "sha256": "de7255cdf9c6f7aa1ad4dfa1f18d7006f095abfafbd10fc91bee194895319de8"
+    }
+  },
+  "provenance": "run",
+  "run_id": "20261006T202821Z-audit-substrate-48b9432a",
+  "seeds": [
+    0
+  ]
+}
