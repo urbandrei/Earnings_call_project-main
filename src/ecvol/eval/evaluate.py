@@ -1,6 +1,7 @@
 """Stage-0/1 baseline evaluation → Result Table 1 (DESIGN §6 Stages 0-1, §7).
 
-Evaluates the honest floor — persistence, EWMA, HAR-RV, GARCH(1,1), and a
+Evaluates the honest floor — persistence, a train-mean intercept, EWMA, HAR-RV,
+GARCH(1,1), and a
 ticker-FE LightGBM — across every (dataset × split × target × horizon), on the
 val and test segments, and writes the long-format **Result Table 1**.
 
@@ -8,7 +9,10 @@ Targets (DESIGN §7.1): level-v (`v_post`), Δv (`delta_v`), and HAR-residual
 (`v_post − HAR_train_forecast`). Each model produces a `v_post` forecast that is
 mapped into the target space; **persistence is the per-target trivial forecast**
 (`v_pre` for level-v, 0 for Δv / HAR-residual) and doubles as the R²_OOS
-baseline. HAR-RV and GBDT are fit on the **train** split only.
+baseline. HAR-RV and GBDT are fit on the **train** split only. `train_mean` predicts the
+train-split mean of the target: on measured-anchor targets Δv has a non-zero mean (the
+reaction session sits in the post window), so persistence (Δv = 0) alone is a degenerate
+floor and every content head is also compared with this intercept (DECISIONS 2026-10-07).
 
 Sanity gate (DESIGN §6 Stage 0): HAR-RV must beat persistence at τ=30 on the
 temporal split, level-v, test — i.e. HAR's R²_OOS (vs persistence) > 0. If
@@ -43,7 +47,7 @@ SPLIT_SCHEMES = ("temporal", "ticker_disjoint", "combined")
 TARGETS = ("v", "dv", "har_resid")
 HORIZONS = (3, 7, 15, 30)
 SEGMENTS = ("val", "test")
-ECON_MODELS = ("persistence", "ewma", "har", "garch")
+ECON_MODELS = ("persistence", "train_mean", "ewma", "har", "garch")
 DEFAULT_SEEDS = (0, 1, 2, 3, 4)
 
 
@@ -131,6 +135,11 @@ def persistence_pred(df: pd.DataFrame, target: str) -> np.ndarray:
     return np.zeros(len(df))  # dv, har_resid
 
 
+def train_mean_pred(y_true_all: np.ndarray, train_mask: np.ndarray) -> np.ndarray:
+    """The intercept-only forecast: the train-split mean of the target, for every row."""
+    return np.full(len(y_true_all), np.nanmean(y_true_all[train_mask]))
+
+
 def vpost_to_target(vpost_pred: np.ndarray, df: pd.DataFrame, target: str, har_vpost: np.ndarray):
     """Map a v_post forecast into the target space."""
     if target == "v":
@@ -200,6 +209,7 @@ def evaluate_dataset(df: pd.DataFrame, dataset: str, splits_dir: Path, *, seeds)
                 # model → target-space predictions over all rows at this τ
                 preds = {
                     "persistence": base_all,
+                    "train_mean": train_mean_pred(y_true_all, (at["split"] == "train").to_numpy()),
                     "ewma": vpost_to_target(at["ewma_vpost"].to_numpy(), at, target, hv),
                     "har": vpost_to_target(hv, at, target, hv),
                     "garch": vpost_to_target(at["garch_vpost"].to_numpy(), at, target, hv),

@@ -121,13 +121,33 @@ def test_end_to_end_run(tmp_path, monkeypatch):
     assert out.is_file()
     t = pd.read_csv(out)
 
-    assert set(t["model"]) == {"persistence", "ewma", "har", "garch", "gbdt_tickerFE"}
+    assert set(t["model"]) == {
+        "persistence",
+        "train_mean",
+        "ewma",
+        "har",
+        "garch",
+        "gbdt_tickerFE",
+    }
     assert set(t["segment"]) <= {"val", "test"}
     # persistence is the R²_OOS baseline on level-v ⇒ exactly 0
     pv = t[(t.model == "persistence") & (t.target == "v")]
     assert np.allclose(pv["r2_oos"], 0.0, atol=1e-9)
     # GARCH converged on the long price histories
     assert summary.garch_convergence["fincall"] > 0.95
+
+
+def test_train_mean_pred_is_the_train_split_intercept():
+    y = np.array([1.0, 3.0, np.nan, 10.0, 20.0])
+    train = np.array([True, True, True, False, False])
+    pred = E.train_mean_pred(y, train)
+    assert np.allclose(pred, 2.0)  # NaN-skipping mean over train rows only; test rows unused
+    # R²_OOS vs a zero (Δv persistence) forecast is 1 − E[(y−m)²]/E[y²] on test rows
+    yt = y[~train]
+    from ecvol.eval import metrics as M
+
+    expect = 1 - np.mean((yt - 2.0) ** 2) / np.mean(yt**2)
+    assert np.isclose(M.r2_oos(yt, pred[~train], np.zeros(2)), expect)
 
 
 def test_end_to_end_deterministic(tmp_path, monkeypatch):

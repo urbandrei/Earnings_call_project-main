@@ -20,6 +20,7 @@ from ecvol.eval.significance import holm_correction
 # (stage label, source CSV, canonical model name) — fixed by rule, not by validation score.
 CANONICAL = [
     ("S0_persistence", "result_table_1.csv", "persistence"),
+    ("S0_train_mean", "result_table_1.csv", "train_mean"),
     ("S0_HAR", "result_table_1.csv", "har"),
     ("S1_GBDT", "result_table_1.csv", "gbdt_tickerFE"),
     ("S2_text", "result_table_2.csv", "ridge_text_pastvol"),
@@ -131,6 +132,7 @@ def _canonical_test_predictions(root: Path):
             "S3_audio": s3_te,
             "S4_fusion": s4,
             "S0_HAR": E.vpost_to_target(har_vpost, at, target, har_vpost)[te],
+            "S0_train_mean": E.train_mean_pred(y, tr)[te],
         }
     return out
 
@@ -147,7 +149,7 @@ def per_year_breakdown(root: Path) -> pd.DataFrame:
             m = years == yr
             if m.sum() < 5:
                 continue
-            for model in ("S0_HAR", "S1_GBDT", "S2_text", "S3_audio", "S4_fusion"):
+            for model in ("S0_train_mean", "S0_HAR", "S1_GBDT", "S2_text", "S3_audio", "S4_fusion"):
                 rows.append(
                     {
                         "target": target,

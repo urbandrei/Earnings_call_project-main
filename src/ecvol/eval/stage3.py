@@ -124,6 +124,7 @@ def _row3(dataset, scheme, target, tau, model, seg, cell) -> dict:
         "spearman_q": float(cell["spearman_q"]),
         "seed_std": float(cell.get("seed_std", np.nan)),
         "dm_p_vs_persistence": float(cell["dm_p_vs_persistence"]),
+        "dm_p_vs_train_mean": float(cell["dm_p_vs_train_mean"]),
         "dm_p_vs_har": float(cell["dm_p_vs_har"]),
         "dm_p_vs_stage1": float(cell["dm_p_vs_stage1"]),
         "dm_p_vs_stage2": float(cell["dm_p_vs_stage2"]),
@@ -177,6 +178,7 @@ def evaluate_stage3(
                 gbdt = E._gbdt_predictions(at, target, y_all, seeds)
                 stage1_ref = np.mean(list(gbdt.values()), axis=0)
                 stage2_ref = _stage2_ref(at, tr, val, te, y_all, text_emb, text_other)
+                tm_ref = E.train_mean_pred(y_all, tr)
                 for fs in FEATURE_SETS:
                     covs = ("audio_pastvol",) if fs.text else COVARIATES
                     for covariate in covs:
@@ -190,6 +192,7 @@ def evaluate_stage3(
                                 cell = E._cell_metrics(at[mask], yt, pred, base)
                                 cell["seed_std"] = seed_std
                                 cell["dm_p_vs_persistence"] = _dm_p(yt, pred, base)
+                                cell["dm_p_vs_train_mean"] = _dm_p(yt, pred, tm_ref[mask])
                                 cell["dm_p_vs_har"] = _dm_p(yt, pred, har_ref[mask])
                                 cell["dm_p_vs_stage1"] = _dm_p(yt, pred, stage1_ref[mask])
                                 cell["dm_p_vs_stage2"] = _dm_p(yt, pred, stage2_ref[seg])

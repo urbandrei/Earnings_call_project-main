@@ -13,6 +13,7 @@ Heads (the ridge canonicals of DECISIONS 2026-06-24, plus the Stage-0/1 baseline
 | stage | model | inputs |
 |---|---|---|
 | 0 | persistence | v_pre (level-v) / 0 (Δv) |
+| 0 | train_mean | FinCall train-split mean of the target (frozen intercept) |
 | 0 | har | train-fit log-HAR on rv_daily/weekly/monthly |
 | 2 | ridge_text_pastvol | BGE-M3 section embeddings + FinBERT/surface + past-vol |
 | 3 | ridge_wavlm_pastvol | WavLM + past-vol |
@@ -48,7 +49,14 @@ PASTVOL = ["v_pre", "rv_daily", "rv_weekly", "rv_monthly"]
 TRAIN_DATASET = "fincall"
 POST_DATASET = "earnings25"
 TARGETS = ("v", "dv")
-STAGES = ("persistence", "har", "ridge_text_pastvol", "ridge_wavlm_pastvol", "ridge_fusion_pastvol")
+STAGES = (
+    "persistence",
+    "train_mean",
+    "har",
+    "ridge_text_pastvol",
+    "ridge_wavlm_pastvol",
+    "ridge_fusion_pastvol",
+)
 ANCHOR_FILES = {"measured": "result_table_7.csv", "assumed": "result_table_7_assumed.csv"}
 
 
@@ -127,8 +135,10 @@ def _lookahead_table(
             y_post = E.target_truth(po, target, har_post)
             base_in = E.persistence_pred(at, target)
             base_post = E.persistence_pred(po, target)
+            tm = float(np.nanmean(y_in[tr]))  # frozen: FinCall train mean, both sides
             preds = {
                 "persistence": (base_in, base_post),
+                "train_mean": (np.full(len(y_in), tm), np.full(len(y_post), tm)),
                 "har": (
                     E.vpost_to_target(har_in, at, target, har_in),
                     E.vpost_to_target(har_post, po, target, har_post),

@@ -50,6 +50,7 @@ def _row(dataset, scheme, target, tau, model, seg, cell):
         "spearman_q": float(cell["spearman_q"]),
         "seed_std": float(cell.get("seed_std", np.nan)),
         "dm_p_vs_persistence": float(cell["dm_p_vs_persistence"]),
+        "dm_p_vs_train_mean": float(cell["dm_p_vs_train_mean"]),
         "dm_p_vs_stage1": float(cell["dm_p_vs_stage1"]),
         "dm_p_vs_stage2": float(cell["dm_p_vs_stage2"]),
         "dm_p_vs_stage3": float(cell["dm_p_vs_stage3"]),
@@ -119,6 +120,7 @@ def evaluate_stage4(root: Path, dataset="fincall", *, seeds=E.DEFAULT_SEEDS) -> 
                 )
                 ref = {"val": {"s2": ref2_v, "s3": ref3_v}, "test": {"s2": ref2_t, "s3": ref3_t}}
                 fy = tr & np.isfinite(y)
+                tm_ref = E.train_mean_pred(y, tr)
                 emb_blocks = [t_emb, wav, e2v, eg]
                 btr = [block(b, fy) for b in emb_blocks]
                 bva = [block(b, va) for b in emb_blocks]
@@ -164,6 +166,7 @@ def evaluate_stage4(root: Path, dataset="fincall", *, seeds=E.DEFAULT_SEEDS) -> 
                             cell = E._cell_metrics(at[mask], yt, pred[seg], bt)
                             cell["seed_std"] = sd
                             cell["dm_p_vs_persistence"] = _dm(yt, pred[seg], bt)
+                            cell["dm_p_vs_train_mean"] = _dm(yt, pred[seg], tm_ref[mask])
                             cell["dm_p_vs_stage1"] = _dm(yt, pred[seg], ref1[mask])
                             cell["dm_p_vs_stage2"] = _dm(yt, pred[seg], ref[seg]["s2"])
                             cell["dm_p_vs_stage3"] = _dm(yt, pred[seg], ref[seg]["s3"])

@@ -97,6 +97,7 @@ def _row2(dataset, scheme, target, tau, model, seg, cell) -> dict:
         "dm_p_vs_persistence": float(cell["dm_p_vs_persistence"]),
         "dm_p_vs_har": float(cell["dm_p_vs_har"]),
         "dm_p_vs_stage1": float(cell["dm_p_vs_stage1"]),
+        "dm_p_vs_train_mean": float(cell["dm_p_vs_train_mean"]),
     }
 
 
@@ -132,6 +133,7 @@ def evaluate_stage2_dataset(df, text_df, emb_cols, other_cols, dataset, splits_d
                 har_ref = E.vpost_to_target(har_vpost, at, target, har_vpost)
                 gbdt = E._gbdt_predictions(at, target, y_all, seeds)
                 stage1_ref = np.mean(list(gbdt.values()), axis=0)
+                tm_ref = E.train_mean_pred(y_all, tr)
                 for variant in VARIANTS:
                     for head in HEAD_NAMES:
                         pv, pte, seed_std = _predict(
@@ -146,6 +148,7 @@ def evaluate_stage2_dataset(df, text_df, emb_cols, other_cols, dataset, splits_d
                             cell["dm_p_vs_persistence"] = _dm_p(yt, pred, base)
                             cell["dm_p_vs_har"] = _dm_p(yt, pred, har_ref[mask])
                             cell["dm_p_vs_stage1"] = _dm_p(yt, pred, stage1_ref[mask])
+                            cell["dm_p_vs_train_mean"] = _dm_p(yt, pred, tm_ref[mask])
                             rows.append(
                                 _row2(dataset, scheme, target, tau, f"{head}_{variant}", seg, cell)
                             )
