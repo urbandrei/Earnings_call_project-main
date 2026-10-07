@@ -33,7 +33,7 @@ Paper / setting & what ran & $\tau$=3 & 7 & 15 & 30 & $\tau$=3 & 7 & 15 & 30 \\
 \multicolumn{10}{l}{\textit{KeFVP \citep{niu2023kefvp} --- authors' \texttt{final\_series\_infer.py} (six import-level release defects patched), 10 repeats}} \\
 \quad MAEC-15, regenerated BERT-base embeddings & text $+$ price & 0.419 & 0.185 & 0.123 & 0.086 & 0.418 & 0.187 & 0.122 & 0.087 \\
 \quad MAEC-16, regenerated BERT-base embeddings & text $+$ price & 0.442 & 0.288 & 0.363 & 0.188 & 0.445 & 0.279 & 0.303 & 0.177 \\
-\quad EC, released KePt embeddings & text $+$ price & \pending{K1: file needs a browser download} & & & & 0.610 & 0.291 & 0.183 & 0.114 \\
+\quad EC, regenerated BERT-large embeddings (no KePt) & text $+$ price & 0.651 & 0.302 & 0.194 & 0.127 & 0.610 & 0.291 & 0.183 & 0.114 \\
 \midrule
 \multicolumn{10}{l}{\textit{Sawhney et al.\ \citeyearpar{sawhney2020mm}, EC --- PyTorch port of the released scripts (their labels, split, branches); 5 seeds}} \\
 \quad finance SVR (30 past volatilities) & port & 0.712 & 0.370 & 0.218 & 0.154 & & & & \\
@@ -52,6 +52,6 @@ Paper / setting & what ran & $\tau$=3 & 7 & 15 & 30 & $\tau$=3 & 7 & 15 & 30 \\
 \quad \quad persistence & --- & 1.301 & 0.465 & 0.225 & 0.118 & & & & \\
 \bottomrule
 \end{tabular}
-\caption{\textbf{Reproductions with the authors' own code and data} (Result Table 6R-F, T6R.3). Every cell regenerates from one \texttt{ecvol reproduce} command; the fidelity ledger lists what is verbatim, patched, substituted or reason-coded per paper. Three of the five reproduce (TSMixer to $10^{-5}$; TMLP within single-seed noise, including the paper's real$\,\approx\,$ticker-shuffled finding; KeFVP on MAEC within one published standard deviation on seven of eight cells, with regenerated sentence embeddings). HTML's text-only recipe does not reach its published long-horizon cells on any split, while its text$+$audio row reproduces at $\tau\ge 7$ under the shipped-code condition (random split, dropout 0) and on no other; Sawhney's published ensemble is reachable with untrained text and audio branches acting as an intercept on the finance SVR once the mixing weights are tuned on the test set, as the released code does.}
+\caption{\textbf{Reproductions with the authors' own code and data} (Result Table 6R-F, T6R.3). Every cell regenerates from one \texttt{ecvol reproduce} command; the fidelity ledger lists what is verbatim, patched, substituted or reason-coded per paper. Three of the five reproduce (TSMixer to $10^{-5}$; TMLP within single-seed noise, including the paper's real$\,\approx\,$ticker-shuffled finding; KeFVP on MAEC within one published standard deviation on seven of eight cells, with regenerated sentence embeddings; on EC, whose released KePt embeddings are unavailable upstream, the regenerated BERT-large row sits within one of our repeat standard deviations of the published means but above all four, and is not counted). HTML's text-only recipe does not reach its published long-horizon cells on any split, while its text$+$audio row reproduces at $\tau\ge 7$ under the shipped-code condition (random split, dropout 0) and on no other; Sawhney's published ensemble is reachable with untrained text and audio branches acting as an intercept on the finance SVR once the mixing weights are tuned on the test set, as the released code does.}
 \label{tab:faithful}
 \end{table*}

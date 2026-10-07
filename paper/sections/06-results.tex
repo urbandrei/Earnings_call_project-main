@@ -100,19 +100,19 @@ Table~\ref{tab:convention} reports the delta between the trading-day targets use
 above and the calendar-day targets of \citet{qin2019what}. Three facts matter for
 anyone comparing to the published leaderboard. First, the calendar window holds
 about $0.7\tau$ sessions, and at $\tau{=}3$ it holds at most one session for any
-Thursday or Friday call: 48.8\% of FinCall's calls have no defensible $\tau{=}3$
+Thursday or Friday call: 42.5\% of FinCall's calls have no defensible $\tau{=}3$
 calendar-day target and are excluded under our rules, whereas the released label
 sets carry a value for every call. Second, the two conventions are far from
-interchangeable at short horizons (correlation of $v_{\mathrm{post}}$ 0.75 at
-$\tau{=}3$, 0.93--0.96 beyond), and the persistence MSE---the leaderboard's
-metric---roughly doubles at $\tau{=}3$ under calendar days because the target is
+interchangeable at short horizons (correlation of $v_{\mathrm{post}}$ 0.78 at
+$\tau{=}3$, 0.94--0.96 beyond), and the persistence MSE---the leaderboard's
+metric---rises by 44--63\% at $\tau{=}3$ under calendar days because the target is
 averaged over two returns instead of three. A published MSE therefore carries no
 information about model quality unless the convention is stated. Third, the
 one cell where our baselines fail the pre-registered sanity gate (HAR-RV below
 persistence at $\tau{=}30$ on FinCall's temporal split, the COVID-regime cell)
-becomes a marginal pass under the calendar convention ($R^2_{\mathrm{OOS}}$
-$-0.287 \to +0.017$), because a 21-session window straddles less of the regime
-shift than a 30-session one. The Stage-0/1 grid is shipped under both
+fails under both conventions ($R^2_{\mathrm{OOS}}$ $-0.285$ trading, $-0.053$
+calendar); the shorter calendar window straddles less of the regime shift but not
+enough to pass. The Stage-0/1 grid is shipped under both
 conventions (\texttt{result\_table\_1}, convention column); the Stage-2--4
 content models are evaluated under the trading-day convention only, since the
 delta above is a property of the target, not of the head.
@@ -186,9 +186,12 @@ its MAEC rows use sentence embeddings regenerated with the authors' own generato
 because the released ones were never published---and they reproduce: seven of the
 eight MAEC cells fall within one published standard deviation of the published mean
 over ten repeats, with matching seed spreads (the eighth, MAEC-16 at $\tau{=}15$, is
-the row of their table that does not average to its own stated mean). The EC row
-waits on the released KePt embedding file \pending{K1: a 1.2\,GB file that only a
-browser session can download}. The pattern the substrate audit
+the row of their table that does not average to its own stated mean). On EC the released KePt embeddings are unavailable upstream (the linked folder is
+empty); with BERT-large pooler embeddings from the same generator---KeFVP without its
+knowledge-enhanced pre-training---the mean test MSE is 0.651/0.302/0.194/0.127 against
+the published 0.610/0.291/0.183/0.114, within one of our repeat standard deviations at
+every horizon but within the published one only at $	au{=}7$, so we do not count the
+EC row as reproduced. The pattern the substrate audit
 predicted holds on the field's own code: the results that reproduce are those of
 price-only or same-company baselines and of a price-series model conditioned on
 text (KeFVP, whose audio branch is disabled in its own code), and the claims that
@@ -238,10 +241,11 @@ single-quarter corpus spans about 105 sessions, so the embargoed temporal split
 degenerates (five training calls); Table~\ref{tab:earnings25-audio} therefore uses
 the ticker-disjoint split, pooled and per stratum. Audio-plus-past-vol heads beat
 persistence on $\Delta v$ (pooled $R^2_{\mathrm{OOS}}$ 0.44 at $\tau{=}3$), but a
-model given a \emph{random other call's} audio keeps most of that (0.35): the
-audio increment is 0.09 at $\tau{=}3$ and at most 0.05 beyond, and per stratum it
-is small and sign-inconsistent (64 kbps: 0.03 / 0.00 / 0.08 / $-$0.02; $\le$24 kbps:
-$-$0.04 / 0.02 / 0.07 / 0.04). With 39 and 55 test calls per stratum these
+model given a \emph{random other call's} audio does as well (0.45): the pooled
+audio increment is $-0.02$ / 0.00 / 0.03 / 0.01 across horizons, and per stratum
+it is small and mostly negative (64 kbps: $-$0.01 / $-$0.02 / $-$0.02 / 0.01;
+$\le$24 kbps: $-$0.10 / $-$0.03 / 0.00 / 0.02)---it never exceeds 0.03 and is
+negative in 7 of 12 cells. With 39 and 55 test calls per stratum these
 increments are not distinguishable from zero, and the higher-bitrate stratum is
 not the better one. The FinCall result therefore does not look like an artefact
 of 40 kbps transcodes: at 64 kbps, on 2025 calls, with a post-cutoff encoder

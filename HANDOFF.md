@@ -176,7 +176,7 @@ Each entry: date · task ID · what the user must do · what unblocks when it's 
   day-0 anchors are now the primary targets; the call-date / assume-after-hours set ships as the
   `targets_assumed*` variant. Splits and every table regenerated; the paper follows (DECISIONS 2026-10-06).
 - **2026-09-21 · T6R.3/K1 — option (a) chosen (user).** KeFVP EC runs on regenerated raw BERT-large
-  embeddings, labelled (DECISIONS 2026-09-21); run completed 2026-10-06 (K2).
+  embeddings, labelled (DECISIONS 2026-09-21); run completed 2026-10-07 (K2, run 20261007T175307Z; above the published means, not counted as reproduced).
 - **2026-07-04 · T6.2 — OSC route SUPERSEDED by Colab Pro+.** The OSC allocation + funds lapsed;
   the corpus compute moved to Colab Pro+ (DECISIONS 2026-07-04). The 2026-06-24 $1000 OSC spend
   approval is void (never used — no money spent). `cloud/osc/` is kept as reference; the live path
