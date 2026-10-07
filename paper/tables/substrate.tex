@@ -1,5 +1,5 @@
 % Curated from data/results/result_table_5r.csv and result_table_5r_labels.csv
-% (run 20260902T054152Z-audit-substrate-48b9432a). Overlap = test calls whose
+% (runs 20261006T202254Z / 20261006T202821Z-audit-substrate-48b9432a). Overlap = test calls whose
 % ticker appears in train; embargo = calendar days between the last train (val)
 % date and the first val (test) date. Ours = committed splits, same metrics.
 \begin{table}[t]
@@ -13,10 +13,10 @@ EC (Qin \& Yang)         & 392 / 56 / 112  & 80.4\% & 0 d & 0 d & 137 / 16{,}800
 MAEC-15 (KeFVP files)    & 535 / 76 / 154  & 44.2\% & 0 d & 0 d & 4 binary cols at $\tau$ \\
 MAEC-16 (KeFVP files)    & 980 / 140 / 280 & 55.7\% & 0 d & 3 d & 4 binary cols at $\tau$ \\
 \midrule
-ours: FinCall temporal        & 1480 / 228 / 481 & 91.3\% & 48 d & 48 d & --- \\
-ours: FinCall ticker-disjoint & 1701 / 239 / 484 & \textbf{0.0\%} & n/a & n/a & --- \\
-ours: MAEC temporal           & 1604 / 73 / 507  & 78.9\% & 101 d & 48 d & --- \\
-ours: MAEC ticker-disjoint    & 1805 / 259 / 514 & \textbf{0.0\%} & n/a & n/a & --- \\
+ours: FinCall temporal        & 1489 / 228 / 483 & 91.3\% & 47 d & 47 d & --- \\
+ours: FinCall ticker-disjoint & 1706 / 243 / 484 & \textbf{0.0\%} & n/a & n/a & --- \\
+ours: MAEC temporal           & 1666 / 69 / 529 & 79.4\% & 101 d & 48 d & --- \\
+ours: MAEC ticker-disjoint    & 1884 / 271 / 533 & \textbf{0.0\%} & n/a & n/a & --- \\
 ours: Earnings25 ticker-disjoint & 333 / 47 / 95 & \textbf{0.0\%} & n/a & n/a & --- \\
 \bottomrule
 \end{tabular}
@@ -26,7 +26,7 @@ VolTAGE and KeFVP repositories). The VolTAGE and KeFVP split files are
 byte-identical. Overlap is a property every temporal split permits, ours included;
 the point is that no paper in the lineage reports the disjoint condition. The
 zero-day embargos leak 30-day target windows across every boundary. Shipped
-MAEC labels join our calendar-day targets on 74--77\% of test calls at
-$\tau\ge7$ and correlate 0.51--0.88 with them (0.25--0.71 at $\tau{=}3$).}
+MAEC labels join our calendar-day, call-date-anchored targets on 77--79\% of test calls at
+$\tau\ge7$ and correlate 0.52--0.87 with them (0.25--0.66 at $\tau{=}3$).}
 \label{tab:substrate}
 \end{table}

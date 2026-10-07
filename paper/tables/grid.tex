@@ -1,6 +1,6 @@
 % Curated headline: consolidated ablation grid (Result Table 4), FinCall, Delta-v,
 % R^2_OOS vs persistence (test). Values copied from data/results/result_table_4.csv
-% (canonical, pre-registered ridge/structural model per stage; temporal n=481,
+% (canonical, pre-registered ridge/structural model per stage; temporal n=483,
 % ticker-disjoint n=484). Markers use the Holm-corrected confirmatory family:
 % * = Holm-significantly BETTER than Stage-1, † = Holm-significantly WORSE.
 \begin{table}[t]
@@ -10,19 +10,19 @@
 \toprule
 Stage (canonical model) & $\tau$=3 & $\tau$=7 & $\tau$=15 & $\tau$=30 \\
 \midrule
-\multicolumn{5}{l}{\textit{Temporal split ($n{=}481$)}}\\
-S0 HAR-RV               & 0.464 & 0.410 & 0.207 & -0.287 \\
-S1 GBDT (ticker FE)     & 0.344 & 0.248 & -0.057 & -0.904 \\
-S2 Text (ridge+vol)     & -1.678 & -3.076 & -3.586 & -0.468 \\
-S3 Audio (ridge+vol)    & 0.214 & -1.099 & -3.706 & -0.548 \\
-S4 Fusion (stack)       & 0.232 & -0.326 & -1.828 & -0.010* \\
+\multicolumn{5}{l}{\textit{Temporal split ($n{=}483$)}}\\
+S0 HAR-RV               & 0.444 & 0.372 & 0.138 & -0.285 \\
+S1 GBDT (ticker FE)     & 0.340 & 0.249 & -0.126 & -0.948 \\
+S2 Text (ridge+vol)     & 0.333 & 0.285 & 0.080* & -0.077* \\
+S3 Audio (ridge+vol)    & 0.353 & 0.268 & 0.033* & 0.050* \\
+S4 Fusion (stack)       & 0.406* & 0.347* & 0.066* & 0.100* \\
 \midrule
 \multicolumn{5}{l}{\textit{Ticker-disjoint split ($n{=}484$)}}\\
-S0 HAR-RV               & 0.495 & 0.357 & 0.211 & 0.229 \\
-S1 GBDT (ticker FE)     & 0.407 & 0.275 & 0.089 & 0.108 \\
-S2 Text (ridge+vol)     & 0.223\dag & 0.129\dag & 0.094 & 0.236 \\
-S3 Audio (ridge+vol)    & 0.304\dag & 0.147\dag & 0.044 & 0.209 \\
-S4 Fusion (stack)       & 0.436 & 0.292 & 0.133 & 0.244* \\
+S0 HAR-RV               & 0.570 & 0.491 & 0.349 & 0.345 \\
+S1 GBDT (ticker FE)     & 0.494 & 0.440 & 0.292 & 0.237 \\
+S2 Text (ridge+vol)     & 0.399\dag & 0.375 & 0.256 & 0.301 \\
+S3 Audio (ridge+vol)    & 0.442 & 0.364 & 0.241 & 0.217 \\
+S4 Fusion (stack)       & 0.531 & 0.465 & 0.340 & 0.396* \\
 \bottomrule
 \end{tabular}
 \caption{\textbf{Consolidated grid (Stages 0--4), pre-registered canonical model per

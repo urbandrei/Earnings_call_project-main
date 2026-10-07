@@ -1,0 +1,27 @@
+% Curated from data/results/result_table_7.csv and result_table_7_assumed.csv
+% (run 20261006T202638Z-evaluate-lookahead-aba100fd). Delta-v target, R^2_OOS vs persistence.
+% Each cell: measured EDGAR anchor (primary) -> call-date anchor (variant). "in" = FinCall
+% temporal test (2021); "post" = 475 Earnings25 calls. Same frozen heads under both anchors.
+\begin{table}[t]
+\centering
+\footnotesize
+\setlength{\tabcolsep}{3.5pt}
+\begin{tabular}{llrrrr}
+\toprule
+Head & seg. & $\tau$=3 & $\tau$=7 & $\tau$=15 & $\tau$=30 \\
+\midrule
+\multirow{2}{*}{HAR-RV} & in & $0.44\!\to\!0.46$ & $0.37\!\to\!0.41$ & $0.14\!\to\!0.21$ & $-0.29\!\to\!-0.28$ \\
+ & post & $0.60\!\to\!0.56$ & $0.54\!\to\!0.51$ & $0.35\!\to\!0.33$ & $0.08\!\to\!-0.12$ \\
+\multirow{2}{*}{text + past-vol} & in & $0.33\!\to\!-1.71$ & $0.28\!\to\!-3.12$ & $0.08\!\to\!-3.62$ & $-0.08\!\to\!-0.47$ \\
+ & post & $0.31\!\to\!0.28$ & $0.33\!\to\!0.27$ & $0.23\!\to\!0.15$ & $0.12\!\to\!-0.09$ \\
+\multirow{2}{*}{WavLM + past-vol} & in & $0.36\!\to\!0.26$ & $0.26\!\to\!-1.02$ & $-0.04\!\to\!-2.01$ & $0.05\!\to\!-0.56$ \\
+ & post & $0.50\!\to\!0.43$ & $0.43\!\to\!0.32$ & $0.15\!\to\!0.06$ & $0.18\!\to\!0.05$ \\
+\multirow{2}{*}{fusion + past-vol} & in & $0.29\!\to\!-1.73$ & $0.22\!\to\!-3.13$ & $0.04\!\to\!-0.34$ & $-0.11\!\to\!-0.45$ \\
+ & post & $-0.83\!\to\!-9.97$ & $0.32\!\to\!-2.29$ & $0.19\!\to\!0.02$ & $0.01\!\to\!-0.28$ \\
+\bottomrule
+\end{tabular}
+\caption{\textbf{Anchor sensitivity: the same frozen heads with day~0 on the call date
+(the literature's anchor)} ($\Delta v$, $R^2_{\mathrm{OOS}}$ vs.\ persistence; each cell
+reads measured $\to$ call-date). Ordering on level-$v$ in the CSV.}
+\label{tab:lookahead-assumed}
+\end{table}

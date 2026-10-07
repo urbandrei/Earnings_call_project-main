@@ -21,15 +21,16 @@ throughout, and the gap is itself a small finding about structural vs.\
 unconstrained conditioning under regime shift. \textbf{Short-horizon \Rtwo{}
 inflation.} The persistence denominator is noisiest at $\tau{=}3$ (its MSE is
 $\sim$2.8$\times$ the $\tau{=}7$ one), so short-horizon \Rtwo{} gains are easier to
-show and should be read accordingly. \textbf{Timestamps.} The primary targets rest on a flagged after-hours
-rule that the EDGAR retrofit (\S\ref{sec:timing}) shows is wrong for 53--59\% of
-calls; the measured-anchor targets are shipped beside them, HAR-RV is insensitive
-to the choice, and the learned ridge heads are not
-(Table~\ref{tab:lookahead-measured}). Re-baselining every table on the measured
-anchor is deferred to the release decision because it moves split boundaries. \textbf{Regime sensitivity.} FinCall-Surprise spans COVID; the temporal
+show and should be read accordingly. \textbf{Timestamps.} Day~0 rests on the
+earnings-release time measured from EDGAR (\S\ref{sec:timing}); 10.7\% of FinCall
+and 31.4\% of MAEC calls have no Item~2.02 filing in the window and keep the
+flagged after-hours fallback, and intraday releases are treated as after-hours.
+Results under the call-date anchor of prior label sets are not interchangeable with
+ours (Table~\ref{tab:lookahead-assumed}); the call-date targets are shipped for that
+comparison. \textbf{Regime sensitivity.} FinCall-Surprise spans COVID; the temporal
 $\tau{=}30$ baseline failure shows long-horizon level forecasts are
 regime-sensitive, which is why we emphasise the identity-robust \dv{} target and
-report per-year breakdowns. \textbf{MAEC coverage.} The 75.4\% price-join rate
+report per-year breakdowns. \textbf{MAEC coverage.} The 78.6\% price-join rate
 (2015--2018 delistings) makes MAEC a secondary, comparability corpus; it also ships
 no raw audio, so the audio ladder is FinCall-only. \textbf{Source audio quality.}
 Every FinCall audio file is a uniform 40\,kbps MP3 transcode (eight source sample

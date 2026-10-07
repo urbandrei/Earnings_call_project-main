@@ -75,10 +75,10 @@ identity controls of \S\ref{sec:experiments} runnable on the corpus at all.
 Daily adjusted-close OHLCV is obtained from a free, no-account source and
 cross-checked against Tiingo on a 50-ticker random sample (47 pass, three flagged
 and documented, minimum adjusted-return correlation 0.976); delisted or unmatched tickers produce an explicit coverage report rather
-than being silently dropped. After price joining, FinCall-Surprise yields 2{,}424
-calls with at least one target (97.1\% join rate) and MAEC yields 2{,}578 (75.4\%; a
+than being silently dropped. After price joining, FinCall-Surprise yields 2{,}433
+calls with at least one target (97.5\% join rate) and MAEC yields 2{,}688 (78.6\%; a
 documented shortfall driven by 2015--2018 delistings), for a combined modelling set
-of 5{,}002 calls.
+of 5{,}121 calls.
 
 For each call we define returns $r_t = (P_t - P_{t-1})/P_{t-1}$ relative to day
 $t=0$, the last trading day before the call's information is public
@@ -113,32 +113,29 @@ a reason code; targets are unit-tested against hand-computed values.
 \label{sec:timing}
 Fewer than 4\% of FinCall-Surprise transcripts mention a clock time, and 32.4\% of
 recovered \emph{dates} come from slide-PDF creation stamps, so no call in either
-corpus carries a measured time of day. All results in \S\ref{sec:results} therefore
-use a uniform, flagged after-hours rule (calls assumed to occur after market close;
-$t{=}1$ is the next trading session). We retrofit the information boundary per call from
-EDGAR: the acceptance time of the earliest 8-K carrying Item~2.02 (the earnings
-release) within three days before to one day after the call date, taken from the
-SEC submissions API and cached; where no such filing exists we fall back, in
+corpus carries a measured time of day. We therefore measure the information boundary
+per call from EDGAR: the acceptance time of the earliest 8-K carrying Item~2.02 (the
+earnings release) within three days before to one day after the call date, taken
+from the SEC submissions API and cached. Where no such filing exists we fall back, in
 order, to Earnings25's call-start time, to the before/after-market attribute of
-\citet{scss2024}, and finally to the after-hours assumption, with the tier recorded
-per call. Coverage by the EDGAR tier is 89.3\% for FinCall-Surprise, 68.6\% for
-MAEC, and 99.8\% for Earnings25. Under the measured anchor, \textbf{53\% of FinCall
-and 59\% of MAEC calls change day~0}, almost all one session earlier: releases
-before the open are the norm (FinCall 53\%, Earnings25 72\%), so the uniform
-after-hours rule places the reaction session in the \emph{pre} window for most of
-the corpus. Because every released label set in this literature anchors on the
-call date, this affects the published targets as much as ours. We keep the
-after-hours targets as the primary set for every result in \S\ref{sec:results}
-and ship the measured-anchor targets beside them (\texttt{targets\_measured}),
-with a sensitivity table (\texttt{timing\_sensitivity.csv}): persistence MSE rises
-by up to 8\% on FinCall and up to 26\% on MAEC at $\tau{=}3$ once the reaction
-session enters the post window, while the HAR-RV $R^2_{\mathrm{OOS}}$ moves by at
-most 0.04 on FinCall and 0.11 on MAEC and Earnings25; the target correlation
-between anchors on Earnings25 is 0.81--0.97 for $v_{\mathrm{post}}$ and 0.68--0.80
-for $\Delta v$ across horizons. The learned ridge heads are more anchor-sensitive
-than HAR-RV (\S\ref{sec:results-lookahead}). Whether to re-baseline on the measured
-anchor is a release decision we flag rather than take here, since it moves every
-split boundary.
+\citet{scss2024}, and finally to the after-hours assumption (calls assumed to occur
+after market close; $t{=}1$ is the next trading session), with the tier recorded per
+call. Coverage by the EDGAR tier is 89.3\% for FinCall-Surprise, 68.6\% for MAEC, and
+99.8\% for Earnings25. A release before the open makes the call date itself day~1;
+intraday releases are treated as after-hours and flagged. \textbf{Every result in
+\S\ref{sec:results} uses these measured anchors.} They matter: against the call-date
+anchor that every released label set in this literature uses (calls assumed
+after-hours), \textbf{day~0 moves for 53\% of FinCall, 56\% of MAEC and 72\% of
+Earnings25 calls}, almost all one session earlier, because releases before the open
+are the norm. Under the call-date anchor the reaction session therefore sits in the
+\emph{pre} window for most of the corpus, and the published targets share that
+error. We ship the call-date targets beside the primary ones
+(\texttt{targets\_assumed}) so results remain comparable with prior label sets, with a
+sensitivity table (\texttt{timing\_sensitivity.csv}): on the measured anchor the
+persistence MSE is up to 11\% higher on FinCall, 25\% on MAEC and 27\% on Earnings25,
+because the reaction session now enters the post window, while the HAR-RV
+$R^2_{\mathrm{OOS}}$ moves by $-0.07$ to $+0.13$. The learned ridge heads are more
+anchor-sensitive than HAR-RV (\S\ref{sec:results-lookahead}).
 
 \subsection{Leakage-proof splits}
 \label{sec:splits}
