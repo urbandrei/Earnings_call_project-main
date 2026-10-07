@@ -33,8 +33,10 @@ Verified 2026-09-02: a fresh clone + `uv sync` (CPU) passes the full gate and `e
 | KeFVP EC embeddings | the released KePt pickle is unavailable upstream (Drive folder `1F83bjiJKEpq_MYrc0lzQb9rOLgooz-5E` is empty, 2026-09-21); `ecvol reproduce kefvp --dataset ec --ec-regenerated` regenerates raw BERT-large pooler embeddings with the authors' generator (labelled substitution, DECISIONS 2026-09-21) | KeFVP EC row |
 | Praat sentence features (EC) | `python -c "from ecvol.features.audio.praat import extract_ec_praat; …"` (parselmouth, ~5 min on 6 cores) → `data/ec/cache/praat27_sentences.parquet` | HTML text+audio, Sawhney audio |
 
-Then: `ecvol targets build` · `ecvol splits build` · `ecvol timing build {fincall,maec,earnings25}` ·
-`ecvol timing targets {fincall,maec,earnings25}`.
+Then, in this order: `ecvol timing build {fincall,maec,earnings25}` (the measured day-0 anchors the
+primary targets read) · `ecvol targets build` (FinCall; MAEC and Earnings25 targets come from their
+ingest, re-run after timing) · `ecvol timing targets {fincall,maec,earnings25}` (the call-date /
+assume-after-hours variant, `targets_assumed{,_calendar}.parquet`) · `ecvol splits build`.
 
 ## Features (GPU; content-hash cached, bit-identical on re-run)
 
@@ -63,7 +65,7 @@ ecvol audio emotion2vec --dataset {fincall,earnings25}
 | Table 6R (SCSS on DEC) | `ecvol reproduce scss` | `result_table_6r_scss.csv` | `configs/reproduce-scss.yaml` |
 | code-availability audit | `ecvol audit code` | `code_availability.csv` | `configs/audit-code.yaml` |
 | Earnings25 audio by bitrate | `ecvol evaluate-audio-earnings25` | `result_table_3_earnings25.csv`, `audio_*_earnings25.csv` | `configs/evaluate-audio-earnings25.yaml` |
-| Table 7 (lookahead) + anchor variant | `ecvol evaluate-lookahead` | `result_table_7.csv`, `result_table_7_measured.csv` | `configs/evaluate-lookahead.yaml` |
+| Table 7 (lookahead) + anchor variant | `ecvol evaluate-lookahead` | `result_table_7.csv`, `result_table_7_assumed.csv` | `configs/evaluate-lookahead.yaml` |
 | rendered md/tex | `ecvol report` | `result_table_{1..4}.{md,tex}` | — |
 | 6R-F: HTML faithful (authors' classes) | `ecvol reproduce html-faithful [--modality text_audio]` | `result_table_6r_html_faithful.csv` | `configs/reproduce-html-faithful.yaml` |
 | 6R-F: SCSS TSMixer / TMLP (authors' run.py) | `ecvol reproduce scss-tsmixer` · `scss-tmlp` | `result_table_6r_scss_{tsmixer,tmlp}.csv` | `configs/reproduce-scss-*.yaml` |
