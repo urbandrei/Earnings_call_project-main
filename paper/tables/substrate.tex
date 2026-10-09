@@ -5,14 +5,14 @@
 \begin{table}[t]
 \centering
 \footnotesize
-\setlength{\tabcolsep}{3.5pt}
+\setlength{\tabcolsep}{2pt}
 \begin{tabular}{lrrrl}
 \toprule
 Benchmark / split & calls & overlap & embargo & label defect \\
 \midrule
 EC (Qin \& Yang)       & 560   & 80.4\% & 0 / 0 d & 137 zeros \\
-MAEC-15 (KeFVP files)  & 765   & 44.2\% & 0 / 0 d & binary cols \\
-MAEC-16 (KeFVP files)  & 1400  & 55.7\% & 0 / 3 d & binary cols \\
+MAEC-15 (KeFVP)  & 765   & 44.2\% & 0 / 0 d & binary cols \\
+MAEC-16 (KeFVP)  & 1400  & 55.7\% & 0 / 3 d & binary cols \\
 \midrule
 ours: FinCall temporal        & 2200 & 91.3\% & 47 / 47 d & --- \\
 ours: FinCall \tickerdisjoint & 2433 & \textbf{0.0\%} & n/a & --- \\

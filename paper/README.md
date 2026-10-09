@@ -21,13 +21,21 @@ why it is needed. Every number traces to a manifested result CSV (`ecvol runs ve
 - **Appendix (`sections/A1-complete-results.tex`):** pipeline figure, full head sets
   (baselines, text, audio), horizon-convention delta, the reproduction study in detail
   (HTML head, faithful runs, controls, code-availability audit), Earnings25 bitrate
-  study, the call-date-anchor variant of the post-cutoff test, and the generated grids.
+  study, and the call-date-anchor variant of the post-cutoff test. Wide tables are
+  `table*`; everything fits its column (0 overfull boxes outside the bibliography).
+- **Supplement (`supplement.tex` → `supplement.pdf`, one column):** the complete generated
+  grids (Result Tables 1–4, ~70 small tables). Split off 2026-10-09 (DECISIONS) because
+  ACL reviewers are not required to read appendices, supplementary material is a separate
+  upload, and the two-column grids overlapped each other. Nothing was dropped: the
+  supplement is committed, built by the same script, and can be handed over on request.
 
 ## Build
 
 ```sh
-bash paper/build.sh          # -> paper/main.pdf (latexmk if perl is present, else pdflatex+bibtex)
-bash paper/build.sh clean    # remove aux files
+bash paper/build.sh              # -> paper/main.pdf (latexmk if perl is present, else pdflatex+bibtex)
+bash paper/build.sh supplement   # -> paper/supplement.pdf
+bash paper/build.sh all          # both
+bash paper/build.sh clean        # remove aux files
 uv run python paper/tables/make_main_tables.py   # regenerate the four generated main-text tables
 ```
 

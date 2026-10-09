@@ -1,134 +1,105 @@
 \section{Extended Results}
 \label{app:complete}
 
-This appendix holds the full head set behind each headline table, the horizon
-convention delta, the reproduction study in detail, the Earnings25 bitrate study,
-the anchor-sensitivity variant of the post-cutoff test, the code-availability
-audit, and the complete generated grids. Every table regenerates from a committed
-result CSV with a run manifest (\texttt{ecvol report}; \texttt{REPRODUCE.md} lists
-one command per table).
+This appendix holds the full set of models behind each main-text table, the
+horizon-definition comparison, the reproduction study in detail, the Earnings25
+bitrate study, the call-date-anchor variant of the post-cutoff test, and the
+code-availability audit. The complete generated grids (Result Tables 1--4, every
+corpus, target, metric, split and horizon) are in the separate supplement, and
+every table regenerates from a released result CSV with a run record
+(\texttt{ecvol report}; \texttt{REPRODUCE.md} lists one command per table).
 
 \input{figures/pipeline}
 
-\subsection{Stages 0--3: all heads}
+\subsection{Stages 0--3: all models}
 Tables~\ref{tab:baselines}, \ref{tab:text} and~\ref{tab:audio} give the full
-Stage-0/1, Stage-2 and Stage-3 head sets on the $\Delta v$ target, including the
-past-vol-only and MLP heads omitted from Table~\ref{tab:grid}.
+Stage-0/1, Stage-2 and Stage-3 model sets on the $\Delta v$ target, including the
+past-volatility-only and MLP heads omitted from Table~\ref{tab:grid}.
 
 \input{tables/baselines}
 \input{tables/text}
 \input{tables/audio}
 
-\subsection{Horizon convention}
+\subsection{Horizon definition}
+Table~\ref{tab:convention} compares the trading-day and calendar-day definitions of
+the horizon on FinCall and MAEC, both at the level of the targets (sessions per
+window, correlation between the two definitions) and at the level of the Stage-0
+results (persistence MSE and HAR-RV \Rtwo{} under each definition).
 \input{tables/convention}
 
 \subsection{Reproduction study}
 \label{app:repro}
-Table~\ref{tab:repro} is the first entry of the study: the HTML head over our frozen
-BGE-M3 chunk sequences on EC under the published split, an embargoed split and a
-\tickerdisjoint{} split with identical labels. Table~\ref{tab:faithful} re-runs the
-five papers with usable code on their own data with the authors' code wherever it
-runs and a line-by-line port where it cannot; the released fidelity ledger records
-every patch and substitution. Table~\ref{tab:repro-controls} gives the absolute
-values behind Table~\ref{tab:repro-main}, and Table~\ref{tab:code-audit} the
-code-availability audit of the seventeen papers.
+Table~\ref{tab:repro} is the first entry of the study, the HTML head over our
+frozen BGE-M3 chunk sequences on EC under the published split, a gapped split and
+a \tickerdisjoint{} split with identical labels. Table~\ref{tab:faithful} reruns
+the five papers with usable code on their own data with the authors' code wherever
+it runs and a line-by-line port where it cannot. The released fidelity ledger
+records every patch and substitution. Table~\ref{tab:repro-controls} gives the
+absolute values behind Table~\ref{tab:repro-main}, and Table~\ref{tab:code-audit}
+the code-availability audit of the seventeen papers.
 
-\textbf{Same-Company-Same-Signal} reproduces: its TSMixer baseline matches the 76
-published cells to a median $10^{-5}$ from the shipped data alone, its TMLP text
-model on the authors' OpenAI embeddings matches per-window means within 0.01 and
-recovers the paper's finding that embeddings shuffled within a company do as well as
-the real ones, and its training-free baselines on EC and MAEC reproduce all 48
-published cells at the notebook's rounding. \textbf{HTML} does not: the released
-driver splits features and labels with three independent unseeded shuffles, and with
-the authors' model classes verbatim on rebuilt inputs the published recipe (ten
-epochs, learning rate $2{\times}10^{-5}$, raw log-volatility targets) is still
-converging at epoch ten; it beats the paper only at $\tau{=}3$ on a random split with
-dropout 0, never reaches persistence at $\tau\ge15$ on any split, and on the VolTAGE
-split every later paper inherited it is worse than persistence at every horizon. Its
-text$+$audio row reproduces under the shipped code's random split and under no
-other. \textbf{Sawhney et al.} cannot run as released (an unshipped call inventory,
-price files and lexicons, a TensorFlow~2.1 stack); ported, the finance SVR alone gives
-0.712/0.370/0.218/0.154, the text and audio branches are untrained after the two and
-one epochs the scripts prescribe, and the published ensemble is reproduced because
-the released code tunes the mixing weights on the test set, where an untrained
-branch's near-constant output acts as an intercept. \textbf{DialogueGAT}'s corpus
-and labels were never released; ported onto FinCall's speaker turns under the
-paper's per-year protocol it beats persistence at short horizons and collapses on
-the 2020 split. \textbf{KeFVP}'s released script needed six import-level repairs
-before it would start; its MAEC rows use sentence embeddings regenerated with the
-authors' own generator because the released ones were never published, and seven of
-eight cells fall within one published standard deviation (the eighth, MAEC-16 at
-$\tau{=}15$, is the row of their table that does not average to its own stated
-mean). On EC the released KePt embeddings are unavailable upstream (the linked
-folder is empty); with BERT-large pooler embeddings from the same generator, KeFVP
-without its knowledge-enhanced pre-training, the mean test MSE is
-0.651/0.302/0.194/0.127 against the published 0.610/0.291/0.183/0.114, within one of
-our repeat standard deviations but above all four published means, so the row is
-not counted as reproduced.
+\textbf{Same-Company-Same-Signal} reproduces. Its TSMixer baseline matches the 76
+published cells to a median $10^{-5}$ from the shipped data alone. Its TMLP text
+model on the authors' OpenAI embeddings matches per-window means within 0.02 and
+recovers the paper's finding that embeddings swapped within a company do as well
+as the real ones. Its training-free baselines on EC and MAEC reproduce all 48
+published cells at the notebook's rounding. \textbf{HTML} does not. The released
+driver splits features and labels with three independent unseeded shuffles, and
+with the authors' model classes unchanged on rebuilt inputs the published recipe
+(ten epochs, learning rate $2{\times}10^{-5}$, raw log-volatility targets) is still
+converging at epoch ten. It beats the paper only at $\tau{=}3$ on a random split
+with dropout 0, never reaches persistence at $\tau\ge15$ on any split, and on the
+VolTAGE split every later paper inherited it is worse than persistence at every
+horizon. Its text$+$audio row reproduces under the shipped code's random split and
+under no other. \textbf{Sawhney et al.} cannot run as released (an unshipped call
+inventory, price files and lexicons, and a TensorFlow~2.1 stack). Ported, the
+finance SVR alone gives 0.712/0.370/0.218/0.154, the text and audio branches are
+untrained after the two and one epochs the scripts prescribe, and the published
+ensemble is reproduced because the released code tunes the mixing weights on the
+test set, where an untrained branch's near-constant output acts as an intercept.
+\textbf{DialogueGAT}'s corpus and labels were never released. Ported onto
+FinCall's speaker turns under the paper's per-year protocol, it beats persistence
+at short horizons and collapses on the 2020 split. \textbf{KeFVP}'s released
+script needed six import-level repairs before it would start. Its MAEC rows use
+sentence embeddings regenerated with the authors' own generator because the
+released ones were never published, and seven of eight cells fall within one
+published standard deviation (the eighth, MAEC-16 at $\tau{=}15$, is the row of
+their table that does not average to its own stated mean). On EC the released
+KePt embeddings are unavailable upstream (the linked folder is empty). With
+BERT-large pooler embeddings from the same generator, which is KeFVP without its
+knowledge-enhanced pre-training, the mean test MSE is 0.651/0.302/0.194/0.127
+against the published 0.610/0.291/0.183/0.114, within one of our repeat standard
+deviations but above all four published means, so the row is not counted as
+reproduced.
 
-Under the controls, the 30-session embargo removes half to two thirds of KeFVP's
-MAEC training calls, so those rows cannot separate leakage from data loss and are
-left to the ledger; DialogueGAT's port (one seed, 42--60 held-out calls per year)
-shows no consistent direction under either control.
+Under the checks, the 30-session gap removes half to two thirds of KeFVP's MAEC
+training calls, so those rows cannot separate leakage from data loss and are left
+to the ledger. DialogueGAT's port (one seed, 42--60 held-out calls per year) shows
+no consistent direction under either check.
 
 \input{tables/repro}
 \input{tables/faithful}
 \input{tables/repro_controls}
 
 \subsection{Audio by bitrate on Earnings25}
+Table~\ref{tab:earnings25-audio} reruns the Stage-3 audio models on Earnings25,
+pooled and per bitrate stratum, with the random swap as the check.
 \input{tables/earnings25_audio}
 
 \subsection{Post-cutoff evaluation under the call-date anchor}
 Table~\ref{tab:lookahead-assumed} repeats the post-cutoff evaluation with day~0
 anchored on the call date on both sides of the cutoff, the anchor every released
-label set uses. HAR-RV barely moves, but the ridge heads that carry a learned
-past-volatility block collapse in-cutoff under that anchor, consistent with the block
-absorbing the reaction session that the after-hours rule leaves inside the
-pre-window for before-open calls. On $\Delta v$ at $\tau{=}30$ the frozen WavLM$+$vol
-head is the only one whose post-cutoff CI excludes zero under the measured anchor
-(0.18, CI 0.14--0.24, against HAR's 0.08), a single-quarter observation without a
-DM test that we report as exploratory.
+label set uses. HAR-RV barely moves, but the ridge models that carry a learned
+past-volatility block collapse before the cutoff under that anchor, because the
+block absorbs the reaction session that the after-hours rule leaves inside the
+pre-window for before-open calls. On $\Delta v$ at $\tau{=}30$ the frozen
+WavLM$+$past-volatility model is the only one whose post-cutoff confidence interval
+excludes zero under the measured anchor (0.18, CI 0.14--0.24, against HAR's 0.08).
+That is a single-quarter observation without a Diebold--Mariano test and we report
+it as exploratory.
 \input{tables/lookahead_assumed}
 
 \subsection{Code availability}
+Table~\ref{tab:code-audit} is the code-availability audit of the seventeen papers
+in this line, regenerated by \texttt{ecvol audit code}.
 \input{tables/code_audit}
-
-\clearpage
-\subsection{Generated grids}
-The tables below are generated byte-identically by \texttt{ecvol report} from the
-committed result CSVs and are the source of truth for every curated table above.
-They span both corpora, the level-$v$ and $\Delta v$ targets, \Rtwo{} and MSE, and
-the temporal and \tickerdisjoint{} splits at all horizons; Result Table 1 carries
-both horizon conventions and the train-mean intercept, Tables 2--4 the trading-day
-convention with Diebold--Mariano $p$-values against persistence, the preceding stage
-and the train-mean intercept.
-
-% Paths are relative to this file (paper/sections/). \clearpage between the
-% generated files flushes each batch of deferred floats; without it ~56
-% consecutive floats deadlock the two-column output routine.
-\subsubsection*{Stage-0/1 baselines (Result Table 1)}
-\input{../data/results/result_table_1}
-\clearpage
-
-\subsubsection*{Stage-2 text heads (Result Table 2)}
-\input{../data/results/result_table_2}
-\clearpage
-
-\subsubsection*{Stage-3 audio heads (Result Table 3)}
-FinCall-Surprise only (MAEC ships no raw audio).
-\input{../data/results/result_table_3}
-\clearpage
-
-\subsubsection*{Consolidated ablation grid (Result Table 4)}
-One pre-registered canonical model per stage; $*$ marks Holm-corrected significance
-vs.\ Stage-1 within the $\Delta v$ confirmatory family (two-sided; read direction
-from the value).
-\input{../data/results/result_table_4}
-\clearpage
-
-\subsubsection*{Substrate audit and reproduction grids}
-The per-file substrate audit behind Table~\ref{tab:substrate} is released as
-\texttt{result\_table\_5r.csv} and \texttt{result\_table\_5r\_labels.csv} with the
-lineage mirror manifest; the reproduction grids as \texttt{result\_table\_6r*.csv}
-(HTML on EC with three seeds and persistence per cell; Same-Company-Same-Signal on
-DEC per rolling quarter; the faithful runs and their controls per paper).
