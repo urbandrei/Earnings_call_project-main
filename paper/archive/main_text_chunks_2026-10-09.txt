@@ -1,0 +1,376 @@
+Main-text chunks of paper/main.tex (commit 540c08e), detexed, for pasting into an AI-text checker one chunk at a time.
+
+===== 01-abstract =====
+For about a decade, researchers have tried to predict how much a company's stock
+will move in the weeks after its quarterly earnings call, using what executives
+say on the call and how they sound. Many papers report that such models beat
+classical forecasts built from past price swings. We find that the shared test
+files behind these claims cannot support them. The files leave no gap between the
+training and test periods even though every target looks 30 days ahead, 44-80%
+of their test calls come from companies the model also saw in training, and they
+place "day zero" on the day of the call although most companies release their
+numbers before the market opens that morning. We built ecvol-bench to fix this.
+It adds company names and dates to a public audio corpus that ships without
+them, times each earnings release from SEC filings, provides targets under both
+horizon definitions in use, gives splits that keep training and test apart in
+time and in company, and includes a set of identity checks that run on any file
+of predictions. With these checks in place, modern open text and audio models add
+nothing to a forecast built from past volatility alone. Text embeddings mostly
+identify which company is talking (89.5% probe accuracy), audio features do no
+better than a constant, and combining the two helps in one horizon out of eight.
+When we rerun the field's own models on their own data, the text models lose
+12-82% in accuracy once test companies are unseen, while price-only models do
+not move. Scoring the frozen pipeline on 475 calls from late 2025, after every
+model's training cutoff, changes none of this. All code, metadata, splits,
+targets, features and result tables are released.
+
+===== 02-intro-a =====
+An earnings call is the one regular occasion on which a company's managers speak
+at length about their business. Since [ref], a line of papers has
+used both the transcript and the audio of these calls to predict how volatile the
+stock will be over the following 3 to 30 trading days. HTML [ref],
+MAEC [ref], VolTAGE [ref], DialogueGAT
+[ref], KeFVP [ref] and ECC Analyzer
+[ref] all report beating classical forecasts. Two findings cast doubt
+on that. [ref] showed that transcript representations mostly tell the
+model which company is speaking, and that a simple forecast from the
+company's own past volatility beats every transcript model. A survey of financial
+NLP found that only about 14% of reported results could be reproduced
+[ref].
+
+We think both problems trace back to the same place. Nearly every paper in this
+line is scored on one set of label and split files, handed down from paper to
+paper. We audited those files (Section N). They leave no gap between
+training and test dates even though each target runs 30 days past its call. Most
+test calls come from companies that are also in training, and no paper reports
+what happens when they are not. They define horizons in calendar days, which later
+papers describe as trading days. They put day 0 on the date of the call, although
+most companies publish their results before the market opens that day. The only
+open corpus with raw audio, FinCall-Surprise [ref], has no ticker,
+date or speaker fields at all, so the checks that would expose the
+company-identity problem cannot be run on it. Its successor, MM-FinEval
+[ref], adds tickers and dates but none of the checks.
+
+===== 03-intro-b =====
+What we contribute. 
+(1) ecvol-bench, with company identities and dates recovered for
+FinCall-Surprise (92.9% of calls, and a 60-call manual audit passes 60/60),
+release times from 8-K filings, three target families under both horizon
+definitions, splits with a 30-session gap and company-disjoint splits, checksums
+for every file, and a harness in which every table comes from one command
+(Section N). (2) An audit of the shared label and split
+files (Table N). (3) Identity checks (ticker probes,
+same-company and random content swaps, company-disjoint evaluation), released as
+a command that works on any prediction file. (4) Results for
+modern open-weight text and audio models against strong baselines
+(Section N). (5) A reproduction study of the five runnable
+models in this line, on their own data, with the same checks, plus a
+code-availability audit of seventeen papers. (6) A post-cutoff test of
+the frozen pipeline on 475 calls from late 2025. Stages, checks and confirmatory
+tests were fixed in a public decision log before any model was run.
+
+Related work. 
+Four known pitfalls shaped the design. The first is company-identity leakage
+[ref], which language models reproduce even on transcripts with names
+removed [ref]. The second is lookahead bias in language models,
+for which diagnostics and cutoff-bounded models exist
+[ref]. The third is weak baselines,
+since persistence, GARCH and HAR-RV [ref] are hard to beat
+[ref]. The fourth is gender bias in audio features
+[ref]. [ref] time earnings releases from
+8-K filings to predict returns, but nobody had audited the volatility label sets.
+The strongest recent positive results [ref] report
+no identity checks and release no code.
+
+===== 04-bench-a =====
+The EarningsCall (EC) benchmark of [ref] and the two MAEC cohorts
+are scored on split and label files that VolTAGE and KeFVP redistribute. We
+audited those files (Table N). The VolTAGE and KeFVP test files
+are byte for byte the same file, so the whole line of work shares one label set
+that was never recomputed from prices. Every boundary between training,
+validation and test has a zero-day gap while the targets reach 30 days past each
+call. On the time-ordered splits the field reports, 80.4% (EC), 44.2% (MAEC-15)
+and 55.7% (MAEC-16) of test calls are from companies that also appear in
+training. Any time-ordered split allows that. The problem is that no paper reports
+the company-disjoint case, so the confound of [ref] has never been
+measured on these benchmarks. The original paper defines its horizons in calendar
+days, but most later work describes them as trading days (21 sessions rather than
+30 at =30). Finally, the shipped MAEC labels correlate only 0.52-0.87 with
+calendar-day targets we recompute from prices under the same call-date anchor
+(0.25-0.66 at =3). We could not reproduce them under any single stated
+rule.
+
+Corpora and company identity. 
+FinCall-Surprise [ref] is the primary corpus, with 2,688
+calls from 2019-2021 and MP3 audio, transcripts and slides. It ships four fields
+per record and no ticker, date, CIK or speaker names. We recover the company and
+the date from the transcript text and the slide metadata, check them against price
+data, and release the table with its 80 manual corrections. 2,496 calls resolve
+(92.9% overall, 95.3% of the earnings-type calls), and a 60-call manual audit
+passes 60/60. MAEC [ref] is the secondary corpus, with about
+3,443 calls from 2015-2018, sentence-aligned audio features and no raw audio.
+Earnings25 [ref] has 514 S&P 500 calls from
+July-December 2025, with webcast MP3 at 64 kbps for 281 calls and at most
+24 kbps for 232. It postdates every model's training data, and 475 of its calls
+map to a ticker and join to prices.
+
+===== 05-bench-b =====
+Targets. 
+Daily adjusted prices come from a free source and were checked against Tiingo on
+50 tickers. Let rt be the return on session t, counted from day 0, the last
+session before the call's information is public. The main target is
+vpost()=1nt=1n(rt- r)2 for
+\3,7,15,30\, and vpre() is the same quantity over the
+sessions ending at day 0. Under the trading-day definition n=. Under
+the calendar-day definition of [ref] the window holds every
+session within calendar days, so n0.7, and at =3 a
+Thursday or Friday call has at most one session. We drop any window with fewer
+than two sessions and record the reason. That removes 42.5% of FinCall's calls at
+=3 calendar days, for which the released label sets still carry a value.
+The two definitions are not interchangeable. vpost correlates only
+0.78 between them at =3, and the persistence MSE is 44-63% higher there
+under calendar days, so a published MSE means little unless its definition is
+stated (Appendix Table N). Every result below uses trading
+days, and the definition is a column in every result table. We add two targets
+that are harder to game with company identity. The change
+ v=vpost-vpre subtracts the company's own level,
+and the HAR-residual subtracts a HAR-RV forecast. After joining to
+prices, FinCall has 2,433 calls with a target (97.5%) and MAEC 2,688 (78.6%,
+the rest having been delisted).
+
+===== 06-bench-c =====
+Almost no transcript states a clock time, so we take the moment the information
+became public from EDGAR, as the acceptance time of the earliest 8-K filing with
+Item 2.02 (the earnings release) within three days before to one day after the
+call. That covers 89.3% of FinCall, 68.6% of MAEC and 99.8% of Earnings25. The
+rest fall back, in recorded order, to Earnings25's call-start time, the
+before/after-market flag of [ref], and an after-hours assumption. A
+release before the open makes the call date itself day 1. Compared with the
+call-date anchor that every released label set uses, day 0 moves for 53%
+of FinCall, 56% of MAEC and 72% of Earnings25 calls, almost always one session
+earlier. Under the published anchor, the session in which the market reacts
+therefore sits in the pre window for most calls. On the measured anchor the
+persistence MSE is up to 11% higher on FinCall, 25% on MAEC and 27% on
+Earnings25, and v gains a positive mean (on FinCall +0.52 at =3
+and +0.10 at =30). The call-date targets ship as a labelled variant.
+
+Splits and release. 
+Temporal splits (about 70/10/20 in date order) leave a 30-trading-day gap
+between segments so that no target window crosses a boundary.
+ticker-disjoint splits keep every validation and test company out of
+training. Their overlap is 0.0%, against 91.3% (FinCall) and 79.4% (MAEC) on
+our own temporal splits. The harness fails any feature that reads price data after
+the call's as-of time, and leakage assertions run in CI. The release contains all
+of the above, the derived-feature archives, the harness, and every result CSV with
+its run record (resolved config, git commit, seeds and file hash). Raw audio and
+transcripts are never redistributed.
+
+===== 07-setup-a =====
+Models, from simplest to richest. 
+We organise our own models in stages. Stage 0 holds the classical
+forecasts, namely persistence ( v=vpre), the training-set mean
+of the target (a constant), EWMA (=0.94), HAR-RV [ref]
+and GARCH(1,1). Stage 1 is a LightGBM model on past-volatility features,
+transcript length, number of Q&A turns and a company fixed effect, our
+identity-only baseline. Stage 2 uses the transcript through BGE-M3
+[ref] embeddings pooled per section (1024-d), FinBERT [ref]
+sentiment aggregates and surface statistics. Stage 3 uses the audio,
+resampled to 16 kHz mono, through eGeMAPSv02 functionals [ref] and
+WavLM-Large [ref] and emotion2vec+ [ref] embeddings over
+30-second windows, averaged per call. Stage 4 combines modalities by
+gated fusion or by stacking (a ridge over the text, audio and Stage-1 predictions,
+fit on the validation set). From Stage 2 on, every model is reported with and
+without a block of past-volatility features (vpre at all horizons
+plus the HAR-RV inputs). The prediction heads are a ridge regression, with its
+penalty chosen on validation, and a small MLP run with five seeds. The MLPs are
+unstable across seeds (standard deviation of R2 up to 6.8), so the main grid
+uses one deterministic model per stage, chosen before the results were known. MLP
+cells are in Appendix N.
+
+Metrics and tests. 
+We report MSE on log realised volatility and, as the headline metric, R2
+relative to persistence [ref], defined as
+1-(y- y)2/(y- ypersist)2. Because v has a
+positive mean on the measured anchor, persistence (which predicts v=0)
+is a weak reference there, so every v claim is also compared with the
+constant model. Diebold-Mariano tests [ref] with the small-sample
+correction compare per-call squared errors against persistence and against the
+previous stage. The confirmatory comparisons (each stage against Stage 1 on
+ v across horizons, Stage 4 against the best single modality, and the
+published split against the controlled split for each reproduced model) are
+Holm-corrected. All other analyses are exploratory.
+
+===== 08-setup-b =====
+We use four. (1) A company-only model predicts each company's training
+mean. (2) A same-company swap gives each test call the transcript or audio
+of another call by the same company, and a random swap gives it any other
+call. A model that does not change under the first is reading identity, and one
+that does not change under the second is reading nothing. (3) A linear
+probe tries to recover the ticker from the frozen call embedding.
+(4) Every table shows ticker-disjoint results next to temporal ones. The command
+ecvol audit predictions runs the prediction-side versions of these
+checks, plus split integrity, seen-versus-unseen companies, the between-company
+share of prediction variance and company-clustered significance, on any file with
+one row per (call, ticker, date, split, horizon, truth, prediction). A published
+result can therefore be checked from the one file its authors already have.
+
+Reproductions and post-cutoff tests. 
+Of seventeen papers in this line, one releases code that runs as released
+(Same-Company-Same-Signal), seven release code that needs repairs or inputs that
+were never shipped, and nine release nothing usable (Table N).
+We rerun the five with usable code (HTML, KeFVP, Same-Company-Same-Signal,
+[ref], DialogueGAT) on their own data, using the authors'
+code wherever it can be made to start and a line-by-line port where it cannot.
+Every patch is in a released ledger. We first compare with the published number
+and then rerun the same model under a gapped split and a ticker-disjoint split
+of the same data. Earnings25 allows two more tests, namely the frozen Stage-3
+audio models rerun by bitrate, and the whole FinCall-trained pipeline scored,
+with no retraining, on calls that postdate every model's training cutoff.
+
+===== 09-results-a =====
+The tables in this section use FinCall-Surprise, the v target and the
+trading-day definition. MAEC, the level target, MSE, the calendar-day definition
+and every other model are in Appendix N and in the supplement,
+regenerated from the released CSVs.
+
+The baseline to beat. 
+HAR-RV is strong everywhere except one cell (Table N). On the FinCall
+temporal split at =30, the training period includes the COVID spike and
+the test year (2021) is calm, so every long-horizon forecast of the volatility
+level, ours and every content model, does worse than persistence. The same models
+do fine on the ticker-disjoint split and on MAEC, so we treat this as a regime
+effect and note it. On the measured anchor a constant (the training mean) already
+scores 0.17, 0.16, 0.06 and 0.09 on the temporal split and 0.20, 0.20, 0.13 and
+0.04 on the ticker-disjoint split. That is the reference for every v
+claim below.
+
+Text models read the company, not the call (Table N
+The text-only ridge scores about the same as the constant on both splits and never
+comes within 0.09 of HAR-RV. The MLPs overfit. Adding text features to the
+past-volatility ridge makes it worse in all eight cells. A linear probe
+recovers the ticker from the frozen call embedding 89.5% of the time on FinCall
+and 53.9% on MAEC. On the temporal split, where test companies also appear in
+training, giving each test call the transcript of another call by the same
+company changes the score by at most 0.02, while a random transcript hurts. The
+model is reading which company is speaking. On the ticker-disjoint split the
+same-company swap does hurt at 15, so there is some call-specific signal
+for companies the model has never seen, but it stays below the past-volatility
+baseline and disappears once past volatility is in the model (0.301 against 0.318
+at =30). MAEC shows the same pattern.
+
+===== 10-results-b =====
+Audio adds nothing to past volatility. 
+Audio-only ridges on eGeMAPS, WavLM-Large and emotion2vec+ stay within 0.10 of the
+constant at every horizon on both splits and never beat it by more than 0.02.
+Adding WavLM to the past-volatility ridge makes it worse in all eight cells. In the
+audio-swap check (Table N, bottom), the model with past volatility
+keeps its score at =3 when every test call is given a random other
+company's audio (0.456 to 0.453). At longer horizons the swap costs more, but the
+model with real audio is still below the ridge with past volatility alone, so
+whatever the audio contributes does not add to the baseline. A probe still
+recovers the ticker from pooled WavLM embeddings 76.3% of the time. A gender
+check (dominant-speaker pitch proxy) finds no error gap (test MSE 0.243 against
+0.239). Rerun on Earnings25 by bitrate, the gain from real over randomly swapped
+audio never exceeds 0.03, is negative in 7 of 12 cells, and is no larger at
+64 kbps than at lower bitrates (Appendix Table N). The
+FinCall result is not an artefact of its 40 kbps audio.
+
+Combining modalities. 
+Gated fusion is worse than its inputs everywhere. The stacking model is the best
+content model but stays below HAR-RV in six of eight cells. It beats HAR-RV only in
+the COVID cell (0.100, still below the past-volatility ridge at 0.113) and at
+ticker-disjoint =30 (0.396 against 0.345, Holm p=0.003 against
+Stage 1, with no pre-registered test against HAR-RV). It beats the text and audio
+stages in seven of eight cells but not the past-volatility stage. So a multimodal
+model is not better than the best single-input model when that input is past
+volatility, and the condition we set in advance for a positive paper (gains
+surviving the checks on at least two of four horizons) was not met.
+
+===== 11-results-c =====
+The field's own models (Table N
+Among the five papers we could run, the results that reproduce belong to
+price-only or same-company models (Appendix N).
+Same-Company-Same-Signal reproduces from its shipped data. TSMixer matches to
+10-5 and TMLP within 0.02 (including their own within-company swap result),
+and its training-free same-company history comes within 0.05 of KeFVP's published
+MSE at every horizon on EC and MAEC-15 with no text and no training, a model that
+has no meaning once companies are held out. KeFVP, a price-series model
+conditioned on text with its audio branch disabled in its own code, reproduces
+seven of eight MAEC cells within one published standard deviation. Its EC row, run
+without the knowledge-enhanced embeddings that are no longer available, is above
+all four published cells and we do not count it. HTML's released driver shuffles
+features and labels independently without a seed, so it cannot have produced the
+published table, and with the authors' model classes unchanged the published
+recipe underfits at 15 on every split. The published ensemble of
+[ref] can be reached only because its untrained text and audio
+branches act as an intercept on a finance SVR whose mixing weights the code tunes
+on the test set. Under our checks (Table N), holding companies
+out costs the three text models 12-82% in MSE while TSMixer and KeFVP do not
+move, although their training sets are as large (EC) or cut by the same third
+(DEC, MAEC). The gap between training and test moves models by at most 13%.
+HTML's own trained model changes by at most 4% when a test transcript is swapped
+for another call by the same company, against 9-23% for a different company's
+call. What HTML reads from a transcript is which company is speaking.
+
+===== 12-results-d =====
+After the cutoff (Table N
+We scored the FinCall-trained models, unchanged, on 475 Earnings25 calls from late
+2025, after every model's training cutoff and on companies none had seen. On the
+level target, no model that was competitive before the cutoff got worse. HAR-RV
+rose from 0.44, 0.37, 0.14 and -0.29 to 0.60, 0.54, 0.35 and 0.08, and the
+content ridges rose with it (only the fusion ridge is unstable, at =30).
+Levels are not comparable across the cutoff (different years and companies), but
+the ordering is, and it holds. HAR-RV beats every content model at every horizon,
+and no content model that was competitive before the cutoff collapses after it.
+Under the call-date anchor of the published label sets, the same frozen models
+collapse before the cutoff (text plus past volatility on v falls to
+between -1.7 and -3.6, Appendix Table N), because
+the reaction session then sits inside the past-volatility features.
+
+===== 13-discussion =====
+Four things hold across the whole set of models. Classical volatility forecasts
+are hard to beat, and measuring against persistence exposes a regime failure that
+raw MSE hides. Text features add nothing to past volatility, because the
+embeddings identify the company, and where companies recur in training, swapping
+in another call by the same company changes nothing. Audio features add nothing
+either, at 40 kbps or 64 kbps, even though they too identify the company, and
+combining them does not help. None of this could be seen with the files the field
+has been using. The same checks on the field's own code and data give the same
+answer. What reproduces is price-only models or same-company history, and the
+text models lose their edge as soon as the company is new. The strongest recent
+positive results [ref] report no identity checks and
+release no code. The audit predictions command makes the check cheap. We
+do not claim that transcripts and audio carry no information about a company's
+risk. We claim that the benchmarks in use cannot tell that information apart from
+knowing which company is speaking, and that once they can, nothing yet built
+beats a forecast from past volatility.
+
+===== 14-limitations =====
+One post-cutoff quarter. The post-cutoff test rests on 475 calls from a
+single calm quarter and a different universe from the training corpus, so it
+bounds contamination in the ordering of models, not in their absolute scores.
+Reproductions run on their own data, not on ecvol-bench, to keep "the
+model fails" separable from "the model does not transfer". Two carry known
+costs. KeFVP's released EC embeddings are unavailable upstream, and DialogueGAT's
+corpus was never released, so our port stops at its protocol. MLP heads
+are seed-unstable (standard deviation of R2 across seeds up to 6.8 on the
+level target and 1.1 on v), which is why the grid uses deterministic
+models. MLP cells in the appendix are seed means with that caveat.
+Short-horizon R2 inflation. The persistence denominator is noisiest
+at =3 (its MSE is about 2.8 times that at =7), so short-horizon
+gains are easier to show. Timestamps. 10.7% of FinCall and 31.4% of
+MAEC calls have no Item 2.02 filing in the window and keep a flagged after-hours
+fallback, and intraday releases are treated as after-hours. Results under the
+call-date anchor of prior label sets are not interchangeable with ours, and the
+call-date targets are shipped as a variant. Regime sensitivity.
+FinCall-Surprise spans COVID. The temporal =30 failure shows that
+long-horizon level forecasts are regime-sensitive, which is why we emphasise
+ v and per-year breakdowns. MAEC coverage. Its 78.6% price-join
+rate (2015-2018 delistings) makes it a secondary corpus, and it ships no raw
+audio. Source audio. Every FinCall file is a 40 kbps MP3 transcode and
+Earnings25 is 64 kbps or lower, so no result here is established on lossless
+audio. No diarisation. Audio is pooled per call, and the gender analysis
+uses a dominant-speaker pitch proxy. Identity reconstruction is
+imperfect. 7.1% of FinCall calls remain unresolved and are excluded with a
+reason code.
+
