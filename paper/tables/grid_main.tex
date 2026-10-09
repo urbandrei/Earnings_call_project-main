@@ -29,11 +29,11 @@ S4 stack fusion & 0.531 & 0.465 & 0.340 & 0.396* \\
 \bottomrule
 \end{tabular}
 \caption{\textbf{The ladder on FinCall-Surprise.} \Rtwo{} vs.\ persistence on
-$\Delta v$ (test); persistence is 0 by construction, the train-mean intercept is the
-featureless floor. One pre-registered canonical model per stage (the Stage-3 ridge
-uses WavLM and eGeMAPS); $*$/\dag: Holm-corrected Diebold--Mariano better/worse
-than Stage~1 ($p<0.05$). Adding text or
-audio to the past-volatility ridge (S0$'$) lowers \Rtwo{} in every cell. Full grid,
-MAEC, level-$v$, MSE and MLP heads: Appendix~\ref{app:complete}.}
+$\Delta v$ (test). Persistence is 0 by construction, and the train-mean intercept
+is the featureless floor. One pre-registered canonical model per stage (the Stage-3
+ridge uses WavLM and eGeMAPS). An asterisk or dagger marks a Holm-corrected
+Diebold--Mariano result better or worse than Stage~1 ($p<0.05$). Adding text or
+audio to the past-volatility ridge (S0$'$) lowers \Rtwo{} in every cell. The full
+grid, MAEC, level-$v$, MSE and the MLP heads are in Appendix~\ref{app:complete}.}
 \label{tab:grid}
 \end{table}

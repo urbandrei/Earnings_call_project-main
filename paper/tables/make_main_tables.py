@@ -50,12 +50,12 @@ Model & $\tau$=3 & $\tau$=7 & $\tau$=15 & $\tau$=30 \\
 \bottomrule
 \end{tabular}
 \caption{\textbf{The ladder on FinCall-Surprise.} \Rtwo{} vs.\ persistence on
-$\Delta v$ (test); persistence is 0 by construction, the train-mean intercept is the
-featureless floor. One pre-registered canonical model per stage (the Stage-3 ridge
-uses WavLM and eGeMAPS); $*$/\dag: Holm-corrected Diebold--Mariano better/worse
-than Stage~1 ($p<0.05$). Adding text or
-audio to the past-volatility ridge (S0$'$) lowers \Rtwo{} in every cell. Full grid,
-MAEC, level-$v$, MSE and MLP heads: Appendix~\ref{app:complete}.}
+$\Delta v$ (test). Persistence is 0 by construction, and the train-mean intercept
+is the featureless floor. One pre-registered canonical model per stage (the Stage-3
+ridge uses WavLM and eGeMAPS). An asterisk or dagger marks a Holm-corrected
+Diebold--Mariano result better or worse than Stage~1 ($p<0.05$). Adding text or
+audio to the past-volatility ridge (S0$'$) lowers \Rtwo{} in every cell. The full
+grid, MAEC, level-$v$, MSE and the MLP heads are in Appendix~\ref{app:complete}.}
 \label{tab:grid}
 \end{table}
 """
@@ -140,12 +140,12 @@ Content swap (\Rtwo{} on $\Delta v$) & $\tau$=3 & $\tau$=7 & $\tau$=15 & $\tau$=
 @SHUF@
 \bottomrule
 \end{tabular}
-\caption{\textbf{Identity checks.} Top: frozen embeddings identify the company
-far above chance. Bottom: where companies recur (temporal), giving a test call
-another call by the \emph{same} company barely changes the text model, while a
-random call hurts; on the \tickerdisjoint{} split the text model's remaining
-signal at $\tau\ge15$ sits below the past-volatility baseline of
-Table~\ref{tab:grid}.}
+\caption{\textbf{Identity checks.} The top block shows that frozen embeddings
+identify the company far above chance. The bottom block shows that where
+companies recur (temporal), giving a test call another call by the \emph{same}
+company barely changes the text model, while a random call hurts. On the
+\tickerdisjoint{} split the text model's remaining signal at $\tau\ge15$ sits
+below the past-volatility baseline of Table~\ref{tab:grid}.}
 \label{tab:controls}
 \end{table}
 """
@@ -259,7 +259,7 @@ Model (data), change in test MSE & $\tau$=3 & $\tau$=7 & $\tau$=15 & $\tau$=30 \
 Table~6R-C). Each row keeps the configuration of Appendix Table~\ref{tab:faithful}
 and changes only the split. Holding companies out costs every text model 12--82\%
 and leaves the price-dominated models unchanged, with held-out training sets as
-large (EC) or cut by the same third (DEC, MAEC). Absolute values: Appendix
+large (EC) or cut by the same third (DEC, MAEC). Absolute values are in Appendix
 Table~\ref{tab:repro-controls}.}
 \label{tab:repro-main}
 \end{table}
@@ -310,10 +310,10 @@ Model & cutoff & $\tau$=3 & $\tau$=7 & $\tau$=15 & $\tau$=30 \\
 \bottomrule
 \end{tabular}
 \caption{\textbf{Frozen-pipeline post-cutoff evaluation} (Result Table~7).
-Heads fit once on FinCall's training split, scored unchanged in-cutoff (the 2021
-FinCall test year) and post-cutoff (475 Earnings25 calls, late 2025); level-$v$,
-\Rtwo{} vs.\ persistence. The ordering survives the cutoff; bootstrap CIs and
-$\Delta v$ rows are in the released CSV.}
+Heads fit once on FinCall's training split and scored unchanged before the cutoff
+(the 2021 FinCall test year) and after it (475 Earnings25 calls, late 2025), on the
+level target, \Rtwo{} vs.\ persistence. The ordering survives the cutoff.
+Bootstrap confidence intervals and the $\Delta v$ rows are in the released CSV.}
 \label{tab:lookahead}
 \end{table}
 """

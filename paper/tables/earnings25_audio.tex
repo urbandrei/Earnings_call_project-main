@@ -22,15 +22,15 @@ Stratum & calls (test) & & $\tau$=3 & $\tau$=7 & $\tau$=15 & $\tau$=30 \\
  & & \textbf{increment} & \textbf{$-$0.100} & \textbf{$-$0.026} & \textbf{$-$0.001} & \textbf{0.018} \\
 \bottomrule
 \end{tabular}
-\caption{\textbf{Audio on Earnings25 by bitrate stratum} (T9.4; $R^2_{\mathrm{OOS}}$ vs.\
-persistence, $\Delta v$, ridge on WavLM + past-vol, ticker-disjoint test). The
-within-ticker shuffle is the identity here (one call per company), so the global
-shuffle is the control. Call counts are inventory calls with audio at that bitrate
-(one call at 32\,kbps sits in neither stratum); the heads see the 475 admitted,
-priced calls, and the test count is their ticker-disjoint segment. The audio
-increment never exceeds 0.03, is negative in 7 of the 12 cells, and has no
-consistent sign across strata; the 64 kbps stratum is not better than the
-$\le$24 kbps one. Full grid (eGeMAPS, emotion2vec+, fusion, MLP heads, all
-targets): \texttt{result\_table\_3\_earnings25.csv}.}
+\caption{\textbf{Audio on Earnings25 by bitrate stratum} (T9.4). \Rtwo{} vs.\
+persistence on $\Delta v$ for the ridge on WavLM plus past volatility,
+ticker-disjoint test. With one call per company the same-company swap is the
+identity, so the random swap is the check. Call counts are inventory calls with
+audio at that bitrate (one call at 32\,kbps sits in neither stratum). The heads see
+the 475 admitted, priced calls, and the test count is their ticker-disjoint segment.
+The audio increment never exceeds 0.03, is negative in 7 of the 12 cells, and has no
+consistent sign across strata. The 64\,kbps stratum is not better than the
+$\le$24\,kbps one. The full grid (eGeMAPS, emotion2vec+, fusion, MLP heads, all
+targets) is in \texttt{result\_table\_3\_earnings25.csv}.}
 \label{tab:earnings25-audio}
 \end{table*}

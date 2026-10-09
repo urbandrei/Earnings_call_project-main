@@ -29,13 +29,13 @@ Global shuffle        & 0.453 & 0.323 & 0.164 & 0.099 \\
 \bottomrule
 \end{tabular}
 \caption{\textbf{Audio content (Stage 3).} \Rtwo{} vs.\ persistence on the \dv{}
-target, FinCall-Surprise (test). Audio-only heads match the train-mean intercept
-(0.165/0.158/0.060/0.088 temporal; 0.200/0.201/0.132/0.035 \tickerdisjoint) to
-within 0.01; the past-vol-augmented head is below the past-vol-only ridge
-(Table~\ref{tab:text}) in every cell, and at $\tau\le7$ keeps its score when every
-test call receives a \emph{random other company's} audio (global shuffle, bottom
-block), so past volatility, not audio content, carries it. $*$: Diebold--Mariano significant
-vs.\ the Stage-1 ticker-FE GBDT ($p<0.05$; read direction from the value). Full head
-set in Appendix~\ref{app:complete}.}
+target, FinCall-Surprise (test). Audio-only heads stay within 0.10 of the train-mean
+constant and never beat it by more than 0.02. The head with past volatility is below
+the past-volatility-only ridge of Table~\ref{tab:text} in every cell, and at
+$\tau{=}3$ it keeps its score when every test call receives a random other
+company's audio (bottom block), so past volatility rather than audio content
+carries it. Asterisks mark Diebold--Mariano significance vs.\ the Stage-1 ticker-FE
+GBDT ($p<0.05$, read the direction from the value). Full head set in
+Appendix~\ref{app:complete}.}
 \label{tab:audio}
 \end{table}

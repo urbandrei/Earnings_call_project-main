@@ -59,7 +59,7 @@ PAPERS: tuple[Paper, ...] = (
         "partial",
         "model classes run verbatim; the released driver imports TensorFlow-1 set_random_seed "
         "and torchtext and splits features and labels with independent unseeded shuffles; "
-        "inputs (WWM-BERT .npy, Praat features) behind dead Drive links — rebuilt; run with a "
+        "inputs (WWM-BERT .npy, Praat features) behind dead Drive links, rebuilt; run with a "
         "corrected driver (T6R.3)",
         "ecvol reproduce html-faithful; ecvol reproduce html",
     ),

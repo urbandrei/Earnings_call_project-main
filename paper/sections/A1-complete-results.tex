@@ -11,7 +11,7 @@ copy cells from those CSVs (\texttt{REPRODUCE.md} lists the command behind each)
 
 \input{figures/pipeline}
 
-\subsection{Stages 0--3: all models}
+\subsection{All models of Stages 0--3}
 Tables~\ref{tab:baselines}, \ref{tab:text} and~\ref{tab:audio} give the full
 Stage-0/1, Stage-2 and Stage-3 model sets on the $\Delta v$ target, including the
 past-volatility-only and MLP heads omitted from Table~\ref{tab:grid}.
@@ -23,9 +23,9 @@ Table~\ref{tab:grid} against the train-mean constant.
 \centering
 \includegraphics[width=\textwidth]{figures/fig_ladder.pdf}
 \caption{\textbf{The ladder.} \Rtwo{} vs.\ persistence on $\Delta v$ (FinCall
-test) for the canonical model of each stage; the shaded band is the train-mean
+test) for the canonical model of each stage. The shaded band is the train-mean
 constant. No content stage clears HAR-RV on the temporal split, and on the
-\tickerdisjoint{} split only the fusion stack does, at $\tau{=}30$. Data:
+\tickerdisjoint{} split only the fusion stack does, at $\tau{=}30$. Data from
 Table~\ref{tab:grid}.}
 \label{fig:ladder}
 \end{figure*}
@@ -110,7 +110,7 @@ block absorbs the reaction session that the after-hours rule leaves inside the
 pre-window for before-open calls. On $\Delta v$ at $\tau{=}30$ the frozen
 WavLM$+$past-volatility model is the only content model whose post-cutoff
 confidence interval excludes zero under the measured anchor (0.18, CI 0.14--0.24,
-against HAR's 0.08; the constant also scores 0.18 there).
+against HAR's 0.08, and the constant also scores 0.18 there).
 That is a single-quarter observation without a Diebold--Mariano test and we report
 it as exploratory.
 \input{tables/lookahead_assumed}

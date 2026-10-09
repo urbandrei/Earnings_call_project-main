@@ -24,13 +24,13 @@ FinCall & 0.444 / 0.419 & 0.372 / 0.402 & 0.138 / 0.275 & $-$0.285 / $-$0.053 \\
 MAEC    & 0.603 / 0.562 & 0.486 / 0.502 & 0.321 / 0.400 & 0.221 / 0.265 \\
 \bottomrule
 \end{tabular}
-\caption{Horizon convention delta. The calendar-day windows of \citet{qin2019what}
-hold $\sim$0.7$\tau$ sessions; at $\tau{=}3$ 43\% of the calls have at most one
-post-call session and are excluded. Persistence MSE (the leaderboard's metric)
-rises by 44--63\% at $\tau{=}3$ under the calendar convention, so published MSE
-values are not comparable across conventions; the FinCall temporal $\tau{=}30$
-deficit of HAR-RV against persistence (the COVID-regime cell, \S\ref{sec:results})
-holds under both conventions ($-$0.285 / $-$0.053). Full model $\times$ horizon views under both
-conventions: \texttt{data/results/result\_table\_1.tex}.}
+\caption{Horizon definition. The calendar-day windows of \citet{qin2019what}
+hold about $0.7\tau$ sessions, and at $\tau{=}3$ 43\% of the calls have at most one
+post-call session and are excluded. The persistence MSE, the leaderboard's metric,
+rises by 44--63\% at $\tau{=}3$ under calendar days, so published MSE values are not
+comparable across definitions. The FinCall temporal $\tau{=}30$ deficit of HAR-RV
+against persistence (the COVID-regime cell, \S\ref{sec:results}) holds under both
+definitions ($-$0.285 and $-$0.053). The full model and horizon grid under both
+definitions is in the supplement.}
 \label{tab:convention}
 \end{table*}
