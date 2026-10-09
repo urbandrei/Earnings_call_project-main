@@ -51,8 +51,9 @@ Model & $\tau$=3 & $\tau$=7 & $\tau$=15 & $\tau$=30 \\
 \end{tabular}
 \caption{\textbf{The ladder on FinCall-Surprise.} \Rtwo{} vs.\ persistence on
 $\Delta v$ (test); persistence is 0 by construction, the train-mean intercept is the
-featureless floor. One pre-registered canonical model per stage; $*$/\dag:
-Holm-corrected Diebold--Mariano better/worse than Stage~1 ($p<0.05$). Adding text or
+featureless floor. One pre-registered canonical model per stage (the Stage-3 ridge
+uses WavLM and eGeMAPS); $*$/\dag: Holm-corrected Diebold--Mariano better/worse
+than Stage~1 ($p<0.05$). Adding text or
 audio to the past-volatility ridge (S0$'$) lowers \Rtwo{} in every cell. Full grid,
 MAEC, level-$v$, MSE and MLP heads: Appendix~\ref{app:complete}.}
 \label{tab:grid}
@@ -98,7 +99,7 @@ def grid_main() -> None:
         for stage, name in (
             ("S1_GBDT", "S1 GBDT (ticker FE)"),
             ("S2_text", "S2 text ridge + vol"),
-            ("S3_audio", "S3 WavLM+eGeMAPS ridge + vol"),
+            ("S3_audio", "S3 audio ridge + vol"),
             ("S4_fusion", "S4 stack fusion"),
         ):
             cells = []
