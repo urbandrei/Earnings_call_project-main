@@ -5,9 +5,9 @@ This appendix holds the full set of models behind each main-text table, the
 horizon-definition comparison, the reproduction study in detail, the Earnings25
 bitrate study, the call-date-anchor variant of the post-cutoff test, and the
 code-availability audit. The complete generated grids (Result Tables 1--4, every
-corpus, target, metric, split and horizon) are in the separate supplement, and
-every table regenerates from a released result CSV with a run record
-(\texttt{ecvol report}; \texttt{REPRODUCE.md} lists one command per table).
+corpus, target, metric, split and horizon) are in the separate supplement. Every
+number traces to a released result CSV with a run record, and the curated tables
+copy cells from those CSVs (\texttt{REPRODUCE.md} lists the command behind each).
 
 \input{figures/pipeline}
 
@@ -40,18 +40,18 @@ the code-availability audit of the seventeen papers.
 
 \textbf{Same-Company-Same-Signal} reproduces. Its TSMixer baseline matches the 76
 published cells to a median $10^{-5}$ from the shipped data alone. Its TMLP text
-model on the authors' OpenAI embeddings matches per-window means within 0.02 and
+model on the authors' OpenAI embeddings matches per-window means within 0.03 and
 recovers the paper's finding that embeddings swapped within a company do as well
 as the real ones. Its training-free baselines on EC and MAEC reproduce all 48
 published cells at the notebook's rounding. \textbf{HTML} does not. The released
-driver splits features and labels with three independent unseeded shuffles, and
-with the authors' model classes unchanged on rebuilt inputs the published recipe
-(ten epochs, learning rate $2{\times}10^{-5}$, raw log-volatility targets) is still
-converging at epoch ten. It beats the paper only at $\tau{=}3$ on a random split
-with dropout 0, never reaches persistence at $\tau\ge15$ on any split, and on the
-VolTAGE split every later paper inherited it is worse than persistence at every
-horizon. Its text$+$audio row reproduces under the shipped code's random split and
-under no other. \textbf{Sawhney et al.} cannot run as released (an unshipped call
+driver splits features and labels with three independent unseeded shuffles. With
+the authors' model classes unchanged on rebuilt inputs, the published recipe (ten
+epochs, learning rate $2{\times}10^{-5}$, raw log-volatility targets) beats the
+published number only at $\tau{=}3$ and $\tau{=}7$ on the shipped code's random
+split with dropout 0, reaches the published 15- and 30-day values on no split, and
+on the VolTAGE split every later paper inherited it is worse than persistence at
+every horizon except $\tau{=}3$. Its text$+$audio row reproduces under the shipped
+code's random split and under no other. \textbf{Sawhney et al.} cannot run as released (an unshipped call
 inventory, price files and lexicons, and a TensorFlow~2.1 stack). Ported, the
 finance SVR alone gives 0.712/0.370/0.218/0.154, the text and audio branches are
 untrained after the two and one epochs the scripts prescribe, and the published
@@ -60,7 +60,7 @@ test set, where an untrained branch's near-constant output acts as an intercept.
 \textbf{DialogueGAT}'s corpus and labels were never released. Ported onto
 FinCall's speaker turns under the paper's per-year protocol, it beats persistence
 at short horizons and collapses on the 2020 split. \textbf{KeFVP}'s released
-script needed six import-level repairs before it would start. Its MAEC rows use
+script needed five release-defect patches before it would start. Its MAEC rows use
 sentence embeddings regenerated with the authors' own generator because the
 released ones were never published, and seven of eight cells fall within one
 published standard deviation (the eighth, MAEC-16 at $\tau{=}15$, is the row of
@@ -68,9 +68,9 @@ their table that does not average to its own stated mean). On EC the released
 KePt embeddings are unavailable upstream (the linked folder is empty). With
 BERT-large pooler embeddings from the same generator, which is KeFVP without its
 knowledge-enhanced pre-training, the mean test MSE is 0.651/0.302/0.194/0.127
-against the published 0.610/0.291/0.183/0.114, within one of our repeat standard
-deviations but above all four published means, so the row is not counted as
-reproduced.
+against the published 0.610/0.291/0.183/0.114, above all four published means and
+within one of our repeat standard deviations at only two horizons, so the row is
+not counted as reproduced.
 
 Under the checks, the 30-session gap removes half to two thirds of KeFVP's MAEC
 training calls, so those rows cannot separate leakage from data loss and are left
@@ -93,8 +93,9 @@ label set uses. HAR-RV barely moves, but the ridge models that carry a learned
 past-volatility block collapse before the cutoff under that anchor, because the
 block absorbs the reaction session that the after-hours rule leaves inside the
 pre-window for before-open calls. On $\Delta v$ at $\tau{=}30$ the frozen
-WavLM$+$past-volatility model is the only one whose post-cutoff confidence interval
-excludes zero under the measured anchor (0.18, CI 0.14--0.24, against HAR's 0.08).
+WavLM$+$past-volatility model is the only content model whose post-cutoff
+confidence interval excludes zero under the measured anchor (0.18, CI 0.14--0.24,
+against HAR's 0.08; the constant also scores 0.18 there).
 That is a single-quarter observation without a Diebold--Mariano test and we report
 it as exploratory.
 \input{tables/lookahead_assumed}

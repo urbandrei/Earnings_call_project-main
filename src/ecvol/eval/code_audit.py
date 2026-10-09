@@ -90,8 +90,8 @@ PAPERS: tuple[Paper, ...] = (
         "EMNLP Findings 2023",
         "hankniu01/KeFVP",
         "partial",
-        "requirements.txt does not install as written; the script starts only after six "
-        "import-level repairs (missing set_seed, package init importing undefined names, a "
+        "requirements.txt does not install as written; the script starts only after five "
+        "release-defect patches (missing set_seed, package init importing undefined names, a "
         "dropped class header, an unreleased `latent` package, plotting imports); MAEC "
         "embeddings never released (regenerated with the authors' generator); EC KePt pickle "
         "Drive-only (T6R.3)",

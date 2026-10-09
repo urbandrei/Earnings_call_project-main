@@ -98,7 +98,7 @@ def grid_main() -> None:
         for stage, name in (
             ("S1_GBDT", "S1 GBDT (ticker FE)"),
             ("S2_text", "S2 text ridge + vol"),
-            ("S3_audio", "S3 WavLM ridge + vol"),
+            ("S3_audio", "S3 WavLM+eGeMAPS ridge + vol"),
             ("S4_fusion", "S4 stack fusion"),
         ):
             cells = []

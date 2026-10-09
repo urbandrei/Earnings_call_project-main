@@ -73,6 +73,7 @@ ecvol audio emotion2vec --dataset {fincall,earnings25}
 | 6R-F: KeFVP (authors' final_series_infer.py) | `ecvol reproduce kefvp --dataset ec,15,16` | `result_table_6r_kefvp.csv` | `configs/reproduce-kefvp.yaml` |
 | 6R-F: Sawhney 2020 (PyTorch port) | `ecvol reproduce sawhney` | `result_table_6r_sawhney.csv` | `configs/reproduce-sawhney.yaml` |
 | 6R-F: DialogueGAT (PyG port on FinCall) | `ecvol reproduce dialoguegat` (gpu group) | `result_table_6r_dialoguegat.csv` | `configs/reproduce-dialoguegat.yaml` |
+| 6R-C: the reproduced models under the embargoed / ticker-disjoint controls (T6R.4) | `ecvol reproduce html-faithful --conditions ... [--shuffle]` · `sawhney --conditions ...` · `dialoguegat --conditions ...` · `ecvol reproduce scss-controls` · `ecvol reproduce kefvp-controls` | `result_table_6r_html_faithful.csv`, `result_table_6r_sawhney.csv`, `result_table_6r_dialoguegat.csv`, `result_table_6r_scss_{tmlp,tsmixer}_controls.csv`, `result_table_6r_kefvp_controls.csv` | the same configs; protocol and run ids in `docs/faithful_ledger.md` |
 
 Curated paper tables under `paper/tables/*.tex` copy cells from these CSVs; the header comment of
 each names its source file and run id.

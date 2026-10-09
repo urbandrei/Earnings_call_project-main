@@ -16,9 +16,9 @@ time and in company, and includes a set of identity checks that run on any file
 of predictions. With these checks in place, modern open text and audio models add
 nothing to a forecast built from past volatility alone. Text embeddings mostly
 identify which company is talking (89.5\% probe accuracy), audio features do no
-better than a constant, and combining the two helps in one horizon out of eight.
-When we rerun the field's own models on their own data, the text models lose
-12--82\% in accuracy once test companies are unseen, while price-only models do
-not move. Scoring the frozen pipeline on 475 calls from late 2025, after every
+better than a constant, and combining the two beats the classical forecast in two
+of eight cells, one of them a regime outlier. When we rerun the field's own models
+on their own data, the text models lose 12--82\% in accuracy once test companies
+are unseen, while price-only models lose nothing. Scoring the frozen pipeline on 475 calls from late 2025, after every
 model's training cutoff, changes none of this. All code, metadata, splits,
 targets, features and result tables are released.

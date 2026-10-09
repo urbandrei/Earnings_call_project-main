@@ -19,8 +19,8 @@ without a block of past-volatility features ($v_{\mathrm{pre}}$ at all horizons
 plus the HAR-RV inputs). The prediction heads are a ridge regression, with its
 penalty chosen on validation, and a small MLP run with five seeds. The MLPs are
 unstable across seeds (standard deviation of \Rtwo{} up to 6.8), so the main grid
-uses one deterministic model per stage, chosen before the results were known. MLP
-cells are in Appendix~\ref{app:complete}.
+uses one deterministic model per stage, chosen by a rule recorded in the decision
+log. MLP cells are in Appendix~\ref{app:complete}.
 
 \paragraph{Metrics and tests.}
 We report MSE on log realised volatility and, as the headline metric, \Rtwo{}
@@ -46,8 +46,8 @@ unchanged, the model was reading nothing. A linear \emph{probe} measures how muc
 identity the frozen call embedding carries by trying to recover the ticker from
 it. Finally, every table shows \tickerdisjoint{} results next to temporal ones.
 The command
-\texttt{ecvol audit predictions} runs the prediction-side versions of these
-checks, plus split integrity, seen-versus-unseen companies, the between-company
+\texttt{ecvol audit predictions} runs the prediction-side versions of the
+company-only and swap checks, plus split integrity, seen-versus-unseen companies, the between-company
 share of prediction variance and company-clustered significance, on any file with
 one row per (call, ticker, date, split, horizon, truth, prediction). A published
 result can therefore be checked from the one file its authors already have.
