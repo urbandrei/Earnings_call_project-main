@@ -78,3 +78,18 @@ Remaining open note: page-reference R18's 14% figure at its citation site during
 writing.
 
 **Slides check:** the deck names only Qin & Yang 2019, HTML, MAEC, KeFVP, ECC Analyzer, "Same Company, Same Signal" (2024), Corsi 2009, Diebold-Mariano, and the model/tool names — all verified above; no year or title stated in the slides is contradicted by the fetched records.
+
+---
+
+# Reference audit — 2026-10-09 (condensed paper, 30 cited entries)
+
+**Method.** Every entry cited in the five-page main text (30 of the 44 keys in `refs.bib`; the other 14 are not cited and therefore not printed) was opened in Chrome: ACL Anthology pages (citation_* metadata), arXiv abstract pages (citation_* metadata), the Crossref API for the six DOI-only entries (ACM DL sits behind a bot challenge, which was not bypassed), the Zenodo record for Earnings25, and the Hugging Face / GitHub pages for the model and tool entries. The citing sentence of each entry was then compared with the source's abstract or full text.
+
+**Existence and bibliographic accuracy: 30/30 exist; 29/30 match on title, authors, venue and year.** Notes: `corsi2009har` is issued online 2008-11 and printed in vol. 7 (2009), so 2009 is correct; `cao2024ecc` cites the ICAIF 2024 proceedings title (confirmed via Crossref) but its `url` points to the arXiv version, whose title is the older variant ("Extract Trading Signal ... Stock Performance Prediction"); `jiang2026earnings25`'s "Interspeech 2026" and CC-BY-4.0 are confirmed on the Zenodo record (not on the arXiv page); `wavlm`'s "(MIT)" licence tag was not visible on the Hugging Face page and remains unconfirmed; `ama2024`'s NAACL 2024 Industry venue is confirmed on the Anthology.
+
+**Relevance: 29/30 citing sentences are supported by the source. One is not.**
+- **`finnlp2025survey` — MISATTRIBUTED STATISTIC.** The paper says "A survey of financial NLP found that only about 14% of reported results could be reproduced (Tatarinov et al., 2025)". The survey's full text (arXiv HTML, 111k characters) contains no "14%", no "fourteen" and no reproduction-rate figure. It discusses reproducibility qualitatively (discontinued APIs such as Yahoo Finance, inactive links, empty repositories, growing code/data sharing since 2021). The 14% figure has been in the draft since the long version ("only ~14% of reported results reproduce exactly, attributing the gap to dead data links, API drift, and contamination") and its origin is unknown. Not changed in this pass (user instruction); it must be either sourced or reworded before submission.
+- `memorization2025`: supported ("masking fails as LLMs reconstruct entities and dates from minimal context").
+- `fastnumbers2026`: supported (windows around each 8-K filing timestamp; 8-K precedes the call transcript by 30-90 min).
+- `ama2024`, `emobias2024`: supported (gender bias in multimodal volatility models; social bias in speech emotion recognition).
+- `scss2024`, `qin2019what`, `li2020maec`, `yang2020html`, `sawhney2020voltage`, `sang2022dialoguegat`, `niu2023kefvp`, `cao2024ecc`, `sawhney2020mm`, `soundofrisk2025`, `fincall2025`, `mmfineval2026`, `jiang2026earnings25`, `lookahead2025`, `datedgpt2026`, `lookaheadbench2026`, `corsi2009har`, `gukellyxiu2020`, `dm1995`, `bge2024`, `finbert`, `wavlm`, `emotion2vec`, `opensmile`: the citing sentences state what the sources are or do, as verified on their pages and in the code-availability audit.
