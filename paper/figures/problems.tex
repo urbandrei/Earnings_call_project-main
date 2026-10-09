@@ -48,19 +48,19 @@
    72\% (Earnings25) of calls.};
 \end{scope}
 % ================================================================ (b) company overlap
-\draw[black!25, line width=0.4pt] (8.1,-1.15) -- (8.1,3.95);
-\begin{scope}[xshift=9.0cm]
+\draw[black!25, line width=0.4pt] (8.6,-1.15) -- (8.6,3.95);
+\begin{scope}[xshift=9.5cm]
 \node[panel] at (0,3.8) {(b) Which companies are in the test set};
 \node[note] at (3.03,2.72) {train};
 \node[note] at (5.55,2.72) {test};
 % row 1: time-ordered
-\node[rowlab, align=right] at (1.45,1.85) {time-ordered split\\[-1pt]{\scriptsize (released split files)}};
+\node[rowlab, align=right] at (1.45,1.85) {time-ordered\\split\\[-1pt]{\scriptsize (released files)}};
 \foreach \i/\t/\s in {0/A/sess, 1/B/sess, 2/C/sess, 3/D/sess, 4/A/react, 5/B/react, 6/C/react}
   \node[\s, minimum width=6.0mm] (c\i) at (1.95+\i*0.72, 1.85) {\t};
 \draw[ink, dashed, line width=0.5pt] (4.47,0.15) -- (4.47,2.55);
 \node[note, anchor=west, align=left] at (6.75,1.85) {every test company\\also in training};
 % row 2: company-disjoint
-\node[rowlab, align=right] at (1.45,0.55) {company-disjoint split\\[-1pt]{\scriptsize (this benchmark)}};
+\node[rowlab, align=right] at (1.45,0.55) {company-disjoint\\split\\[-1pt]{\scriptsize (this benchmark)}};
 \foreach \i/\t in {0/A, 1/A, 2/B, 3/B, 4/E, 5/F, 6/F}
   \node[sess, minimum width=6.0mm] (d\i) at (1.95+\i*0.72, 0.55) {\t};
 \node[note, anchor=west, align=left] at (6.75,0.55) {no test company\\seen in training};
