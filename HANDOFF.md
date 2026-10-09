@@ -253,3 +253,12 @@ These come from the backlog scan; the loop will move each into **Active** when i
   C: before the next long run (nothing in this repository needs to be deleted).
 
 - **[RESOLVED 2026-09-21 → (a), see Resolved]** **2026-09-21 · T6R.3/K1 — CORRECTION: the 2026-09-09 request above cannot be fulfilled; no download is needed from you.** The Drive id `1F83bjiJKEpq_MYrc0lzQb9rOLgooz-5E` is a **folder** (`text_embedding`; the KeFVP README links it as `drive/folders/…`), which I had mis-recorded as a file link — that is why the page showed "No preview available" and no Download item. Opened as a folder in the signed-in browser it is **empty** ("Drop files here"): the authors' EC KePt embeddings are no longer (or never were) shared. The sibling folder `processed_dataset_for_kept` (`1Xe7Y64F04X9GkWMOSZmSmpV1f5I1ySgM`) *is* populated (~80 MB of pre-training pickles). Options now: (a) EC run with regenerated raw BERT embeddings via the authors' generator (the MAEC precedent, ~1–2 h, labelled substitution); (b) re-run their KePt pre-training from the populated folder, then embed EC (K4, several GPU hours, closest to the published setting); (c) reason-code the EC row as "released embeddings unavailable upstream". Awaiting your choice.
+
+- **2026-10-09 · T8.2 — condensed 5-page draft ready for your read; decisions still yours.** `paper/main.pdf` is the
+  condensed paper (5 pp main text + Limitations/Ethics/references + appendix); the long draft is tag
+  `paper-long-2026-10-09` / `paper/archive/main_long_2026-10-09.pdf`. Still pending from you (venue memo
+  `paper/venue_memo_2026-10.md` §6): (1) ARR cycle (Jan 2027 → ACL 2027 recommended); (2) preprint-first vs.
+  "no non-anonymous preprint"; (3) reviewer-of-record coauthor; (4) AI-assistance disclosure wording (checklist
+  E1); (5) EC dataset terms (`LICENSE-DATA.md`); (6) advisor/co-author review of the new draft; (7) push + CI
+  (the branch is far ahead of origin). Also: the paper is still on the home-made 10pt layout — switching to
+  `acl.sty` is a one-line change described in `paper/README.md` and will add ~20% length.
