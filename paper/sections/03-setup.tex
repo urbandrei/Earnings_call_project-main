@@ -1,0 +1,59 @@
+\section{Models, Protocol and Controls}
+\label{sec:setup}
+
+\paragraph{Ladder.}
+\textbf{Stage 0}: persistence ($\hat v=v_{\mathrm{pre}}$), a train-mean intercept,
+EWMA ($\lambda{=}0.94$), HAR-RV \citep{corsi2009har} and GARCH(1,1). \textbf{Stage
+1}: LightGBM over past-volatility features, transcript length, Q\&A turn count and
+a \textbf{ticker fixed effect}, the in-house identity baseline. \textbf{Stage 2}:
+transcripts segmented into prepared remarks, Q\&A and speaker turns; BGE-M3
+\citep{bge2024} section-pooled embeddings (1024-d), FinBERT \citep{finbert}
+sentiment aggregates and surface statistics. \textbf{Stage 3}: audio resampled to
+16\,kHz mono; eGeMAPSv02 functionals \citep{opensmile}, WavLM-Large \citep{wavlm}
+and emotion2vec+ \citep{emotion2vec} embeddings over 30\,s windows, mean-pooled per
+call. \textbf{Stage 4}: gated fusion and a
+late-fusion stack (meta-ridge over the text, audio and Stage-1 predictions, fit on
+validation). From Stage~2 upward every head is reported with and without a
+past-volatility block ($v_{\mathrm{pre}}$ at all horizons plus HAR-RV features);
+heads are ridge ($\alpha$ selected on validation) and a shallow MLP (5 seeds). The
+MLP heads are seed-unstable (across-seed \Rtwo{} std up to 6.8), so the grid uses
+one pre-registered deterministic canonical per stage; MLP cells are in
+Appendix~\ref{app:complete}.
+
+\paragraph{Metrics and tests.}
+We report MSE on log-RV and, as the headline, \Rtwo{} vs.\ persistence
+\citep{gukellyxiu2020}, $1-\sum(y-\hat y)^2/\sum(y-\hat y_{\mathrm{persist}})^2$.
+Because $\Delta v$ has a positive mean on the measured anchor, persistence
+($\Delta v{=}0$) is a weak floor there, so every $\Delta v$ claim is also stated
+against the train-mean intercept.
+Diebold--Mariano tests \citep{dm1995} with the HLN correction compare per-call
+squared errors against persistence and the preceding stage; confirmatory families
+(Stage-$k$ vs.\ Stage-1 on $\Delta v$ across horizons; Stage~4 vs.\ best unimodal;
+published vs.\ controlled split per reproduced model) are Holm-corrected. Per-year,
+COVID-exclusion, section and gender analyses are exploratory.
+
+\paragraph{Identity-control suite.}
+\label{sec:controls}
+(1)~A \emph{ticker-only} model predicts each company's training mean. (2)~A
+\emph{same-company shuffle} gives each test call the transcript or audio of another
+call of the same company; a \emph{global shuffle} gives it any other call. A model
+unchanged under the former reads identity; one unchanged under the latter reads
+nothing. (3)~A linear \emph{identity probe} predicts the ticker from frozen call
+embeddings. (4)~\tickerdisjoint{} results accompany temporal ones everywhere.
+\texttt{ecvol audit predictions} applies the prediction-space forms of these
+controls, plus split integrity, seen-vs-unseen companies, the between-company share
+of prediction variance and company-clustered significance, to any file of
+(call, ticker, date, split, horizon, truth, prediction) rows, so a published result
+can be audited from the one artefact its authors already have.
+
+\paragraph{Reproductions and post-cutoff tests.}
+Of seventeen papers in the lineage, one releases code that runs as released
+(Same-Company-Same-Signal), seven ship code needing repairs or unshipped inputs,
+and nine ship nothing usable (Table~\ref{tab:code-audit}). We re-run the five with
+usable code (HTML, KeFVP, Same-Company-Same-Signal, \citealp{sawhney2020mm},
+DialogueGAT) \emph{on their own data}, with the authors' code where it can be made
+to start and a line-by-line port where it cannot (every patch in a released ledger),
+first against the published number, then under an embargoed and a
+\tickerdisjoint{} split of the same data. Earnings25 supports two further tests: the
+frozen Stage-3 ladder by bitrate stratum, and the entire FinCall-trained pipeline
+scored, without retraining, on calls held after every encoder's knowledge cutoff.

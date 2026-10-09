@@ -1,94 +1,59 @@
 \section{Introduction}
 \label{sec:intro}
 
-Earnings conference calls are one of the few recurring events at which management
-speaks at length, semi-spontaneously, about a public company---in both \emph{what}
-is said (the transcript) and \emph{how} it is said (the audio). A line of research
-beginning with \citet{qin2019what} and continuing through HTML
-\citep{yang2020html}, MAEC \citep{li2020maec}, KeFVP \citep{niu2023kefvp}, and ECC
-Analyzer \citep{cao2024ecc} claims that multimodal models over this data predict
-post-call stock volatility better than classical methods.
+Earnings calls are the one recurring event at which management speaks at length,
+semi-spontaneously, about a public company, in both \emph{what} is said and
+\emph{how}. From \citet{qin2019what} through HTML \citep{yang2020html}, MAEC
+\citep{li2020maec}, VolTAGE \citep{sawhney2020voltage}, DialogueGAT
+\citep{sang2022dialoguegat}, KeFVP \citep{niu2023kefvp} and ECC Analyzer
+\citep{cao2024ecc}, a lineage of multimodal models reports beating classical
+methods at predicting the 3--30-day log realised volatility that follows a call.
+Two observations undercut that progress: \citet{scss2024} show that transcript
+representations mainly encode \emph{which company} is speaking and that
+training-free baselines on a company's own volatility history beat every transcript
+model, and only $\sim$14\% of reported financial-NLP results reproduce
+\citep{finnlp2025survey}.
 
-Two recent observations cast doubt on how much of that progress is real. First,
-\citet{scss2024} (``Same Company, Same Signal'') show that transcript
-representations used across this literature predominantly encode \emph{company
-identity} rather than content: same-ticker transcripts cluster tightly, and
-training-free baselines built on a company's own past volatility beat all
-transcript-based models on their evaluation. Because volatility is strongly
-autocorrelated and company-specific, a model that learns ``which company is this''
-inherits most of the apparent skill. Second, a 2025 survey of financial NLP
-\citep{finnlp2025survey} finds that only $\sim$14\% of reported results reproduce
-exactly, attributing the gap to dead data links, API drift, and contamination.
-
-This paper's premise is that both problems are properties of the \emph{evaluation
-substrate} the field shares, and that the substrate can be repaired. The lineage
-above evaluates on a small number of label and split files that are passed from
-paper to paper essentially unchanged. Those files (\S\ref{sec:substrate}) impose no
-embargo between training and test windows even though targets run 30 days past
-each call; they place most test calls' companies in the training set, and no paper
-reports the ticker-disjoint condition; they carry degenerate label cells; and they
-encode a horizon convention (calendar days) that the downstream literature
-describes as trading days. On such a substrate a model cannot be told apart from a
-memory of which company it is looking at. Meanwhile the open corpus our audio results rest on, FinCall-Surprise
-\citep{fincall2025}, ships with \emph{no} ticker, company, date, or speaker
-metadata at all---so the identity controls that would expose the confound cannot
-even be run on it without first reconstructing the identity the dataset omits. A
-successor release from the same group, MM-FinEval \citep{mmfineval2026}, adds
-ticker and date fields and calendar-day volatility labels, but specifies no embargoed or
+We argue both are properties of the \emph{evaluation substrate} the field shares,
+and that it can be repaired. Nearly every paper above scores on one physical set
+of label and split files passed from paper to paper. Those files have no embargo
+between training and test although targets run 30 days past each call; most test
+calls come from companies in training, and no paper reports the disjoint
+condition; they carry degenerate cells; they encode a calendar-day horizon that
+downstream work describes as trading days; and they anchor day~0 on the call date
+although, as we measure from EDGAR, the earnings release precedes the market open
+for most calls. The open corpus with raw audio, FinCall-Surprise
+\citep{fincall2025}, ships with no ticker, date or speaker metadata, so the identity
+controls that would expose the confound cannot be run on it; its successor
+MM-FinEval \citep{mmfineval2026} adds ticker and date fields but no embargoed or
 company-disjoint split, past-volatility baseline, or identity control.
 
-We therefore build and release \ecvol-bench, an open benchmark that supplies what
-the substrate lacks, and we use it to re-examine the task's central claims. The
-benchmark is the contribution; the empirical results are the evidence for why it
-is needed. Concretely, we ask four research questions:
-\begin{description}
-  \item[RQ1] Does earnings-call \emph{content} (text and/or audio) add predictive
-    signal for post-call volatility beyond past-volatility persistence (HAR-RV,
-    GARCH)?
-  \item[RQ2] Is multimodal (audio $+$ text) better than the best unimodal model,
-    after controlling for past volatility?
-  \item[RQ3] Do the published models of this lineage, re-run on their own data,
-    retain their reported advantage under embargoed, \tickerdisjoint{} evaluation?
-  \item[RQ4] Do any positive results survive (a) ticker-identity controls,
-    (b)~\tickerdisjoint{} splits, and (c) evaluation on post-LLM-knowledge-cutoff
-    calls?
-\end{description}
-
-The study was pre-registered so that no single outcome strands the work; the
-modelling stages, controls, and confirmatory tests were fixed before any model
-result existed and are recorded in a public decision log. RQ1--RQ4 are all
-answered here; every number in the paper regenerates from a manifested run.
-
 \paragraph{Contributions.}
-\begin{enumerate}
-  \item \textbf{\ecvol-bench}, an open multimodal volatility benchmark over
-    FinCall-Surprise (primary) and MAEC (secondary): reconstructed identity and
-    dates for FinCall-Surprise (92.9\% of calls; 95.3\% of earnings calls; 60/60
-    manual audit), three target families (level $v$, change \dv, HAR-residual)
-    under both the calendar-day and trading-day horizon conventions, temporal and
-    \tickerdisjoint{} splits with a 30-trading-day embargo, SHA-256 manifests, and
-    a reproducible harness---released in full (\S\ref{sec:benchmark}).
-  \item \textbf{A substrate audit} of the label and split files the prior
-    literature shares: embargo, ticker overlap, label defects, and the horizon
-    convention, regenerable from one command (\S\ref{sec:substrate},
-    Table~\ref{tab:substrate}).
-  \item \textbf{Honest baselines and an identity-control suite}---persistence,
-    EWMA, HAR-RV, GARCH(1,1), and ticker-fixed-effect models for every horizon,
-    split, and target; identity probes; transcript- and audio-shuffle controls;
-    \tickerdisjoint{} evaluation; a gender-confound analysis---and what they show
-    when modern open-weight text and audio representations are run through them on
-    consumer hardware (\S\ref{sec:results}).
-  \item \textbf{Measured call timing}: the earnings-release timestamp of every
-    call from EDGAR 8-K filings (89\% of FinCall, 69\% of MAEC, 99.8\% of
-    Earnings25), showing that the call-date anchor used by every released label set
-    places the reaction session in the pre-window for most calls, with a
-    sensitivity study (\S\ref{sec:timing}).
-  \item \textbf{A reproduction study} of the runnable models in this lineage on
-    their own data under the new controls, with a code-availability audit of the
-    seventeen papers (one runnable as released, seven partial, nine none; \S\ref{sec:results-repro},
-    Table~\ref{tab:repro}, Table~\ref{tab:code-audit}).
-  \item \textbf{Post-cutoff evaluation}: the audio ladder re-run on 2025 recordings
-    stratified by bitrate, and the frozen pipeline evaluated on 475 calls held after
-    the knowledge cutoff of every model used (\S\ref{sec:results-clean-audio},
-    \S\ref{sec:results-lookahead}).
-\end{enumerate}
+(1)~\textbf{\ecvol-bench}: identity and dates reconstructed for FinCall-Surprise
+(92.9\% of calls, 60/60 manual audit), release timestamps measured from 8-K
+filings, three target families under both horizon conventions, embargoed temporal
+and \tickerdisjoint{} splits, SHA-256 manifests, and a harness in which every table
+regenerates from one command (\S\ref{sec:benchmark}). (2)~\textbf{A substrate
+audit} of the shared label and split files (Table~\ref{tab:substrate}).
+(3)~\textbf{An identity-control suite} (ticker probes, same-company and global
+content shuffles, \tickerdisjoint{} evaluation), released as a command that audits
+\emph{any} prediction file. (4)~\textbf{What the controls show} for modern
+open-weight text and audio representations against strong econometric baselines
+(\S\ref{sec:results}). (5)~\textbf{A reproduction study} of the lineage's five
+runnable models on their own data under the same controls, with a code-availability
+audit of seventeen papers. (6)~\textbf{Post-cutoff evaluation} of the frozen
+pipeline on 475 calls from late 2025. Stages, controls and confirmatory tests were
+pre-registered in a public decision log, including the positive-framing gate the
+content models missed.
+
+\paragraph{Related work.}
+Known pitfalls organise the design: ticker-identity leakage \citep{scss2024},
+which LLMs reproduce even on entity-masked transcripts \citep{memorization2025};
+LLM lookahead bias, with diagnostics and cutoff-bounded models
+\citep{lookahead2025,datedgpt2026,lookaheadbench2026} but no frozen earnings-call
+pipeline evaluated post-cutoff; weak baselines, where persistence, GARCH and HAR-RV
+\citep{corsi2009har} are hard to beat and persistence is the natural denominator
+\citep{gukellyxiu2020}; and gender bias in audio features \citep{ama2024,emobias2024}.
+\citet{fastnumbers2026} time releases from 8-Ks for return prediction; no prior
+work audits the volatility label sets. The strongest recent positive claims
+\citep{soundofrisk2025,cao2024ecc} report no identity controls and release no code.

@@ -1,46 +1,27 @@
 \section*{Limitations}
 \addcontentsline{toc}{section}{Limitations}
 
-\textbf{One post-cutoff quarter.} The lookahead (\S\ref{sec:results-lookahead})
-rests on 475 calls from a single calm quarter and a different universe from the
-training corpus, so it bounds contamination in the ordering of models, not in
-their absolute scores; a second post-cutoff season would tighten it.
-\textbf{Reproductions run on their own data.} Each prior model is
-re-evaluated on its original dataset, not on \ecvol-bench, to keep ``the model
-fails'' separable from ``the model does not transfer''; two reproductions carry
-known costs (KeFVP's MAEC embeddings are unavailable upstream; DialogueGAT stops at
-$\tau{=}15$ and requires a corpus rebuild). \textbf{MLP-head instability.} The
-shallow-MLP heads are seed-unstable (across-seed \Rtwo{} std up to $\approx$3.4),
-which is why the consolidated grid uses deterministic ridge/structural canonicals;
-MLP cells in the appendix should be read as seed means with that caveat.
-\textbf{The past-vol covariate block is not HAR.} The learned
-$[v_{\mathrm{pre}}, \mathrm{RV}_{1/5/22}]$ ridge used inside Stage-2--4 heads
-overfits the COVID regime shift on the temporal split ($\Rtwo{-}2.9$ at $\tau{=}15$)
-where the rigid OLS HAR-RV stays robust ($+0.21$); the two are labelled distinctly
-throughout, and the gap is itself a small finding about structural vs.\
-unconstrained conditioning under regime shift. \textbf{Short-horizon \Rtwo{}
-inflation.} The persistence denominator is noisiest at $\tau{=}3$ (its MSE is
-$\sim$2.8$\times$ the $\tau{=}7$ one), so short-horizon \Rtwo{} gains are easier to
-show and should be read accordingly. \textbf{Timestamps.} Day~0 rests on the
-earnings-release time measured from EDGAR (\S\ref{sec:timing}); 10.7\% of FinCall
-and 31.4\% of MAEC calls have no Item~2.02 filing in the window and keep the
-flagged after-hours fallback, and intraday releases are treated as after-hours.
-Results under the call-date anchor of prior label sets are not interchangeable with
-ours (Table~\ref{tab:lookahead-assumed}); the call-date targets are shipped for that
-comparison. \textbf{Regime sensitivity.} FinCall-Surprise spans COVID; the temporal
-$\tau{=}30$ baseline failure shows long-horizon level forecasts are
-regime-sensitive, which is why we emphasise the identity-robust \dv{} target and
-report per-year breakdowns. \textbf{MAEC coverage.} The 78.6\% price-join rate
-(2015--2018 delistings) makes MAEC a secondary, comparability corpus; it also ships
-no raw audio, so the audio ladder is FinCall-only. \textbf{Source audio quality.}
-Every FinCall audio file is a uniform 40\,kbps MP3 transcode (eight source sample
-rates; 14 calls at telephone-grade 8\,kHz), so aggressive lossy compression
-underlies all acoustic features. The audio-inert finding is therefore established
-on compression-damaged audio and may not transfer to studio-quality recordings---a
-caveat that applies equally to prior positive claims built on the same corpora,
-and the reason for the Earnings25 re-run. \textbf{No diarisation in v1.} Audio uses
-per-call pooling, not speaker-resolved features; the gender analysis
-correspondingly uses a dominant-speaker F0 proxy. \textbf{Identity reconstruction
-is imperfect.} 7.1\% of FinCall-Surprise calls (4.7\% of earnings calls) remain
-unresolved and are excluded with a reason code; the released override table
-records every manual decision.
+\textbf{One post-cutoff quarter.} The lookahead test rests on 475 calls from a
+single calm quarter and a different universe from the training corpus, so it bounds
+contamination in the ordering of models, not in their absolute scores.
+\textbf{Reproductions run on their own data}, not on \ecvol-bench, to keep ``the
+model fails'' separable from ``the model does not transfer''; two carry known costs
+(KeFVP's released EC embeddings are unavailable upstream; DialogueGAT's corpus was
+never released and our port stops at its protocol). \textbf{MLP heads are
+seed-unstable} (across-seed \Rtwo{} std up to 6.8 on level-$v$, 1.1 on $\Delta v$), which is why the grid uses
+deterministic canonicals; MLP cells in the appendix are seed means with that caveat.
+\textbf{Short-horizon \Rtwo{} inflation.} The persistence denominator is noisiest at
+$\tau{=}3$ (MSE $\sim$2.8$\times$ that at $\tau{=}7$), so short-horizon gains are
+easier to show. \textbf{Timestamps.} 10.7\% of FinCall and 31.4\% of MAEC calls have
+no Item~2.02 filing in the window and keep a flagged after-hours fallback; intraday
+releases are treated as after-hours; results under the call-date anchor of prior
+label sets are not interchangeable with ours and are shipped as a variant.
+\textbf{Regime sensitivity.} FinCall-Surprise spans COVID; the temporal $\tau{=}30$
+failure shows long-horizon level forecasts are regime-sensitive, which is why we
+emphasise $\Delta v$ and per-year breakdowns. \textbf{MAEC coverage.} Its 78.6\%
+price-join rate (2015--2018 delistings) makes it a secondary corpus, and it ships no
+raw audio. \textbf{Source audio.} Every FinCall file is a 40\,kbps MP3 transcode and
+Earnings25 is 64\,kbps or lower, so no result here is established on lossless audio.
+\textbf{No diarisation}; audio is pooled per call, and the gender analysis uses a
+dominant-speaker F0 proxy. \textbf{Identity reconstruction is imperfect}: 7.1\% of
+FinCall calls remain unresolved and are excluded with a reason code.
