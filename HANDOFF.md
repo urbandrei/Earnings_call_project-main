@@ -262,3 +262,11 @@ These come from the backlog scan; the loop will move each into **Active** when i
   E1); (5) EC dataset terms (`LICENSE-DATA.md`); (6) advisor/co-author review of the new draft; (7) push + CI
   (the branch is far ahead of origin). Also: the paper is still on the home-made 10pt layout — switching to
   `acl.sty` is a one-line change described in `paper/README.md` and will add ~20% length.
+
+- **2026-10-09 (late) · T8.2 — paper now in the official ACL template; main text fits the 8-page limit.** `paper/main.pdf`
+  is rebuilt with `acl.sty [review]` (anonymous, line-numbered). Main text ends on page 8 with room to spare, so no
+  cuts are needed for ARR. A fresh Overleaf zip is in `paper/dist/` (gitignored) and a new Overleaf project was
+  uploaded; the earlier "ecvol-paper-overleaf-82d1500" project is superseded and can be deleted from your account.
+  Still yours: the seven items listed in the 2026-10-09 entry above (ARR cycle, preprint policy, reviewer-of-record
+  coauthor, AI-assistance disclosure, EC data terms, advisor review, push + CI). Note the Oct 12 2026 ARR deadline
+  if NAACL/COLING 2027 is the target; otherwise the January 2027 cycle (ACL 2027) as the venue memo recommends.

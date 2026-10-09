@@ -2,13 +2,15 @@
 
 This folder is a self-contained copy of the paper. Upload the zip to Overleaf
 (New Project → Upload Project), set `main.tex` as the main document, and compile
-with pdfLaTeX (the default). No extra style files are needed.
+with pdfLaTeX (the default). The official ACL style files (`acl.sty`, `acl_natbib.bst`)
+are included, so nothing else needs to be installed.
 
 ## What is where
 
 | Path | Contents | Edit freely? |
 |---|---|---|
 | `main.tex` | Preamble, title and author block, section order | yes |
+| `acl.sty`, `acl_natbib.bst` | Official ACL style, unchanged from github.com/acl-org/acl-style-files | no |
 | `sections/00-abstract.tex` … `06-recommendations.tex` | Main text, one file per section | yes |
 | `sections/09-limitations.tex`, `10-ethics.tex` | Limitations and Ethics (unnumbered, required by ACL) | yes |
 | `sections/A1-complete-results.tex` | Appendix narrative | yes |
@@ -26,18 +28,17 @@ them in a comment instead.
 
 ## Conventions in the draft
 
-- Line numbers are on for review (`\linenumbers` in `main.tex`); comment that line
-  for a clean read.
-- The author block holds placeholders. ARR review is anonymous, so it goes back to
-  `Anonymous Author(s)` for submission.
+- The paper uses the official ACL class in `review` mode (`\usepackage[review]{acl}`
+  in `main.tex`), which prints line numbers and replaces the author block with
+  "Anonymous ACL submission". Change `review` to `preprint` to see the author
+  names without line numbers, or to `final` for the camera-ready version.
+- The author block holds placeholder names and affiliations. It is ignored in
+  `review` mode, so it can be filled in at any time.
 - `\TODO{...}` (red) and `\pending{...}` (orange) macros exist for marking open
   items; none are in the text at the moment.
-- The layout is a self-contained two-column approximation of the ACL style. To
-  switch to the official class, drop `acl.sty` and `acl_natbib.bst` into the project,
-  replace the `\documentclass` and geometry lines in `main.tex` with
-  `\documentclass[11pt]{article}` plus `\usepackage[review]{acl}`, and change the
-  bibliography style to `acl_natbib`. Expect the 11pt template to run about 20 %
-  longer.
+- ARR long papers get eight pages for the main text. Limitations, Ethical
+  Considerations, references and the appendix do not count. The main text currently
+  ends on page 8 with some room to spare.
 
 ## Bringing edits back
 

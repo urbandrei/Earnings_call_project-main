@@ -3,16 +3,19 @@
 **Condensed 5-page spine (2026-10-09).** External feedback on the 30-page draft was
 "too long and too difficult to read; shorten to 5 pages". The main text (abstract through
 Discussion and Conclusion) now fits five pages of the self-contained 10pt two-column
-layout; Limitations, Ethics, references and a long appendix follow. The long draft is
+layout; Limitations, Ethical Considerations, references and a long appendix follow. The long draft is
 preserved as git tag `paper-long-2026-10-09` and as `archive/main_long_2026-10-09.pdf`.
 
 The benchmark is the headline contribution (DECISIONS 2026-08-23 §1, 2026-08-26 §3); the
 Stage 0–4 results, the reproduction study and the post-cutoff test are the evidence for
 why it is needed. Every number traces to a manifested result CSV (`ecvol runs verify`).
 
-- **Format:** self-contained two-column (ACL/EMNLP-style), compiles with a stock TeX
-  distribution — no external style files required. Target venue: ACL via ARR
-  (`venue_memo_2026-10.md`).
+- **Format:** official ACL style (`acl.sty`, `acl_natbib.bst`, fetched 2026-10-09 from
+  github.com/acl-org/acl-style-files), `\usepackage[review]{acl}` for the anonymous,
+  line-numbered ARR submission; switch to `preprint` or `final` in `main.tex` as needed.
+  Target venue: ACL via ARR (`venue_memo_2026-10.md`). In this template the main text
+  ends on page 8 (the ARR long-paper limit); Limitations, Ethical Considerations,
+  references and the appendix are not counted.
 - **Main-text structure:** Introduction (with contributions and a compact related-work
   paragraph) → The Shared Test Files and the Benchmark → Models, Protocol and Checks →
   Results → Discussion → Recommendations and Outlook (added 2026-10-09 at the advisor's
@@ -81,16 +84,13 @@ to match.
 
 - `\TODO{...}` (red) and `\pending{...}` (orange) are hidden when `\draftmode` is set
   false in `main.tex`. None remain in the condensed draft.
-- Line numbers (`lineno`) are on for review; comment `\linenumbers` for camera-ready.
+- Line numbers and the anonymous author line come from the `review` class option.
 - Every number in the prose traces to `data/results/` or a JOURNAL-recorded audit.
 
-## Switching to the official ACL class
+## Style files
 
-1. Drop `acl.sty` and `acl_natbib.bst` into this directory (from the ACL Rolling
-   Review template).
-2. In `main.tex` replace the `\documentclass[...]{article}` + geometry + `\twocolumn`
-   block with `\documentclass[11pt]{article}` and `\usepackage[review]{acl}`.
-3. Change `\bibliographystyle{plainnat}` to `\bibliographystyle{acl_natbib}`.
-
-Everything else (sections, tables, `refs.bib`) is template-agnostic. Expect the 11pt ACL
-template to run roughly 20% longer than the current 10pt layout.
+`acl.sty` and `acl_natbib.bst` are verbatim copies of the ACL Rolling Review template
+(github.com/acl-org/acl-style-files, branch `master`, fetched 2026-10-09). The style loads
+geometry, caption, natbib, hyperref and lineno itself and sets the bibliography style, so
+`main.tex` must not load or set those again. The self-contained 10pt layout used before
+the switch is in git history (commit acb0139 and earlier).

@@ -34,7 +34,7 @@ citation errors (wrong year or title) — errata listed at the bottom.**
 | R16 | DatedGPT, "2025" | **VERIFIED-MISMATCH** | Actual: submitted **Mar 12 2026** · Yutong Yan · title exact · https://arxiv.org/abs/2603.11838 |
 | R17 | Corsi HAR-RV, JFEc 2009 | VERIFIED | "A Simple Approximate Long-Memory Model of Realized Volatility" · Fulvio Corsi · J. Financial Econometrics 7(2) 2009, pp. 174–196 · https://academic.oup.com/jfec/article-lookup/doi/10.1093/jjfinec/nbp001 |
 | R18 | Finance-NLP survey, 2025 | VERIFIED (note) | Title exact · Nikita Tatarinov · arXiv Apr 9 2025 · https://arxiv.org/abs/2504.07274 — note: the "~14% exact reproduction" figure quoted in DESIGN §3.4 is not in the abstract; it rests on the paper body |
-| R19 | Emo-bias, 2024 | VERIFIED | Title exact · Yi-Cheng Lin · arXiv Jun 7 2024 (INTERSPEECH 2024) · https://arxiv.org/abs/2406.05065 |
+| R19 | Emo-bias, 2024 | VERIFIED | Title exact · Yi-Cheng Lin · arXiv Jun 7 2024 (INTERSPEECH 2024) · https://arxiv.org/abs/2406.05065 · 2026-10-09: refs.bib now cites the refereed version, Interspeech 2024 pp. 4633–4637, doi 10.21437/Interspeech.2024-1073 (Crossref) |
 | R20 | DocFin, Findings EMNLP 2022 | VERIFIED | Title exact · Puneet Mathur · Findings of EMNLP 2022 · https://aclanthology.org/2022.findings-emnlp.139/ |
 | R21 | MarketSenseAI 2.0, 2025 | VERIFIED | Title exact · George Fatouros · arXiv Feb 1 2025 · https://arxiv.org/abs/2502.00415 |
 | R22 | P1GPT, 2025 | VERIFIED | Title exact (lowercase "a multi-agent…") · Chen-Che Lu · arXiv Oct 27 2025 · https://arxiv.org/abs/2510.23032 |

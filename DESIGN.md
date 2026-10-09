@@ -433,7 +433,7 @@ What ships with the paper (tracked against [R18]'s failure causes):
 - [R17] Corsi, "A Simple Approximate Long-Memory Model of Realized Volatility" (HAR-RV), Journal of Financial Econometrics, 2009. https://doi.org/10.1093/jjfinec/nbp001
 - [R18] "Language Modeling for the Future of Finance: A Survey into Metrics, Tasks, and Data Opportunities," 2025. https://arxiv.org/abs/2504.07274 — *financial-NLP reproducibility causes (discontinued APIs, inactive links); the 14% figure is [R33], not this survey (erratum 2026-10-09)*
 - [R33] Belz, Agarwal, Shimorina & Reiter, "A Systematic Review of Reproducibility Research in Natural Language Processing," EACL 2021, pp. 381–393. https://aclanthology.org/2021.eacl-main.29/ — *77 of 513 reproduced scores (14.03%) exactly the same; 59.2% of the rest worse*
-- [R19] "Emo-bias: A Large Scale Evaluation of Social Bias on Speech Emotion Recognition," 2024. https://arxiv.org/abs/2406.05065
+- [R19] Lin, Wu, Chou, Lee and Lee, "Emo-bias: A Large Scale Evaluation of Social Bias on Speech Emotion Recognition," Interspeech 2024, pp. 4633–4637, doi 10.21437/Interspeech.2024-1073. Preprint: https://arxiv.org/abs/2406.05065
 - [R20] Mathur et al., "DocFin: Multimodal Financial Prediction and Bias Mitigation using Semi-structured Documents," Findings of EMNLP 2022. https://aclanthology.org/2022.findings-emnlp.139/
 - [R26] Gu, Kelly & Xiu, "Empirical Asset Pricing via Machine Learning," Review of Financial Studies, 2020 (R²_OOS convention). https://doi.org/10.1093/rfs/hhaa009
 - [R27] Diebold & Mariano, "Comparing Predictive Accuracy," Journal of Business & Economic Statistics, 1995. https://doi.org/10.1080/07350015.1995.10524599

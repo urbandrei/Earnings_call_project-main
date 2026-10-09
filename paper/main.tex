@@ -1,33 +1,30 @@
 % ============================================================================
-% ecvol-bench — identity-controlled benchmark for multimodal earnings-call
-% volatility prediction (benchmark-first spine, DECISIONS 2026-08-26 §3).
-% Condensed 5-page spine (2026-10-09); the 30-page long draft is tagged paper-long-2026-10-09.
+% ecvol-bench: identity-controlled benchmark for multimodal earnings-call
+% volatility prediction (benchmark-first spine, DECISIONS 2026-08-26 S3).
+% Condensed spine (2026-10-09); the 30-page long draft is tagged paper-long-2026-10-09.
 %
-% FORMAT: self-contained two-column layout (ACL/EMNLP-style) that compiles with
-% a stock TeX distribution and NO external style files.
-%
-% TO SWITCH TO THE OFFICIAL ACL/EMNLP CLASS once you have the template files:
-%   1. Drop `acl.sty` and `acl_natbib.bst` into this directory.
-%   2. Replace the `\documentclass`/geometry/twocolumn block below with:
-%          \documentclass[11pt]{article}
-%          \usepackage[review]{acl}        % or final, depending on submission stage
-%   3. Change `\bibliographystyle{plainnat}` to `\bibliographystyle{acl_natbib}`.
-% Everything else (sections, tables, refs.bib) is template-agnostic.
+% FORMAT: official ACL style (acl.sty + acl_natbib.bst from
+% github.com/acl-org/acl-style-files, fetched 2026-10-09), as ARR requires.
+%   [review]   anonymous, line numbers, page numbers  (ARR submission)
+%   [preprint] names shown, page numbers, no line numbers
+%   [final]    camera-ready
+% The style loads geometry, caption, natbib and hyperref itself; do not load
+% them again here.
 % ============================================================================
 
-\documentclass[10pt,twocolumn]{article}
+\documentclass[11pt]{article}
+\usepackage[review]{acl}
 
-% --- Page geometry: approximate ACL/EMNLP two-column proportions -------------
-\usepackage[a4paper,margin=2.5cm,columnsep=0.6cm]{geometry}
-
-% --- Encoding & fonts (all standard, present in any TeX Live / MiKTeX) -------
+% --- Encoding & fonts (as in the ACL template) --------------------------------
+\usepackage{times}
+\usepackage{latexsym}
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
-\usepackage{times}
 \usepackage{microtype}
+\usepackage{inconsolata}
 \usepackage{xspace}
 
-% --- Math, tables, graphics -------------------------------------------------
+% --- Math, tables, graphics ---------------------------------------------------
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{booktabs}
@@ -35,38 +32,21 @@
 \usepackage{multirow}
 \usepackage{tikz}
 \usetikzlibrary{positioning,calc,decorations.pathreplacing}
-\usepackage{caption}
-\captionsetup{font=small,labelfont=bf}
-% The appendix \input{}s ~32 generated table floats with little intervening text;
+% The appendix \input{}s many table floats with little intervening text;
 % raise the float-storage limit so they don't overflow ("Too many unprocessed floats").
 \extrafloats{120}
 
-% --- Bibliography (author-year, ACL-like) -----------------------------------
-\usepackage{natbib}
-\bibliographystyle{plainnat}
-\setcitestyle{authoryear,round}
+% --- Bibliography: acl.sty sets \bibliographystyle{acl_natbib} itself; do not repeat it.
 
-% --- Links ------------------------------------------------------------------
-\usepackage{xcolor}
-\usepackage[colorlinks=true,allcolors=blue!55!black,breaklinks=true]{hyperref}
-\usepackage{url}
-
-% --- Line numbers (peer-review draft) ----------------------------------------
-% Unobtrusive gray line numbers on both columns so reviewers can reference
-% specific lines. Remove (or comment \linenumbers below) for camera-ready.
-\usepackage{lineno}
-\renewcommand{\linenumberfont}{\normalfont\tiny\color{gray}}
-
-% --- Draft/TODO machinery ---------------------------------------------------
-% Set \draftmode to false (or pass \drafttrue->false) to hide TODOs for a clean
-% camera-ready render. While drafting, TODOs are visible and greppable.
+% --- Draft/TODO machinery -----------------------------------------------------
+% Set \draftmode to false to hide TODOs for a clean render.
 \newif\ifdraftmode\draftmodetrue
 \newcommand{\TODO}[1]{%
   \ifdraftmode{\color{red!75!black}\textbf{[TODO:} #1\textbf{]}}\fi}
 \newcommand{\pending}[1]{%
   \ifdraftmode{\color{orange!80!black}\textit{[pending: #1]}}\fi}
 
-% --- Convenience macros -----------------------------------------------------
+% --- Convenience macros -------------------------------------------------------
 \newcommand{\ecvol}{\textsc{ecvol}\xspace}
 % \ensuremath so these work both in text and inside an existing $...$ context.
 \newcommand{\Rtwo}{\ensuremath{R^2_{\mathrm{OOS}}}\xspace}
@@ -74,25 +54,20 @@
 \newcommand{\tickerdisjoint}{ticker-disjoint\xspace}
 
 % ============================================================================
-\title{\ecvol-bench: An Open, Identity-Controlled Benchmark for\\
+\title{\ecvol-bench: An Open, Identity-Controlled Benchmark for\
        Multimodal Earnings-Call Volatility Prediction}
 
-% Placeholder authors for the working draft. Replace with the real author block,
-% or restore "Anonymous Author(s)" for the ARR submission (review mode is anonymous).
-\author{
-  First Author\\
-  Institution One\\
-  \texttt{first.author@example.edu}
-  \and
-  Second Author\\
-  Institution Two\\
-  \texttt{second.author@example.edu}
-}
-\date{}
+% In [review] mode the style prints "Anonymous ACL submission" and ignores
+% this block. Placeholder names show only with [preprint] or [final].
+\author{First Author \
+  Institution One \
+  \texttt{first.author@example.edu} \And
+  Second Author \
+  Institution Two \
+  \texttt{second.author@example.edu}}
 
 % ============================================================================
 \begin{document}
-\linenumbers
 \maketitle
 \begin{abstract}
 \input{sections/00-abstract}
@@ -105,7 +80,7 @@
 \input{sections/05-discussion}
 \input{sections/06-recommendations}
 
-% ACL-style unnumbered required sections
+% ACL unnumbered sections (not counted toward the page limit)
 \input{sections/09-limitations}
 \input{sections/10-ethics}
 
