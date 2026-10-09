@@ -10,9 +10,10 @@ MAEC \citep{li2020maec}, VolTAGE \citep{sawhney2020voltage}, DialogueGAT
 \citep{cao2024ecc} all report beating classical forecasts. Two findings cast doubt
 on that. \citet{scss2024} showed that transcript representations mostly tell the
 model \emph{which company} is speaking, and that a simple forecast from the
-company's own past volatility beats every transcript model. A survey of financial
-NLP found that only about 14\% of reported results could be reproduced
-\citep{finnlp2025survey}.
+company's own past volatility beats every transcript model. Across NLP, a
+systematic review found that only 14\% of reported scores were reproduced
+exactly \citep{belz2021repro}, and in financial NLP discontinued data APIs and
+dead repository links make matters worse \citep{finnlp2025survey}.
 
 We think both problems trace back to the same place. Nearly every paper in this
 line is scored on one set of label and split files, handed down from paper to

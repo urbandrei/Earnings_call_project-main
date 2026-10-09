@@ -116,7 +116,7 @@ Much of the literature compares only against prior neural models, omitting persi
 
 ### 3.4 Pitfall: reproducibility crisis
 
-A 2025 survey of financial NLP [R18] found only ~14% of reported results reproduce exactly and ~59% reproduce worse than reported; causes include dead data links, API drift, and contamination.
+A systematic review of NLP reproducibility studies [R33] found only ~14% of reported scores reproduce exactly and ~59% of the rest reproduce worse than reported; a 2025 survey of financial NLP [R18] documents the field-specific causes (discontinued data APIs, inactive links, empty repositories). *(Erratum 2026-10-09: the 14%/59% figures were previously attributed to [R18]; see DECISIONS 2026-10-09 night.)*
 
 **Design response:** §8 (lockfile, manifests with SHA-256, run artifacts keyed by config hash + git SHA), §12 checklist, and the `ecvol report` byte-identical regeneration test.
 
@@ -431,7 +431,8 @@ What ships with the paper (tracked against [R18]'s failure causes):
 - [R15] Gao, Jiang & Yan, "Detecting Lookahead Bias in LLM Forecasts," 2025. https://arxiv.org/abs/2512.23847
 - [R16] "DatedGPT: Preventing Lookahead Bias in Large Language Models with Time-Aware Pretraining," 2026. https://arxiv.org/abs/2603.11838
 - [R17] Corsi, "A Simple Approximate Long-Memory Model of Realized Volatility" (HAR-RV), Journal of Financial Econometrics, 2009. https://doi.org/10.1093/jjfinec/nbp001
-- [R18] "Language Modeling for the Future of Finance: A Survey into Metrics, Tasks, and Data Opportunities," 2025. https://arxiv.org/abs/2504.07274 — *14% exact-reproduction finding*
+- [R18] "Language Modeling for the Future of Finance: A Survey into Metrics, Tasks, and Data Opportunities," 2025. https://arxiv.org/abs/2504.07274 — *financial-NLP reproducibility causes (discontinued APIs, inactive links); the 14% figure is [R33], not this survey (erratum 2026-10-09)*
+- [R33] Belz, Agarwal, Shimorina & Reiter, "A Systematic Review of Reproducibility Research in Natural Language Processing," EACL 2021, pp. 381–393. https://aclanthology.org/2021.eacl-main.29/ — *77 of 513 reproduced scores (14.03%) exactly the same; 59.2% of the rest worse*
 - [R19] "Emo-bias: A Large Scale Evaluation of Social Bias on Speech Emotion Recognition," 2024. https://arxiv.org/abs/2406.05065
 - [R20] Mathur et al., "DocFin: Multimodal Financial Prediction and Bias Mitigation using Semi-structured Documents," Findings of EMNLP 2022. https://aclanthology.org/2022.findings-emnlp.139/
 - [R26] Gu, Kelly & Xiu, "Empirical Asset Pricing via Machine Learning," Review of Financial Studies, 2020 (R²_OOS convention). https://doi.org/10.1093/rfs/hhaa009

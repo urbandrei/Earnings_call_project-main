@@ -93,3 +93,5 @@ writing.
 - `fastnumbers2026`: supported (windows around each 8-K filing timestamp; 8-K precedes the call transcript by 30-90 min).
 - `ama2024`, `emobias2024`: supported (gender bias in multimodal volatility models; social bias in speech emotion recognition).
 - `scss2024`, `qin2019what`, `li2020maec`, `yang2020html`, `sawhney2020voltage`, `sang2022dialoguegat`, `niu2023kefvp`, `cao2024ecc`, `sawhney2020mm`, `soundofrisk2025`, `fincall2025`, `mmfineval2026`, `jiang2026earnings25`, `lookahead2025`, `datedgpt2026`, `lookaheadbench2026`, `corsi2009har`, `gukellyxiu2020`, `dm1995`, `bge2024`, `finbert`, `wavlm`, `emotion2vec`, `opensmile`: the citing sentences state what the sources are or do, as verified on their pages and in the code-availability audit.
+
+**Resolution (2026-10-09, later).** The 14 % figure is from Belz et al., EACL 2021 (`2021.eacl-main.29`, verified in the PDF: 77 of 513 score pairs, 14.03 %, exactly reproduced; 59.2 % of the rest worse). The paper now cites Belz et al. for the figure and Tatarinov et al. for the financial-NLP causes; DESIGN [R18] corrected (DECISIONS 2026-10-09 night).
