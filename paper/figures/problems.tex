@@ -1,56 +1,82 @@
-% Figure 1: the two properties of the shared test files that the benchmark repairs.
-% (a) day-0 anchor: the earnings release (8-K) precedes the market open for most calls,
-%     so the call-date anchor puts the reaction session inside the "past" window;
-% (b) company overlap: a time-ordered split keeps the same companies on both sides,
-%     a company-disjoint split does not. Drawn to fit one column (~7.5 cm).
-\begin{figure}[t]
+% Figure 1 (full width): the two properties of the shared test files that the benchmark repairs.
+% (a) day-0 anchor: the earnings release (8-K) precedes the market open for most calls, so the
+%     call-date anchor leaves the reaction session inside the pre window;
+% (b) company overlap: a time-ordered split keeps the same companies on both sides, a
+%     company-disjoint split does not. Total width is kept under \textwidth (16 cm).
+\begin{figure*}[t]
 \centering
+\resizebox{\textwidth}{!}{%
 \begin{tikzpicture}[
-    font=\scriptsize,
     x=1cm, y=1cm,
-    sess/.style={draw=black!60, fill=white, minimum width=4.6mm, minimum height=3.0mm, inner sep=0pt, font=\tiny},
-    pre/.style={sess, fill=black!8},
-    post/.style={sess, fill=blue!12},
-    react/.style={sess, fill=orange!35, draw=orange!70!black, thick},
-    lab/.style={font=\tiny, text=black!70},
+    font=\footnotesize,
+    ink/.style={black!75},
+    sess/.style={draw=black!55, line width=0.4pt, fill=black!6, minimum width=8.4mm, minimum height=4.6mm, inner sep=0pt, font=\scriptsize, text=black!75},
+    react/.style={sess, fill=orange!30, draw=orange!75!black, line width=0.7pt, text=black},
+    rowlab/.style={font=\footnotesize, text=black!80, anchor=east},
+    note/.style={font=\scriptsize, text=black!65},
+    win/.style={decorate, decoration={brace, mirror, amplitude=2.2pt, raise=1.5pt}, black!60, line width=0.5pt},
+    winlab/.style={font=\scriptsize, text=black!65},
+    panel/.style={font=\footnotesize\bfseries, text=black!85, anchor=west},
 ]
-% ---------------------------------------------------------------- (a) anchor
-\node[anchor=west, font=\scriptsize\bfseries] at (0,2.55) {(a) Where is day~0?};
-\node[lab, anchor=west] at (0,2.28) {8-K release 06:30 $\;\cdot\;$ call 08:30 $\;\cdot\;$ market opens 09:30};
-\foreach \i/\t in {0/d$-$2, 1/d$-$1, 2/d, 3/d$+$1, 4/d$+$2}
-  \node[lab] at (2.15+\i*0.62, 1.9) {\t};
-\node[lab, anchor=east] at (1.75,1.5) {call-date anchor};
-\foreach \i/\s in {0/pre, 1/pre, 2/react, 3/post, 4/post}
-  \node[\s] at (2.15+\i*0.62, 1.5) {\s};
-\draw[->, thick, black!70] (2.15+2.5*0.62,1.95) -- (2.15+2.5*0.62,1.72);
-\node[lab, anchor=west] at (5.35,1.5) {reaction in ``past''};
-\node[lab, anchor=east] at (1.75,1.0) {measured anchor};
-\foreach \i/\s in {0/pre, 1/pre, 2/react, 3/post, 4/post}
-  \node[\s] at (2.15+\i*0.62, 1.0) {\s};
-\draw[->, thick, black!70] (2.15+1.5*0.62,1.35) -- (2.15+1.5*0.62,1.2);
-\node[lab, anchor=west] at (5.35,1.0) {reaction in ``post''};
-\node[lab, anchor=west] at (0,0.62) {day~0 moves for 53\% (FinCall), 56\% (MAEC), 72\% (Earnings25) of calls};
-% ---------------------------------------------------------------- (b) overlap
-\node[anchor=west, font=\scriptsize\bfseries] at (0,0.15) {(b) Who is in the test set?};
-\node[lab, anchor=east] at (1.75,-0.3) {time-ordered};
-\foreach \i/\t in {0/A, 1/B, 2/C, 3/A, 4/B, 5/C, 6/A, 7/B}
-  \node[sess, minimum width=3.6mm] at (1.95+\i*0.42, -0.3) {\t};
-\draw[dashed, black!70] (4.26,-0.5) -- (4.26,-0.1);
-\node[lab, anchor=west] at (5.35,-0.3) {same companies on both sides};
-\node[lab, anchor=east] at (1.75,-0.85) {company-disjoint};
-\foreach \i/\t in {0/A, 1/A, 2/B, 3/B, 4/B, 5/C, 6/C, 7/C}
-  \node[sess, minimum width=3.6mm] at (1.95+\i*0.42, -0.85) {\t};
-\draw[dashed, black!70] (4.26,-1.05) -- (4.26,-0.65);
-\node[lab, anchor=west] at (5.35,-0.85) {no company shared};
-\node[lab] at (2.9,-1.2) {train};
-\node[lab] at (4.9,-1.2) {test};
-\end{tikzpicture}
+% ================================================================ (a) day-0 anchor
+\begin{scope}
+\node[panel] at (0,3.8) {(a) Where day~0 falls};
+\node[note, anchor=south] at (4.15,3.05)
+  {\textbf{day $d$}: 8-K release 06:30 $\rightarrow$ call 08:30 $\rightarrow$ market opens 09:30};
+% time axis
+\draw[ink, line width=0.5pt, ->, >=stealth] (1.55,2.75) -- (7.35,2.75);
+\node[note, anchor=west] at (7.35,2.75) {sessions};
+\foreach \i/\t in {0/$d-2$, 1/$d-1$, 2/$d$, 3/$d+1$, 4/$d+2$} {
+  \draw[ink, line width=0.5pt] (2.05+\i*1.05, 2.69) -- (2.05+\i*1.05, 2.81);
+  \node[note, anchor=north] at (2.05+\i*1.05, 2.66) {\t};
+}
+% row 1: call-date anchor
+\node[rowlab, align=right] at (1.45,1.85) {call-date anchor\\[-1pt]{\scriptsize (released label sets)}};
+\foreach \i/\s in {0/sess, 1/sess, 2/react, 3/sess, 4/sess}
+  \node[\s] (a\i) at (2.05+\i*1.05, 1.85) {\ifnum\i=2 reaction\else\fi};
+\draw[win] (a0.south west) -- (a2.south east) node[winlab, midway, below=5pt] {pre window};
+\draw[win] (a3.south west) -- (a4.south east) node[winlab, midway, below=5pt] {post window};
+% row 2: measured anchor
+\node[rowlab, align=right] at (1.45,0.55) {measured anchor\\[-1pt]{\scriptsize (this benchmark)}};
+\foreach \i/\s in {0/sess, 1/sess, 2/react, 3/sess, 4/sess}
+  \node[\s] (b\i) at (2.05+\i*1.05, 0.55) {\ifnum\i=2 reaction\else\fi};
+\draw[win] (b0.south west) -- (b1.south east) node[winlab, midway, below=5pt] {pre window};
+\draw[win] (b2.south west) -- (b4.south east) node[winlab, midway, below=5pt] {post window};
+% takeaway
+\node[note, anchor=north west, align=left, text width=7.6cm] at (0,-0.35)
+  {Under the call-date anchor the session in which the market reacts is counted as
+   ``past''. Day~0 moves one session earlier for 53\% (FinCall), 56\% (MAEC) and
+   72\% (Earnings25) of calls.};
+\end{scope}
+% ================================================================ (b) company overlap
+\begin{scope}[xshift=8.3cm]
+\node[panel] at (0,3.8) {(b) Which companies are in the test set};
+\node[note] at (3.03,2.72) {train};
+\node[note] at (5.55,2.72) {test};
+% row 1: time-ordered
+\node[rowlab, align=right] at (1.45,1.85) {time-ordered split\\[-1pt]{\scriptsize (released split files)}};
+\foreach \i/\t/\s in {0/A/sess, 1/B/sess, 2/C/sess, 3/D/sess, 4/A/react, 5/B/react, 6/C/react}
+  \node[\s, minimum width=6.0mm] (c\i) at (1.95+\i*0.72, 1.85) {\t};
+\draw[ink, dashed, line width=0.5pt] (4.47,1.5) -- (4.47,2.55);
+\node[note, anchor=west, align=left] at (6.75,1.85) {every test company\\also in training};
+% row 2: company-disjoint
+\node[rowlab, align=right] at (1.45,0.55) {company-disjoint split\\[-1pt]{\scriptsize (this benchmark)}};
+\foreach \i/\t in {0/A, 1/A, 2/B, 3/B, 4/E, 5/F, 6/F}
+  \node[sess, minimum width=6.0mm] (d\i) at (1.95+\i*0.72, 0.55) {\t};
+\draw[ink, dashed, line width=0.5pt] (4.47,0.2) -- (4.47,1.25);
+\node[note, anchor=west, align=left] at (6.75,0.55) {no test company\\seen in training};
+% takeaway
+\node[note, anchor=north west, align=left, text width=7.4cm] at (0,-0.35)
+  {A model can score on a time-ordered split by recognising the company (80\% of EC
+   test calls are from training companies). The benchmark reports both splits and swap
+   checks that separate the company from the call.};
+\end{scope}
+\end{tikzpicture}}
 \caption{\textbf{Two properties of the shared test files.} (a)~Most companies
-release results before the open, so anchoring day~0 on the call date places the
-session in which the market reacts inside the ``past'' window; the benchmark
-anchors on the measured release time. (b)~A time-ordered split keeps the same
-companies on both sides, so a model can score by recognising the company; the
-benchmark adds a company-disjoint split and swap checks that make the difference
-measurable.}
+release results before the open, so anchoring day~0 on the call date leaves the
+session in which the market reacts inside the pre window; the benchmark anchors on
+the measured release time. (b)~A time-ordered split keeps the same companies on both
+sides of the boundary; the benchmark adds a company-disjoint split and swap checks
+that make the difference measurable.}
 \label{fig:problems}
-\end{figure}
+\end{figure*}
