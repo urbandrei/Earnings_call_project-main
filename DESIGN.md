@@ -37,6 +37,8 @@ This project reworks an abandoned 2024 university study in that lineage, from th
 3. **Evaluate honestly** — recent work shows much of the published leaderboard may be an artifact of ticker-identity memorization and weak baselines (see §3.1, §3.3). Every model here is measured against strong econometric baselines under identity-aware controls.
 
 > **Reframed 2026-08-23 (DECISIONS 2026-08-23 §1):** this is a **benchmark/resource paper**. ecvol-bench (§4, contribution #1) is the headline contribution; the three goals above and the Phase 2–5 results are the evidence for *why* the benchmark is needed. Target venue: ACL via ARR (§4).
+>
+> **Presentation amended 2026-10-09 (DECISIONS 2026-10-09 evening §2):** the paper presents the same release as an **evaluation protocol and audit toolkit** over existing corpora (identity and timing tables, targets, splits, derived features, harness, audit command), not as a new dataset, because no raw audio or transcripts are redistributed. `ecvol-bench` remains the software name; contributions and scope are unchanged.
 
 ### Research questions
 

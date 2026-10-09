@@ -28,4 +28,10 @@ Earnings25 is 64\,kbps or lower, so no result here is established on lossless
 audio. \textbf{No diarisation.} Audio is pooled per call, and the gender analysis
 uses a dominant-speaker pitch proxy. \textbf{Identity reconstruction is
 imperfect.} 7.1\% of FinCall calls remain unresolved and are excluded with a
-reason code.
+reason code. \textbf{No fine-tuned or LLM-based content model of our own.}
+Stages 2 to 4 use frozen encoders with ridge and MLP heads. The fine-tuned HTML
+reproduction shows the same dependence on company identity
+(Table~\ref{tab:repro-main}), and \S\ref{sec:recommendations} points to
+structured features extracted by language models as the place to look, but this
+paper does not test such a model. The audit command exists so that one can be
+checked from its prediction file.

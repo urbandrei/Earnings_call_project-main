@@ -60,7 +60,7 @@ PAPERS: tuple[Paper, ...] = (
         "model classes run verbatim; the released driver imports TensorFlow-1 set_random_seed "
         "and torchtext and splits features and labels with independent unseeded shuffles; "
         "inputs (WWM-BERT .npy, Praat features) behind dead Drive links, rebuilt; run with a "
-        "corrected driver (T6R.3)",
+        "corrected driver",
         "ecvol reproduce html-faithful; ecvol reproduce html",
     ),
     Paper(
@@ -71,7 +71,7 @@ PAPERS: tuple[Paper, ...] = (
         "partial",
         "TF 2.1 / Keras 2.3.1 / tensorflow-addons 0.8.3 pins; unshipped call inventory, price "
         "files and two lexicons; text-feature script returns after one record; no multi-task "
-        "loss in the released code; ported line by line to PyTorch (T6R.3)",
+        "loss in the released code; ported line by line to PyTorch",
         "ecvol reproduce sawhney (port)",
     ),
     Paper(
@@ -94,7 +94,7 @@ PAPERS: tuple[Paper, ...] = (
         "release-defect patches (missing set_seed, package init importing undefined names, a "
         "dropped class header, an unreleased `latent` package, plotting imports); MAEC "
         "embeddings never released (regenerated with the authors' generator); EC KePt pickle "
-        "Drive-only (T6R.3)",
+        "Drive-only",
         "ecvol reproduce kefvp",
     ),
     Paper(
@@ -104,7 +104,7 @@ PAPERS: tuple[Paper, ...] = (
         "sangyx/DialogueGAT",
         "partial",
         "MIT code, tau<=15 only; training pickle, SeekingAlpha corpus and CRSP labels never "
-        "released; DGL has no wheels for torch 2.11; ported (PyG) onto FinCall turns (T6R.3)",
+        "released; DGL has no wheels for torch 2.11; ported (PyG) onto FinCall turns",
         "ecvol reproduce dialoguegat (port)",
     ),
     Paper(

@@ -1,0 +1,46 @@
+\section{Related Work}
+\label{sec:related}
+
+\paragraph{Earnings calls and volatility.}
+\citet{qin2019what} introduced the task and the EarningsCall corpus, predicting
+volatility over 3 to 30 days from the transcript and the audio. HTML
+\citep{yang2020html} added a sentence-level transformer with a multi-task loss,
+MAEC \citep{li2020maec} a larger corpus with sentence-aligned audio features,
+VolTAGE \citep{sawhney2020voltage} and \citet{sawhney2020mm} graph and multimodal
+fusion, DialogueGAT \citep{sang2022dialoguegat} a dialogue graph over the Q\&A,
+and KeFVP \citep{niu2023kefvp} knowledge-enhanced features. ECC Analyzer
+\citep{cao2024ecc} and Sound of Risk \citep{soundofrisk2025} are the strongest
+recent results and come without code. All of these are scored on the label and
+split files that VolTAGE and KeFVP redistribute, which \S\ref{sec:substrate}
+audits. The corpora have moved on. FinCall-Surprise \citep{fincall2025} is the one
+open corpus with raw audio and ships no identities. Earnings25
+\citep{jiang2026earnings25} postdates every model's training data. MM-FinEval
+\citep{mmfineval2026}, which appeared after this study was complete, adds tickers
+and dates to a larger corpus but none of the checks below, and the checks transfer
+to it unchanged.
+
+\paragraph{Identity, memorisation and lookahead.}
+\citet{scss2024} showed on their own corpus that transcript representations
+mostly tell the model which company is speaking, and that the company's past
+volatility beats every transcript model. Language models recover the company even
+from transcripts with the names removed \citep{memorization2025}. Lookahead bias
+in language models now has diagnostics and cutoff-bounded models of its own
+\citep{lookahead2025,datedgpt2026,lookaheadbench2026}, but no earnings-call
+pipeline had been scored on calls after its training cutoff. The post-cutoff test
+in \S\ref{sec:results} does that.
+
+\paragraph{Baselines, timing and bias.}
+Persistence, GARCH and HAR-RV \citep{corsi2009har} are hard to beat and often
+missing from published comparisons \citep{gukellyxiu2020}, so every table here is
+anchored on them. \citet{fastnumbers2026} time earnings releases from 8-K filings
+to predict returns. We use the same filings to place day~0, which no volatility
+label set had done. Audio features encode speaker gender
+\citep{ama2024,emobias2024}, so the gender confound is reported rather than
+ignored.
+
+\paragraph{Reproducibility.}
+A systematic review found that only 14\% of reported NLP scores were reproduced
+exactly \citep{belz2021repro}, and in financial NLP discontinued data APIs and
+dead repository links make matters worse \citep{finnlp2025survey}. The
+reproduction study here records, per paper, what ran as released and what had to
+be repaired.

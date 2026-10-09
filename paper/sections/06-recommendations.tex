@@ -4,22 +4,17 @@
 The results above are not an argument against using earnings calls. They are an
 argument about what an evaluation has to control for before a content effect can
 be claimed. We suggest that future work on this task report six things. A
-\textbf{company-disjoint} split next to the temporal one, since identity carries
-most of the apparent signal. A \textbf{gap} between training and test dates of at
-least the longest horizon. \textbf{Past-volatility baselines} (persistence and
-HAR-RV, plus a constant on change targets) as the reference for every claim. The
-\textbf{same-company and random swaps}, or the released audit command, so that a
-gain can be attributed to the call rather than to the company. \textbf{Day~0
-measured} from the release time rather than the call date. And the
-\textbf{horizon definition}, calendar or trading days, stated with every number.
-\ecvol-bench provides each of these for FinCall-Surprise and MAEC, and the audit
-command applies the checks to any prediction file. The release also ships the
-processed inputs as one archive per corpus, with checksums. Each archive holds the
-targets under both definitions and anchors, the splits, the pooled text and audio
-features, and the identity and timing tables. A quickstart script goes from an
-archive to the past-volatility baseline, a prediction file and the audit report in
-a few seconds, so a new model can be compared against the same floor and checks
-on the first day.
+\textbf{company-disjoint} split next to the temporal one. A \textbf{gap} between
+training and test dates of at least the longest horizon. \textbf{Past-volatility
+baselines} as the reference for every claim. The \textbf{same-company and random
+swaps}, or the released audit command. \textbf{Day~0 measured} from the release
+time. And the \textbf{horizon definition} stated with every number. Appendix
+Table~\ref{tab:checklist} gives the reason for each and where the release provides
+it. \ecvol-bench covers all six for FinCall-Surprise and MAEC, the audit command
+applies the checks to any prediction file, and a quickstart script goes from the
+released archive of a corpus to the past-volatility baseline, a prediction file
+and the audit report in a few seconds, so a new model meets the same floor and
+checks on its first day.
 
 There is also reason to expect that content signal can be found once it is
 looked for in the right place. Measured release times make
@@ -35,4 +30,4 @@ diarisation, so recordings at source quality with resolved speakers are the fair
 test of prosody. \textbf{Larger company-disjoint corpora} are now within reach,
 since MM-FinEval \citep{mmfineval2026} ships ticker and date fields and the checks
 here transfer to it directly. Each of these can be evaluated against the
-released baselines on the first day, which is what the benchmark is for.
+released baselines on the first day, which is what the protocol is for.

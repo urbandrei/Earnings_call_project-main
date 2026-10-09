@@ -1,4 +1,4 @@
-% Figure 1 (full width): the two properties of the shared test files that the benchmark repairs.
+% Figure 1 (full width): the two properties of the shared test files that the protocol repairs.
 % (a) day-0 anchor: the earnings release (8-K) precedes the market open for most calls, so the
 %     call-date anchor leaves the reaction session inside the pre window;
 % (b) company overlap: a time-ordered split keeps the same companies on both sides, a
@@ -71,15 +71,15 @@
 % takeaway
 \node[note, anchor=north west, align=left, text width=7.5cm] at (0,-0.35)
   {A model can score on a time-ordered split by recognising the company (80\% of EC
-   test calls are from training companies). The benchmark reports both splits and swap
+   test calls are from training companies). The protocol reports both splits and swap
    checks that separate the company from the call.};
 \end{scope}
 \end{tikzpicture}}
 \caption{\textbf{Two properties of the shared test files.} (a)~Most companies
 release results before the open, so anchoring day~0 on the call date leaves the
-session in which the market reacts inside the pre window. The benchmark anchors on
+session in which the market reacts inside the pre window. The protocol anchors on
 the measured release time. (b)~A time-ordered split keeps the same companies on both
-sides of the boundary. The benchmark adds a company-disjoint split and swap checks
+sides of the boundary. The protocol adds a company-disjoint split and swap checks
 that make the difference measurable.}
 \label{fig:problems}
 \end{figure*}

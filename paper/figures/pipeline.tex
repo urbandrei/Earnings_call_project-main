@@ -1,25 +1,25 @@
-% Stage-ladder schematic (Stage 0 -> 4, plus the reproduction track). Simple TikZ
-% stub; refine for camera-ready.
+% Stage-ladder schematic (Stage 0 -> 4, plus the reproduction track).
 \begin{figure}[t]
 \centering
 \begin{tikzpicture}[
     node distance=3.2mm,
     box/.style={draw, rounded corners, align=center, font=\scriptsize,
                 inner sep=2pt, text width=0.9\linewidth, minimum height=6mm},
-    done/.style={box, fill=green!8},
-    todo/.style={box, fill=orange!10},
+    stage/.style={box, fill=black!4},
+    repro/.style={box, fill=black!12},
 ]
-\node[done] (s0) {\textbf{Stage 0} Persistence, EWMA, HAR-RV, GARCH(1,1)};
-\node[done, below=of s0] (s1) {\textbf{Stage 1} LightGBM $+$ ticker fixed effect};
-\node[done, below=of s1] (s2) {\textbf{Stage 2} Frozen text: BGE-M3, FinBERT, surface $\to$ ridge / MLP};
-\node[done, below=of s2] (s3) {\textbf{Stage 3} Frozen audio: eGeMAPS, WavLM, emotion2vec+};
-\node[done, below=of s3] (s4) {\textbf{Stage 4} Fusion (gated / stacking)};
-\node[todo, below=of s4] (sr) {\textbf{Stage R} Prior models (HTML, SCSS, KeFVP, DialogueGAT, VolTAGE) on their own data, under the same controls};
+\node[stage] (s0) {\textbf{Stage 0} Persistence, EWMA, HAR-RV, GARCH(1,1)};
+\node[stage, below=of s0] (s1) {\textbf{Stage 1} LightGBM $+$ ticker fixed effect};
+\node[stage, below=of s1] (s2) {\textbf{Stage 2} Frozen text: BGE-M3, FinBERT, surface $\to$ ridge / MLP};
+\node[stage, below=of s2] (s3) {\textbf{Stage 3} Frozen audio: eGeMAPS, WavLM, emotion2vec+};
+\node[stage, below=of s3] (s4) {\textbf{Stage 4} Fusion (gated / stacking)};
+\node[repro, below=of s4] (sr) {\textbf{Stage R} Prior models (HTML, SCSS, KeFVP, DialogueGAT, VolTAGE) on their own data, under the same controls};
 \foreach \a/\b in {s0/s1, s1/s2, s2/s3, s3/s4, s4/sr}
   \draw[->, >=stealth] (\a) -- (\b);
 \end{tikzpicture}
 \caption{\textbf{The modelling ladder.} From Stage~2 up, every model also carries
 past-volatility covariates (and is reported with them ablated). Every stage runs
-through the identity-control suite. Green = complete, orange = pending.}
+through the identity checks. The darker box is the reproduction track, which
+applies the same checks to published models on their own data.}
 \label{fig:pipeline}
 \end{figure}
