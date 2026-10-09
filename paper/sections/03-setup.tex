@@ -37,13 +37,15 @@ Holm-corrected. All other analyses are exploratory.
 
 \paragraph{Identity checks.}
 \label{sec:controls}
-We use four. (1)~A \emph{company-only} model predicts each company's training
-mean. (2)~A \emph{same-company swap} gives each test call the transcript or audio
-of another call by the same company, and a \emph{random swap} gives it any other
-call. A model that does not change under the first is reading identity, and one
-that does not change under the second is reading nothing. (3)~A linear
-\emph{probe} tries to recover the ticker from the frozen call embedding.
-(4)~Every table shows \tickerdisjoint{} results next to temporal ones. The command
+We use four. A \emph{company-only} model predicts each company's training mean
+and shows how far identity alone gets. Two \emph{swaps} replace each test call's
+transcript or audio, either with another call by the same company or with a
+random call from the corpus. If the same-company swap leaves a model's score
+unchanged, the model was reading identity, and if the random swap also leaves it
+unchanged, the model was reading nothing. A linear \emph{probe} measures how much
+identity the frozen call embedding carries by trying to recover the ticker from
+it. Finally, every table shows \tickerdisjoint{} results next to temporal ones.
+The command
 \texttt{ecvol audit predictions} runs the prediction-side versions of these
 checks, plus split integrity, seen-versus-unseen companies, the between-company
 share of prediction variance and company-clustered significance, on any file with
