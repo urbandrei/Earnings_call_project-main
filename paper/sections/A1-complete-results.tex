@@ -16,6 +16,20 @@ Tables~\ref{tab:baselines}, \ref{tab:text} and~\ref{tab:audio} give the full
 Stage-0/1, Stage-2 and Stage-3 model sets on the $\Delta v$ target, including the
 past-volatility-only and MLP heads omitted from Table~\ref{tab:grid}.
 
+Figure~\ref{fig:ladder} plots the canonical model of each stage from
+Table~\ref{tab:grid} against the train-mean constant.
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\textwidth]{figures/fig_ladder.pdf}
+\caption{\textbf{The ladder.} \Rtwo{} vs.\ persistence on $\Delta v$ (FinCall
+test) for the canonical model of each stage; the shaded band is the train-mean
+constant. No content stage clears HAR-RV on the temporal split, and on the
+\tickerdisjoint{} split only the fusion stack does, at $\tau{=}30$. Data:
+Table~\ref{tab:grid}.}
+\label{fig:ladder}
+\end{figure*}
+
 \input{tables/baselines}
 \input{tables/text}
 \input{tables/audio}

@@ -19,7 +19,7 @@ scores 0.17, 0.16, 0.06 and 0.09 on the temporal split and 0.20, 0.20, 0.13 and
 0.04 on the \tickerdisjoint{} split. That is the reference for every $\Delta v$
 claim below.
 
-\paragraph{Text models read the company, not the call (Table~\ref{tab:controls}).}
+\paragraph{Text models read the company, not the call (Table~\ref{tab:controls}, Figure~\ref{fig:swaps}).}
 The text-only ridge stays within 0.14 of the constant on both splits and is below
 HAR-RV by at least 0.09 in seven of eight cells (the eighth is the COVID cell).
 The MLPs overfit. Adding text features to the past-volatility ridge makes it
@@ -35,6 +35,20 @@ baseline and disappears once past volatility is in the model (0.301 against 0.31
 at $\tau{=}30$). MAEC shows the same pattern.
 
 \input{tables/controls_main}
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\textwidth]{figures/fig_swaps.pdf}
+\caption{\textbf{Content swaps.} \Rtwo{} vs.\ persistence on $\Delta v$ (test) when
+each test call keeps its own transcript or audio (real), receives another call by
+the same company, or receives a random call. Where companies recur in training
+(left), the same-company swap leaves the text model unchanged. On the
+\tickerdisjoint{} split (middle) the model loses something at long horizons, but
+stays below the past-volatility ridge of Table~\ref{tab:grid}. The audio model with
+past volatility (right) keeps its score under a random swap at $\tau{=}3$.
+Data: Table~\ref{tab:controls}.}
+\label{fig:swaps}
+\end{figure*}
 
 \paragraph{Audio adds nothing to past volatility.}
 Audio-only ridges on eGeMAPS, WavLM-Large and emotion2vec+ stay within 0.10 of the
@@ -64,7 +78,7 @@ model is not better than the best single-input model when that input is past
 volatility, and the condition we set in advance for a positive paper (gains
 surviving the checks on at least two of four horizons) was not met.
 
-\paragraph{The field's own models (Table~\ref{tab:repro-main}).}
+\paragraph{Published models under the checks (Table~\ref{tab:repro-main}, Figure~\ref{fig:repro}).}
 Among the five papers we could run, the results that reproduce belong to
 price-only or same-company models (Appendix~\ref{app:repro}).
 Same-Company-Same-Signal reproduces from its shipped data. TSMixer matches to
@@ -93,6 +107,16 @@ call. On this evidence, the HTML text model is reading which company is
 speaking.
 
 \input{tables/repro_controls_main}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{figures/fig_repro.pdf}
+\caption{\textbf{Published models with companies held out.} Change in test MSE
+when the same model is scored on a \tickerdisjoint{} split of its own data, one
+marker per horizon (data: Table~\ref{tab:repro-main}). The three text models lose
+12--82\%; the two price-based models lose nothing.}
+\label{fig:repro}
+\end{figure}
 
 \paragraph{After the cutoff (Table~\ref{tab:lookahead}).}
 We scored the FinCall-trained models, unchanged, on 475 Earnings25 calls from late
