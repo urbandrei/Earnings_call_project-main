@@ -1,0 +1,42 @@
+{
+  "command": "evaluate",
+  "config": {
+    "command": "evaluate",
+    "seeds": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ]
+  },
+  "config_hash": "cbe08bbd7017b2bfb9a3c0a7b1cb600647108d723f2d47317a4eb4d5784cc4fc",
+  "created_at": "2026-10-09T17:23:10+00:00",
+  "env": {
+    "gpus": [
+      "NVIDIA GeForce RTX 5060 Ti, 610.88"
+    ],
+    "lockfile_sha256": "06e8d07efbd62850db174a90adadf4b263225a86801f72d29aa026ca04809abd",
+    "platform": "Windows-11-10.0.26300-SP0",
+    "python": "3.12.8"
+  },
+  "git": {
+    "dirty": true,
+    "sha": "447df952ee4bf5c06c5646c83748780ec46b8f40"
+  },
+  "outputs": {
+    "results/result_table_1.csv": {
+      "bytes": 240819,
+      "sha256": "c9be276ffa36d8c7636404c20b5dbb34abad0080537a4ba891f0cd27ac6d3ceb"
+    }
+  },
+  "provenance": "run",
+  "run_id": "20261009T172310Z-evaluate-cbe08bbd",
+  "seeds": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ]
+}

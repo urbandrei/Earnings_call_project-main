@@ -32,9 +32,10 @@ RESULTS_CSV = "results/result_table_1.csv"
 MD_OUT = "results/result_table_1.md"
 TEX_OUT = "results/result_table_1.tex"
 
-MODEL_ORDER = ["persistence", "ewma", "har", "garch", "gbdt_tickerFE"]
+MODEL_ORDER = ["persistence", "train_mean", "ewma", "har", "garch", "gbdt_tickerFE"]
 MODEL_LABELS = {
     "persistence": "Persistence",
+    "train_mean": "Train mean",
     "ewma": "EWMA",
     "har": "HAR-RV",
     "garch": "GARCH(1,1)",
@@ -454,9 +455,18 @@ RESULTS4_CSV = "results/result_table_4.csv"
 MD4_OUT = "results/result_table_4.md"
 TEX4_OUT = "results/result_table_4.tex"
 
-TABLE4_STAGE_ORDER = ["S0_persistence", "S0_HAR", "S1_GBDT", "S2_text", "S3_audio", "S4_fusion"]
+TABLE4_STAGE_ORDER = [
+    "S0_persistence",
+    "S0_train_mean",
+    "S0_HAR",
+    "S1_GBDT",
+    "S2_text",
+    "S3_audio",
+    "S4_fusion",
+]
 TABLE4_STAGE_LABELS = {
     "S0_persistence": "Persistence",
+    "S0_train_mean": "Train mean",
     "S0_HAR": "HAR-RV",
     "S1_GBDT": "GBDT (ticker FE)",
     "S2_text": "Text (BGE+vol)",
