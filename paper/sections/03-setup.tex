@@ -10,9 +10,9 @@ transcript length, number of Q\&A turns and a \textbf{company fixed effect}, our
 identity-only baseline. \textbf{Stage 2} uses the transcript through BGE-M3
 \citep{bge2024} embeddings pooled per section (1024-d), FinBERT \citep{finbert}
 sentiment aggregates and surface statistics. \textbf{Stage 3} uses the audio,
-resampled to 16\,kHz mono, through eGeMAPSv02 functionals \citep{opensmile} and
-WavLM-Large \citep{wavlm} and emotion2vec+ \citep{emotion2vec} embeddings over
-30-second windows, averaged per call. \textbf{Stage 4} combines modalities by
+resampled to 16\,kHz mono. Its features are eGeMAPSv02 functionals
+\citep{opensmile} and WavLM-Large \citep{wavlm} and emotion2vec+
+\citep{emotion2vec} embeddings over 30-second windows, averaged per call. \textbf{Stage 4} combines modalities by
 gated fusion or by stacking (a ridge over the text, audio and Stage-1 predictions,
 fit on the validation set). From Stage~2 on, every model is reported with and
 without a block of past-volatility features ($v_{\mathrm{pre}}$ at all horizons
@@ -47,10 +47,11 @@ identity the frozen call embedding carries by trying to recover the ticker from
 it. Finally, every table shows \tickerdisjoint{} results next to temporal ones.
 The command
 \texttt{ecvol audit predictions} runs the prediction-side versions of the
-company-only and swap checks, plus split integrity, seen-versus-unseen companies, the between-company
-share of prediction variance and company-clustered significance, on any file with
-one row per (call, ticker, date, split, horizon, truth, prediction). A published
-result can therefore be checked from the one file its authors already have.
+company-only and swap checks on any file with one row per (call, ticker, date,
+split, horizon, truth, prediction). It also reports split integrity, seen versus
+unseen companies, the between-company share of prediction variance and
+company-clustered significance. A published result can therefore be checked from
+the one file its authors already have.
 
 \paragraph{Reproductions and post-cutoff tests.}
 Of seventeen papers in this line, one releases code that runs as released

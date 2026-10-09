@@ -4,11 +4,11 @@
 Four things hold across the whole set of models. Classical volatility forecasts
 are hard to beat, and measuring against persistence exposes a regime failure that
 raw MSE hides. Text features add nothing to past volatility, because the
-embeddings identify the company, and where companies recur in training, swapping
-in another call by the same company changes nothing. Audio features add nothing
+embeddings identify the company. Where companies recur in training, swapping in
+another call by the same company changes nothing. Audio features add nothing
 either, at 40\,kbps or 64\,kbps, even though they too identify the company, and
-combining them does not help. None of this could be measured with the files the
-field has been using, which is the gap the benchmark fills. The same checks on
+combining the two does not help. None of this could be measured with the files
+the field has been using, which is the gap the benchmark fills. The same checks on
 five published models give the same answer. What reproduces is price-only models
 or same-company history, and the text models lose their edge as soon as the
 company is new. The strongest recent positive results
@@ -17,5 +17,5 @@ their code is not released. The \texttt{audit predictions} command makes that
 check cheap for anyone with a file of predictions. We do not claim that
 transcripts and audio carry no information about a company's risk. We claim that
 the benchmarks in use cannot tell that information apart from knowing which
-company is speaking, and that once they can, nothing yet built beats a forecast
-from past volatility. That is the baseline the next model has to clear.
+company is speaking. Once they can, nothing yet built beats a forecast from past
+volatility. That is the baseline the next model has to clear.

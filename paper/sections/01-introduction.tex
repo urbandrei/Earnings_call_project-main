@@ -53,14 +53,14 @@ the corresponding results existed.
 The design responds to known pitfalls. Company identity leaks into transcript
 models \citep{scss2024}, and language models recover it even when names are
 removed \citep{memorization2025}, so we add identity checks. Language models also
-carry lookahead bias, and although diagnostics and cutoff-bounded models now exist
-\citep{lookahead2025,datedgpt2026,lookaheadbench2026}, no earnings-call pipeline
-had been scored on calls after its cutoff, so we do that. Persistence, GARCH and
-HAR-RV \citep{corsi2009har} are hard to beat and often missing from comparisons
-\citep{gukellyxiu2020}, so they anchor every table, and because audio features
-encode speaker gender \citep{ama2024,emobias2024} we report that confound.
+carry lookahead bias. Diagnostics and cutoff-bounded models now exist
+\citep{lookahead2025,datedgpt2026,lookaheadbench2026}, but no earnings-call
+pipeline had been scored on calls after its cutoff, so we do that. Persistence,
+GARCH and HAR-RV \citep{corsi2009har} are hard to beat and often missing from
+comparisons \citep{gukellyxiu2020}, so they anchor every table. Audio features
+encode speaker gender \citep{ama2024,emobias2024}, so we report that confound.
 \citet{fastnumbers2026} time earnings releases from 8-K filings to predict
 returns, but nobody had audited the volatility label sets. The strongest recent
 positive results \citep{soundofrisk2025,cao2024ecc} have not yet been evaluated
-with identity checks and their code is not released, so whether they hold under
+with identity checks, and their code is not released. Whether they hold under
 these controls is an open question that the released audit command can settle.
