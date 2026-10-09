@@ -1,21 +1,24 @@
-% Condensed abstract (5-page spine, 2026-10-09). Every number traces to a
-% manifested result CSV; see the header comment of each table in paper/tables/.
-A decade of work predicts post-earnings-call stock volatility from call
-transcripts and audio. We show that the evaluation substrate this literature
-shares cannot support its claims: the canonical label and split files have a
-zero-day embargo against 30-day targets, place 44--80\% of test calls' companies
-in training, and anchor day~0 on the call date although the earnings release
-precedes the open for most calls. We release \ecvol-bench, an open benchmark
-over FinCall-Surprise and MAEC that repairs this: reconstructed company identity
-and dates for a corpus that ships without them, EDGAR-measured release
-timestamps, targets under both horizon conventions, embargoed and
-\tickerdisjoint{} splits, econometric baselines, and an identity-control suite
-that runs on any prediction file. Under these controls, modern frozen text and
-audio representations add nothing to past volatility: adding either to a
-past-volatility ridge lowers \Rtwo{} in all 16 split$\times$horizon cells, text
-embeddings identify the company at 89.5\% probe accuracy, audio-only heads do no
-better than a featureless intercept, and fusion beats HAR-RV in one horizon. Re-run on their
-own data, the field's text models lose 12--82\% MSE when companies are held out
-while price-based models do not move. Nothing degrades when the frozen pipeline
-is scored on 475 calls held after every encoder's knowledge cutoff. All code,
-metadata, splits, targets, features and result tables are released.
+% Condensed abstract (5-page spine, 2026-10-09; plain-language pass same day).
+% Every number traces to a manifested result CSV; see paper/tables/ headers.
+For about a decade, researchers have tried to predict how much a company's stock
+will move in the weeks after its quarterly earnings call, using what executives
+say on the call and how they sound. Many papers report that such models beat
+classical forecasts built from past price swings. We find that the shared test
+files behind these claims cannot support them. The files leave no gap between the
+training and test periods even though every target looks 30 days ahead, 44--80\%
+of their test calls come from companies the model also saw in training, and they
+place ``day zero'' on the day of the call although most companies release their
+numbers before the market opens that morning. We built \ecvol-bench to fix this.
+It adds company names and dates to a public audio corpus that ships without
+them, times each earnings release from SEC filings, provides targets under both
+horizon definitions in use, gives splits that keep training and test apart in
+time and in company, and includes a set of identity checks that run on any file
+of predictions. With these checks in place, modern open text and audio models add
+nothing to a forecast built from past volatility alone. Text embeddings mostly
+identify which company is talking (89.5\% probe accuracy), audio features do no
+better than a constant, and combining the two helps in one horizon out of eight.
+When we rerun the field's own models on their own data, the text models lose
+12--82\% in accuracy once test companies are unseen, while price-only models do
+not move. Scoring the frozen pipeline on 475 calls from late 2025, after every
+model's training cutoff, changes none of this. All code, metadata, splits,
+targets, features and result tables are released.

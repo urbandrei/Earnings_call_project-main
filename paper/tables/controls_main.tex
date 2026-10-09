@@ -15,31 +15,30 @@ emotion2vec+ audio, FinCall (356 tickers) & 29.4\% & 105$\times$ \\
 \bottomrule
 \end{tabular}
 
-\vspace{0.5em}
+\vspace{0.2em}
 \begin{tabular}{lrrrr}
 \toprule
-Content shuffle (\Rtwo{} on $\Delta v$) & $\tau$=3 & $\tau$=7 & $\tau$=15 & $\tau$=30 \\
+Content swap (\Rtwo{} on $\Delta v$) & $\tau$=3 & $\tau$=7 & $\tau$=15 & $\tau$=30 \\
 \midrule
 \multicolumn{5}{l}{\textit{Text ridge, temporal split}}\\
 \quad real & 0.182 & 0.202 & 0.044 & $-$0.133 \\
-\quad same-company shuffle & 0.174 & 0.194 & 0.047 & $-$0.110 \\
-\quad global shuffle & 0.145 & 0.110 & 0.008 & $-$0.152 \\
+\quad same-company swap & 0.174 & 0.194 & 0.047 & $-$0.110 \\
+\quad random swap & 0.145 & 0.110 & 0.008 & $-$0.152 \\
 \multicolumn{5}{l}{\textit{Text ridge, \tickerdisjoint{} split}}\\
 \quad real & 0.195 & 0.217 & 0.195 & 0.169 \\
-\quad same-company shuffle & 0.176 & 0.175 & 0.076 & $-$0.322 \\
-\quad global shuffle & 0.161 & 0.128 & 0.016 & $-$0.410 \\
+\quad same-company swap & 0.176 & 0.175 & 0.076 & $-$0.322 \\
+\quad random swap & 0.161 & 0.128 & 0.016 & $-$0.410 \\
 \multicolumn{5}{l}{\textit{WavLM ridge + past-vol, \tickerdisjoint{} split}}\\
 \quad real & 0.456 & 0.390 & 0.267 & 0.222 \\
-\quad same-company shuffle & 0.453 & 0.373 & 0.229 & 0.152 \\
-\quad global shuffle & 0.453 & 0.323 & 0.164 & 0.099 \\
+\quad same-company swap & 0.453 & 0.373 & 0.229 & 0.152 \\
+\quad random swap & 0.453 & 0.323 & 0.164 & 0.099 \\
 \bottomrule
 \end{tabular}
-\caption{\textbf{Identity controls.} Top: frozen embeddings identify the company
-far above chance. Bottom: giving each test call another call of the \emph{same}
-company changes the text head little where companies recur (temporal), while a
-global shuffle degrades it; on the \tickerdisjoint{} split the text head's residual
-call-specific signal at $\tau\ge15$ sits below the past-volatility floor of
-Table~\ref{tab:grid}, and the audio head's apparent gain survives a global
-shuffle at $\tau{=}3$.}
+\caption{\textbf{Identity checks.} Top: frozen embeddings identify the company
+far above chance. Bottom: where companies recur (temporal), giving a test call
+another call by the \emph{same} company barely changes the text model, while a
+random call hurts; on the \tickerdisjoint{} split the text model's remaining
+signal at $\tau\ge15$ sits below the past-volatility baseline of
+Table~\ref{tab:grid}.}
 \label{tab:controls}
 \end{table}

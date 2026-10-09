@@ -4,23 +4,27 @@
 \begin{table}[t]
 \centering
 \scriptsize
-\setlength{\tabcolsep}{2.5pt}
-\begin{tabular}{lrrrr}
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{llrrrr}
 \toprule
-Head (in-cutoff $\to$ post-cutoff) & $\tau$=3 & $\tau$=7 & $\tau$=15 & $\tau$=30 \\
+Model & cutoff & $\tau$=3 & $\tau$=7 & $\tau$=15 & $\tau$=30 \\
 \midrule
-S0 train mean & 0.36$\to$0.58 & 0.14$\to$0.47 & $-$0.37$\to$0.15 & $-$1.05$\to$$-$0.29 \\
-S0 HAR-RV & 0.44$\to$0.60 & 0.37$\to$0.54 & 0.14$\to$0.35 & $-$0.29$\to$0.08 \\
-S2 text ridge + vol & 0.43$\to$0.57 & 0.34$\to$0.50 & 0.03$\to$0.25 & $-$0.45$\to$$-$0.20 \\
-S3 WavLM ridge + vol & 0.38$\to$0.57 & 0.24$\to$0.43 & $-$0.09$\to$0.15 & $-$0.66$\to$$-$0.32 \\
-S4 fusion ridge + vol & 0.41$\to$0.50 & 0.32$\to$0.46 & $-$0.02$\to$0.20 & $-$0.63$\to$$-$1.93 \\
+S0 train mean & before & 0.36 & 0.14 & $-$0.37 & $-$1.05 \\
+ & after & 0.58 & 0.47 & 0.15 & $-$0.29 \\
+S0 HAR-RV & before & 0.44 & 0.37 & 0.14 & $-$0.29 \\
+ & after & 0.60 & 0.54 & 0.35 & 0.08 \\
+S2 text ridge + vol & before & 0.43 & 0.34 & 0.03 & $-$0.45 \\
+ & after & 0.57 & 0.50 & 0.25 & $-$0.20 \\
+S3 WavLM ridge + vol & before & 0.38 & 0.24 & $-$0.09 & $-$0.66 \\
+ & after & 0.57 & 0.43 & 0.15 & $-$0.32 \\
+S4 fusion ridge + vol & before & 0.41 & 0.32 & $-$0.02 & $-$0.63 \\
+ & after & 0.50 & 0.46 & 0.20 & $-$1.93 \\
 \bottomrule
 \end{tabular}
 \caption{\textbf{Frozen-pipeline post-cutoff evaluation} (Result Table~7).
 Heads fit once on FinCall's training split, scored unchanged in-cutoff (the 2021
 FinCall test year) and post-cutoff (475 Earnings25 calls, late 2025); level-$v$,
-\Rtwo{} vs.\ persistence. No head competitive in-cutoff degrades; the ordering survives, with
-HAR-RV above every content head at every horizon. Month-cluster bootstrap CIs and
+\Rtwo{} vs.\ persistence. The ordering survives the cutoff; bootstrap CIs and
 $\Delta v$ rows are in the released CSV.}
 \label{tab:lookahead}
 \end{table}
