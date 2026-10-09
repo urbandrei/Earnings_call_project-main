@@ -1,21 +1,25 @@
 \section{Discussion}
 \label{sec:discussion}
 
-Four things hold across the whole set of models. Classical volatility forecasts
-are hard to beat, and measuring against persistence exposes a regime failure that
-raw MSE hides. Text features add nothing to past volatility, because the
-embeddings identify the company. Where companies recur in training, swapping in
-another call by the same company changes nothing. Audio features add nothing
-either, at 40\,kbps or 64\,kbps, even though they too identify the company, and
-combining the two does not help. None of this could be measured with the files
-the field has been using, which is the gap the benchmark fills. The same checks on
-five published models give the same answer. What reproduces is price-only models
-or same-company history, and the text models lose their edge as soon as the
-company is new. The strongest recent positive results
-\citep{soundofrisk2025,cao2024ecc} could not be run through these checks because
-their code is not released. The \texttt{audit predictions} command makes that
-check cheap for anyone with a file of predictions. We do not claim that
-transcripts and audio carry no information about a company's risk. We claim that
-the benchmarks in use cannot tell that information apart from knowing which
-company is speaking. Once they can, nothing yet built beats a forecast from past
-volatility. That is the baseline the next model has to clear.
+Across every model we trained, the same picture holds. HAR-RV and the other
+classical forecasts are hard to beat, and scoring against persistence exposes a
+regime failure at the 30-day horizon that raw MSE would have hidden. Text
+features add nothing once past volatility is in the model, and the swap checks
+say why. A probe reads the ticker out of the call embedding nine times in ten,
+and where a company recurs in training, handing the model a different call by
+that company moves its score by less than 0.03. Audio behaves the same way at
+40\,kbps and at 64\,kbps, identifying the company without improving the forecast,
+and stacking the two modalities beats HAR-RV in only one cell outside the COVID
+regime. The shared test files could not have shown any of this, because they
+carry no company identity for the audio corpus, no company-disjoint split and no
+measured day~0. Applied to five published models on their own data, the checks
+return the same picture. The price-based models keep their accuracy when
+companies are held out, and the text models lose 12 to 82 percent of theirs. The
+two strongest recent positive results \citep{soundofrisk2025,cao2024ecc} could
+not be checked at all, since their code is not released, though the
+\texttt{audit predictions} command would make that check a matter of minutes for
+anyone holding a file of predictions. We are not saying that transcripts and
+audio carry no information about a company's risk. We are saying that the
+benchmarks in use cannot separate that information from knowing which company is
+speaking, and that once they can, nothing built so far beats a forecast from past
+volatility. That is the bar the next model has to clear.
