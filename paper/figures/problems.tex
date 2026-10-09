@@ -2,7 +2,9 @@
 % (a) day-0 anchor: the earnings release (8-K) precedes the market open for most calls, so the
 %     call-date anchor leaves the reaction session inside the pre window;
 % (b) company overlap: a time-ordered split keeps the same companies on both sides, a
-%     company-disjoint split does not. Total width is kept under \textwidth (16 cm).
+%     company-disjoint split does not.
+% Geometry: in each panel the row labels are right-aligned in a 2 cm box whose left edge is x=0,
+% so the panel title and the takeaway text (both at x=0) line up with the leftmost content.
 \begin{figure*}[t]
 \centering
 \resizebox{\textwidth}{!}{%
@@ -12,7 +14,7 @@
     ink/.style={black!75},
     sess/.style={draw=black!55, line width=0.4pt, fill=black!6, minimum width=8.4mm, minimum height=4.6mm, inner sep=0pt, font=\scriptsize, text=black!75},
     react/.style={sess, fill=orange!30, draw=orange!75!black, line width=0.7pt, text=black},
-    rowlab/.style={font=\footnotesize, text=black!80, anchor=east},
+    rowlab/.style={font=\footnotesize, text=black!80, anchor=east, align=right, text width=2.0cm, inner xsep=0pt},
     note/.style={font=\scriptsize, text=black!65},
     win/.style={decorate, decoration={brace, mirror, amplitude=2.2pt, raise=1.5pt}, black!60, line width=0.5pt},
     winlab/.style={font=\scriptsize, text=black!65},
@@ -21,51 +23,53 @@
 % ================================================================ (a) day-0 anchor
 \begin{scope}
 \node[panel] at (0,3.8) {(a) Where day~0 falls};
-\node[note, anchor=south] at (4.15,3.05)
+\node[note, anchor=south] at (4.95,3.05)
   {\textbf{day $d$}: 8-K release 06:30 $\rightarrow$ call 08:30 $\rightarrow$ market opens 09:30};
-% time axis
-\draw[ink, line width=0.5pt, ->, >=stealth] (1.55,2.75) -- (7.35,2.75);
+% time axis (session centres at 2.85 + i*1.05)
+\draw[ink, line width=0.5pt, ->, >=stealth] (2.35,2.75) -- (8.15,2.75);
 \foreach \i/\t in {0/$d-2$, 1/$d-1$, 2/$d$, 3/$d+1$, 4/$d+2$} {
-  \draw[ink, line width=0.5pt] (2.05+\i*1.05, 2.69) -- (2.05+\i*1.05, 2.81);
-  \node[note, anchor=north] at (2.05+\i*1.05, 2.66) {\t};
+  \draw[ink, line width=0.5pt] (2.85+\i*1.05, 2.69) -- (2.85+\i*1.05, 2.81);
+  \node[note, anchor=north] at (2.85+\i*1.05, 2.66) {\t};
 }
 % row 1: call-date anchor
-\node[rowlab, align=right] at (1.45,1.85) {call-date anchor\\[-1pt]{\scriptsize (released label sets)}};
+\node[rowlab] at (2.3,1.85) {call-date anchor\\[-1pt]{\scriptsize (released label sets)}};
 \foreach \i/\s in {0/sess, 1/sess, 2/react, 3/sess, 4/sess}
-  \node[\s] (a\i) at (2.05+\i*1.05, 1.85) {\ifnum\i=2 reaction\else\fi};
+  \node[\s] (a\i) at (2.85+\i*1.05, 1.85) {\ifnum\i=2 reaction\else\fi};
 \draw[win] (a0.south west) -- (a2.south east) node[winlab, midway, below=5pt] {pre window};
 \draw[win] (a3.south west) -- (a4.south east) node[winlab, midway, below=5pt] {post window};
 % row 2: measured anchor
-\node[rowlab, align=right] at (1.45,0.55) {measured anchor\\[-1pt]{\scriptsize (this benchmark)}};
+\node[rowlab] at (2.3,0.55) {measured anchor\\[-1pt]{\scriptsize (this benchmark)}};
 \foreach \i/\s in {0/sess, 1/sess, 2/react, 3/sess, 4/sess}
-  \node[\s] (b\i) at (2.05+\i*1.05, 0.55) {\ifnum\i=2 reaction\else\fi};
+  \node[\s] (b\i) at (2.85+\i*1.05, 0.55) {\ifnum\i=2 reaction\else\fi};
 \draw[win] (b0.south west) -- (b1.south east) node[winlab, midway, below=5pt] {pre window};
 \draw[win] (b2.south west) -- (b4.south east) node[winlab, midway, below=5pt] {post window};
 % takeaway
-\node[note, anchor=north west, align=left, text width=7.0cm] at (0,-0.35)
+\node[note, anchor=north west, align=left, text width=8.0cm] at (0,-0.35)
   {Under the call-date anchor the session in which the market reacts is counted as
    ``past''. Day~0 moves one session earlier for 53\% (\mbox{FinCall}), 56\% (MAEC) and
    72\% (Earnings25) of calls.};
 \end{scope}
+% ================================================================ separator
+\draw[black!25, line width=0.4pt] (8.75,-1.2) -- (8.75,3.95);
 % ================================================================ (b) company overlap
-\draw[black!25, line width=0.4pt] (8.6,-1.15) -- (8.6,3.95);
-\begin{scope}[xshift=9.5cm]
+\begin{scope}[xshift=9.3cm]
 \node[panel] at (0,3.8) {(b) Which companies are in the test set};
-\node[note] at (3.03,2.72) {train};
-\node[note] at (5.55,2.72) {test};
+% company boxes at 3.0 + i*0.72; boundary between i=3 and i=4 at 5.52
+\node[note] at (4.08,2.72) {train};
+\node[note] at (6.6,2.72) {test};
+\draw[ink, dashed, line width=0.5pt] (5.52,0.15) -- (5.52,2.55);
 % row 1: time-ordered
-\node[rowlab, align=right] at (1.45,1.85) {time-ordered\\split\\[-1pt]{\scriptsize (released files)}};
+\node[rowlab, text width=2.3cm] at (2.5,1.85) {time-ordered\\split\\[-1pt]{\scriptsize (released files)}};
 \foreach \i/\t/\s in {0/A/sess, 1/B/sess, 2/C/sess, 3/D/sess, 4/A/react, 5/B/react, 6/C/react}
-  \node[\s, minimum width=6.0mm] (c\i) at (1.95+\i*0.72, 1.85) {\t};
-\draw[ink, dashed, line width=0.5pt] (4.47,0.15) -- (4.47,2.55);
-\node[note, anchor=west, align=left] at (6.75,1.85) {every test company\\also in training};
+  \node[\s, minimum width=6.0mm] (c\i) at (3.0+\i*0.72, 1.85) {\t};
+\node[note, anchor=north] at (6.6,1.55) {all seen in training};
 % row 2: company-disjoint
-\node[rowlab, align=right] at (1.45,0.55) {company-disjoint\\split\\[-1pt]{\scriptsize (this benchmark)}};
+\node[rowlab, text width=2.3cm] at (2.5,0.55) {company-disjoint\\split\\[-1pt]{\scriptsize (this benchmark)}};
 \foreach \i/\t in {0/A, 1/A, 2/B, 3/B, 4/E, 5/F, 6/F}
-  \node[sess, minimum width=6.0mm] (d\i) at (1.95+\i*0.72, 0.55) {\t};
-\node[note, anchor=west, align=left] at (6.75,0.55) {no test company\\seen in training};
+  \node[sess, minimum width=6.0mm] (d\i) at (3.0+\i*0.72, 0.55) {\t};
+\node[note, anchor=north] at (6.6,0.25) {none seen in training};
 % takeaway
-\node[note, anchor=north west, align=left, text width=6.8cm] at (0,-0.35)
+\node[note, anchor=north west, align=left, text width=7.5cm] at (0,-0.35)
   {A model can score on a time-ordered split by recognising the company (80\% of EC
    test calls are from training companies). The benchmark reports both splits and swap
    checks that separate the company from the call.};
