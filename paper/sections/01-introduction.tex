@@ -45,14 +45,16 @@ the frozen pipeline on 475 calls from late 2025. Stages, checks and confirmatory
 tests were fixed in a public decision log before any model was run.
 
 \paragraph{Related work.}
-Four known pitfalls shaped the design. The first is company-identity leakage
-\citep{scss2024}, which language models reproduce even on transcripts with names
-removed \citep{memorization2025}. The second is lookahead bias in language models,
-for which diagnostics and cutoff-bounded models exist
-\citep{lookahead2025,datedgpt2026,lookaheadbench2026}. The third is weak baselines,
-since persistence, GARCH and HAR-RV \citep{corsi2009har} are hard to beat
-\citep{gukellyxiu2020}. The fourth is gender bias in audio features
-\citep{ama2024,emobias2024}. \citet{fastnumbers2026} time earnings releases from
-8-K filings to predict returns, but nobody had audited the volatility label sets.
-The strongest recent positive results \citep{soundofrisk2025,cao2024ecc} report
-no identity checks and release no code.
+The design responds to known pitfalls. Company identity leaks into transcript
+models \citep{scss2024}, and language models recover it even when names are
+removed \citep{memorization2025}, so we add identity checks. Language models also
+carry lookahead bias, and although diagnostics and cutoff-bounded models now exist
+\citep{lookahead2025,datedgpt2026,lookaheadbench2026}, no earnings-call pipeline
+had been scored on calls after its cutoff, so we do that. Persistence, GARCH and
+HAR-RV \citep{corsi2009har} are hard to beat and often missing from comparisons
+\citep{gukellyxiu2020}, so they anchor every table, and because audio features
+encode speaker gender \citep{ama2024,emobias2024} we report that confound.
+\citet{fastnumbers2026} time earnings releases from 8-K filings to predict
+returns, but nobody had audited the volatility label sets. The strongest recent
+positive results \citep{soundofrisk2025,cao2024ecc} report no identity checks and
+release no code.
