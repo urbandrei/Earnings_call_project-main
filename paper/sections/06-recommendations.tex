@@ -1,0 +1,32 @@
+\section{Recommendations and Outlook}
+\label{sec:recommendations}
+
+The results above are not an argument against using earnings calls. They are an
+argument about what an evaluation has to control for before a content effect can
+be claimed. We suggest that future work on this task report, at minimum:
+(1)~a \textbf{company-disjoint} split next to the temporal one, since identity
+carries most of the apparent signal; (2)~a \textbf{gap} of at least the longest
+horizon between training and test dates; (3)~\textbf{past-volatility baselines}
+(persistence, HAR-RV) and, on change targets, a constant, as the reference for
+every claim; (4)~the \textbf{same-company and random swaps} or the released
+audit command, so that a gain can be attributed to the call rather than to the
+company; (5)~\textbf{day~0 measured} from the release time rather than the call
+date; and (6)~the \textbf{horizon definition} (calendar or trading days) stated
+with every number. \ecvol-bench provides each of these for FinCall-Surprise and
+MAEC, and the audit command applies the checks to any prediction file.
+
+There is also reason to expect that content signal can be found once it is
+looked for in the right place. Measured release times make
+\textbf{event-window targets} possible, such as the volatility of the first
+sessions after the release, where language about guidance and surprise should
+matter most and where same-company history explains least. \textbf{Structured
+features} extracted from the call, such as guidance changes and the gap between
+the quantitative surprise and management's framing of it, can be audited one
+field at a time, in contrast to pooled embeddings, and can be combined with the
+fast numeric signal that \citet{fastnumbers2026} show arrives first.
+\textbf{Audio} has so far been tested only on lossy webcast transcodes without
+speaker diarisation; recordings at source quality with resolved speakers are the
+fair test of prosody. \textbf{Larger company-disjoint corpora} are now within
+reach, since MM-FinEval \citep{mmfineval2026} ships ticker and date fields and the
+checks here transfer to it directly. Each of these can be evaluated against the
+released baselines on the first day, which is what the benchmark is for.

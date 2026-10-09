@@ -3,8 +3,8 @@
 For about a decade, researchers have tried to predict how much a company's stock
 will move in the weeks after its quarterly earnings call, using what executives
 say on the call and how they sound. Many papers report that such models beat
-classical forecasts built from past price swings. We find that the shared test
-files behind these claims cannot support them. The files leave no gap between the
+classical forecasts built from past price swings. We show that the test files
+these results share leave that claim untested. The files leave no gap between the
 training and test periods even though every target looks 30 days ahead, 44--80\%
 of their test calls come from companies the model also saw in training, and they
 place ``day zero'' on the day of the call although most companies release their
@@ -17,8 +17,10 @@ of predictions. With these checks in place, modern open text and audio models ad
 nothing to a forecast built from past volatility alone. Text embeddings mostly
 identify which company is talking (89.5\% probe accuracy), audio features do no
 better than a constant, and combining the two beats the classical forecast in two
-of eight cells, one of them a regime outlier. When we rerun the field's own models
+of eight cells, one of them a regime outlier. When we rerun five published models
 on their own data, the text models lose 12--82\% in accuracy once test companies
-are unseen, while price-only models lose nothing. Scoring the frozen pipeline on 475 calls from late 2025, after every
-model's training cutoff, changes none of this. All code, metadata, splits,
-targets, features and result tables are released.
+are unseen, while price-only models lose nothing. Scoring the frozen pipeline on
+475 calls from late 2025, after every model's training cutoff, changes none of
+this. Content signal may still exist in these calls, but it has to be shown to
+survive these checks, and the released benchmark, baselines and audit command
+make that the natural starting point for the next study.

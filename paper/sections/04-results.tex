@@ -71,24 +71,26 @@ Same-Company-Same-Signal reproduces from its shipped data. TSMixer matches to
 $10^{-5}$ and TMLP within 0.03 (including their own within-company swap result),
 and its training-free same-company history comes within 0.05 of KeFVP's published
 MSE at every horizon on EC and MAEC-15 with no text and no training, a model that
-has no meaning once companies are held out. KeFVP, a price-series model
+is undefined once companies are held out. KeFVP, a price-series model
 conditioned on text with its audio branch disabled in its own code, reproduces
 seven of eight MAEC cells within one published standard deviation. Its EC row, run
 without the knowledge-enhanced embeddings that are no longer available, is above
 all four published cells and we do not count it. HTML's released driver shuffles
-features and labels independently without a seed, so it cannot have produced the
-published table, and with the authors' model classes unchanged the published
-recipe reaches the published 15- and 30-day values on no split. The published
-ensemble of \citet{sawhney2020mm} is matched at 7 days and beyond only because its
-untrained text and audio branches act as an intercept on a finance SVR whose
-mixing weights the code tunes on the test set. Under our checks
+features and labels independently without a seed, so the released code does not
+reproduce the published table, and with the authors' model classes unchanged the
+published recipe reaches the published 15- and 30-day values on no split. The
+published ensemble of \citet{sawhney2020mm} is matched at 7 days and beyond, but
+in the released scripts the text and audio branches are untrained after the
+prescribed epochs and the mixing weights are chosen on the test set, so the match
+comes from the finance branch. Under our checks
 (Table~\ref{tab:repro-main}), holding companies out costs the three text models
 12--82\% in MSE while TSMixer and KeFVP lose nothing, although their training sets
 are as large (EC) or cut by the same third
 (DEC, MAEC). The gap between training and test moves models by at most 13\%.
 HTML's own trained model changes by at most 4\% when a test transcript is swapped
 for another call by the same company, against 9--23\% for a different company's
-call. What HTML reads from a transcript is which company is speaking.
+call. On this evidence, the HTML text model is reading which company is
+speaking.
 
 \input{tables/repro_controls_main}
 

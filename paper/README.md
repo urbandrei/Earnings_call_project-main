@@ -14,8 +14,11 @@ why it is needed. Every number traces to a manifested result CSV (`ecvol runs ve
   distribution — no external style files required. Target venue: ACL via ARR
   (`venue_memo_2026-10.md`).
 - **Main-text structure:** Introduction (with contributions and a compact related-work
-  paragraph) → The Substrate and the Benchmark → Models, Protocol and Controls →
-  Results → Discussion and Conclusion. Five main-text tables: substrate audit, the
+  paragraph) → The Shared Test Files and the Benchmark → Models, Protocol and Checks →
+  Results → Discussion → Recommendations and Outlook (added 2026-10-09 at the advisor's
+  request: framed as an analysis with new controls plus a checklist and concrete
+  directions, not a verdict on prior work; main text may run to ~5.5 pages). Five
+  main-text tables: substrate audit, the
   ladder grid, identity controls, the reproduced models under our controls, and the
   post-cutoff evaluation.
 - **Appendix (`sections/A1-complete-results.tex`):** pipeline figure, full head sets

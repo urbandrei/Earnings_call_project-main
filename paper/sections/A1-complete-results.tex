@@ -55,8 +55,9 @@ code's random split and under no other. \textbf{Sawhney et al.} cannot run as re
 inventory, price files and lexicons, and a TensorFlow~2.1 stack). Ported, the
 finance SVR alone gives 0.712/0.370/0.218/0.154, the text and audio branches are
 untrained after the two and one epochs the scripts prescribe, and the published
-ensemble is reproduced because the released code tunes the mixing weights on the
-test set, where an untrained branch's near-constant output acts as an intercept.
+ensemble is reproduced only when the mixing weights are chosen on the test set, as
+the released script does, where an untrained branch's near-constant output acts
+as an intercept on the finance branch.
 \textbf{DialogueGAT}'s corpus and labels were never released. Ported onto
 FinCall's speaker turns under the paper's per-year protocol, it beats persistence
 at short horizons and collapses on the 2020 split. \textbf{KeFVP}'s released

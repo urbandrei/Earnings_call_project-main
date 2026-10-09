@@ -7,8 +7,8 @@ used both the transcript and the audio of these calls to predict how volatile th
 stock will be over the following 3 to 30 trading days. HTML \citep{yang2020html},
 MAEC \citep{li2020maec}, VolTAGE \citep{sawhney2020voltage}, DialogueGAT
 \citep{sang2022dialoguegat}, KeFVP \citep{niu2023kefvp} and ECC Analyzer
-\citep{cao2024ecc} all report beating classical forecasts. Two findings cast doubt
-on that. \citet{scss2024} showed that transcript representations mostly tell the
+\citep{cao2024ecc} all report beating classical forecasts. Two findings suggest
+that this evidence deserves a closer look. \citet{scss2024} showed that transcript representations mostly tell the
 model \emph{which company} is speaking, and that a simple forecast from the
 company's own past volatility beats every transcript model. Across NLP, a
 systematic review found that only 14\% of reported scores were reproduced
@@ -58,5 +58,6 @@ HAR-RV \citep{corsi2009har} are hard to beat and often missing from comparisons
 encode speaker gender \citep{ama2024,emobias2024} we report that confound.
 \citet{fastnumbers2026} time earnings releases from 8-K filings to predict
 returns, but nobody had audited the volatility label sets. The strongest recent
-positive results \citep{soundofrisk2025,cao2024ecc} report no identity checks and
-release no code.
+positive results \citep{soundofrisk2025,cao2024ecc} have not yet been evaluated
+with identity checks and their code is not released, so whether they hold under
+these controls is an open question that the released audit command can settle.
