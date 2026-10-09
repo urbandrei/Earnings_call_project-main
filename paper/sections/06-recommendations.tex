@@ -13,7 +13,13 @@ audit command, so that a gain can be attributed to the call rather than to the
 company; (5)~\textbf{day~0 measured} from the release time rather than the call
 date; and (6)~the \textbf{horizon definition} (calendar or trading days) stated
 with every number. \ecvol-bench provides each of these for FinCall-Surprise and
-MAEC, and the audit command applies the checks to any prediction file.
+MAEC, and the audit command applies the checks to any prediction file. The release
+also ships the processed inputs as one archive per corpus (targets under both
+definitions and anchors, the splits, the pooled text and audio features, the
+identity and timing tables, with checksums) and a quickstart script that goes
+from an archive to the past-volatility baseline, a prediction file and the audit
+report in a few seconds, so a new model can be compared against the same floor
+and checks on the first day.
 
 There is also reason to expect that content signal can be found once it is
 looked for in the right place. Measured release times make

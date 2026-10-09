@@ -113,3 +113,18 @@ The committed `release.json` pins each archive's SHA-256, so a rebuild elsewhere
 ## Licences of released derived artifacts
 
 See `LICENSE-DATA.md`.
+
+## Release archives and quickstart
+
+```
+ecvol release build                      # one deterministic zip per corpus -> data/release/, manifest data/manifests/release.json
+uv run python examples/quickstart.py --archive data/release/ecvol-bench_fincall_<sha>.zip
+```
+
+The archives hold exactly what `LICENSE-DATA.md` allows (targets under both horizon
+definitions and both anchors, splits, pooled per-call features, identity and timing tables,
+manifests). `examples/quickstart.py` goes from an archive to a past-volatility ridge, a
+ridge with the text embedding added, R²_OOS per split and horizon, and a prediction frame per
+variant that it then passes through `ecvol audit predictions` (about six seconds on FinCall;
+its past-volatility rows reproduce Table 2's `ridge_pastvol` cells). Swap in your own model
+and keep the rest.
