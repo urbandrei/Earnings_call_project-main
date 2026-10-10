@@ -10,8 +10,8 @@
 ]
 \node[stage] (s0) {\textbf{Stage 0} Persistence, EWMA, HAR-RV, GARCH(1,1)};
 \node[stage, below=of s0] (s1) {\textbf{Stage 1} LightGBM $+$ ticker fixed effect};
-\node[stage, below=of s1] (s2) {\textbf{Stage 2} Frozen text: BGE-M3, FinBERT, surface $\to$ ridge / MLP};
-\node[stage, below=of s2] (s3) {\textbf{Stage 3} Frozen audio: eGeMAPS, WavLM, emotion2vec+};
+\node[stage, below=of s1] (s2) {\textbf{Stage 2} Frozen text (BGE-M3, FinBERT, surface) $\to$ ridge / MLP};
+\node[stage, below=of s2] (s3) {\textbf{Stage 3} Frozen audio (eGeMAPS, WavLM, emotion2vec+)};
 \node[stage, below=of s3] (s4) {\textbf{Stage 4} Fusion (gated / stacking)};
 \node[repro, below=of s4] (sr) {\textbf{Stage R} Prior models (HTML, SCSS, KeFVP, DialogueGAT, VolTAGE) on their own data, under the same controls};
 \foreach \a/\b in {s0/s1, s1/s2, s2/s3, s3/s4, s4/sr}

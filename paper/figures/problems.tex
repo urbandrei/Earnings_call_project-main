@@ -1,10 +1,4 @@
-% Figure 1 (full width): the two properties of the shared test files that the protocol repairs.
-% (a) day-0 anchor: the earnings release (8-K) precedes the market open for most calls, so the
-%     call-date anchor leaves the reaction session inside the pre window;
-% (b) company overlap: a time-ordered split keeps the same companies on both sides, a
-%     company-disjoint split does not.
-% Geometry: in each panel the row labels are right-aligned in a 2 cm box whose left edge is x=0,
-% so the panel title and the takeaway text (both at x=0) line up with the leftmost content.
+% Figure 1, drawn in TikZ: (a) where day 0 falls, (b) which companies are in the test set.
 \begin{figure*}[t]
 \centering
 \resizebox{\textwidth}{!}{%
@@ -20,7 +14,7 @@
     winlab/.style={font=\scriptsize, text=black!65},
     panel/.style={font=\footnotesize\bfseries, text=black!85, anchor=west},
 ]
-% ================================================================ (a) day-0 anchor
+% ---- (a) day-0 anchor
 \begin{scope}
 \node[panel] at (0,3.8) {(a) Where day~0 falls};
 \node[note, anchor=south] at (4.95,3.05)
@@ -38,7 +32,7 @@
 \draw[win] (a0.south west) -- (a2.south east) node[winlab, midway, below=5pt] {pre window};
 \draw[win] (a3.south west) -- (a4.south east) node[winlab, midway, below=5pt] {post window};
 % row 2: measured anchor
-\node[rowlab] at (2.3,0.55) {measured anchor\\[-1pt]{\scriptsize (this benchmark)}};
+\node[rowlab] at (2.3,0.55) {measured anchor\\[-1pt]{\scriptsize (this protocol)}};
 \foreach \i/\s in {0/sess, 1/sess, 2/react, 3/sess, 4/sess}
   \node[\s] (b\i) at (2.85+\i*1.05, 0.55) {\ifnum\i=2 reaction\else\fi};
 \draw[win] (b0.south west) -- (b1.south east) node[winlab, midway, below=5pt] {pre window};
@@ -49,9 +43,9 @@
    ``past''. Day~0 moves one session earlier for 53\% (\mbox{FinCall}), 56\% (MAEC) and
    72\% (Earnings25) of calls.};
 \end{scope}
-% ================================================================ separator
+% ---- separator
 \draw[black!25, line width=0.4pt] (8.75,-1.2) -- (8.75,3.95);
-% ================================================================ (b) company overlap
+% ---- (b) company overlap
 \begin{scope}[xshift=9.3cm]
 \node[panel] at (0,3.8) {(b) Which companies are in the test set};
 % company boxes at 3.0 + i*0.72; boundary between i=3 and i=4 at 5.52
@@ -64,7 +58,7 @@
   \node[\s, minimum width=6.0mm] (c\i) at (3.0+\i*0.72, 1.85) {\t};
 \node[note, anchor=north] at (6.6,1.55) {all seen in training};
 % row 2: company-disjoint
-\node[rowlab, text width=2.3cm] at (2.5,0.55) {company-disjoint\\split\\[-1pt]{\scriptsize (this benchmark)}};
+\node[rowlab, text width=2.3cm] at (2.5,0.55) {company-disjoint\\split\\[-1pt]{\scriptsize (this protocol)}};
 \foreach \i/\t in {0/A, 1/A, 2/B, 3/B, 4/E, 5/F, 6/F}
   \node[sess, minimum width=6.0mm] (d\i) at (3.0+\i*0.72, 0.55) {\t};
 \node[note, anchor=north] at (6.6,0.25) {none seen in training};

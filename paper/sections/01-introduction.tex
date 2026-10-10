@@ -26,7 +26,7 @@ date or speaker fields, so the identity checks cannot be run on it at all. No
 published model had been rerun under such checks, and none had been scored on
 calls after its training cutoff. Figure~\ref{fig:problems} shows the two
 properties that matter most. This paper makes the diagnosis measurable on the
-files in use and releases the instrument.
+files in use and releases the tools for it.
 
 \input{figures/problems}
 
@@ -37,8 +37,8 @@ audit passes 60/60) and measure release times from 8-K filings. The release ship
 three target families under both horizon definitions, splits with a 30-session
 gap and company-disjoint splits, checksums for every file, and a harness in which
 every table comes from one command (\S\ref{sec:benchmark}). It redistributes no
-raw audio or transcripts. The asset is the identity and timing tables, the
-targets, splits and derived features, and the harness, all over existing corpora.
+raw audio or transcripts. What it adds to the existing corpora is the identity
+and timing tables, the targets, splits and derived features, and the harness.
 (2)~\textbf{An audit} of the shared label and split files
 (Table~\ref{tab:substrate}). (3)~\textbf{An audit toolkit.} Identity checks
 (ticker probes, same-company and random content swaps, company-disjoint

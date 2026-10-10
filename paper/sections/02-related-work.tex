@@ -12,7 +12,7 @@ and KeFVP \citep{niu2023kefvp} knowledge-enhanced features. ECC Analyzer
 \citep{cao2024ecc} and Sound of Risk \citep{soundofrisk2025} are the strongest
 recent results and come without code. All of these are scored on the label and
 split files that VolTAGE and KeFVP redistribute, which \S\ref{sec:substrate}
-audits. The corpora have moved on. FinCall-Surprise \citep{fincall2025} is the one
+audits. Three newer corpora matter here. FinCall-Surprise \citep{fincall2025} is the one
 open corpus with raw audio and ships no identities. Earnings25
 \citep{jiang2026earnings25} postdates every model's training data. MM-FinEval
 \citep{mmfineval2026}, which appeared after this study was complete, adds tickers
@@ -35,8 +35,7 @@ missing from published comparisons \citep{gukellyxiu2020}, so every table here i
 anchored on them. \citet{fastnumbers2026} time earnings releases from 8-K filings
 to predict returns. We use the same filings to place day~0, which no volatility
 label set had done. Audio features encode speaker gender
-\citep{ama2024,emobias2024}, so the gender confound is reported rather than
-ignored.
+\citep{ama2024,emobias2024}, so we report the gender confound.
 
 \paragraph{Reproducibility.}
 A systematic review found that only 14\% of reported NLP scores were reproduced

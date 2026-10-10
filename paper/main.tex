@@ -1,21 +1,11 @@
-% ============================================================================
-% ecvol-bench: identity-controlled benchmark for multimodal earnings-call
-% volatility prediction (benchmark-first spine, DECISIONS 2026-08-26 S3).
-% Condensed spine (2026-10-09); the 30-page long draft is tagged paper-long-2026-10-09.
-%
-% FORMAT: official ACL style (acl.sty + acl_natbib.bst from
-% github.com/acl-org/acl-style-files, fetched 2026-10-09), as ARR requires.
-%   [review]   anonymous, line numbers, page numbers  (ARR submission)
-%   [preprint] names shown, page numbers, no line numbers
-%   [final]    camera-ready
-% The style loads geometry, caption, natbib and hyperref itself; do not load
-% them again here.
-% ============================================================================
+% ecvol-bench paper. Official ACL style (acl.sty, acl_natbib.bst from
+% github.com/acl-org/acl-style-files). Options: [review] for the anonymous ARR
+% submission, [preprint] to show the authors, [final] for the camera-ready.
+% The style loads geometry, caption, natbib and hyperref; do not load them again.
 
 \documentclass[11pt]{article}
 \usepackage[review]{acl}
 
-% --- Encoding & fonts (as in the ACL template) --------------------------------
 \usepackage{times}
 \usepackage{latexsym}
 \usepackage[T1]{fontenc}
@@ -23,8 +13,6 @@
 \usepackage{microtype}
 \usepackage{inconsolata}
 \usepackage{xspace}
-
-% --- Math, tables, graphics ---------------------------------------------------
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{booktabs}
@@ -32,33 +20,18 @@
 \usepackage{multirow}
 \usepackage{tikz}
 \usetikzlibrary{positioning,calc,decorations.pathreplacing}
-% The appendix \input{}s many table floats with little intervening text;
-% raise the float-storage limit so they don't overflow ("Too many unprocessed floats").
-\extrafloats{120}
+\extrafloats{120}  % the appendix holds many table floats
 
-% --- Bibliography: acl.sty sets \bibliographystyle{acl_natbib} itself; do not repeat it.
-
-% --- Draft/TODO machinery -----------------------------------------------------
-% Set \draftmode to false to hide TODOs for a clean render.
-\newif\ifdraftmode\draftmodetrue
-\newcommand{\TODO}[1]{%
-  \ifdraftmode{\color{red!75!black}\textbf{[TODO:} #1\textbf{]}}\fi}
-\newcommand{\pending}[1]{%
-  \ifdraftmode{\color{orange!80!black}\textit{[pending: #1]}}\fi}
-
-% --- Convenience macros -------------------------------------------------------
+% Macros used throughout the text.
 \newcommand{\ecvol}{\textsc{ecvol}\xspace}
-% \ensuremath so these work both in text and inside an existing $...$ context.
 \newcommand{\Rtwo}{\ensuremath{R^2_{\mathrm{OOS}}}\xspace}
 \newcommand{\dv}{\ensuremath{\Delta v}\xspace}
 \newcommand{\tickerdisjoint}{ticker-disjoint\xspace}
 
-% ============================================================================
 \title{\ecvol-bench: An Identity-Controlled Evaluation Protocol and Audit\\
        Toolkit for Multimodal Earnings-Call Volatility Prediction}
 
-% In [review] mode the style prints "Anonymous ACL submission" and ignores
-% this block. Placeholder names show only with [preprint] or [final].
+% Ignored in [review] mode, which prints "Anonymous ACL submission".
 \author{First Author \\
   Institution One \\
   \texttt{first.author@example.edu} \And
@@ -66,7 +39,6 @@
   Institution Two \\
   \texttt{second.author@example.edu}}
 
-% ============================================================================
 \begin{document}
 \maketitle
 \begin{abstract}
@@ -75,19 +47,18 @@
 
 \input{sections/01-introduction}
 \input{sections/02-related-work}
-\input{sections/02-benchmark}
-\input{sections/03-setup}
-\input{sections/04-results}
-\input{sections/05-discussion}
-\input{sections/06-recommendations}
+\input{sections/03-shared-files}
+\input{sections/04-setup}
+\input{sections/05-results}
+\input{sections/06-discussion}
+\input{sections/07-recommendations}
 
-% ACL unnumbered sections (not counted toward the page limit)
-\input{sections/09-limitations}
-\input{sections/10-ethics}
+\input{sections/08-limitations}
+\input{sections/09-ethics}
 
 \bibliography{refs}
 
 \appendix
-\input{sections/A1-complete-results}
+\input{sections/10-appendix}
 
 \end{document}
