@@ -204,6 +204,21 @@ Each entry: date · task ID · what the user must do · what unblocks when it's 
 
 ---
 
+- **2026-10-09 (evening) · T8.2 — Tier A of the advisor's review is in the draft; Sunday decision is yours.** `paper/main.pdf`
+  is rebuilt (protocol + toolkit framing, standalone Related Work, checklist appendix table, LLM-model limitation,
+  clustered significance in Table 2, tracker residue gone; main text ends on page 8 at line 590, nothing to spare).
+  A fresh Overleaf zip is in `paper/dist/`. Yours before Monday 2026-10-12 if you submit this cycle:
+  (1) **Decide Sunday 2026-10-11**: October cycle (NAACL/COLING 2027) with Tier A only, or January 2027 (ACL 2027)
+  with Tier B (MM-FinEval baselines + probe, fine-tuned text encoder, LLM-feature row).
+  (2) **Anonymised repository**: push `main` (the branch is far ahead of origin; no agent push), then create an
+  Anonymous GitHub (anonymous.4open.science) link for the repo with the terms `urbandrei`, your name, your e-mail and
+  institution anonymised, and give me the URL to cite in §1 and §6 (the decision log, harness, checksums and the
+  `docs/audit_predictions.md` demo are what the paper points to; `data/` and `artifacts/` are gitignored so nothing
+  heavy leaves the repo). (3) **Checklist**: fill C1 (GPU hours; per-corpus times are in the T3.2 and T4.3 journal
+  entries; emotion2vec+ size) and decide the E1 AI-assistance sentence in `paper/arr_checklist_draft.md`.
+  (4) Preprint policy; (5) EC data terms (`LICENSE-DATA.md`); (6) advisor read of the new draft; (7) register the
+  advisor as the service contributor on the ARR form within 48 h of the deadline.
+
 ## Recurring (every cycle, not a blocker)
 
 - **Push + confirm CI at each phase boundary.** The loop pauses after the last task of a phase

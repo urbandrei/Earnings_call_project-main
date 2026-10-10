@@ -54,9 +54,7 @@ Model & $\tau$=3 & $\tau$=7 & $\tau$=15 & $\tau$=30 \\
 $\Delta v$ (test). Persistence is 0 by construction, and the train-mean intercept
 is the featureless floor. One pre-registered canonical model per stage (the Stage-3
 ridge uses WavLM and eGeMAPS). An asterisk or dagger marks a Holm-corrected
-Diebold--Mariano result better or worse than Stage~1 ($p<0.05$). Parentheses mark
-cells where a ticker-clustered 95\% bootstrap interval of the loss difference
-includes zero. Adding text or
+Diebold--Mariano result better or worse than Stage~1 ($p<0.05$). @CLUSTER@ Adding text or
 audio to the past-volatility ridge (S0$'$) lowers \Rtwo{} in every cell. The full
 grid, MAEC, level-$v$, MSE and the MLP heads are in Appendix~\ref{app:complete}.}
 \label{tab:grid}
@@ -120,7 +118,20 @@ def grid_main() -> None:
             rows.append(f"{name} & " + " & ".join(cells) + r" \\")
         if split == "temporal":
             rows.append(r"\midrule")
-    (OUT / "grid_main.tex").write_text(GRID_TEX.replace("@BODY@", NL.join(rows)), encoding="utf-8")
+    body = NL.join(rows)
+    # Caption sentence on the ticker-clustered check: state the rule only if a marker needed it.
+    cluster = (
+        r"Parentheses mark cells where a ticker-clustered 95\% bootstrap interval of the"
+        + NL
+        + "loss difference includes zero."
+        if "(*)" in body or r"(\dag)" in body
+        else "Every marked cell keeps its sign under a ticker-clustered 95\\% bootstrap"
+        + NL
+        + "interval of the loss difference."
+    )
+    (OUT / "grid_main.tex").write_text(
+        GRID_TEX.replace("@BODY@", body).replace("@CLUSTER@", cluster), encoding="utf-8"
+    )
 
 
 # ----------------------------------------------------------------------- controls
