@@ -267,8 +267,8 @@ Model (data), change in test MSE & $\tau$=3 & $\tau$=7 & $\tau$=15 & $\tau$=30 \
 @BODY@
 \bottomrule
 \end{tabular}
-\caption{\textbf{The field's runnable models under our controls} (Result
-Table~6R-C). Each row keeps the configuration of Appendix Table~\ref{tab:faithful}
+\caption{\textbf{The field's runnable models under our controls.}
+Each row keeps the configuration of Appendix Table~\ref{tab:faithful}
 and changes only the split. Holding companies out costs every text model 12--82\%
 and leaves the price-dominated models unchanged, with held-out training sets as
 large (EC) or cut by the same third (DEC, MAEC). Absolute values are in Appendix

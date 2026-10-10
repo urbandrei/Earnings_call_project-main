@@ -10,12 +10,12 @@
 Paper / setting & what ran & $\tau$=3 & 7 & 15 & 30 & $\tau$=3 & 7 & 15 & 30 \\
 \midrule
 \multicolumn{10}{l}{\textit{HTML \citep{yang2020html}, EC, authors' model classes verbatim, inputs rebuilt (WWM-BERT layer $-2$), driver corrected}} \\
-\quad code: random 70/10/20, dropout 0 & text & 0.660 & 0.336 & 0.253 & 0.160 & 1.175 & 0.372 & 0.153 & 0.133 \\
-\quad paper: chronological 7:1:2, dropout 0.5 & text & 0.972 & 0.439 & 0.406 & 0.248 & & & & \\
+\quad as coded, random 70/10/20, dropout 0 & text & 0.660 & 0.336 & 0.253 & 0.160 & 1.175 & 0.372 & 0.153 & 0.133 \\
+\quad as published, chronological 70/10/20, dropout 0.5 & text & 0.972 & 0.439 & 0.406 & 0.248 & & & & \\
 \quad published split (VolTAGE), dropout 0.5 & text & 1.231 & 1.122 & 1.063 & 1.479 & & & & \\
 \quad persistence on the shipped labels & n/a & 1.485 & 0.570 & 0.340 & 0.202 & & & & \\
-\quad code: random 70/10/20, dropout 0 & text $+$ 27 Praat & 0.658 & 0.347 & 0.244 & 0.165 & 0.845 & 0.349 & 0.251 & 0.158 \\
-\quad paper: chronological 7:1:2, dropout 0.5 & text $+$ 27 Praat & 0.876 & 0.520 & 0.291 & 0.239 & & & & \\
+\quad as coded, random 70/10/20, dropout 0 & text $+$ 27 Praat & 0.658 & 0.347 & 0.244 & 0.165 & 0.845 & 0.349 & 0.251 & 0.158 \\
+\quad as published, chronological 70/10/20, dropout 0.5 & text $+$ 27 Praat & 0.876 & 0.520 & 0.291 & 0.239 & & & & \\
 \quad published split (VolTAGE), dropout 0.5 & text $+$ 27 Praat & 2.701 & 1.195 & 1.436 & 1.411 & & & & \\
 \midrule
 \multicolumn{10}{l}{\textit{Same-Company-Same-Signal \citep{scss2024}, DEC, authors' \texttt{run.py}, per-window means over 19 rolling quarters}} \\
