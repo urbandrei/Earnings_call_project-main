@@ -117,6 +117,27 @@ def cluster_bootstrap_ci(
     return point, lo, hi
 
 
+def loss_diff_cluster_ci(
+    errors_a: np.ndarray,
+    errors_b: np.ndarray,
+    clusters: np.ndarray,
+    *,
+    loss: str = "squared",
+    seed: int = 0,
+) -> tuple[float, float]:
+    """(lo, hi) 95% cluster-bootstrap CI of the mean loss differential loss_A − loss_B.
+
+    Same per-call differential as `diebold_mariano` (A = model, B = reference), resampled by
+    `clusters` (ticker) — an interval entirely below 0 means A is better even once the
+    within-company dependence of recurring test calls is honoured (DESIGN §7.2).
+    """
+    ea = np.asarray(errors_a, dtype=float)
+    eb = np.asarray(errors_b, dtype=float)
+    d = _losses(ea, loss) - _losses(eb, loss)  # NaNs propagate; the bootstrap drops them
+    _, lo, hi = cluster_bootstrap_ci(d, np.asarray(clusters), seed=seed)
+    return lo, hi
+
+
 def holm_correction(pvalues: list[float] | np.ndarray) -> list[float]:
     """Holm–Bonferroni step-down adjusted p-values, in the input order.
 

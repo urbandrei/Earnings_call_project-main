@@ -50,6 +50,8 @@ def build_grid(root: Path) -> pd.DataFrame:
             ["stage", "dataset", "split", "target", "horizon", "segment", "n", "r2_oos", "mse"]
         ].copy()
         keep["dm_p_vs_stage1"] = dm
+        for col in ("cluster_lo_vs_stage1", "cluster_hi_vs_stage1"):  # ticker-clustered CI
+            keep[col] = sel[col] if col in sel.columns else np.nan
         frames.append(keep)
     grid = pd.concat(frames, ignore_index=True)
 

@@ -13,7 +13,12 @@ import math
 import numpy as np
 from scipy import stats
 
-from ecvol.eval.significance import cluster_bootstrap_ci, diebold_mariano, holm_correction
+from ecvol.eval.significance import (
+    cluster_bootstrap_ci,
+    diebold_mariano,
+    holm_correction,
+    loss_diff_cluster_ci,
+)
 
 # --- Diebold–Mariano ---------------------------------------------------------
 
@@ -89,6 +94,18 @@ def test_clustering_widens_ci_for_correlated_data():
     _, lo_c, hi_c = cluster_bootstrap_ci(values, clusters, n_resamples=2000, seed=0)
     _, lo_i, hi_i = cluster_bootstrap_ci(values, np.arange(values.size), n_resamples=2000, seed=0)
     assert (hi_c - lo_c) > 3 * (hi_i - lo_i)  # ignoring clusters badly understates
+
+
+def test_loss_diff_cluster_ci_below_zero_when_model_better_on_every_ticker():
+    # 12 tickers x 4 recurring calls; the model halves the reference's error on every call,
+    # so the squared-error differential (model - reference) is negative in every cluster.
+    rng = np.random.default_rng(3)
+    clusters = np.repeat(np.arange(12), 4)
+    err_ref = rng.normal(0, 1, clusters.size) + 0.5
+    err_model = 0.5 * err_ref
+    lo, hi = loss_diff_cluster_ci(err_model, err_ref, clusters, seed=0)
+    assert lo < hi < 0
+    assert loss_diff_cluster_ci(err_model, err_ref, clusters, seed=0) == (lo, hi)  # seeded
 
 
 def test_bootstrap_deterministic_under_seed():

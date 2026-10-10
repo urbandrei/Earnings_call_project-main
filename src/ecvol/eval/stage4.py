@@ -17,7 +17,7 @@ import pandas as pd
 
 from ecvol.eval import evaluate as E
 from ecvol.eval.significance import diebold_mariano
-from ecvol.eval.stage3 import PASTVOL, _Cols, _predict
+from ecvol.eval.stage3 import PASTVOL, _cluster_ci, _Cols, _predict
 from ecvol.features.audio.assemble import load_audio_blocks
 from ecvol.features.text.assemble import build_text_matrix
 from ecvol.models import baselines as B
@@ -54,6 +54,10 @@ def _row(dataset, scheme, target, tau, model, seg, cell):
         "dm_p_vs_stage1": float(cell["dm_p_vs_stage1"]),
         "dm_p_vs_stage2": float(cell["dm_p_vs_stage2"]),
         "dm_p_vs_stage3": float(cell["dm_p_vs_stage3"]),
+        "cluster_lo_vs_persistence": float(cell["cluster_lo_vs_persistence"]),
+        "cluster_hi_vs_persistence": float(cell["cluster_hi_vs_persistence"]),
+        "cluster_lo_vs_stage1": float(cell["cluster_lo_vs_stage1"]),
+        "cluster_hi_vs_stage1": float(cell["cluster_hi_vs_stage1"]),
     }
 
 
@@ -170,6 +174,13 @@ def evaluate_stage4(root: Path, dataset="fincall", *, seeds=E.DEFAULT_SEEDS) -> 
                             cell["dm_p_vs_stage1"] = _dm(yt, pred[seg], ref1[mask])
                             cell["dm_p_vs_stage2"] = _dm(yt, pred[seg], ref[seg]["s2"])
                             cell["dm_p_vs_stage3"] = _dm(yt, pred[seg], ref[seg]["s3"])
+                            tick = at.loc[mask, "ticker"].to_numpy()
+                            lo, hi = _cluster_ci(yt, pred[seg], bt, tick)
+                            cell["cluster_lo_vs_persistence"] = lo
+                            cell["cluster_hi_vs_persistence"] = hi
+                            lo, hi = _cluster_ci(yt, pred[seg], ref1[mask], tick)
+                            cell["cluster_lo_vs_stage1"] = lo
+                            cell["cluster_hi_vs_stage1"] = hi
                             rows.append(_row(dataset, scheme, target, tau, name, seg, cell))
     return rows
 

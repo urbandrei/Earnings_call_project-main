@@ -148,3 +148,4 @@ def test_stage4_end_to_end(tmp_path: Path, monkeypatch):
         t["model"]
     )
     assert {"dm_p_vs_stage1", "dm_p_vs_stage2", "dm_p_vs_stage3"} <= set(t.columns)
+    assert {"cluster_lo_vs_stage1", "cluster_hi_vs_stage1"} <= set(t.columns)  # T9.5

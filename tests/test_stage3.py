@@ -144,6 +144,7 @@ def test_stage3_end_to_end(tmp_path: Path, monkeypatch):
     t = pd.DataFrame(rows)
     assert len(t) > 0
     assert {"dm_p_vs_stage1", "dm_p_vs_stage2"} <= set(t.columns)
+    assert {"cluster_lo_vs_stage1", "cluster_hi_vs_stage1"} <= set(t.columns)  # T9.5
     assert any(m.startswith("ridge_wavlm_") for m in t["model"])
 
 

@@ -30,6 +30,8 @@ def _stage_csv(root: Path, name: str, model: str, *, dm=None):
                     }
                     if dm is not None:
                         row["dm_p_vs_stage1"] = dm
+                        row["cluster_lo_vs_stage1"] = -0.2
+                        row["cluster_hi_vs_stage1"] = -0.1
                     rows.append(row)
     (root / "results").mkdir(parents=True, exist_ok=True)
     pd.DataFrame(rows).to_csv(root / "results" / name, index=False)
@@ -88,6 +90,11 @@ def test_build_grid_consolidates_and_holm(tmp_path: Path):
     # S0/S1 get no Holm value
     s1 = g[(g.stage == "S1_GBDT") & (g.target == "dv") & (g.segment == "test")]
     assert s1["holm_p_vs_stage1"].isna().all()
+    # T9.5: the ticker-clustered CI is carried from the stage tables; NaN for Stage 0/1
+    assert (conf["cluster_lo_vs_stage1"] == -0.2).all() and (
+        conf["cluster_hi_vs_stage1"] == -0.1
+    ).all()
+    assert s1[["cluster_lo_vs_stage1", "cluster_hi_vs_stage1"]].isna().all().all()
 
 
 def test_build_grid_keeps_only_trading_day_rows_of_table1(tmp_path: Path):

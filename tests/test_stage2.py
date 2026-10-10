@@ -17,6 +17,13 @@ from ecvol.eval import stage2
 from ecvol.features.text import assemble
 from ecvol.models import heads
 
+CLUSTER_COLS = {
+    "cluster_lo_vs_persistence",
+    "cluster_hi_vs_persistence",
+    "cluster_lo_vs_stage1",
+    "cluster_hi_vs_stage1",
+}
+
 # --- heads -------------------------------------------------------------------
 
 
@@ -175,6 +182,8 @@ def test_stage2_end_to_end_schema(tmp_path: Path):
     t = pd.DataFrame(rows)
     assert len(t) > 0
     assert {"dm_p_vs_persistence", "dm_p_vs_har", "dm_p_vs_stage1", "seed_std"} <= set(t.columns)
+    assert CLUSTER_COLS <= set(t.columns)  # T9.5 ticker-clustered CIs
+    assert t[sorted(CLUSTER_COLS)].notna().all().all()
     assert {"ridge_text", "mlp_text_pastvol", "ridge_pastvol"} <= set(t["model"])
     # ridge has no seed_std; mlp does
     assert t[t.model == "ridge_text"]["seed_std"].isna().all()

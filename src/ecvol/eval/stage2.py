@@ -17,7 +17,7 @@ import numpy as np
 import pandas as pd
 
 from ecvol.eval import evaluate as E
-from ecvol.eval.significance import diebold_mariano
+from ecvol.eval.significance import diebold_mariano, loss_diff_cluster_ci
 from ecvol.features.text.assemble import build_text_matrix
 from ecvol.models import baselines as B
 from ecvol.models import heads
@@ -29,6 +29,11 @@ HEAD_NAMES = ("ridge", "mlp")
 
 def _dm_p(y_true, y_pred, y_ref) -> float:
     return diebold_mariano(y_true - y_pred, y_true - y_ref).p_value
+
+
+def _cluster_ci(y_true, y_pred, y_ref, tickers) -> tuple[float, float]:
+    """Ticker-clustered 95% bootstrap CI of the squared-error differential (model − reference)."""
+    return loss_diff_cluster_ci(y_true - y_pred, y_true - y_ref, tickers, seed=0)
 
 
 def _variant_cols(variant, emb_cols, other_cols):
@@ -98,6 +103,10 @@ def _row2(dataset, scheme, target, tau, model, seg, cell) -> dict:
         "dm_p_vs_har": float(cell["dm_p_vs_har"]),
         "dm_p_vs_stage1": float(cell["dm_p_vs_stage1"]),
         "dm_p_vs_train_mean": float(cell["dm_p_vs_train_mean"]),
+        "cluster_lo_vs_persistence": float(cell["cluster_lo_vs_persistence"]),
+        "cluster_hi_vs_persistence": float(cell["cluster_hi_vs_persistence"]),
+        "cluster_lo_vs_stage1": float(cell["cluster_lo_vs_stage1"]),
+        "cluster_hi_vs_stage1": float(cell["cluster_hi_vs_stage1"]),
     }
 
 
@@ -149,6 +158,13 @@ def evaluate_stage2_dataset(df, text_df, emb_cols, other_cols, dataset, splits_d
                             cell["dm_p_vs_har"] = _dm_p(yt, pred, har_ref[mask])
                             cell["dm_p_vs_stage1"] = _dm_p(yt, pred, stage1_ref[mask])
                             cell["dm_p_vs_train_mean"] = _dm_p(yt, pred, tm_ref[mask])
+                            tick = at.loc[mask, "ticker"].to_numpy()
+                            lo, hi = _cluster_ci(yt, pred, base, tick)
+                            cell["cluster_lo_vs_persistence"] = lo
+                            cell["cluster_hi_vs_persistence"] = hi
+                            lo, hi = _cluster_ci(yt, pred, stage1_ref[mask], tick)
+                            cell["cluster_lo_vs_stage1"] = lo
+                            cell["cluster_hi_vs_stage1"] = hi
                             rows.append(
                                 _row2(dataset, scheme, target, tau, f"{head}_{variant}", seg, cell)
                             )
