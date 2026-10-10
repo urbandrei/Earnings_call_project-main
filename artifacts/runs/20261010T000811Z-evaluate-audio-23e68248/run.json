@@ -1,0 +1,54 @@
+{
+  "command": "evaluate-audio",
+  "config": {
+    "command": "evaluate-audio",
+    "seeds": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ]
+  },
+  "config_hash": "23e682487287a4bb51e44f724212e76069843813d7956953a0e307791734f829",
+  "created_at": "2026-10-10T00:08:11+00:00",
+  "env": {
+    "gpus": [
+      "NVIDIA GeForce RTX 5060 Ti, 610.88"
+    ],
+    "lockfile_sha256": "71d1aa83c2b6a033014ec6e8560f09bca6f7f7d2e2ad5387962911b4a4c38539",
+    "platform": "Windows-11-10.0.26300-SP0",
+    "python": "3.12.8"
+  },
+  "git": {
+    "dirty": true,
+    "sha": "be9cf29d49c3817f746282d1dd5ae9109cb0482f"
+  },
+  "outputs": {
+    "results/audio_gender.csv": {
+      "bytes": 287,
+      "sha256": "c4f547d70c494819f00b9a46f00ec1d25808520e6950a6cfd1c3165a6d1782d5"
+    },
+    "results/audio_probe.csv": {
+      "bytes": 228,
+      "sha256": "4bad0cda5e1d110c6a0cb4d01b6266d6c6e7a4e3519e4caf53dc875732c56686"
+    },
+    "results/audio_shuffle.csv": {
+      "bytes": 1145,
+      "sha256": "89d290d4ef36643de7f4005941224e2e0c5ee586460dedb2e1450a9ca48b78a9"
+    },
+    "results/result_table_3.csv": {
+      "bytes": 433641,
+      "sha256": "cd70cdc6fa5651671d510ea29a3f847338368ff3565fafcf637586083acbef8a"
+    }
+  },
+  "provenance": "run",
+  "run_id": "20261010T000811Z-evaluate-audio-23e68248",
+  "seeds": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ]
+}

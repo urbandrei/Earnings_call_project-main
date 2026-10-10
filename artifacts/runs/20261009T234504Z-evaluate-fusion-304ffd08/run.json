@@ -1,0 +1,42 @@
+{
+  "command": "evaluate-fusion",
+  "config": {
+    "command": "evaluate-fusion",
+    "seeds": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ]
+  },
+  "config_hash": "304ffd08b2a2ebe0eace364d29fd3c8bc817e66084114a9cacdee1f16715e4bc",
+  "created_at": "2026-10-09T23:45:04+00:00",
+  "env": {
+    "gpus": [
+      "NVIDIA GeForce RTX 5060 Ti, 610.88"
+    ],
+    "lockfile_sha256": "71d1aa83c2b6a033014ec6e8560f09bca6f7f7d2e2ad5387962911b4a4c38539",
+    "platform": "Windows-11-10.0.26300-SP0",
+    "python": "3.12.8"
+  },
+  "git": {
+    "dirty": true,
+    "sha": "be9cf29d49c3817f746282d1dd5ae9109cb0482f"
+  },
+  "outputs": {
+    "results/result_table_4_fusion.csv": {
+      "bytes": 94463,
+      "sha256": "0440406a1952c7dcc53f72562f655891e3d85df3d443c87bed4719a0ef53ad1f"
+    }
+  },
+  "provenance": "run",
+  "run_id": "20261009T234504Z-evaluate-fusion-304ffd08",
+  "seeds": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ]
+}
