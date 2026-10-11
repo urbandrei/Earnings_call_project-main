@@ -13,13 +13,13 @@ a public audio corpus that ships without them, times each release from SEC
 filings, provides targets under both horizon definitions in use, and splits that
 keep training and test apart in time and in company. The toolkit runs identity
 checks on any file of predictions. Under these checks, modern open text and audio
-models add nothing to a forecast built from past volatility alone. Text
-embeddings mostly identify which company is talking (89.5\% probe accuracy),
-audio features do no better than a constant, and the two combined beat the
-classical forecast in two of eight cells, one of them a regime outlier. Five
-published models rerun on their own data show the same pattern. The test error of
-their text models rises by 12--82\% once test companies are unseen, while
-price-only models are unchanged. Scoring the frozen pipeline on 475 calls from
+models do not improve on a matched model that uses past volatility alone. Text
+embeddings mostly identify which company is talking (89.5\% probe accuracy), and
+on a date-ordered split with unseen companies no text, audio or combined model
+reduces error against that matched model by a margin fixed in advance. Five
+published models rerun under the same checks show a similar pattern. The test
+error of their text models rises by 12--82\% once test companies are unseen,
+while price-only models show no consistent change. Scoring the frozen pipeline on 475 calls from
 late 2025, after every model's training cutoff, changes none of this. Content
 signal may still exist in these calls. It has to be shown to survive these
 checks, and the released protocol, baselines and audit command make that the

@@ -74,14 +74,22 @@ earlier. Under the published anchor, the session in which the market reacts
 therefore sits in the \emph{pre} window for most calls. On the measured anchor the
 persistence MSE is up to 11\% higher on FinCall, 25\% on MAEC and 27\% on
 Earnings25, and $\Delta v$ gains a positive mean (on FinCall $+0.52$ at $\tau{=}3$
-and $+0.10$ at $\tau{=}30$). The call-date targets ship as a labelled variant.
+and $+0.10$ at $\tau{=}30$). The call-date targets ship as a labelled variant. On
+Earnings25, which records call start times, the filing precedes the call for
+98.9\% of calls (median 100 minutes). The call can still be running during
+session~1, so these targets describe a release-aligned event window. A
+forward-looking variant starts the post window one session later, so that no
+target return begins before the call has ended (true for all 476 Earnings25
+calls).
 
 \paragraph{Splits and release.}
 \emph{Temporal} splits (about 70/10/20 in date order) leave a 30-trading-day gap
 between segments so that no target window crosses a boundary.
 \emph{\tickerdisjoint} splits keep every validation and test company out of
 training. Their overlap is 0.0\%, against 91.3\% (FinCall) and 79.4\% (MAEC) on
-our own temporal splits. The harness fails any feature that reads price data after
+our own temporal splits. Because they are not in date order, a
+\emph{date-ordered company-disjoint} split applies both rules at once, at the
+cost of a smaller test set (97 FinCall calls). The harness fails any feature that reads price data after
 the call's as-of time, and leakage assertions run in CI. The release contains all
 of the above, the derived-feature archives, the harness, and every result CSV with
 its run record (resolved config, git commit, seeds and file hash). Raw audio and

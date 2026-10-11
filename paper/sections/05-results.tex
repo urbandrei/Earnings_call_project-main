@@ -14,25 +14,25 @@ temporal split at $\tau{=}30$, the training period includes the COVID spike and
 the test year (2021) is calm. There, every long-horizon forecast of the volatility
 level does worse than persistence, ours and every content model alike. The same
 models do fine on the \tickerdisjoint{} split and on MAEC, so we treat this as a
-regime effect and note it. On the measured anchor a constant (the training mean)
-already scores 0.17, 0.16, 0.06 and 0.09 on the temporal split and 0.20, 0.20,
-0.13 and 0.04 on the \tickerdisjoint{} split. That is the reference for every
-$\Delta v$ claim below.
+regime effect and note it. HAR-RV is also not the strongest classical forecast,
+since GARCH(1,1) beats it at every temporal horizon (Appendix
+Table~\ref{tab:baselines}). The reference for every content claim below is the
+past-volatility ridge S0$'$, which sees the same price inputs as each content
+model and nothing else.
 
-\paragraph{Text models read the company, not the call (Table~\ref{tab:controls}, Figure~\ref{fig:swaps}).}
-The text-only ridge stays within 0.14 of the constant on both splits and is below
-HAR-RV by at least 0.09 in seven of eight cells (the eighth is the COVID cell).
-The MLPs overfit. Adding text features to the past-volatility ridge makes it
-\emph{worse} in all eight cells. A linear probe recovers the ticker from the frozen
-call embedding 89.5\% of the time on FinCall and 53.9\% on MAEC. On the temporal
-split, where test companies also appear in training, giving each test call the
-transcript of \emph{another call by the same company} changes the score by less
-than 0.03, while a random transcript hurts. The model is reading which company is
-speaking. On the \tickerdisjoint{} split the same-company swap does hurt at
-$\tau\ge15$, so there is some call-specific signal for companies the model has
-never seen. That signal stays below the past-volatility baseline, and it
-disappears once past volatility is in the model (0.301 against 0.318 at
-$\tau{=}30$). MAEC shows the same pattern.
+\paragraph{Text models mostly read the company (Table~\ref{tab:controls}, Figure~\ref{fig:swaps}).}
+Adding text features to the past-volatility ridge makes it \emph{worse} in all
+eight cells of Table~\ref{tab:grid}. The paired test finds no meaningful benefit
+in six and no improvement in any. A linear probe recovers the ticker from the
+frozen call embedding 89.5\% of the time on FinCall and 53.9\% on MAEC. On the
+temporal split, where test companies also appear in training, giving each test
+call the transcript of \emph{another call by the same company} changes the score
+by less than 0.03, while a random transcript hurts. The model is reading which
+company is speaking. On the \tickerdisjoint{} split the same-company swap does
+hurt at $\tau\ge15$, which suggests some call-specific sensitivity, but that
+split is not in date order. On the date-ordered company-disjoint split the real
+transcript scores no better than either swap. On MAEC's temporal split the
+same-company swap also moves the score by 0.02 or less.
 
 \input{tables/controls_main}
 
@@ -42,18 +42,19 @@ $\tau{=}30$). MAEC shows the same pattern.
 \caption{\textbf{Content swaps.} \Rtwo{} vs.\ persistence on $\Delta v$ (test) when
 each test call keeps its own transcript or audio (real), receives another call by
 the same company, or receives a random call. Where companies recur in training
-(left), the same-company swap leaves the text model unchanged. On the
-\tickerdisjoint{} split (middle) the model loses something at long horizons, but
-stays below the past-volatility ridge of Table~\ref{tab:grid}. The audio model with
-past volatility (right) keeps its score under a random swap at $\tau{=}3$.
+(left), the same-company swap leaves the text model unchanged. On the date-ordered
+company-disjoint split (middle) the real transcript does no better than either
+swap. The audio model with past volatility (right, \tickerdisjoint{} split) keeps
+its score under a random swap at $\tau{=}3$.
 Data from Table~\ref{tab:controls}.}
 \label{fig:swaps}
 \end{figure*}
 
 \paragraph{Audio adds nothing to past volatility.}
 Audio-only ridges on eGeMAPS, WavLM-Large and emotion2vec+ stay within 0.10 of the
-constant at every horizon on both splits and never beat it by more than 0.02.
-Adding WavLM to the past-volatility ridge makes it worse in all eight cells. In the
+constant at every horizon (Appendix Table~\ref{tab:audio}) and never beat it by
+more than 0.02. Adding WavLM and eGeMAPS to the past-volatility ridge makes it
+worse in all eight cells, with no meaningful benefit in seven. In the
 audio-swap check (Table~\ref{tab:controls}, bottom), the model with past volatility
 keeps its score at $\tau{=}3$ when every test call is given a \emph{random other
 company's} audio (0.456 to 0.453). At longer horizons the swap costs more. Even
@@ -64,47 +65,42 @@ check (dominant-speaker pitch proxy) finds no error gap (test MSE 0.243 against
 0.239). Rerun on Earnings25 by bitrate, the gain from real over randomly swapped
 audio never exceeds 0.03, is negative in 7 of 12 cells, and is no larger at
 64\,kbps than at lower bitrates (Appendix Table~\ref{tab:earnings25-audio}). The
-FinCall result is not an artefact of its 40\,kbps audio.
+strata differ in calls as well as bitrate, so this shows consistency across the
+groups observed, not a controlled codec test.
 
 \paragraph{Combining modalities.}
-Gated fusion is below the ridge heads with past volatility in 15 of 16 cells. The
-stacking model is the best content model but stays below HAR-RV in six of eight
-cells. It beats HAR-RV only in the COVID cell, where it scores 0.100 and is still
-below the past-volatility ridge at 0.113, and at \tickerdisjoint{} $\tau{=}30$,
-where it scores 0.396 against 0.345 (Holm $p{=}0.003$ against Stage~1, with no
-pre-registered test against HAR-RV). It beats the text and audio stages in seven
-of eight cells and the past-volatility ridge in two. So a multimodal model is not
-better than the best single-input model when that input is past volatility. The
-condition we set in advance for a positive paper, gains surviving the checks on at
-least two of four horizons, was not met.
+Gated fusion is below the ridge heads with past volatility in 15 of 16 temporal
+and \tickerdisjoint{} cells. The
+stacking model is the best content model. Against the past-volatility ridge it
+shows no meaningful benefit in all four date-ordered company-disjoint cells and is
+inconclusive in the four temporal ones. Its one apparent gain is on the
+\tickerdisjoint{} split at $\tau{=}30$, which is not in date order. There it
+reduces MSE by 11\% against the past-volatility ridge, with an interval from 1\%
+to 20\% that is inconclusive under the margin, and by 8\% against HAR-RV, with an
+interval that includes zero (Appendix Table~\ref{tab:increment}). The forward-looking
+target lifts that cell above the margin, while on the date-ordered split the same
+model is 25\% worse. The condition we set in advance for a positive paper, gains
+surviving the checks on at least two of four horizons, was not met.
 
 \paragraph{Published models under the checks (Table~\ref{tab:repro-main}, Figure~\ref{fig:repro}).}
 Among the five papers we could run, the results that reproduce belong to
-price-only or same-company models (Appendix~\ref{app:repro}).
-Same-Company-Same-Signal reproduces from its shipped data. TSMixer matches to
-$10^{-5}$ and TMLP within 0.03, including their own within-company swap result.
-Their training-free same-company history comes within 0.05 of KeFVP's published
-MSE at every horizon on EC and MAEC-15, with no text and no training. That model
-is undefined once companies are held out. KeFVP is a price-series model
-conditioned on text, with its audio branch disabled in its own code. It
-reproduces seven of eight MAEC cells within one published standard deviation. Its
-EC row, run without the knowledge-enhanced embeddings that are no longer
-available, is above all four published cells and we do not count it. HTML's
-released driver shuffles features and labels independently without a seed, so the
-released code does not reproduce the published table. With the authors' model
-classes unchanged, the published recipe reaches the published 15- and 30-day
-values on no split. The published ensemble of \citet{sawhney2020mm} is matched at
-7 days and beyond. In the released scripts, however, the text and audio branches
-are untrained after the prescribed epochs and the mixing weights are chosen on
-the test set, so the match comes from the finance branch. Under our checks
-(Table~\ref{tab:repro-main}), holding companies out costs the three text models
-12--82\% in MSE, while TSMixer and KeFVP lose nothing. Training-set size does not
-explain the difference, since the held-out training sets are as large (EC) or cut
-by the same third (DEC, MAEC) for both groups. The gap between training and test
-moves models by at most 13\%. HTML's own trained model changes by at most 4\% when
-a test transcript is swapped for another call by the same company, against
-9--23\% for a different company's call. On this evidence, the HTML text model is
-reading which company is speaking.
+price-only or same-company models (Appendix~\ref{app:repro} separates direct
+reproductions, repaired runs and ports). Same-Company-Same-Signal reproduces from
+its shipped data (TSMixer to $10^{-5}$, TMLP within 0.03), and its training-free
+same-company history comes within 0.05 of KeFVP's published MSE on EC and
+MAEC-15. KeFVP, a price-series model conditioned on text, reproduces seven of
+eight MAEC cells. HTML's released code does not reproduce its published table,
+and the published ensemble of \citet{sawhney2020mm} is matched only through its
+finance branch, with mixing weights chosen on the test set. DialogueGAT's corpus
+was never released, so it is ported to FinCall. Holding companies out raises the
+MSE of the three text models by 12--82\%, while TSMixer and KeFVP move by
+$-$10\% to $+$7\% with no consistent sign. The SCSS and KeFVP comparisons use the
+same test calls. The HTML and ensemble ones do not, so they also reflect a change
+of test set. Training-set size does not explain the difference, since the
+held-out training sets are as large (EC) or cut by the same third (DEC, MAEC) for
+both groups, and the training-test gap moves models by at most 13\%. HTML's own
+trained model changes by at most 4\% when a test transcript is swapped for
+another call by the same company, against 9--23\% for a different company's call.
 
 \input{tables/repro_controls_main}
 
@@ -113,8 +109,9 @@ reading which company is speaking.
 \includegraphics[width=\linewidth]{figures/fig_repro.pdf}
 \caption{\textbf{Published models with companies held out.} Change in test MSE
 when the same model is scored on a \tickerdisjoint{} split of its own data, one
-marker per horizon (data from Table~\ref{tab:repro-main}). The three text models
-lose 12--82\%, and the two price-based models lose nothing.}
+marker per horizon (data from Table~\ref{tab:repro-main}). The MSE of the three
+text models rises by 12--82\%, and the two price-based models show no consistent
+change.}
 \label{fig:repro}
 \end{figure}
 
@@ -127,8 +124,8 @@ content ridges rose with it (only the fusion ridge is unstable, at $\tau{=}30$).
 Levels are not comparable across the cutoff, since the years and companies
 differ, but the ordering is, and it holds. HAR-RV beats every content model at
 every horizon, and no content model that was competitive before the cutoff
-collapses after it. Under the call-date anchor of the published label sets, the
-same frozen models collapse before the cutoff. Text plus past volatility on
+collapses after it. Refit under the call-date anchor of the published label sets,
+the same models collapse before the cutoff. Text plus past volatility on
 $\Delta v$ falls to between $-1.7$ and $-3.6$ at 3 to 15 days (Appendix
 Table~\ref{tab:lookahead-assumed}), because the reaction session then sits inside
 the past-volatility features.

@@ -71,7 +71,7 @@ def fig_swaps() -> None:
     ]
     panels = [
         ("text ridge, temporal", "text"),
-        ("text ridge, ticker-disjoint", "text_td"),
+        ("text ridge, date-ordered company-disjoint", "text_cb"),
         ("WavLM + past vol, ticker-disjoint", "audio"),
     ]
     fig, axes = plt.subplots(1, 3, figsize=(6.4, 1.9), sharey=True)
@@ -80,7 +80,7 @@ def fig_swaps() -> None:
             if which == "audio":
                 q = ash[(ash.split == "ticker_disjoint") & (ash.condition == cond)]
             else:
-                split = "temporal" if which == "text" else "ticker_disjoint"
+                split = "temporal" if which == "text" else "combined"
                 q = rc[
                     (rc.dataset == "fincall")
                     & (rc.segment == "test")
@@ -205,7 +205,7 @@ def fig_ladder() -> None:
     fig, axes = plt.subplots(1, 2, figsize=(6.4, 2.1), sharey=True)
     for ax, (split, title) in zip(
         axes,
-        [("temporal", "temporal split"), ("ticker_disjoint", "ticker-disjoint split")],
+        [("temporal", "temporal split"), ("combined", "date-ordered company-disjoint split")],
         strict=True,
     ):
         q4 = t4[

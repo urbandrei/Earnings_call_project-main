@@ -4,22 +4,21 @@
 Across every model we trained, the same picture holds. HAR-RV and the other
 classical forecasts are hard to beat, and scoring against persistence exposes a
 regime failure at the 30-day horizon that raw MSE would have hidden. Text
-features add nothing once past volatility is in the model, and the swap checks
-say why. A probe reads the ticker out of the call embedding nine times in ten,
+features do not improve on past volatility alone, and the swap checks say why. A probe reads the ticker out of the call embedding nine times in ten,
 and where a company recurs in training, handing the model a different call by
 that company moves its score by less than 0.03. Audio behaves the same way at
 40\,kbps and at 64\,kbps, identifying the company without improving the forecast,
-and stacking the two modalities beats HAR-RV in only one cell outside the COVID
-regime. The shared test files could not have shown any of this, because they
+and the one stacking gain over the matched model appears only on a split that is
+not in date order. The shared test files could not have shown any of this, because they
 carry no company identity for the audio corpus, no company-disjoint split and no
 measured day~0. Applied to five published models on their own data, the checks
 give the same answer. The price-based models keep their accuracy when
-companies are held out, and the text models lose 12--82\% of theirs. The
+companies are held out, and the error of the text models rises by 12--82\%. The
 two strongest recent positive results \citep{soundofrisk2025,cao2024ecc} could
-not be checked at all, since their code is not released, though the
-\texttt{audit predictions} command would make that check a matter of minutes for
-anyone holding a file of predictions. Transcripts and audio may well carry
+not be checked, since their code is not released, though the
+\texttt{audit predictions} command would make the company-level part of that
+check a matter of minutes for anyone holding a file of predictions. Transcripts and audio may well carry
 information about a company's risk. The test files in use cannot separate that
-information from knowing which company is speaking, and once they can, nothing
-built so far beats a forecast from past volatility. That is the bar the next
-model has to clear.
+information from knowing which company is speaking. Once they can, none of the
+content models evaluated here improves on a matched past-volatility model by the
+margin we fixed in advance. That is the bar the next model has to clear.

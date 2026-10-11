@@ -33,10 +33,13 @@ correction compare per-call squared errors against persistence and against the
 previous stage. The confirmatory comparisons (each stage against Stage~1 on
 $\Delta v$ across horizons, Stage~4 against the best single modality, and the
 published split against the controlled split for each reproduced model) are
-Holm-corrected. Because test calls from one company recur, each confirmatory
-comparison also carries a 95\% bootstrap interval of the loss difference,
-resampled by company. A marker in Table~\ref{tab:grid} would be parenthesised
-if that interval included zero, and none is. All other analyses are exploratory.
+Holm-corrected. The central question is whether call content improves on the same
+model without it, so each content model is also compared, on the same calls,
+with the past-volatility ridge it extends. We report the relative MSE reduction
+with a 95\% bootstrap interval that resamples companies and read it against a 2\%
+margin fixed before the comparison was run. An interval above the margin is an
+improvement, one below it shows no meaningful benefit, and anything else is
+inconclusive. All other analyses are exploratory.
 
 \paragraph{Identity checks.}
 \label{sec:controls}
@@ -53,8 +56,10 @@ The command
 company-only and swap checks on any file with one row per (call, ticker, date,
 split, horizon, truth, prediction). It also reports split integrity, seen versus
 unseen companies, the between-company share of prediction variance and
-company-clustered significance. A published result can therefore be checked from
-the one file its authors already have.
+company-clustered significance. A prediction-side swap moves the whole
+prediction, price inputs included, so it measures company structure in the
+predictions. How a model responds to a different call with its other inputs held
+fixed needs the input-level swaps, and so the model itself.
 
 \paragraph{Reproductions and post-cutoff tests.}
 Of seventeen papers in this line, one releases code that runs as released

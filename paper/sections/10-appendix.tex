@@ -24,15 +24,25 @@ Table~\ref{tab:grid} against the train-mean constant.
 \includegraphics[width=\textwidth]{figures/fig_ladder.pdf}
 \caption{\textbf{The ladder.} \Rtwo{} vs.\ persistence on $\Delta v$ (FinCall
 test) for the canonical model of each stage. The shaded band is the train-mean
-constant. No content stage clears HAR-RV on the temporal split, and on the
-\tickerdisjoint{} split only the fusion stack does, at $\tau{=}30$. Data from
-Table~\ref{tab:grid}.}
+constant. Content stages clear HAR-RV only at $\tau{=}30$, where HAR-RV itself
+falls below persistence on both splits, and none clears the past-volatility
+ridge there. Data from Table~\ref{tab:grid}.}
 \label{fig:ladder}
 \end{figure*}
 
 \input{tables/baselines}
 \input{tables/text}
 \input{tables/audio}
+
+\subsection{Increment over the matched price-only model}
+Table~\ref{tab:increment} gives the pre-registered paired comparison behind the
+markers of Table~\ref{tab:grid}, on all three splits and under both the measured
+target and the forward-looking one. The forward-looking target removes most of
+the positive drift of $\Delta v$ (its mean at $\tau{=}3$ falls from 0.51 to 0.12).
+Its only improvements over the matched model are the stack at $\tau{=}30$ on the
+\tickerdisjoint{} split, which is not in date order, and none of the content
+models improves on it on the date-ordered company-disjoint split.
+\input{tables/increment}
 
 \subsection{Horizon definition}
 Table~\ref{tab:convention} compares the trading-day and calendar-day definitions of
@@ -104,7 +114,7 @@ pooled and per bitrate stratum, with the random swap as the check.
 \subsection{Post-cutoff evaluation under the call-date anchor}
 Table~\ref{tab:lookahead-assumed} repeats the post-cutoff evaluation with day~0
 anchored on the call date on both sides of the cutoff, the anchor every released
-label set uses. HAR-RV barely moves, but the ridge models that carry a learned
+label set uses, with the heads refit under that anchor. HAR-RV barely moves, but the ridge models that carry a learned
 past-volatility block collapse before the cutoff under that anchor, because the
 block absorbs the reaction session that the after-hours rule leaves inside the
 pre-window for before-open calls. On $\Delta v$ at $\tau{=}30$ the frozen

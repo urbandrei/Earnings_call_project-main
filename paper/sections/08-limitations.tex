@@ -2,8 +2,14 @@
 \addcontentsline{toc}{section}{Limitations}
 
 \textbf{One post-cutoff quarter.} The post-cutoff test rests on 475 calls from a
-single calm quarter and a different universe from the training corpus, so it
-bounds contamination in the ordering of models, not in their absolute scores.
+single calm quarter. Period, companies and source all change at once, so it is a
+temporal external validation of the ordering of models, not a measurement of
+pretraining contamination. \textbf{Small date-ordered test set.} The split that
+is both date-ordered and company-disjoint keeps 97 FinCall test calls, and the
+intervals resample companies but not calendar time, so shocks common to one
+quarter are not accounted for. \textbf{Forward-looking target.} It assumes a
+call after a pre-open release ends before that day's close, checked on
+Earnings25 only, and it was run on FinCall for the canonical models only.
 \textbf{Reproductions run on their own data}, not on \ecvol-bench, to keep ``the
 model fails'' separable from ``the model does not transfer''. Two carry known
 costs. KeFVP's released EC embeddings are unavailable upstream, and DialogueGAT's
