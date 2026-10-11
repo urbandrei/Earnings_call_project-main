@@ -130,6 +130,7 @@ class CommandConfig(StrictModel):
         "audit-code",
         "audit-predictions",
         "evaluate-lookahead",
+        "evaluate-increment",
     ]
     seeds: list[int] = Field(default=[0, 1, 2, 3, 4], min_length=1)
 

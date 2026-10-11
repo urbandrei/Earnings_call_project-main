@@ -62,9 +62,12 @@ def load_eval_frame(
     `anchor` selects the primary (measured-anchor) target files or the call-date /
     assume-after-hours variant (`targets_assumed{,_calendar}.parquet`; DECISIONS 2026-10-06).
     """
-    from ecvol.data.timing import ASSUMED_FILES
+    from ecvol.data.timing import ASSUMED_FILES, ORIGIN_FILE
 
-    files = T.TARGET_FILES if anchor == "measured" else ASSUMED_FILES
+    if anchor == "origin":  # forward-looking variant (DECISIONS 2026-10-11), trading only
+        files = {"trading": ORIGIN_FILE}
+    else:
+        files = T.TARGET_FILES if anchor == "measured" else ASSUMED_FILES
     targets = pd.read_parquet(root / dataset / files[convention])
     targets = targets[targets["status"] == "ok"].copy()
     targets["convention"] = convention

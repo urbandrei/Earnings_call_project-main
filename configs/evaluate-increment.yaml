@@ -1,0 +1,5 @@
+# Committed command config (DECISIONS 2026-10-11). `ecvol evaluate-increment` loads this by default.
+# Seeds feed only the Stage-1 GBDT inside the stack; the ridge heads are deterministic and the
+# company bootstrap is seeded (seed 0) inside the command.
+command: evaluate-increment
+seeds: [0, 1, 2, 3, 4]

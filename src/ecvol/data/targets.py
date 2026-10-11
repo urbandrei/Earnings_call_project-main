@@ -188,10 +188,18 @@ def compute_call_targets(
     *,
     horizons: tuple[int, ...] = HORIZONS,
     convention: str = "trading",
+    post_skip: int = 0,
 ) -> list[TargetRow]:
-    """One TargetRow per horizon for a single call. Never raises; encodes reasons."""
+    """One TargetRow per horizon for a single call. Never raises; encodes reasons.
+
+    `post_skip` > 0 starts the post window that many sessions later (returns
+    r_{1+k..τ+k}); the forward-looking variant uses k = 1 so the reaction session,
+    which the call may overlap, is in neither window (DECISIONS 2026-10-11).
+    """
     if convention not in CONVENTIONS:
         raise ValueError(f"unknown convention {convention!r}; expected one of {CONVENTIONS}")
+    if post_skip and convention != "trading":
+        raise ValueError("post_skip is defined for the trading convention only")
     call_id = call["call_id"]  # type preserved as given (FinCall int, MAEC str)
     ticker = str(call.get("ticker") or "").strip()
     call_type = str(call.get("call_type") or "").strip()
@@ -239,13 +247,14 @@ def compute_call_targets(
         return excluded("no_price_data", as_of)
 
     maxh = max(horizons)
-    offsets = session_offsets(day0, back=max(maxh, max(HAR_WINDOWS)), fwd=maxh)
+    offsets = session_offsets(day0, back=max(maxh, max(HAR_WINDOWS)), fwd=maxh + post_skip)
     rv_daily, rv_weekly, rv_monthly = _har_inputs(offsets, close)
 
     rows: list[TargetRow] = []
     for h in horizons:
         if convention == "trading":
-            pre_lo, pre_hi, post_lo, post_hi = 1 - h, 0, 1, h  # r_{-h+1..0}, r_{1..h}
+            pre_lo, pre_hi = 1 - h, 0  # r_{-h+1..0}
+            post_lo, post_hi = 1 + post_skip, h + post_skip  # r_{1..h}, shifted by post_skip
         else:
             pre_lo, pre_hi = calendar_window(offsets, day0, h, post=False)
             post_lo, post_hi = calendar_window(offsets, day0, h, post=True)

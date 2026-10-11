@@ -467,6 +467,24 @@ def timing_targets(
     )
 
 
+@timing_app.command("origin-targets")
+def timing_origin_targets(
+    dataset: str = typer.Argument(help="Dataset: fincall | maec | earnings25."),
+    root: Path = typer.Option(Path("data"), help="Data root directory."),  # noqa: B008
+) -> None:
+    """Forward-looking variant: post window starts one session later → targets_origin."""
+    from ecvol.data.timing import build_origin_targets, origin_rule_check
+
+    s = build_origin_targets(root, dataset)
+    typer.echo(f"{dataset}: {s['calls']} calls; {s['ok_rows']} ok rows → targets_origin.parquet")
+    if (root / "coverage" / "earnings25_call_times.csv").is_file():
+        c = origin_rule_check(root)
+        typer.echo(
+            f"Earnings25 check: the call ends before the first target return starts for "
+            f"{100 * c['share_ok']:.1f}% of {c['calls']} calls (90-minute calls assumed)"
+        )
+
+
 @timing_app.command("sensitivity")
 def timing_sensitivity(
     root: Path = typer.Option(Path("data"), help="Data root directory."),  # noqa: B008
@@ -1489,6 +1507,30 @@ def evaluate_lookahead(
             f"R2 in={r.r2_oos_in:+.3f} post={r.r2_oos_post:+.3f} deg={r.degradation:+.3f}"
         )
     typer.echo("Result Table 7 (lookahead): data/results/result_table_7.csv (+ _assumed.csv)")
+    typer.echo(f"run artifact: {write_command_run(cfg, root)}")
+
+
+@app.command(name="evaluate-increment")
+def evaluate_increment(
+    root: Path = typer.Option(Path("data"), help="Data root directory."),  # noqa: B008
+    seeds: str | None = typer.Option(None, help="Comma-separated seeds; overrides the config."),
+    config: Path | None = _CONFIG_OPT,
+) -> None:
+    """Paired increment of content over the price-only ridge and HAR-RV → Result Table 8."""
+    from ecvol.eval.increment import run_increment
+    from ecvol.tracking import resolve_command_config, write_command_run
+
+    cfg = resolve_command_config("evaluate-increment", config, seeds)
+    t = run_increment(root, seeds=tuple(cfg.seeds))
+    head = t[(t["target"] == "dv") & (t["reference"] == "price_ridge")]
+    head = head[head["model"].isin(["S2_text", "S3_audio", "S4_fusion"])]
+    for r in head.itertuples():
+        typer.echo(
+            f"  [{r.anchor}] {r.split:<15} {r.model:<9} tau={r.horizon:<2} "
+            f"vs price ridge {100 * r.rel_reduction:+6.1f}% "
+            f"[{100 * r.ci_lo:+6.1f}, {100 * r.ci_hi:+6.1f}] {r.verdict}"
+        )
+    typer.echo(f"Result Table 8: {len(t)} rows → data/results/result_table_8.csv")
     typer.echo(f"run artifact: {write_command_run(cfg, root)}")
 
 

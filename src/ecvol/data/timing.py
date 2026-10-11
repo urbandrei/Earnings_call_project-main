@@ -388,6 +388,94 @@ def build_assumed_targets(root: Path, dataset: str, *, horizons=None) -> dict[st
     return {"calls": int(len(calls)), "measured": int(measured), "ok_rows": int(ok_rows)}
 
 
+# --- forward-looking (origin) targets (variant) --------------------------------
+#
+# DECISIONS 2026-10-11: day 0 and the pre window stay on the measured boundary, the
+# post window skips session 1 (the reaction session, which the call may overlap), so
+# every target return starts at a close after the call has ended.
+
+ORIGIN_FILE = "targets_origin.parquet"
+CALL_MINUTES = 90  # assumed call length for the Earnings25 check of the origin rule
+
+
+def build_origin_targets(root: Path, dataset: str, *, horizons=None) -> dict[str, int]:
+    """Trading-day targets on the measured anchor with the post window shifted by one
+    session, over the primary's call set → `targets_origin.parquet` + manifest."""
+    import pyarrow as pa
+
+    from ecvol.data.manifests import make_entry, write_manifest
+    from ecvol.data.prices import load_close_series
+    from ecvol.data.targets import (
+        HORIZONS,
+        TARGETS_LICENSE,
+        compute_call_targets,
+        write_targets_parquet,
+    )
+
+    horizons = horizons or HORIZONS
+    stamps = measured_stamps(root, dataset)
+    calls = pd.read_parquet(
+        root / dataset / "calls.parquet", columns=["call_id", "ticker", "call_date", "call_type"]
+    )
+    calls = calls[(calls["ticker"] != "") & (calls["call_date"] != "")]
+    primary = pd.read_parquet(root / dataset / "targets.parquet", columns=["call_id"])
+    calls = calls[calls["call_id"].astype(str).isin(set(primary["call_id"].astype(str)))]
+    prices_dir = root / PRICE_DIRS[dataset]
+    close_cache: dict[str, dict[str, float]] = {}
+    rows = []
+    for r in calls.itertuples(index=False):
+        if r.ticker not in close_cache:
+            close_cache[r.ticker] = load_close_series(prices_dir, r.ticker)
+        call = {
+            "call_id": r.call_id,
+            "ticker": r.ticker,
+            "date": r.call_date,
+            "call_type": r.call_type,
+            "timestamp": stamps.get(str(r.call_id)),
+        }
+        close = close_cache[r.ticker]
+        rows.extend(compute_call_targets(call, close, horizons=horizons, post_skip=1))
+    path = root / dataset / ORIGIN_FILE
+    id_type = pa.int64() if dataset == "fincall" else pa.string()
+    write_targets_parquet(rows, path, id_type=id_type)
+    entry = make_entry(
+        path,
+        root,
+        source_url=f"computed: ecvol timing origin-targets {dataset} (DECISIONS 2026-10-11)",
+        license=TARGETS_LICENSE,
+    )
+    (root / "manifests").mkdir(parents=True, exist_ok=True)
+    write_manifest([entry], root / "manifests" / f"{dataset}_targets_origin.json")
+    return {"calls": int(len(calls)), "ok_rows": sum(1 for x in rows if x.status == "ok")}
+
+
+def origin_rule_check(root: Path) -> dict[str, float]:
+    """On Earnings25 (recorded call start times): share of calls whose assumed end
+    (start + CALL_MINUTES) falls before the close of session 1 under the measured
+    anchor, i.e. calls for which the origin variant's first target return starts
+    after the call has ended."""
+    from ecvol.data import calendar as cal
+    from ecvol.data.targets import anchor_day0
+
+    stamps = measured_stamps(root, "earnings25")
+    ct = pd.read_csv(root / "coverage" / "earnings25_call_times.csv", dtype=str).fillna("")
+    ok = total = 0
+    for r in ct.itertuples(index=False):
+        if not r.call_datetime_et or r.call_id not in stamps:
+            continue
+        start = datetime.fromisoformat(r.call_datetime_et)
+        day0 = anchor_day0(start.date(), timestamp=stamps[r.call_id])
+        if day0 is None:
+            continue
+        nxt = cal.sessions_in_range(day0 + timedelta(days=1), day0 + timedelta(days=10))
+        if not nxt:
+            continue
+        close1 = datetime.combine(nxt[0], datetime.min.time().replace(hour=16))
+        total += 1
+        ok += int(start + timedelta(minutes=CALL_MINUTES) <= close1)
+    return {"calls": total, "share_ok": ok / total if total else float("nan")}
+
+
 def sensitivity(root: Path, datasets=("fincall", "maec", "earnings25")) -> pd.DataFrame:
     """Fallback vs measured anchors: how many day-0 anchors move, and what the Stage-0
     baselines (persistence, train-fit HAR) do on the test segment under each anchor.

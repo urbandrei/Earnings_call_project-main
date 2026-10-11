@@ -184,6 +184,7 @@ COMMAND_OUTPUTS: dict[str, tuple[str, ...]] = {
         "results/audio_strata_earnings25.csv",
     ),
     "grid": ("results/result_table_4.csv", "results/result_table_4_peryear.csv"),
+    "evaluate-increment": ("results/result_table_8.csv",),
 }
 
 
