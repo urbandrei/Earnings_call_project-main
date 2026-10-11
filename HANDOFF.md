@@ -207,9 +207,11 @@ Each entry: date · task ID · what the user must do · what unblocks when it's 
 - **2026-10-09 (evening) · T8.2 — Tier A of the advisor's review is in the draft; Sunday decision is yours.** `paper/main.pdf`
   is rebuilt (protocol + toolkit framing, standalone Related Work, checklist appendix table, LLM-model limitation,
   clustered significance in Table 2, tracker residue gone; main text ends on page 8 at line 590, nothing to spare).
-  The current Overleaf project is `ecvol-paper-overleaf-697f994` (2026-10-10: prose pass over the whole paper,
-  sequential section files, one-line table headers, short guide in `OVERLEAF.md`); the `3a84d8b`, `065c1ce`,
-  `f39d0f1` and `82d1500` projects are superseded and can be deleted.
+  **2026-10-11 update:** the current draft is `paper/dist/ecvol-paper-overleaf-330d1f9.zip` (advisor review round 2:
+  paired increment test, date-ordered company-disjoint split in the main tables, forward-looking target, narrower
+  claims). Overleaf stopped responding during the upload, so please upload it yourself (New project, Upload
+  project). `9d3161a` (MM-FinEval sentence fix only) is on Overleaf; it and `697f994`, `3a84d8b`, `065c1ce`,
+  `f39d0f1`, `82d1500` are superseded and can be deleted.
   Yours before Monday 2026-10-12 if you submit this cycle:
   (1) **Decide Sunday 2026-10-11**: October cycle (NAACL/COLING 2027) with Tier A only, or January 2027 (ACL 2027)
   with Tier B (MM-FinEval baselines + probe, fine-tuned text encoder, LLM-feature row).
