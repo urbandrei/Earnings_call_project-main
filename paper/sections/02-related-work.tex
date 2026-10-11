@@ -12,12 +12,12 @@ and KeFVP \citep{niu2023kefvp} knowledge-enhanced features. ECC Analyzer
 \citep{cao2024ecc} and Sound of Risk \citep{soundofrisk2025} are the strongest
 recent results and come without code. All of these are scored on the label and
 split files that VolTAGE and KeFVP redistribute, which \S\ref{sec:substrate}
-audits. Three newer corpora matter here. FinCall-Surprise \citep{fincall2025} is the one
-open corpus with raw audio and ships no identities. Earnings25
+audits. Three newer corpora matter here. FinCall-Surprise \citep{fincall2025} was
+the first open corpus with raw audio and ships no identities. Earnings25
 \citep{jiang2026earnings25} postdates every model's training data. MM-FinEval
-\citep{mmfineval2026}, which appeared after this study was complete, adds tickers
-and dates to a larger corpus but none of the checks below, and the checks transfer
-to it unchanged.
+\citep{mmfineval2026}, which appeared after this study was complete, is larger and
+also ships audio, but its release has no ticker or date fields and none of the
+checks below. The identity recovery used here applies to it.
 
 \paragraph{Identity, memorisation and lookahead.}
 \citet{scss2024} showed on their own corpus that transcript representations
