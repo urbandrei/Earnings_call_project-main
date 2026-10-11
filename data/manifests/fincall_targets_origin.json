@@ -1,0 +1,9 @@
+[
+  {
+    "license": "Derived artifact \u2014 computed from price data (DESIGN \u00a75.3); no external source",
+    "path": "fincall/targets_origin.parquet",
+    "retrieved_at": "2026-10-11T20:44:03+00:00",
+    "sha256": "18dce984aa64b2ac753ecb60228e5ae5ada18862f11ad421c0bbed1bbc609df6",
+    "source_url": "computed: ecvol timing origin-targets fincall (DECISIONS 2026-10-11)"
+  }
+]
