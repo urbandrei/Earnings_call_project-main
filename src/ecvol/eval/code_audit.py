@@ -166,8 +166,24 @@ PAPERS: tuple[Paper, ...] = (
     Paper(
         "numhtml2022", "NumHTML", "AAAI 2022", "", "none", "paper promises code; no URL given", ""
     ),
-    Paper("gnavol", "GNA-Vol", "", "", "none", "artifact URL returns 404 (checked 2026-08-23)", ""),
-    Paper("amalstm", "AMA-LSTM", "", "", "none", "10-byte stub repository, unattributed", ""),
+    Paper(
+        "gnavol",
+        "GNA-Vol",
+        "",
+        "",
+        "none",
+        "artifact URL in the paper returned 404 when checked on 2026-08-23",
+        "",
+    ),
+    Paper(
+        "amalstm",
+        "AMA-LSTM",
+        "NAACL 2024 Industry",
+        "hao1zhao/AMA-LSTM",
+        "none",
+        "author-linked repository holds only a README at the audit date; no runnable model code",
+        "",
+    ),
     Paper("atfingpt", "AT-FinGPT", "", "", "none", "paywalled; no artifact", ""),
 )
 

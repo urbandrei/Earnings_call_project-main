@@ -13,6 +13,6 @@ echogl2024,ECHO-GL,2024,https://github.com/pupu0302/ECHOGL,none,"README states t
 eccanalyzer2024,ECC Analyzer,2024,,none,no code released; GPT-4 Turbo + OpenAI embeddings,,no_url,,,,,,
 risklabs2024,RiskLabs,2024,,none,no code released; GPT-4/3.5,,no_url,,,,,,
 numhtml2022,NumHTML,AAAI 2022,,none,paper promises code; no URL given,,no_url,,,,,,
-gnavol,GNA-Vol,,,none,artifact URL returns 404 (checked 2026-08-23),,no_url,,,,,,
-amalstm,AMA-LSTM,,,none,"10-byte stub repository, unattributed",,no_url,,,,,,
+gnavol,GNA-Vol,,,none,artifact URL in the paper returned 404 when checked on 2026-08-23,,no_url,,,,,,
+amalstm,AMA-LSTM,NAACL 2024 Industry,https://github.com/hao1zhao/AMA-LSTM,none,author-linked repository holds only a README at the audit date; no runnable model code,,200,0,1,0,2024-04-08,,2026-10-12
 atfingpt,AT-FinGPT,,,none,paywalled; no artifact,,no_url,,,,,,
