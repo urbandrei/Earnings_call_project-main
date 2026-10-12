@@ -2,18 +2,6 @@
 \label{sec:setup}
 
 \paragraph{Models, from simplest to richest.}
-% We organize our own models in stages. \textbf{Stage 0} holds the classical
-% forecasts, namely persistence ($\hat v=v_{\mathrm{pre}}$), the training-set mean
-% of the target (a constant), EWMA ($\lambda{=}0.94$), HAR-RV \citep{corsi2009har}
-% and GARCH(1,1). \textbf{Stage 1} is a LightGBM model on past-volatility features,
-% transcript length, number of Q\&A turns and a \textbf{company fixed effect}, our
-% identity-only baseline. \textbf{Stage 2} uses the transcript through BGE-M3
-% \citep{bge2024} embeddings pooled per section (1024-d), FinBERT \citep{finbert}
-% sentiment aggregates and surface statistics. \textbf{Stage 3} uses the audio,
-% resampled to 16\,kHz mono. Its features are eGeMAPSv02 functionals
-% \citep{egemaps2016} and WavLM-Large \citep{wavlm} and emotion2vec+
-% \citep{emotion2vec} embeddings over 30-second windows, averaged per call. 
-\paragraph{Models, from simplest to richest.}
 We organize our own models in stages. \textbf{Stage~0} holds the classical
 forecasts, namely persistence ($\hat v = v_{\mathrm{pre}}$), the
 training-set mean of the target (a constant), EWMA with
@@ -26,9 +14,9 @@ separate. \textbf{Stage~2} uses the transcript through BGE-M3 \citep{bge2024}
 embeddings pooled per section (1024-d), FinBERT \citep{finbert}
 sentiment aggregates and surface statistics. \textbf{Stage~3} uses the audio,
 resampled to 16\,kHz mono. Its features are eGeMAPSv02 functionals
-\citep{egemaps2016} and WavLM-Large \citep{wavlm} and emotion2vec+
-\citep{emotion2vec} embeddings over 30-second windows, averaged per
-call.
+\citep{egemaps2016} extracted with openSMILE 2.6.0 \citep{eyben2010opensmile},
+and WavLM-Large \citep{wavlm} and emotion2vec+ \citep{emotion2vec} embeddings
+over 30-second windows, averaged per call.
 \textbf{Stage 4} combines modalities by
 gated fusion or by stacking (a ridge over the text, audio and Stage-1 predictions,
 fit on the validation set). From Stage~2 on, every model is reported with and

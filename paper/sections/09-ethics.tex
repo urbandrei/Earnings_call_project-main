@@ -22,10 +22,12 @@ times come from EDGAR, which is public-domain US government data. Daily prices
 come from Yahoo Finance through the yfinance package, whose terms do not permit
 redistribution, so we release derived volatility targets and never the price
 series.
-\textbf{Gender confound.} Financial-audio studies report demographic imbalance
-\citep{ama2024,docfin2022} and speech-emotion models carry social biases
-\citep{emobias2024}. We have not measured the composition of our cohorts and
-report a pitch-proxy diagnostic instead. \textbf{Intended use.} This is a
+\textbf{Gender-related bias.} Prior financial-audio studies have reported
+gender-related prediction biases \citep{ama2024,docfin2022}, and speech-emotion
+models carry social biases \citep{emobias2024}. Motivated by these findings, we
+report an exploratory comparison of prediction errors using a dominant-speaker
+pitch proxy. This diagnostic does not establish the gender composition of our
+corpora or constitute a comprehensive assessment of gender-related fairness. \textbf{Intended use.} This is a
 research tool, not investment advice. Predictions are noisy and
 regime-sensitive and should not drive automated trading.
 \textbf{Reproducibility.} Given the documented reproducibility problems in
