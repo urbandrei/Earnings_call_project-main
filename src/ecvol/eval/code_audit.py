@@ -2,15 +2,15 @@
 
 Which of the papers in this lineage released code that can actually be run? The
 table is the deliverable DECISIONS 2026-08-23 §5 asks for: one row per paper with
-the artefact URL as published, a **live probe** (HTTP status, repository size,
+the artifact URL as published, a **live probe** (HTTP status, repository size,
 number of code files, last push, licence — from the GitHub API at run time, with
 the probe date recorded) and a **curated verdict** with the reason established in
 the 2026-08-23 audit (JOURNAL) and re-checked here. Verdicts: `runnable`
 (reproduced or reproducible with a stated port), `partial` (code present but the
 environment or data is broken as shipped), `none` (no code, figures-only, empty
-or dead artefact, paywalled).
+or dead artifact, paywalled).
 
-Output: `results/code_availability.csv`. Papers without a public artefact carry
+Output: `results/code_availability.csv`. Papers without a public artifact carry
 `url=""` and a probe status of `no_url`. The probe is network-bound; a missing
 network yields status `unreachable` rather than a crash, so the curated columns
 always regenerate.
@@ -166,9 +166,9 @@ PAPERS: tuple[Paper, ...] = (
     Paper(
         "numhtml2022", "NumHTML", "AAAI 2022", "", "none", "paper promises code; no URL given", ""
     ),
-    Paper("gnavol", "GNA-Vol", "", "", "none", "artefact URL returns 404 (checked 2026-08-23)", ""),
+    Paper("gnavol", "GNA-Vol", "", "", "none", "artifact URL returns 404 (checked 2026-08-23)", ""),
     Paper("amalstm", "AMA-LSTM", "", "", "none", "10-byte stub repository, unattributed", ""),
-    Paper("atfingpt", "AT-FinGPT", "", "", "none", "paywalled; no artefact", ""),
+    Paper("atfingpt", "AT-FinGPT", "", "", "none", "paywalled; no artifact", ""),
 )
 
 
