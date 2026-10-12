@@ -224,6 +224,19 @@ Each entry: date · task ID · what the user must do · what unblocks when it's 
   (4) Preprint policy; (5) EC data terms (`LICENSE-DATA.md`); (6) advisor read of the new draft; (7) register the
   advisor as the service contributor on the ARR form within 48 h of the deadline.
 
+- **2026-10-12 · T8.2 — Round-3 draft is local only; the Monday list.** `paper/dist/ecvol-paper-overleaf-dc7884c.zip`
+  is the merged, corrected draft (your Overleaf edits are in it). Not uploaded, per your instruction. Before the
+  2026-10-12 23:59 AoE deadline: (1) create the Anonymous GitHub link after pushing `main`, and replace
+  `ANON-URL-TO-BE-FILLED` in `sections/01-introduction.tex` (one footnote); (2) upload the zip as a new Overleaf
+  project and read the merged text once (abstract, §1 contributions, §3 timing, §4 checks, Ethics); (3) the
+  Responsible NLP checklist on the form, with `paper/arr_checklist_draft.md` (C1 compute hours and the E1
+  AI-assistance sentence still need you); (4) every author's OpenReview profile and the ARR reviewer-registration
+  form, the advisor as service contributor; track: Resources and Evaluation. Release side, not blocking the paper:
+  ship the Apache-2.0 text and a FinCall-Surprise attribution line in each derived-feature archive and say in the
+  archive README that the features are derivative works (MAEC archives CC-BY-SA-4.0); consider emailing the
+  FinCall-Surprise authors the identity table and the audit before the paper is public. The earlier Overleaf
+  projects (`697f994`, `9d3161a` and older) are superseded.
+
 ## Recurring (every cycle, not a blocker)
 
 - **Push + confirm CI at each phase boundary.** The loop pauses after the last task of a phase
