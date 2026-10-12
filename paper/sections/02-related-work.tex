@@ -30,12 +30,10 @@ pipeline had been scored on calls after its training cutoff. The post-cutoff tes
 in \S\ref{sec:results} does that.
 
 \paragraph{Baselines, timing and bias.}
-Persistence, GARCH and HAR-RV \citep{corsi2009har} are hard to beat and often
-missing from published comparisons \citep{gukellyxiu2020}, so every table here is
-anchored on them. \citet{fastnumbers2026} time earnings releases from 8-K filings
-to predict returns. We use the same filings to place day~0, which no volatility
-label set had done. Audio features encode speaker gender
-\citep{ama2024,emobias2024}, so we report the gender confound.
+Persistence, GARCH and HAR-RV are hard to beat
+\citep{corsi2009har,christensen2023mlvol} and are often missing from
+the comparisons in this line \citep [Table~\ref{tab:faithful}]{scss2024}, so
+every table here is anchored on them. \citet{fastnumbers2026} anchor the earnings timeline on the press release and time its first tradable moment from news-wire stamps to predict returns. We take the release time from the EDGAR acceptance stamp of the Item~2.02 8-K to place day~0 for volatility, which no label set in this line had done. Audio features encode speaker gender \citep{ama2024,emobias2024}, so we report the gender confound.
 
 \paragraph{Reproducibility.}
 A systematic review found that only 14\% of reported NLP scores were reproduced

@@ -1,3 +1,4 @@
+\newpage
 \section*{Limitations}
 \addcontentsline{toc}{section}{Limitations}
 
@@ -26,7 +27,7 @@ as after-hours. Results under the
 call-date anchor of prior label sets are not interchangeable with ours, and the
 call-date targets are shipped as a variant. \textbf{Regime sensitivity.}
 FinCall-Surprise spans COVID. The temporal $\tau{=}30$ failure shows that
-long-horizon level forecasts are regime-sensitive, which is why we emphasise
+long-horizon level forecasts are regime-sensitive, which is why we emphasize
 $\Delta v$ and per-year breakdowns. \textbf{MAEC coverage.} Its 78.6\% price-join
 rate (2015--2018 delistings) makes it a secondary corpus, and it ships no raw
 audio. \textbf{Source audio.} Every FinCall file is a 40\,kbps MP3 transcode and
@@ -34,10 +35,14 @@ Earnings25 is 64\,kbps or lower, so no result here is established on lossless
 audio. \textbf{No diarisation.} Audio is pooled per call, and the gender analysis
 uses a dominant-speaker pitch proxy. \textbf{Identity reconstruction is
 imperfect.} 7.1\% of FinCall calls remain unresolved and are excluded with a
-reason code. \textbf{No fine-tuned or LLM-based content model of our own.}
-Stages 2 to 4 use frozen encoders with ridge and MLP heads. The fine-tuned HTML
-reproduction shows the same dependence on company identity
-(Table~\ref{tab:repro-main}), and \S\ref{sec:recommendations} points to
-structured features extracted by language models as the place to look, but this
-paper does not test such a model. The audit command lets anyone check one from
-its prediction file.
+ reason code. 
+%\textbf{No fine-tuned or LLM-based content model of our own.}
+% Stages 2 to 4 use frozen encoders with ridge and MLP heads. The trained HTML
+% reproduction shows the same dependence on company identity
+% (Table~\ref{tab:repro-main}), and \S\ref{sec:recommendations} points to
+% structured features extracted by language models as the place to look, but this
+% paper does not test such a model. The audit command lets anyone check one from
+% its prediction file.
+\textbf{No fine-tuned or LLM-based content model of our own.} Stages~2 to~4 use frozen encoders with ridge and MLP heads. The HTML reproduction, a trained hierarchical transformer over frozen BERT features, shows the same dependence on company identity
+(Table~\ref{tab:repro-main}), so the pattern is not an artefact of a linear head; whether a fine-tuned encoder behaves differently is
+untested here. \S\ref{sec:recommendations} points to structured features extracted by language models as the place to look. The audit command lets anyone check such a model from its prediction file.

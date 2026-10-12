@@ -11,9 +11,11 @@ that was never recomputed from prices. Five of the six boundaries between
 training, validation and test have a zero-day gap (the sixth has three days)
 while the targets reach 30 days past each call. On the time-ordered splits the field reports, 80.4\% (EC), 44.2\% (MAEC-15)
 and 55.7\% (MAEC-16) of test calls are from companies that also appear in
-training. Any time-ordered split allows that. The problem is that no paper reports
-the company-disjoint case, so the confound of \citet{scss2024} has never been
-measured on these benchmarks. The original paper defines its horizons in calendar
+training. Any time-ordered split allows that. \citet{scss2024} showed that
+same-company history alone matches the published numbers on these
+files; no paper reports what the models themselves do when the company
+is held out, so how much of a published score is the company has never
+been measured. The original paper defines its horizons in calendar
 days, but most later work describes them as trading days (21 sessions rather than
 30 at $\tau{=}30$). Finally, the shipped MAEC labels correlate only 0.52--0.87 with
 calendar-day targets we recompute from prices under the same call-date anchor
@@ -32,13 +34,14 @@ data, and release the table with its 80 manual corrections. 2{,}496 calls resolv
 passes 60/60. \textbf{MAEC} \citep{li2020maec} is the secondary corpus, with about
 3{,}443 calls from 2015--2018, sentence-aligned audio features and no raw audio.
 \textbf{Earnings25} \citep{jiang2026earnings25} has 514 S\&P~500 calls from
-July--December 2025, with webcast MP3 at 64\,kbps for 281 calls and at most
+the fourth quarter of 2025, with webcast MP3 at 64\,kbps for 281 calls and at most
 24\,kbps for 232. It postdates every model's training data, and 475 of its calls
 map to a ticker and join to prices.
 
 \paragraph{Targets.}
-Daily adjusted prices come from a free source and were checked against Tiingo on
-50 tickers. Let $r_t$ be the return on session $t$, counted from day~0, the last
+Daily adjusted prices come from {\color{red}\textsc{Source}}, whose terms permit
+research use, and were checked against Tiingo on 50 tickers; we release
+derived volatility targets, never the price series. Let $r_t$ be the return on session $t$, counted from day~0, the last
 session before the call's information is public. The main target is
 $v_{\mathrm{post}}(\tau)=\ln\sqrt{\frac{1}{n}\sum_{t=1}^{n}(r_t-\bar r)^2}$ for
 $\tau\in\{3,7,15,30\}$, and $v_{\mathrm{pre}}(\tau)$ is the same quantity over the
@@ -61,7 +64,11 @@ the rest lacking usable price history).
 
 \paragraph{When the information became public.}
 \label{sec:timing}
-Almost no transcript states a clock time, so we take the moment the information
+\citet{scss2024} showed that most calls in EC and MAEC are released
+before the open and that the shipped labels ignore this; DEC corrects
+it with a vendor flag. We measure the release time directly. Almost no
+transcript states a clock time, so we take the
+ moment the information
 became public from EDGAR. It is the acceptance time of the earliest 8-K filing
 with Item~2.02 (the earnings release) within three days before to one day after
 the call. That covers 89.3\% of FinCall, 68.6\% of MAEC and 99.8\% of Earnings25. The
@@ -84,7 +91,7 @@ calls).
 
 \paragraph{Splits and release.}
 \emph{Temporal} splits (about 70/10/20 in date order) leave a 30-trading-day gap
-between segments so that no target window crosses a boundary.
+between segments so that no target window crosses a boundary;
 \emph{\tickerdisjoint} splits keep every validation and test company out of
 training. Their overlap is 0.0\%, against 91.3\% (FinCall) and 79.4\% (MAEC) on
 our own temporal splits. Because they are not in date order, a

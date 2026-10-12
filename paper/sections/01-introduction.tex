@@ -8,18 +8,17 @@ stock will be over the following 3 to 30 trading days, and HTML
 \citep{yang2020html}, MAEC \citep{li2020maec}, VolTAGE \citep{sawhney2020voltage},
 DialogueGAT \citep{sang2022dialoguegat}, KeFVP \citep{niu2023kefvp} and ECC
 Analyzer \citep{cao2024ecc} all report beating classical forecasts.
-\citet{scss2024} gave a reason to look again. On a corpus of their own, transcript
-representations mostly told the model \emph{which company} was speaking, and a
-forecast from the company's own past volatility beat every transcript model.
+\citet{scss2024} gave a reason to look again. On a corpus of their own, transcript representations mostly told the model {\it which company} was speaking, and on that corpus and on the shared benchmarks a forecast from the company's own past volatility matched or beat every transcript
+model.
 
-That diagnosis could not be measured on the files the field scores on. Nearly
-every paper in this line uses one set of label and split files, handed down from
-paper to paper. We audited them (\S\ref{sec:substrate}). They leave no gap between
+What that leaves open is whether any published model keeps its score
+once the company is taken away, and the files the field scores on
+cannot answer it. Nearly every paper in this line uses one set of label
+and split files, handed down from paper to paper.  We audited them (\S\ref{sec:substrate}). They leave no gap between
 training and test dates even though each target runs 30 days past its call. Most
 test calls come from companies that are also in training, and no paper reports
 what happens when they are not. They define horizons in calendar days, which later
-papers describe as trading days. They put day~0 on the date of the call, although
-most companies publish their results before the market opens that day. Their
+papers describe as trading days. They put day 0 on the date of the call, although most companies publish before the open, a defect  noted by \citet{scss2024} which no shared label set corrects. Their
 labels cannot be regenerated from prices under any single stated rule. The only
 open corpus with raw audio, FinCall-Surprise \citep{fincall2025}, has no ticker,
 date or speaker fields, so the identity checks cannot be run on it at all. No
