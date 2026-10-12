@@ -99,7 +99,7 @@ are untrained after the prescribed epochs and the mixing weights are chosen on
 the test set, so the match comes from the finance branch. Under our checks
 (Table~\ref{tab:repro-main}), holding companies out costs the three text models
 12--82\% in MSE, while TSMixer and KeFVP lose nothing. Training-set size does not
-explain the difference, since the held-out training sets are as large (EC) or cut
+explain the difference, since the  training sets are as large (EC) or cut
 by the same third (DEC, MAEC) for both groups. The gap between training and test
 moves models by at most 13\%. HTML's own trained model changes by at most 4\% when
 a test transcript is swapped for another call by the same company, against
@@ -126,7 +126,7 @@ rose from 0.44, 0.37, 0.14 and $-$0.29 to 0.60, 0.54, 0.35 and 0.08, and the
 content ridges rose with it (only the fusion ridge is unstable, at $\tau{=}30$).
 Levels are not comparable across the cutoff, since the years and companies
 differ, but the ordering is, and it holds. HAR-RV beats every content model at
-every horizon, and no content model that was competitive before the cutoff
+every horizon, and no model that was competitive before the cutoff
 collapses after it. Under the call-date anchor of the published label sets, the
 same frozen models collapse before the cutoff. Text plus past volatility on
 $\Delta v$ falls to between $-1.7$ and $-3.6$ at 3 to 15 days (Appendix

@@ -26,9 +26,17 @@ times come from EDGAR, which is public-domain US government data.
 % raw audio or transcripts from sources with unclear terms (EC, DEC, the reproduced
 % repositories) are never redistributed. Calls are public corporate disclosures, and
 % we release no speaker-level audio or identity, only pooled per-call features.
- \textbf{Gender confound.} Audio features encode speaker gender and female
-executives are underrepresented in these corpora
-\citep{ama2024,emobias2024,docfin2022}, so we report a gender-confound diagnostic. \textbf{Intended use.} This is a
+%  \textbf{Gender confound.} Audio features encode speaker gender and female executives are underrepresented in these corpora
+% \citep{ama2024,emobias2024,docfin2022}, so we report a gender-confound diagnostic. 
+\textbf{Gender-related bias.}
+Prior financial-audio studies have reported gender-related
+prediction biases \citep{ama2024,docfin2022}.
+Motivated by these findings, we report an exploratory
+comparison of prediction errors using a dominant-speaker
+pitch proxy. This diagnostic does not establish the gender
+composition of our corpora or constitute a comprehensive
+assessment of gender-related fairness.
+\textbf{Intended use.} This is a
 research tool, not investment advice. Predictions are noisy and
 regime-sensitive and should not drive automated trading.
 \textbf{Reproducibility.} Given the documented reproducibility problems in

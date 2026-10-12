@@ -8,8 +8,7 @@ stock will be over the following 3 to 30 trading days, and HTML
 \citep{yang2020html}, MAEC \citep{li2020maec}, VolTAGE \citep{sawhney2020voltage},
 DialogueGAT \citep{sang2022dialoguegat}, KeFVP \citep{niu2023kefvp} and ECC
 Analyzer \citep{cao2024ecc} all report beating classical forecasts.
-\citet{scss2024} gave a reason to look again. On a corpus of their own, transcript representations mostly told the model {\it which company} was speaking, and on that corpus and on the shared benchmarks a forecast from the company's own past volatility matched or beat every transcript
-model.
+\citet{scss2024} gave a reason to look again. On a corpus of their own, transcript representations mostly told the model {\it which company} was speaking, and on that corpus, as well as shared benchmarks, a forecast from the company's own past volatility matched or beat transcript models.
 
 What that leaves open is whether any published model keeps its score
 once the company is taken away, and the files the field scores on
@@ -19,11 +18,12 @@ training and test dates even though each target runs 30 days past its call. Most
 test calls come from companies that are also in training, and no paper reports
 what happens when they are not. They define horizons in calendar days, which later
 papers describe as trading days. They put day 0 on the date of the call, although most companies publish before the open, a defect  noted by \citet{scss2024} which no shared label set corrects. Their
-labels cannot be regenerated from prices under any single stated rule. The only
-open corpus with raw audio, FinCall-Surprise \citep{fincall2025}, has no ticker,
-date or speaker fields, so the identity checks cannot be run on it at all. No
-published model had been rerun under such checks, and none had been scored on
-calls after its training cutoff. Figure~\ref{fig:problems} shows the two
+labels cannot be regenerated from prices under any single stated rule. 
+FinCall-Surprise \citep{fincall2025} provides raw audio
+but requires reconstruction of company and date metadata
+for our evaluation. 
+% The only open corpus with raw audio, FinCall-Surprise \citep{fincall2025}, has no ticker, date or speaker fields, so the identity checks cannot be run on it at all. 
+No published model had been rerun under such checks, and none had been scored on calls after its training cutoff. Figure~\ref{fig:problems} shows the two
 properties that matter most. This paper makes the diagnosis measurable on the
 files in use and releases the tools for it.
 
@@ -47,5 +47,5 @@ baselines (\S\ref{sec:results}). (5)~\textbf{A reproduction study} of the five
 runnable models in this line, on their own data, with the same checks, plus a
 code-availability audit of seventeen papers. (6)~\textbf{A post-cutoff test} of
 the frozen pipeline on 475 calls from late 2025. Stages, checks and confirmatory
-tests were recorded in a dated decision log, released with the protocol, before
+tests were recorded in a dated  log, released with the protocol, before
 the corresponding results existed.

@@ -10,14 +10,24 @@ VolTAGE \citep{sawhney2020voltage} and \citet{sawhney2020mm} graph and multimoda
 fusion, DialogueGAT \citep{sang2022dialoguegat} a dialogue graph over the Q\&A,
 and KeFVP \citep{niu2023kefvp} knowledge-enhanced features. ECC Analyzer
 \citep{cao2024ecc} and Sound of Risk \citep{soundofrisk2025} are the strongest
-recent results and come without code. All of these are scored on the label and
-split files that VolTAGE and KeFVP redistribute, which \S\ref{sec:substrate}
-audits. Three newer corpora matter here. FinCall-Surprise \citep{fincall2025} is the one
-open corpus with raw audio and ships no identities. Earnings25
-\citep{jiang2026earnings25} postdates every model's training data. MM-FinEval
-\citep{mmfineval2026}, which appeared after this study was complete, adds tickers
-and dates to a larger corpus but none of the checks below, and the checks transfer
-to it unchanged.
+recent results and come without code. 
+% All of these are scored on the label and
+% split files that VolTAGE and KeFVP redistribute, which \S\ref{sec:substrate}
+% audits. 
+Several EC/MAEC experiments in this literature reuse the
+redistributed label and split artifacts audited here.
+% Three newer corpora matter here. FinCall-Surprise \citep{fincall2025} is the one
+% open corpus with raw audio and ships no identities. 
+FinCall-Surprise \citep{fincall2025} provides raw audio
+but requires reconstruction of company and date metadata
+for our evaluation.
+Earnings25 \citep{jiang2026earnings25} postdates every model's training data. MM-FinEval
+\citep{mmfineval2026}, which appeared after this study was complete, provides an additional multitask
+corpus with ticker and date metadata. Our evaluation
+checks can also be applied to this resource.
+
+% adds tickers and dates to a larger corpus but none of the checks below, and the checks transfer
+% to it unchanged.
 
 \paragraph{Identity, memorisation and lookahead.}
 \citet{scss2024} showed on their own corpus that transcript representations
@@ -30,14 +40,23 @@ pipeline had been scored on calls after its training cutoff. The post-cutoff tes
 in \S\ref{sec:results} does that.
 
 \paragraph{Baselines, timing and bias.}
-Persistence, GARCH and HAR-RV are hard to beat
-\citep{corsi2009har,christensen2023mlvol} and are often missing from
-the comparisons in this line \citep [Table~\ref{tab:faithful}]{scss2024}, so
-every table here is anchored on them. \citet{fastnumbers2026} anchor the earnings timeline on the press release and time its first tradable moment from news-wire stamps to predict returns. We take the release time from the EDGAR acceptance stamp of the Item~2.02 8-K to place day~0 for volatility, which no label set in this line had done. Audio features encode speaker gender \citep{ama2024,emobias2024}, so we report the gender confound.
+% Persistence, GARCH and HAR-RV are hard to beat
+% \citep{corsi2009har,christensen2023mlvol} and are often missing from
+% the comparisons in this line \citep [Table~\ref{tab:faithful}]{scss2024}, so
+% every table here is anchored on them. 
+We include persistence, EWMA, HAR-RV \citep{corsi2009har},
+and GARCH \citep{bollerslev1986} as nonlinguistic reference
+forecasts. Historical-volatility baselines have performed
+strongly in earnings-call evaluation \citep{scss2024},
+while \citet{christensen2023mlvol} study improvements over
+HAR-based forecasts using machine learning. We therefore
+compare content models with both classical and learned
+price-history baselines.
+\citet{fastnumbers2026} anchor the earnings timeline on the press release and time its first tradable moment from news-wire stamps to predict returns. We take the release time from the EDGAR acceptance stamp of the Item~2.02 8-K to place day~0 for volatility, which no label set in this line had done. Audio features encode speaker gender \citep{ama2024,emobias2024}, so we report the gender confound.
 
 \paragraph{Reproducibility.}
-A systematic review found that only 14\% of reported NLP scores were reproduced
-exactly \citep{belz2021repro}, and in financial NLP discontinued data APIs and
-dead repository links make matters worse \citep{finnlp2025survey}. The
-reproduction study here records, per paper, what ran as released and what had to
-be repaired.
+\citet{belz2021repro} report approximately 14\% exact matches among the reproduction comparisons examined in their review.
+% A systematic review found that only 14\% of reported NLP scores were reproduced
+% exactly \citep{belz2021repro}, 
+In financial NLP, discontinued data APIs and
+dead repository links make matters worse \citep{finnlp2025survey}. Our reproducibility study records, per paper, what ran as released and what had to be repaired.
