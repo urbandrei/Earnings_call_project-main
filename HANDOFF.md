@@ -228,8 +228,8 @@ Each entry: date · task ID · what the user must do · what unblocks when it's 
   was the merged draft; **since 2026-10-12 00:30 the Overleaf project `697f994` itself carries the current text**
   (updated in place, your advisor's live edits of tonight included, repo commit `ea053de` identical). Before the
   2026-10-12 23:59 AoE deadline: (1) create the Anonymous GitHub link after pushing `main`, and replace
-  `ANON-URL-TO-BE-FILLED` in `sections/01-introduction.tex` (one footnote); (2) upload the zip as a new Overleaf
-  project and read the merged text once (abstract, §1 contributions, §3 timing, §4 checks, Ethics); (3) the
+  `ANON-URL-TO-BE-FILLED` in `sections/01-introduction.tex` (one footnote); (2) read the merged text on Overleaf
+  once (abstract, §1 contributions, §3 timing, §4 checks, Ethics); (3) the
   Responsible NLP checklist on the form, with `paper/arr_checklist_draft.md` (C1 compute hours and the E1
   AI-assistance sentence still need you); (4) every author's OpenReview profile and the ARR reviewer-registration
   form, the advisor as service contributor; track: Resources and Evaluation. Release side, not blocking the paper:
