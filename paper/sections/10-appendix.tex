@@ -1,3 +1,18 @@
+
+\clearpage
+\appendix
+
+
+\setcounter{page}{1}
+\setcounter{section}{0}
+\setcounter{table}{0}
+\setcounter{figure}{0}
+\newcounter{offset}
+  \setcounter{offset}{\value{figure}}
+  \renewcommand{\thefigure}{S\the\numexpr\value{figure}-\value{offset}\relax}
+  \setcounter{offset}{\value{table}}
+  \renewcommand{\thetable}{T\the\numexpr\value{table}-\value{offset}\relax}
+
 \section{Extended Results}
 \label{app:complete}
 
@@ -9,9 +24,13 @@ corpus, target, metric, split and horizon) are in the separate supplement. Every
 number traces to a released result CSV with a run record, and the curated tables
 copy cells from those CSVs (\texttt{REPRODUCE.md} lists the command behind each).
 
-\input{figures/pipeline}
+
 
 \subsection{All models of Stages 0--3}
+Figure~\ref{fig:pipeline} shows the modeling stages of the evaluation pipeline. 
+
+\input{figures/pipeline}
+
 Tables~\ref{tab:baselines}, \ref{tab:text} and~\ref{tab:audio} give the full
 Stage-0/1, Stage-2 and Stage-3 model sets on the $\Delta v$ target, including the
 past-volatility-only and MLP heads omitted from Table~\ref{tab:grid}.
@@ -19,7 +38,7 @@ past-volatility-only and MLP heads omitted from Table~\ref{tab:grid}.
 Figure~\ref{fig:ladder} plots the canonical model of each stage from
 Table~\ref{tab:grid} against the train-mean constant.
 
-\begin{figure*}[t]
+\begin{figure*}[h]
 \centering
 \includegraphics[width=\textwidth]{figures/fig_ladder.pdf}
 \caption{\textbf{The ladder.} \Rtwo{} vs.\ persistence on $\Delta v$ (FinCall
