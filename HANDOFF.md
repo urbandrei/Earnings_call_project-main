@@ -225,7 +225,8 @@ Each entry: date · task ID · what the user must do · what unblocks when it's 
   advisor as the service contributor on the ARR form within 48 h of the deadline.
 
 - **2026-10-12 · T8.2 — Round-3 draft is local only; the Monday list.** `paper/dist/ecvol-paper-overleaf-dc7884c.zip`
-  is the merged, corrected draft (your Overleaf edits are in it). Not uploaded, per your instruction. Before the
+  was the merged draft; **since 2026-10-12 00:30 the Overleaf project `697f994` itself carries the current text**
+  (updated in place, your advisor's live edits of tonight included, repo commit `ea053de` identical). Before the
   2026-10-12 23:59 AoE deadline: (1) create the Anonymous GitHub link after pushing `main`, and replace
   `ANON-URL-TO-BE-FILLED` in `sections/01-introduction.tex` (one footnote); (2) upload the zip as a new Overleaf
   project and read the merged text once (abstract, §1 contributions, §3 timing, §4 checks, Ethics); (3) the
