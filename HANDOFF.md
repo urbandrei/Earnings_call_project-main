@@ -304,3 +304,5 @@ These come from the backlog scan; the loop will move each into **Active** when i
   Still yours: the seven items listed in the 2026-10-09 entry above (ARR cycle, preprint policy, reviewer-of-record
   coauthor, AI-assistance disclosure, EC data terms, advisor review, push + CI). Note the Oct 12 2026 ARR deadline
   if NAACL/COLING 2027 is the target; otherwise the January 2027 cycle (ACL 2027) as the venue memo recommends.
+
+- **2026-10-12 (round 4, before upload).** (1) Upload the supplement (`paper/supplement.pdf`, rebuilt from `supplement.tex`) and `data/results/result_table_3_earnings25.csv` as supplementary material; the appendix and Table T11 point to them. (2) The compiled PDF's metadata has empty Author and Title fields and names only pdfTeX and hyperref; nothing to strip. (3) OpenReview profiles need ORCID for every author within one week; a service contributor can support at most two submissions this cycle; the Responsible NLP checklist and the service-contributor form have a 48-hour grace period.
