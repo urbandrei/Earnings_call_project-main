@@ -1,0 +1,20 @@
+% Hand-written. What each check in the toolkit needs and what it can show.
+\begin{table}[t]
+\centering
+\footnotesize
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{p{2.0cm}p{2.2cm}p{2.8cm}}
+\toprule
+Check & Needs & Shows \\
+\midrule
+Prediction diagnostics & predictions, outcomes, ticker, date, split & scores by seen and unseen company, company share of prediction variance, split integrity \\
+Identity probe & call embeddings, tickers & whether identity is decodable \\
+Content swaps & the model and its inputs & how predictions respond to another call with price inputs fixed \\
+Company-disjoint retraining & the training pipeline and splits & what is learned without company history \\
+\bottomrule
+\end{tabular}
+\caption{\textbf{The toolkit.} Only the first row runs on a prediction file. A
+permutation of existing predictions moves their price inputs along with the
+content, so it is a descriptive diagnostic, not a content intervention.}
+\label{tab:toolkit}
+\end{table}

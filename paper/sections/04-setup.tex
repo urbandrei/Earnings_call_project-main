@@ -1,8 +1,8 @@
-\section{Models, Protocol and Checks}
+\section{Models and Checks}
 \label{sec:setup}
 
-%\paragraph{Models, from simplest to richest.}
-% We organise our own models in stages. \textbf{Stage 0} holds the classical
+\paragraph{Models, from simplest to richest.}
+% We organize our own models in stages. \textbf{Stage 0} holds the classical
 % forecasts, namely persistence ($\hat v=v_{\mathrm{pre}}$), the training-set mean
 % of the target (a constant), EWMA ($\lambda{=}0.94$), HAR-RV \citep{corsi2009har}
 % and GARCH(1,1). \textbf{Stage 1} is a LightGBM model on past-volatility features,
@@ -20,8 +20,9 @@ training-set mean of the target (a constant), EWMA with
 $\lambda{=}0.94$ \citep{riskmetrics1996}, HAR-RV \citep{corsi2009har}
 and GARCH(1,1) \citep{bollerslev1986}. \textbf{Stage~1} is a LightGBM model
 \citep{lightgbm2017} on past-volatility features, transcript length,
-number of Q\&A turns and a \textbf{company fixed effect}, our identity-only
-baseline. \textbf{Stage~2} uses the transcript through BGE-M3 \citep{bge2024}
+number of Q\&A turns and a \textbf{company fixed effect}, a price-and-metadata
+baseline with ticker features. The company-only model of the identity checks is
+separate. \textbf{Stage~2} uses the transcript through BGE-M3 \citep{bge2024}
 embeddings pooled per section (1024-d), FinBERT \citep{finbert}
 sentiment aggregates and surface statistics. \textbf{Stage~3} uses the audio,
 resampled to 16\,kHz mono. Its features are eGeMAPSv02 functionals
@@ -39,7 +40,7 @@ uses one deterministic model per stage, chosen by a rule recorded in the decisio
 log. MLP cells are in Appendix~\ref{app:complete}.
 
 \paragraph{Metrics and tests.}
-We report MSE on log realised volatility and, as the headline metric, \Rtwo{} relative to persistence \citep{gukellyxiu2020}, defined as
+We report MSE on log realized volatility and, as the headline metric, \Rtwo{} relative to persistence, following \citet{gukellyxiu2020} with persistence in place of their zero forecast, defined as
 $1-\sum(y-\hat y)^2/\sum(y-\hat y_{\mathrm{persist}})^2$. Because $\Delta v$ has a positive mean on the measured anchor, persistence (which predicts $\Delta v{=}0$) is a weak reference there, so every $\Delta v$ claim is also compared with the constant model. Diebold--Mariano tests \citep{dm1995} with the small-sample correction of \citet{hln1997} compare per-call squared errors against persistence and against the
 previous stage. The confirmatory comparisons (each stage against Stage~1 on $\Delta v$ across horizons, Stage~4 against the best single modality, and the
 published split against the controlled split for each reproduced model) are
@@ -58,18 +59,18 @@ and shows how far identity alone gets. Two \emph{swaps} replace each test call's
 transcript or audio, either with another call by the same company or with a
 random call from the corpus. If the same-company swap leaves a model's score
 unchanged, the model was reading identity, and if the random swap also leaves it
-unchanged, the model was reading nothing. A linear \emph{probe} measures how much
-identity the frozen call embedding carries by trying to recover the ticker from
-it. Finally, every table shows \tickerdisjoint{} results next to temporal ones.
-The command
-\texttt{ecvol audit predictions} runs the prediction-side versions of the
-company-only and swap checks on any file with one row per (call, ticker, date,
-split, horizon, truth, prediction). It also reports split integrity, seen versus
-unseen companies, the between-company share of prediction variance and
-company-clustered significance. A prediction-side swap moves the whole
-prediction, price inputs included, so it measures company structure in the
-predictions. How a model responds to a different call with its other inputs held
-fixed needs the input-level swaps, and so the model itself.
+unchanged, the model was reading nothing. A linear \emph{probe} tries to recover
+the ticker from the frozen call embedding. Finally, every table shows
+company-disjoint results next to temporal ones. The command \texttt{ecvol audit
+predictions} runs the prediction-side versions of the company-only and swap
+checks on any file with one row per (call, ticker, date, split, horizon, truth,
+prediction), and reports split integrity, seen versus unseen companies, the
+between-company share of prediction variance and company-clustered
+significance. That is a descriptive diagnostic (Appendix Table~\ref{tab:toolkit}). A permutation of existing predictions moves
+the price inputs along with the content, so it is not a substitute for the
+input-level swaps, which need the model itself. The price-only ridge of
+Table~\ref{tab:grid} scores the same under a real transcript and under either
+swap, as it must.
 
 \paragraph{Reproductions and post-cutoff tests.}
 Of seventeen papers in this line, one releases code that runs as released
@@ -77,9 +78,9 @@ Of seventeen papers in this line, one releases code that runs as released
 were never shipped, and nine release nothing usable (Table~\ref{tab:code-audit}).
 We rerun the five with usable code (HTML, KeFVP, Same-Company-Same-Signal,
 \citealp{sawhney2020mm}, DialogueGAT) \emph{on their own data}, using the authors'
-code wherever it can be made to start and a line-by-line port where it cannot.
-Every patch is in a released ledger. We first compare with the published number
-and then rerun the same model under a gapped split and a \tickerdisjoint{} split
-of the same data. Earnings25 allows two more tests, namely the frozen Stage-3
-audio models rerun by bitrate, and the whole FinCall-trained pipeline scored,
-with no retraining, on calls that postdate every model's training cutoff.
+code wherever it can be made to start and a line-by-line port where it cannot,
+with every patch in a released ledger. We compare with the published number and
+then rerun the same model under a gapped and a \tickerdisjoint{} split of the same
+data. Earnings25 allows two more tests, the frozen Stage-3 audio models rerun by
+bitrate, and the whole FinCall-trained pipeline scored, with no retraining, on
+calls that postdate every model's training cutoff.

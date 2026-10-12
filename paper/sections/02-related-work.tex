@@ -9,35 +9,40 @@ MAEC \citep{li2020maec} a larger corpus with sentence-aligned audio features,
 VolTAGE \citep{sawhney2020voltage} and \citet{sawhney2020mm} graph and multimodal
 fusion, DialogueGAT \citep{sang2022dialoguegat} a dialogue graph over the Q\&A,
 and KeFVP \citep{niu2023kefvp} knowledge-enhanced features. ECC Analyzer
-\citep{cao2024ecc} and Sound of Risk \citep{soundofrisk2025} are the strongest
-recent results and come without code. All of these are scored on the label and
-split files that VolTAGE and KeFVP redistribute, which \S\ref{sec:substrate}
-audits. Three newer corpora matter here. FinCall-Surprise \citep{fincall2025} was
-the first open corpus with raw audio and ships no identities. Earnings25
+\citep{cao2024ecc} and Sound of Risk \citep{soundofrisk2025} are recent positive
+results and come without code. Most EC and MAEC results in this line are scored
+on the label and split files that VolTAGE and KeFVP redistribute, which
+\S\ref{sec:substrate} audits. Three newer corpora matter here. FinCall-Surprise
+\citep{fincall2025} ships raw audio and no identities. Earnings25
 \citep{jiang2026earnings25} postdates every model's training data. MM-FinEval
-\citep{mmfineval2026}, which appeared after this study was complete, is larger and
-also ships audio, but its release has no ticker or date fields and none of the
-checks below. The identity recovery used here applies to it.
+\citep{mmfineval2026}, which appeared after this study was complete, adds slides
+and twelve task labels over 2{,}045 calls with audio, but its release has no
+ticker or date fields and none of the checks below. The identity recovery used
+here applies to it.
 
-\paragraph{Identity, memorisation and lookahead.}
-\citet{scss2024} showed on their own corpus that transcript representations
-mostly tell the model which company is speaking, and that the company's past
-volatility beats every transcript model. Language models recover the company even
+\paragraph{Identity, memorization and lookahead.}
+\citet{scss2024} showed, on a corpus of their own and on EC and MAEC, that
+transcript representations mostly tell the model which company is speaking,
+that past volatility matches or beats every transcript model, and that the
+shipped labels ignore release timing. Language models recover the company even
 from transcripts with the names removed \citep{memorization2025}. Lookahead bias
 in language models now has diagnostics and cutoff-bounded models of its own
-\citep{lookahead2025,datedgpt2026,lookaheadbench2026}, but no earnings-call
-pipeline had been scored on calls after its training cutoff. The post-cutoff test
-in \S\ref{sec:results} does that.
+\citep{lookahead2025,datedgpt2026,lookaheadbench2026}, and \citet{lookahead2025}
+include an earnings-call forecasting task. The post-cutoff test in
+\S\ref{sec:results} complements that work by scoring frozen volatility
+pipelines on a later cohort.
 
 \paragraph{Baselines, timing and bias.}
 Persistence, GARCH and HAR-RV are hard to beat
 \citep{corsi2009har,christensen2023mlvol} and are often missing from
-the comparisons in this line \citep [Table~\ref{tab:faithful}]{scss2024}, so
-every table here is anchored on them. \citet{fastnumbers2026} anchor the earnings timeline on the press release and time its first tradable moment from news-wire stamps to predict returns. We take the release time from the EDGAR acceptance stamp of the Item~2.02 8-K to place day~0 for volatility, which no label set in this line had done. Audio features encode speaker gender \citep{ama2024,emobias2024}, so we report the gender confound.
+the comparisons in this line \citep[Table~\ref{tab:faithful}]{scss2024}, so
+every table here is anchored on them. \citet{fastnumbers2026} anchor the earnings timeline on the press release and time its first tradable moment from news-wire stamps to predict returns. We take the release time from the EDGAR acceptance stamp of the Item~2.02 8-K to place day~0 for volatility, which no label set in this line had done. Financial-audio studies report demographic imbalance and speech-emotion models
+carry social biases \citep{ama2024,docfin2022,emobias2024}, so we report a
+gender diagnostic.
 
 \paragraph{Reproducibility.}
-A systematic review found that only 14\% of reported NLP scores were reproduced
-exactly \citep{belz2021repro}, and in financial NLP discontinued data APIs and
-dead repository links make matters worse \citep{finnlp2025survey}. The
-reproduction study here records, per paper, what ran as released and what had to
-be repaired.
+Among the score comparisons in the reproduction studies they reviewed,
+\citet{belz2021repro} found about 14\% exact matches, and in financial NLP
+discontinued data APIs and dead repository links make matters worse
+\citep{finnlp2025survey}. The reproduction study here records, per paper, what
+ran as released and what had to be repaired.

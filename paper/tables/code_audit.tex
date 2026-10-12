@@ -1,4 +1,4 @@
-% Generated from data/results/code_availability.csv (run 20261009T215347Z-audit-code-e906e5a8).
+% Generated from data/results/code_availability.csv (run 20261012T020511Z-audit-code-e906e5a8).
 \begin{table*}[t]
 \centering\scriptsize
 \setlength{\tabcolsep}{3pt}
@@ -6,26 +6,26 @@
 \toprule
 Paper & venue & probe (date) & verdict & reason \\
 \midrule
-What You Say and How You Say It Matters \cite{qin2019what} & ACL 2019 & 200, 0 code files, pushed 2022-08-04 (2026-10-09) & partial & dataset released (Drive, 5-part zip); no model code in the repository \\
-HTML \cite{yang2020html} & WWW 2020 & 200, 15 code files, pushed 2024-01-05 (2026-10-09) & partial & model classes run verbatim; the released driver imports TensorFlow-1 set\_random\_seed and torchtext and splits features and labels with independent unseeded shuffles; inputs (WWM-BERT .npy, Praat features) behind dead Drive links, rebuilt; run with a corrected driver \\
- Multimodal financial forecasting \cite{sawhney2020mm}  & ACM MM 2020 & 200, 112 code files, pushed 2020-10-26 (2026-10-09) & partial & TF 2.1 / Keras 2.3.1 / tensorflow-addons 0.8.3 pins; unshipped call inventory, price files and two lexicons; text-feature script returns after one record; no multi-task loss in the released code; ported line by line to PyTorch \\
-VolTAGE \cite{sawhney2020voltage} & EMNLP 2020 & 200, 5 code files, pushed 2021-11-16 (2026-10-09) & partial & ships the EC split/label files (byte-identical to KeFVP's) and GCN code; embeddings as .pkl; not ported \\
- KeFVP \cite{niu2023kefvp} & EMNLP Findings 2023 & 200, 42 code files, pushed 2024-01-28 (2026-10-09) & partial & requirements.txt does not install as written; the script starts only after five release-defect patches (missing set\_seed, package init importing undefined names, a dropped class header, an unreleased `latent` package, plotting imports); MAEC embeddings never released (regenerated with the authors' generator); EC KePt pickle Drive-only \\
-DialogueGAT\cite{sang2022dialoguegat} & Findings of EMNLP 2022 & 200, 6 code files, pushed 2023-06-12 (2026-10-09) & partial & MIT code, tau<=15 only; training pickle, SeekingAlpha corpus and CRSP labels never released; DGL has no wheels for torch 2.11; ported (PyG) onto FinCall turns \\
-Same Company, Same Signal \cite{scss2024} & Findings of ACL 2025 & 200, 38 code files, pushed 2026-08-13 (2026-10-09) & runnable & MIT; ships DEC with features and rolling masks; PEV/STPEV to 3 decimals, TSMixer 76 cells to 1e-5, TMLP 228 cells within single-seed noise on the authors' embeddings \\
-FinTrust \cite{fintrust2023} & ACL 2023 & 200, 4 code files, pushed 2024-01-22 (2026-10-09) & partial & perturbation harness + 3/7/15/30 data; complementary control axis, not a volatility model \\
-Sound of Risk \cite{soundofrisk2025} & arXiv 2025 & 200, 0 code files, pushed 2025-08-26 (2026-10-09) & none & repository holds figures only, zero source files; proprietary 1,795-call corpus \\
-DeFVP \cite{niu2024does} & ICME 2024 & 409 (2026-10-09) & none & repository exists but is empty (size 0 KB, never pushed; API returns 409) \\
-ECHO-GL \cite{echogl2024} & AAAI 2024 & 200, 3 code files, pushed 2024-02-26 (2026-10-09) & none & README states the code 'can not run at present'; target is direction, not volatility \\
-ECC Analyzer \cite{cao2024ecc} & ICAIF 2024 & no\_url & none & no code released; GPT-4 Turbo + OpenAI embeddings \\
-RiskLabs \cite{cao2024risklabs} & ICAIF-workshop 2024 & no\_url & none & no code released; GPT-4/3.5 \\
-NumHTML \cite{yang2022numhtml} & AAAI 2022 & no\_url & none & paper promises code; no URL given \\
-GNA-Vol \cite{shi2023gnavol} & IJCNLP-short 2023 & no\_url & none & artefact URL returns 404 (checked 2026-08-23) \\
-AMA-LSTM \cite{ama2024} & NAACL 2024 & no\_url & none & 10-byte stub repository, unattributed \\
-AT-FinGPT \cite{atfingpt2025} & Finance Research Letters & no\_url & none & paywalled; no artefact \\
+What You Say and How You Say It Matters \citep{qin2019what} & ACL 2019 & 200, 0 code files, pushed 2022-08-04 (2026-10-12) & partial & dataset released (Drive, 5-part zip); no model code in the repository \\
+HTML \citep{yang2020html} & WWW 2020 & 200, 15 code files, pushed 2024-01-05 (2026-10-12) & partial & model classes run verbatim; the released driver imports TensorFlow-1 set\_random\_seed and torchtext and splits features and labels with independent unseeded shuffles; inputs (WWM-BERT .npy, Praat features) behind dead Drive links, rebuilt; run with a corrected driver \\
+Multimodal financial forecasting \citep{sawhney2020mm} & ACM MM 2020 & 200, 112 code files, pushed 2020-10-26 (2026-10-12) & partial & TF 2.1 / Keras 2.3.1 / tensorflow-addons 0.8.3 pins; unshipped call inventory, price files and two lexicons; text-feature script returns after one record; no multi-task loss in the released code; ported line by line to PyTorch \\
+VolTAGE \citep{sawhney2020voltage} & EMNLP 2020 & 200, 5 code files, pushed 2021-11-16 (2026-10-12) & partial & ships the EC split/label files (byte-identical to KeFVP's) and GCN code; embeddings as .pkl; not ported \\
+KeFVP \citep{niu2023kefvp} & Findings of EMNLP 2023 & 200, 42 code files, pushed 2024-01-28 (2026-10-12) & partial & requirements.txt does not install as written; the script starts only after five release-defect patches (missing set\_seed, package init importing undefined names, a dropped class header, an unreleased `latent` package, plotting imports); MAEC embeddings never released (regenerated with the authors' generator); EC KePt pickle Drive-only \\
+DialogueGAT \citep{sang2022dialoguegat} & Findings of EMNLP 2022 & 200, 6 code files, pushed 2023-06-12 (2026-10-12) & partial & MIT code, tau<=15 only; training pickle, SeekingAlpha corpus and CRSP labels never released; DGL has no wheels for torch 2.11; ported (PyG) onto FinCall turns \\
+Same Company, Same Signal \citep{scss2024} & Findings of ACL 2025 & 200, 38 code files, pushed 2026-08-13 (2026-10-12) & runnable & MIT; ships DEC with features and rolling masks; PEV/STPEV to 3 decimals, TSMixer 76 cells to 1e-5, TMLP 228 cells within single-seed noise on the authors' embeddings \\
+FinTrust \citep{fintrust2023} & ACL 2023 & 200, 4 code files, pushed 2024-01-22 (2026-10-12) & partial & perturbation harness + 3/7/15/30 data; complementary control axis, not a volatility model \\
+Sound of Risk \citep{soundofrisk2025} & arXiv 2025 & 200, 0 code files, pushed 2025-08-26 (2026-10-12) & none & repository holds figures only, zero source files; proprietary 1,795-call corpus \\
+DeFVP \citep{niu2024does} & ICME 2024 & 409 (2026-10-12) & none & repository exists but is empty (size 0 KB, never pushed; API returns 409) \\
+ECHO-GL \citep{echogl2024} & AAAI 2024 & 200, 3 code files, pushed 2024-02-26 (2026-10-12) & none & README states the code 'can not run at present'; target is direction, not volatility \\
+ECC Analyzer \citep{cao2024ecc} & ICAIF 2024 & no\_url & none & no code released; GPT-4 Turbo + OpenAI embeddings \\
+RiskLabs \citep{cao2024risklabs} & arXiv 2024 & no\_url & none & no code released; GPT-4/3.5 \\
+NumHTML \citep{yang2022numhtml} & AAAI 2022 & no\_url & none & paper promises code; no URL given \\
+GNA-Vol \citep{shi2023gnavol} & IJCNLP-AACL 2023 & no\_url & none & artifact URL returns 404 (checked 2026-08-23) \\
+AMA-LSTM \citep{ama2024} & NAACL 2024 Industry & no\_url & none & 10-byte stub repository, unattributed \\
+AT-FinGPT \citep{atfingpt2025} & Finance Research Letters 2025 & no\_url & none & paywalled; no artifact \\
 \bottomrule
 \end{tabular}
-\caption{\textbf{Code-availability audit of the ECC volatility literature}
+\caption{\textbf{Code-availability audit of seventeen earnings-call prediction papers}
 (regenerated by \texttt{ecvol audit code} with a live GitHub probe on the
 date shown). One of seventeen papers ships code that runs as released. Seven ship
 code with a broken environment, missing data, or defects that must be repaired

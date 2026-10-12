@@ -3,24 +3,20 @@ move after its quarterly earnings call from what executives say and how they
 sound, and many report beating classical forecasts built from past price swings.
 Nearly all of those results are scored on one set of label and split files handed
 down from paper to paper. We audit those files and find that they cannot support
-the claim. They leave no gap between the training and test periods although every
-target looks 30 days ahead. Between 44\% and 80\% of their test calls come from
-companies the model also saw in training. And they place ``day zero'' on the day
-of the call, although most companies release their numbers before the market
-opens that morning. We release an evaluation protocol and an audit toolkit that
-make these problems measurable. The protocol recovers company names and dates for
-a public audio corpus that ships without them, times each release from SEC
-filings, provides targets under both horizon definitions in use, and splits that
-keep training and test apart in time and in company. The toolkit runs identity
-checks on any file of predictions. Under these checks, modern open text and audio
-models do not improve on a matched model that uses past volatility alone. Text
-embeddings mostly identify which company is talking (89.5\% probe accuracy), and
-on a date-ordered split with unseen companies no text, audio or combined model
-reduces error against that matched model by a margin fixed in advance. Five
-published models rerun under the same checks show a similar pattern. The test
-error of their text models rises by 12--82\% once test companies are unseen,
-while price-only models show no consistent change. Scoring the frozen pipeline on 475 calls from
-late 2025, after every model's training cutoff, changes none of this. Content
-signal may still exist in these calls. It has to be shown to survive these
-checks, and the released protocol, baselines and audit command make that the
-starting point for the next study.
+the claim. They leave no gap between the training and test periods although
+targets extend up to 30 days ahead, most of their test calls come from companies
+the model also saw in training, and they place day zero on the day of the call
+although most companies release their numbers before the market opens. We release
+an evaluation protocol and an audit toolkit that make these assumptions explicit
+and testable. The protocol recovers company names and dates for a public audio
+corpus that ships without them, times each release from SEC filings, provides
+targets under both horizon definitions in use and a forward-looking variant, and
+splits that keep training and test apart in time and in company. The toolkit
+reports company-level diagnostics on any file of predictions. Under this protocol,
+the open text and audio models we evaluate do not improve on a matched model that
+uses past volatility alone by a margin fixed in advance, and their embeddings
+mostly identify which company is speaking. Five published models rerun under the
+same checks show a similar pattern, and a frozen pipeline scored on calls after
+every model's training cutoff keeps the same ordering. Isolated gains remain, and
+the released protocol, baselines and audit command make them the starting point
+for the next study.

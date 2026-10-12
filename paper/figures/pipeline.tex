@@ -13,11 +13,11 @@
 \node[stage, below=of s1] (s2) {\textbf{Stage 2} Frozen text (BGE-M3, FinBERT, surface) $\to$ ridge / MLP};
 \node[stage, below=of s2] (s3) {\textbf{Stage 3} Frozen audio (eGeMAPS, WavLM, emotion2vec+)};
 \node[stage, below=of s3] (s4) {\textbf{Stage 4} Fusion (gated / stacking)};
-\node[repro, below=of s4] (sr) {\textbf{Stage R} Prior models (HTML, SCSS, KeFVP, DialogueGAT, VolTAGE) on their own data, under the same controls};
+\node[repro, below=of s4] (sr) {\textbf{Stage R} Published models (HTML, SCSS, KeFVP, DialogueGAT, Sawhney et al.) on their own data where available, under the same checks};
 \foreach \a/\b in {s0/s1, s1/s2, s2/s3, s3/s4, s4/sr}
   \draw[->, >=stealth] (\a) -- (\b);
 \end{tikzpicture}
-\caption{\textbf{The modelling ladder.} From Stage~2 up, every model also carries
+\caption{\textbf{The modeling ladder.} From Stage~2 up, every model also carries
 past-volatility covariates (and is reported with them ablated). Every stage runs
 through the identity checks. The darker box is the reproduction track, which
 applies the same checks to published models on their own data.}

@@ -48,10 +48,10 @@ Model & $\tau$=3 & $\tau$=7 & $\tau$=15 & $\tau$=30 \\
 \bottomrule
 \end{tabular}
 \caption{\textbf{The ladder on FinCall-Surprise.} \Rtwo{} vs.\ persistence on
-$\Delta v$ (test). Persistence is 0 by construction, and the train-mean intercept
-is the featureless floor. The second block keeps test companies out of training
-and the split in date order. One pre-registered canonical model per stage (the
-Stage-3 ridge uses WavLM and eGeMAPS). Each content cell is tested against the
+$\Delta v$ (test). Persistence is 0 by construction. The second block keeps test
+companies out of training and the split in date order. One pre-registered
+canonical model per stage (the Stage-3 ridge uses WavLM and eGeMAPS). Each
+content cell is tested against the
 past-volatility ridge S0$'$ on the same calls. A dagger marks a 95\% interval of
 the relative MSE reduction, resampled by company, that lies below the
 pre-registered 2\% margin, an asterisk one that lies above it, and an unmarked
@@ -141,13 +141,11 @@ Content swap (\Rtwo{} on $\Delta v$) & $\tau$=3 & $\tau$=7 & $\tau$=15 & $\tau$=
 @SHUF@
 \bottomrule
 \end{tabular}
-\caption{\textbf{Identity checks.} The top block shows that frozen embeddings
-identify the company far above chance. The bottom block shows that where
-companies recur (temporal), giving a test call another call by the \emph{same}
-company barely changes the text model, while a random call hurts. On the
-date-ordered company-disjoint split the real transcript scores no better than
-either swap. Audio swaps were run only on the \tickerdisjoint{} split, which is
-not in date order.}
+\caption{\textbf{Identity checks.} Frozen embeddings identify the company far
+above chance. Where companies recur (temporal), giving a test call another call
+by the \emph{same} company barely changes the text model, while a random call
+hurts. On the date-ordered company-disjoint split the real transcript scores no
+better than either swap. The audio swaps are in Appendix Table~\ref{tab:audio}.}
 \label{tab:controls}
 \end{table}
 """
@@ -204,8 +202,6 @@ def controls_main() -> None:
     shuf += text_block("temporal")
     shuf.append(r"\multicolumn{5}{l}{\textit{Text ridge, date-ordered company-disjoint}}\\")
     shuf += text_block("combined")
-    shuf.append(r"\multicolumn{5}{l}{\textit{WavLM ridge + past-vol, \tickerdisjoint{} split}}\\")
-    shuf += audio_block("ticker_disjoint")
     tex = CONTROLS_TEX.replace("@PROBE@", NL.join(probe)).replace("@SHUF@", NL.join(shuf))
     (OUT / "controls_main.tex").write_text(tex, encoding="utf-8")
 
@@ -226,7 +222,7 @@ Target, split & Model & $\tau$=3 & $\tau$=7 & $\tau$=15 & $\tau$=30 \\
 \caption{\textbf{Increment over the matched price-only model.} Relative reduction of
 test MSE on $\Delta v$ (\%) against the past-volatility ridge on the same calls,
 with a 95\% percentile bootstrap interval that resamples companies (1000 draws).
-Positive values favour the content model. The 2\% margin and the reading rule were
+Positive values favor the content model. The 2\% margin and the reading rule were
 fixed before the table was computed. A dagger marks an upper bound below the margin
 (no meaningful benefit), an asterisk a lower bound above it (improvement), and
 unmarked cells are inconclusive. HAR-RV is shown against the same reference. The

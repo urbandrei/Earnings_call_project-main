@@ -27,18 +27,12 @@ Content swap (\Rtwo{} on $\Delta v$) & $\tau$=3 & $\tau$=7 & $\tau$=15 & $\tau$=
 \quad real & 0.122 & 0.133 & 0.009 & $-$0.092 \\
 \quad same-company swap & 0.136 & 0.139 & 0.019 & $-$0.057 \\
 \quad random swap & 0.173 & 0.166 & 0.084 & 0.099 \\
-\multicolumn{5}{l}{\textit{WavLM ridge + past-vol, \tickerdisjoint{} split}}\\
-\quad real & 0.456 & 0.390 & 0.267 & 0.222 \\
-\quad same-company swap & 0.453 & 0.373 & 0.229 & 0.152 \\
-\quad random swap & 0.453 & 0.323 & 0.164 & 0.099 \\
 \bottomrule
 \end{tabular}
-\caption{\textbf{Identity checks.} The top block shows that frozen embeddings
-identify the company far above chance. The bottom block shows that where
-companies recur (temporal), giving a test call another call by the \emph{same}
-company barely changes the text model, while a random call hurts. On the
-date-ordered company-disjoint split the real transcript scores no better than
-either swap. Audio swaps were run only on the \tickerdisjoint{} split, which is
-not in date order.}
+\caption{\textbf{Identity checks.} Frozen embeddings identify the company far
+above chance. Where companies recur (temporal), giving a test call another call
+by the \emph{same} company barely changes the text model, while a random call
+hurts. On the date-ordered company-disjoint split the real transcript scores no
+better than either swap. The audio swaps are in Appendix Table~\ref{tab:audio}.}
 \label{tab:controls}
 \end{table}

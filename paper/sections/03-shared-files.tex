@@ -13,49 +13,46 @@ while the targets reach 30 days past each call. On the time-ordered splits the f
 and 55.7\% (MAEC-16) of test calls are from companies that also appear in
 training. Any time-ordered split allows that. \citet{scss2024} showed that
 same-company history alone matches the published numbers on these
-files; no paper reports what the models themselves do when the company
-is held out, so how much of a published score is the company has never
-been measured. The original paper defines its horizons in calendar
+files. No paper reports what the models themselves do when the company is held
+out, so how much of a published score is the company has never been measured. The original paper defines its horizons in calendar
 days, but most later work describes them as trading days (21 sessions rather than
 30 at $\tau{=}30$). Finally, the shipped MAEC labels correlate only 0.52--0.87 with
 calendar-day targets we recompute from prices under the same call-date anchor
-(0.25--0.66 at $\tau{=}3$). We could not reproduce them under any single stated
-rule.
+(0.25--0.66 at $\tau{=}3$), and no single stated rule reproduces them.
 
 \input{tables/substrate}
 
 \paragraph{Corpora and company identity.}
 \textbf{FinCall-Surprise} \citep{fincall2025} is the primary corpus, with 2{,}688
-calls from 2019--2021 and MP3 audio, transcripts and slides. It ships four fields
-per record and no ticker, date, CIK or speaker names. We recover the company and
-the date from the transcript text and the slide metadata, check them against price
-data, and release the table with its 80 manual corrections. 2{,}496 calls resolve
-(92.9\% overall, 95.3\% of the earnings-type calls), and a 60-call manual audit
-passes 60/60. \textbf{MAEC} \citep{li2020maec} is the secondary corpus, with about
-3{,}443 calls from 2015--2018, sentence-aligned audio features and no raw audio.
+calls from 2019--2021 and MP3 audio, transcripts and slides, but no ticker, date,
+CIK or speaker names. We recover the company and the date from the transcript
+text and the slide metadata, check them against price data, and release the
+table with its 80 manual corrections. 2{,}496 calls resolve (92.9\%, 95.3\% of
+the earnings-type calls), and a 60-call manual audit passes 60/60. \textbf{MAEC} \citep{li2020maec} is the secondary corpus, with about
+3{,}443 calls from 2015--2018 and sentence-aligned audio features. The release we
+could access ships no raw audio.
 \textbf{Earnings25} \citep{jiang2026earnings25} has 514 S\&P~500 calls from
-the fourth quarter of 2025, with webcast MP3 at 64\,kbps for 281 calls and at most
-24\,kbps for 232. It postdates every model's training data, and 475 of its calls
-map to a ticker and join to prices.
+July to December 2025 in the release we ingested, with webcast MP3 at 64\,kbps
+for 281 calls and at most 24\,kbps for 232. 475 of its calls map to a ticker and
+join to prices.
 
 \paragraph{Targets.}
-Daily adjusted prices come from {\color{red}\textsc{Source}}, whose terms permit
-research use, and were checked against Tiingo on 50 tickers; we release
-derived volatility targets, never the price series. Let $r_t$ be the return on session $t$, counted from day~0, the last
+Daily adjusted prices come from Yahoo Finance through the yfinance package,
+whose terms permit research use but not redistribution, and were checked against
+Tiingo on 50 tickers. We release derived volatility targets, never the price
+series. Let $r_t$ be the return on session $t$, counted from day~0, the last
 session before the call's information is public. The main target is
 $v_{\mathrm{post}}(\tau)=\ln\sqrt{\frac{1}{n}\sum_{t=1}^{n}(r_t-\bar r)^2}$ for
 $\tau\in\{3,7,15,30\}$, and $v_{\mathrm{pre}}(\tau)$ is the same quantity over the
 sessions ending at day~0. Under the \textbf{trading-day} definition $n=\tau$. Under
 the \textbf{calendar-day} definition of \citet{qin2019what} the window holds every
-session within $\tau$ calendar days, so $n\approx0.7\tau$, and at $\tau{=}3$ a
-Thursday or Friday call has at most one session. We drop any window with fewer
-than two sessions and record the reason. That removes 42.5\% of FinCall's calls at
-$\tau{=}3$ calendar days, for which the released label sets still carry a value.
-The two definitions are not interchangeable. $v_{\mathrm{post}}$ correlates only
-0.78 between them at $\tau{=}3$, and on the temporal splits the persistence MSE is
-44--63\% higher there under calendar days. A published MSE therefore means little
-unless its definition is stated (Appendix Table~\ref{tab:convention}). Every result below uses trading
-days, and the definition is a column in every result table. We add two targets
+session within $\tau$ calendar days, so $n\approx0.7\tau$. We drop any window
+with fewer than two sessions and record the reason, which removes 42.5\% of
+FinCall's calls at $\tau{=}3$ calendar days. $v_{\mathrm{post}}$ correlates only
+0.78 between the definitions at $\tau{=}3$ and the persistence MSE is 44--63\%
+higher under calendar days, so a published MSE means little unless its
+definition is stated (Appendix Table~\ref{tab:convention}). Every result below
+uses trading days, and the definition is a column in every result table. We add two targets
 that are harder to game with company identity. The \textbf{change}
 $\Delta v=v_{\mathrm{post}}-v_{\mathrm{pre}}$ subtracts the company's own level,
 and the \textbf{HAR-residual} subtracts a HAR-RV forecast. After joining to
@@ -64,26 +61,27 @@ the rest lacking usable price history).
 
 \paragraph{When the information became public.}
 \label{sec:timing}
-\citet{scss2024} showed that most calls in EC and MAEC are released
-before the open and that the shipped labels ignore this; DEC corrects
-it with a vendor flag. We measure the release time directly. Almost no
-transcript states a clock time, so we take the
- moment the information
-became public from EDGAR. It is the acceptance time of the earliest 8-K filing
-with Item~2.02 (the earnings release) within three days before to one day after
-the call. That covers 89.3\% of FinCall, 68.6\% of MAEC and 99.8\% of Earnings25. The
+\citet{scss2024} showed that most calls in EC and MAEC are released before the
+open and that the shipped labels ignore this, which DEC corrects with a vendor
+flag. Almost no transcript states a clock time, so we use the
+EDGAR acceptance time of the earliest 8-K filing with Item~2.02 (the earnings
+release) within three days before to one day after the call as a proxy for the
+release time. That covers 89.3\% of FinCall, 68.6\% of MAEC and 99.8\% of Earnings25. The
 rest fall back, in recorded order, to Earnings25's call-start time, the
 before/after-market flag of \citet{scss2024}, and an after-hours assumption. A
 release before the open makes the call date itself day~1. Compared with the
 call-date anchor that every released label set uses, \textbf{day~0 moves for 53\%
 of FinCall, 56\% of MAEC and 72\% of Earnings25 calls}, almost always one session
 earlier. Under the published anchor, the session in which the market reacts
-therefore sits in the \emph{pre} window for most calls. On the measured anchor the
-persistence MSE is up to 11\% higher on FinCall, 25\% on MAEC and 27\% on
-Earnings25, and $\Delta v$ gains a positive mean (on FinCall $+0.52$ at $\tau{=}3$
-and $+0.10$ at $\tau{=}30$). The call-date targets ship as a labelled variant. On
+therefore sits in the \emph{pre} window for most calls, and $\Delta v$ gains a
+positive mean on the measured anchor ($+0.52$ at $\tau{=}3$ on FinCall). The
+call-date targets ship as a labeled variant. On
 Earnings25, which records call start times, the filing precedes the call for
-98.9\% of calls (median 100 minutes). The call can still be running during
+98.9\% of calls (median 100 minutes). A press release can precede its 8-K by
+minutes. That changes day~0 only when the gap crosses the open, which would
+affect at most 1.1\% of FinCall, 3.1\% of MAEC and 0.8\% of Earnings25 calls,
+those whose filing was accepted within an hour after the open. The call can
+still be running during
 session~1, so these targets describe a release-aligned event window. A
 forward-looking variant starts the post window one session later, so that no
 target return begins before the call has ended (true for all 476 Earnings25
@@ -91,12 +89,14 @@ calls).
 
 \paragraph{Splits and release.}
 \emph{Temporal} splits (about 70/10/20 in date order) leave a 30-trading-day gap
-between segments so that no target window crosses a boundary;
+between segments so that no target window crosses a boundary.
 \emph{\tickerdisjoint} splits keep every validation and test company out of
 training. Their overlap is 0.0\%, against 91.3\% (FinCall) and 79.4\% (MAEC) on
 our own temporal splits. Because they are not in date order, a
 \emph{date-ordered company-disjoint} split applies both rules at once, at the
-cost of a smaller test set (97 FinCall calls). The harness fails any feature that reads price data after
+cost of a smaller test set (97 FinCall calls). Validation and test companies are
+also disjoint from each other. Appendix Table~\ref{tab:splits} gives calls,
+companies, overlaps and dates for every split. The harness fails any feature that reads price data after
 the call's as-of time, and leakage assertions run in CI. The release contains all
 of the above, the derived-feature archives, the harness, and every result CSV with
 its run record (resolved config, git commit, seeds and file hash). Raw audio and

@@ -8,45 +8,46 @@ stock will be over the following 3 to 30 trading days, and HTML
 \citep{yang2020html}, MAEC \citep{li2020maec}, VolTAGE \citep{sawhney2020voltage},
 DialogueGAT \citep{sang2022dialoguegat}, KeFVP \citep{niu2023kefvp} and ECC
 Analyzer \citep{cao2024ecc} all report beating classical forecasts.
-\citet{scss2024} gave a reason to look again. On a corpus of their own, transcript representations mostly told the model {\it which company} was speaking, and on that corpus and on the shared benchmarks a forecast from the company's own past volatility matched or beat every transcript
-model.
+\citet{scss2024} gave a reason to look again. On a corpus of their own, transcript
+representations mostly told the model \emph{which company} was speaking, and on
+that corpus and on the shared benchmarks a forecast from the company's own past
+volatility matched or beat every transcript model.
 
-What that leaves open is whether any published model keeps its score
-once the company is taken away, and the files the field scores on
-cannot answer it. Nearly every paper in this line uses one set of label
-and split files, handed down from paper to paper.  We audited them (\S\ref{sec:substrate}). They leave no gap between
-training and test dates even though each target runs 30 days past its call. Most
-test calls come from companies that are also in training, and no paper reports
-what happens when they are not. They define horizons in calendar days, which later
-papers describe as trading days. They put day 0 on the date of the call, although most companies publish before the open, a defect  noted by \citet{scss2024} which no shared label set corrects. Their
-labels cannot be regenerated from prices under any single stated rule. The only
-open corpus with raw audio, FinCall-Surprise \citep{fincall2025}, has no ticker,
-date or speaker fields, so the identity checks cannot be run on it at all. No
-published model had been rerun under such checks, and none had been scored on
-calls after its training cutoff. Figure~\ref{fig:problems} shows the two
-properties that matter most. This paper makes the diagnosis measurable on the
-files in use and releases the tools for it.
+What that leaves open is whether any published model keeps its score once the
+company is taken away, and the files the field scores on cannot answer it. Nearly
+every paper in this line uses one set of label and split files, handed down from
+paper to paper. We audited them (\S\ref{sec:substrate}). They leave no gap between
+training and test dates even though each target runs up to 30 days past its call.
+Most test calls come from companies that are also in training, and no paper
+reports what happens when they are not. They define horizons in calendar days,
+which later papers describe as trading days. They put day~0 on the date of the
+call, although most companies publish before the open, a defect noted by
+\citet{scss2024} which no shared label set corrects. Their labels cannot be
+regenerated from prices under any single stated rule. FinCall-Surprise
+\citep{fincall2025}, which ships raw audio, has no ticker, date or speaker
+fields, so the identity checks cannot be run on it at all. No published model had
+been rerun under such checks, and no frozen volatility pipeline had been scored
+on calls after its training cutoff (Figure~\ref{fig:problems}). This paper makes the diagnosis measurable on the
+files in use and releases the tools for it.\footnote{Anonymized repository (decision
+log, harness, checksums, ledger): \url{https://anonymous.4open.science/r/ANON-URL-TO-BE-FILLED}}
 
 \input{figures/problems}
 
 \paragraph{What we contribute.}
-(1)~\textbf{An evaluation protocol}, released as \ecvol-bench. We recover company
-identities and dates for FinCall-Surprise (92.9\% of calls, and a 60-call manual
-audit passes 60/60) and measure release times from 8-K filings. The release ships
-three target families under both horizon definitions, splits with a 30-session
-gap and company-disjoint splits, checksums for every file, and a harness in which
-every table comes from one command (\S\ref{sec:benchmark}). It redistributes no
-raw audio or transcripts. What it adds to the existing corpora is the identity
-and timing tables, the targets, splits and derived features, and the harness.
-(2)~\textbf{An audit} of the shared label and split files
-(Table~\ref{tab:substrate}). (3)~\textbf{An audit toolkit.} Identity checks
-(ticker probes, same-company and random content swaps, company-disjoint
-evaluation) released as a command that works on \emph{any} prediction file.
-(4)~\textbf{Results} for modern open-weight text and audio models against a
-matched price-only model, with a margin fixed in advance (\S\ref{sec:results}).
-(5)~\textbf{A reproduction study} of the five runnable models in this line, on
-their own data where it is still available, with the same checks, plus a
-code-availability audit of seventeen papers. (6)~\textbf{A post-cutoff test} of
-the frozen pipeline on 475 calls from late 2025. Stages, checks and confirmatory
-tests were recorded in a dated decision log, released with the protocol, before
-the corresponding results existed.
+(1)~\textbf{A protocol over existing corpora}, released as \ecvol-bench. We
+recover company identities and dates for FinCall-Surprise (92.9\% of calls, and a
+60-call manual audit passes 60/60), time each release from 8-K filings, and ship
+targets under both horizon definitions and a forward-looking variant, splits with
+a 30-session gap, company-disjoint splits and one that applies both rules, and a
+harness in which every table comes from one command (\S\ref{sec:benchmark}). It
+redistributes no raw audio or transcripts.
+(2)~\textbf{An audit and a toolkit.} We audit the shared label and split files
+(Table~\ref{tab:substrate}) and the code of seventeen papers, rerun the five
+runnable models under the same checks, on their own data where it is still
+available, and release the checks themselves, company-level diagnostics for any
+prediction file and probes and content swaps for any model one can run.
+(3)~\textbf{Results} for modern open-weight text and audio models against a
+matched price-only model, with a margin fixed in advance, and for the frozen
+pipeline on 475 calls after every model's training cutoff
+(\S\ref{sec:results}). Stages, checks and tests were recorded in a dated decision
+log before the results existed.

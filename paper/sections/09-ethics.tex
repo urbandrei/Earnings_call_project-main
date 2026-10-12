@@ -1,8 +1,7 @@
 \section*{Ethical Considerations}
 \addcontentsline{toc}{section}{Ethical Considerations}
 
-\textbf{Data and licensing.} 
- We use openly licensed corpora and
+\textbf{Data and licensing.} We use openly licensed corpora and
 open-weight models. FinCall-Surprise is released under Apache-2.0,
 which its authors state covers the transcripts, audio and slides
 \citep[Appendix~A]{fincall2025}, and which they describe as collected
@@ -15,20 +14,18 @@ so the identity table records public facts about public companies
 rather than restoring a withheld field, and we release no speaker-level
 audio or names. MAEC is CC-BY-SA-4.0 and its derived archives are
 released under the same license. Earnings25 releases its transcripts
-and metadata under CC-BY-4.0; its audio is redistributed subject to the
+and metadata under CC-BY-4.0. Its audio is redistributed subject to the
 original providers' terms, and we release only pooled per-call features
 from it. Raw audio or transcripts from sources with unclear terms (EC,
 DEC, the reproduced repositories) are never redistributed. Release
-times come from EDGAR, which is public-domain US government data.
-% We use openly licensed corpora (FinCall-Surprise
-% under Apache-2.0, MAEC under CC-BY-SA-4.0, Earnings25 under CC-BY-4.0) and
-% open-weight models. Derived features inherit and state their upstream licence, and
-% raw audio or transcripts from sources with unclear terms (EC, DEC, the reproduced
-% repositories) are never redistributed. Calls are public corporate disclosures, and
-% we release no speaker-level audio or identity, only pooled per-call features.
- \textbf{Gender confound.} Audio features encode speaker gender and female
-executives are underrepresented in these corpora
-\citep{ama2024,emobias2024,docfin2022}, so we report a gender-confound diagnostic. \textbf{Intended use.} This is a
+times come from EDGAR, which is public-domain US government data. Daily prices
+come from Yahoo Finance through the yfinance package, whose terms do not permit
+redistribution, so we release derived volatility targets and never the price
+series.
+\textbf{Gender confound.} Financial-audio studies report demographic imbalance
+\citep{ama2024,docfin2022} and speech-emotion models carry social biases
+\citep{emobias2024}. We have not measured the composition of our cohorts and
+report a pitch-proxy diagnostic instead. \textbf{Intended use.} This is a
 research tool, not investment advice. Predictions are noisy and
 regime-sensitive and should not drive automated trading.
 \textbf{Reproducibility.} Given the documented reproducibility problems in
