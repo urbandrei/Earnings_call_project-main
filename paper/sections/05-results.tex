@@ -87,9 +87,7 @@ its shipped data, and KeFVP, a price-series model conditioned on text,
 reproduces seven of eight MAEC cells. HTML's released code does not reproduce its published table,
 and the published ensemble of \citet{sawhney2020mm} is matched only through its
 finance branch, with mixing weights chosen on the test set. DialogueGAT's corpus
-was never released, so it is ported to FinCall. Holding companies out raises the
-MSE of the three text models by 12--82\%, while TSMixer and KeFVP move by
-$-$10\% to $+$7\% with no consistent sign. The SCSS and KeFVP comparisons use the
+was never released, so it is ported to FinCall. Holding companies out raises the MSE of the three text models by 12--82\%, while TSMixer and KeFVP move by $-$10\% to $+$7\% with no consistent sign. The SCSS and KeFVP comparisons use the
 same test calls. The HTML and ensemble ones do not, so they also reflect a change
 of test set. Training-set size is an unlikely explanation, since the held-out
 training sets are as large (EC) or cut by the same third (DEC, MAEC) for both

@@ -5,8 +5,10 @@
 \label{sec:substrate}
 The EarningsCall (EC) benchmark of \citet{qin2019what} and the two MAEC cohorts
 are scored on split and label files that VolTAGE and KeFVP redistribute. We
-audited those files (Table~\ref{tab:substrate}). The VolTAGE and KeFVP test files
-are byte for byte the same file, so the whole line of work shares one label set that was never recomputed from prices. Five of the six boundaries between training, validation and test have a zero-day gap (the sixth has three days)
+audited those files (Table~\ref{tab:substrate}). 
+% The VolTAGE and KeFVP test files are byte for byte the same file, so the whole line of work shares one label set that was never recomputed from prices. 
+The audited VolTAGE and KeFVP test files are byte-identical, establishing reuse of the same artifacts across these releases.
+Five of the six boundaries between training, validation and test have a zero-day gap (the sixth has three days)
 while the targets reach 30 days past each call. On the time-ordered splits the field reports, 80.4\% (EC), 44.2\% (MAEC-15)
 and 55.7\% (MAEC-16) of test calls are from companies that also appear in
 training. Any time-ordered split allows that. \citet{scss2024} showed that
