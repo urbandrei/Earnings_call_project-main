@@ -6,13 +6,13 @@ effect can be claimed, not that earnings calls carry no information. We suggest
 that future work on this task report six things. A \textbf{company-disjoint}
 split next to the temporal one. A \textbf{gap} of at least the longest horizon
 between training and test. \textbf{Past-volatility baselines} as the reference
-for every claim. The \textbf{same-company and random swaps}, or the released
-audit command. \textbf{Day~0 measured} from the release time. And the
+for every claim. The \textbf{same-company and random swaps} when the model is available,
+otherwise the prediction-only diagnostics of the released audit command,
+reported as descriptive. \textbf{Day~0 measured} from the release time. And the
 \textbf{horizon definition} with every number. Appendix Table~\ref{tab:checklist}
 gives the reason for each and where the release provides it. \ecvol-bench covers
-all six for FinCall-Surprise and MAEC, and a quickstart script goes from a
-released corpus archive to the past-volatility baseline, a prediction file and
-the audit report in a few seconds.
+all six for FinCall-Surprise and MAEC, and a quickstart script produces the
+baseline, a prediction file and the audit report from a released archive.
 
 Content signal may still be found once it is looked for in the right place.
 Measured release times make \textbf{event-window targets} possible, where
@@ -22,5 +22,4 @@ explains least. \textbf{Structured features} such as the transcript dimensions o
 they add beyond the numbers. \textbf{Audio}, pooled per call here, deserves a
 test on source-quality recordings with resolved speakers, and \textbf{additional
 corpora} such as MM-FinEval \citep{mmfineval2026} are open to the identity
-recovery used here. Each can be evaluated against the released baselines on the
-first day, which is what the protocol is for.
+recovery used here.

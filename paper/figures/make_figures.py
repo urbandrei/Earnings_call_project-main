@@ -70,11 +70,11 @@ def fig_swaps() -> None:
         ("global_shuffle", "random swap", AQUA, "^"),
     ]
     panels = [
-        ("text ridge, temporal", "text"),
-        ("text ridge, date-ordered company-disjoint", "text_cb"),
-        ("WavLM + past vol, ticker-disjoint", "audio"),
+        ("text ridge,\ntemporal", "text"),
+        ("text ridge,\ndate-ordered company-disjoint", "text_cb"),
+        ("WavLM + past vol,\nticker-disjoint", "audio"),
     ]
-    fig, axes = plt.subplots(1, 3, figsize=(6.4, 1.9), sharey=True)
+    fig, axes = plt.subplots(1, 3, figsize=(6.4, 2.1), sharey=True)
     for ax, (title, which) in zip(axes, panels, strict=True):
         for cond, label, color, marker in conds:
             if which == "audio":
@@ -195,6 +195,7 @@ def fig_repro() -> None:
 def fig_ladder() -> None:
     t4 = pd.read_csv(R / "result_table_4.csv")
     t1 = pd.read_csv(R / "result_table_1.csv")
+    t2 = pd.read_csv(R / "result_table_2.csv")
     stages = [
         ("S0_HAR", "HAR-RV (Stage 0)", INK, "-", "o"),
         ("S1_GBDT", "GBDT + ticker FE (Stage 1)", INK2, "--", "v"),
@@ -202,7 +203,7 @@ def fig_ladder() -> None:
         ("S3_audio", "audio ridge + vol (Stage 3)", ORANGE, "-", "^"),
         ("S4_fusion", "stack fusion (Stage 4)", AQUA, "-", "D"),
     ]
-    fig, axes = plt.subplots(1, 2, figsize=(6.4, 2.1), sharey=True)
+    fig, axes = plt.subplots(1, 2, figsize=(6.4, 2.5), sharey=True)
     for ax, (split, title) in zip(
         axes,
         [("temporal", "temporal split"), ("combined", "date-ordered company-disjoint split")],
@@ -222,6 +223,17 @@ def fig_ladder() -> None:
             & (t1.split == split)
         ]
         tm = [float(q1[(q1.model == "train_mean") & (q1.horizon == h)].r2_oos.iloc[0]) for h in H]
+        q2 = t2[
+            (t2.dataset == "fincall")
+            & (t2.segment == "test")
+            & (t2.target == "dv")
+            & (t2.split == split)
+            & (t2.model == "ridge_pastvol")
+        ]
+        pv = [float(q2[q2.horizon == h].r2_oos.iloc[0]) for h in H]
+        ax.plot(
+            range(len(H)), pv, color=INK2, linestyle=":", marker="x", label="past-vol ridge S0$'$"
+        )
         ax.fill_between(
             range(len(H)), 0, tm, color=GRID, alpha=0.6, linewidth=0, label="train-mean constant"
         )
@@ -241,8 +253,18 @@ def fig_ladder() -> None:
         tidy(ax, title=title)
         ax.set_ylim(-1.0, 0.65)
     axes[0].set_ylabel(r"$R^2_{\mathrm{OOS}}$ vs persistence ($\Delta v$)")
-    axes[0].legend(frameon=False, loc="lower left", handlelength=1.8, ncol=1)
-    fig.tight_layout(w_pad=1.0)
+    handles, labels = axes[0].get_legend_handles_labels()
+    fig.legend(
+        handles,
+        labels,
+        frameon=False,
+        loc="lower center",
+        ncol=4,
+        handlelength=1.8,
+        columnspacing=1.0,
+        bbox_to_anchor=(0.5, 0.0),
+    )
+    fig.tight_layout(w_pad=1.0, rect=(0, 0.14, 1, 1))
     fig.savefig(OUT / "fig_ladder.pdf")
     plt.close(fig)
 

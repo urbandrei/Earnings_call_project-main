@@ -2,14 +2,16 @@
 \section*{Limitations}
 \addcontentsline{toc}{section}{Limitations}
 
-\textbf{One post-cutoff quarter.} The post-cutoff test rests on 475 calls from a
-single calm quarter. Period, companies and source all change at once, so it is a
+\textbf{One post-cutoff period.} The post-cutoff test rests on 475 calls from
+five calm months of 2025, 470 of them from October to December. Period, companies and source all change at once, so it is a
 temporal external validation of the ordering of models, not a measurement of
 pretraining contamination, and 59\% of its companies appear in FinCall's training
-split. \textbf{Small date-ordered test set.} The split that
-is both date-ordered and company-disjoint keeps 97 FinCall test calls, and the
-intervals resample companies but not calendar time, so shocks common to one
-quarter are not accounted for. \textbf{Forward-looking target.} It assumes a
+split. \textbf{Small date-ordered sets.} The split that is both date-ordered and
+company-disjoint keeps 97 FinCall test calls and only 22 FinCall and 5 MAEC
+validation calls, on which ridge penalties are chosen and the stack is fit, so
+model selection and stacking are least stable there. The intervals resample
+companies but not calendar time, so shocks common to one quarter are not
+accounted for. \textbf{Forward-looking target.} It assumes a
 call after a pre-open release ends before that day's close, checked on
 Earnings25 only, and it was run on FinCall for the canonical models only.
 \textbf{Reproductions run on their own data}, not on \ecvol-bench, to keep ``the
@@ -29,7 +31,7 @@ call-date anchor of prior label sets are not interchangeable with ours, and the
 call-date targets are shipped as a variant. \textbf{Regime sensitivity.}
 FinCall-Surprise spans COVID. The temporal $\tau{=}30$ failure shows that
 long-horizon level forecasts are regime-sensitive, which is why we emphasize
-$\Delta v$ and per-year breakdowns. \textbf{MAEC coverage.} Its 78.6\% price-join
+$\Delta v$ and per-year breakdowns. \textbf{MAEC coverage.} Its 78.1\% price-join
 rate (2015--2018 delistings) makes it a secondary corpus, and it ships no raw
 audio. \textbf{Source audio.} Every FinCall file is a 40\,kbps MP3 transcode and
 Earnings25 is 64\,kbps or lower, so no result here is established on lossless
@@ -37,14 +39,8 @@ audio. \textbf{No diarization.} Audio is pooled per call, and the gender analysi
 uses a dominant-speaker pitch proxy, so a small gap on that proxy does not
 establish the absence of one. \textbf{Identity reconstruction is
 imperfect.} 7.1\% of FinCall calls remain unresolved and are excluded with a
- reason code. 
-%\textbf{No fine-tuned or LLM-based content model of our own.}
-% Stages 2 to 4 use frozen encoders with ridge and MLP heads. The trained HTML
-% reproduction shows the same dependence on company identity
-% (Table~\ref{tab:repro-main}), and \S\ref{sec:recommendations} points to
-% structured features extracted by language models as the place to look, but this
-% paper does not test such a model. The audit command lets anyone check one from
-% its prediction file.
+reason code, and nine resolved training calls carry a date their transcript
+contradicts.
 \textbf{No fine-tuned or LLM-based content model of our own.} Stages~2 to~4 use frozen encoders with ridge and MLP heads. The HTML reproduction, a trained hierarchical transformer over frozen BERT features, shows the same dependence on company identity
 (Table~\ref{tab:repro-main}), so the pattern is not an artifact of a linear head. Whether a fine-tuned encoder
 behaves differently is untested here. \S\ref{sec:recommendations} points to structured features extracted by language models as the place to look. The audit command lets anyone check such a model from its prediction file.

@@ -16,12 +16,12 @@ volatility matched or beat every transcript model.
 What that leaves open is whether any published model keeps its score once the
 company is taken away, and the files the field scores on cannot answer it. Several studies evaluated on EC and MAEC use redistributed label and split files. We audited them (\S\ref{sec:substrate}). They leave no gap between
 training and test dates even though each target runs up to 30 days past its call.
-Most test calls come from companies that are also in training, and no paper
+Between 44\% and 80\% of test calls come from companies that are also in
+training, and no paper
 reports what happens when they are not. They define horizons in calendar days,
 which later papers describe as trading days. They put day~0 on the date of the
 call, although most companies publish before the open, a defect noted by
-\citet{scss2024} which no shared label set corrects. Their labels cannot be
-regenerated from prices under any single stated rule. FinCall-Surprise
+\citet{scss2024} which no shared label set corrects. FinCall-Surprise
 \citep{fincall2025}, which ships raw audio, has no ticker, date or speaker
 fields, so the identity checks cannot be run on it at all. No published model had
 been rerun under such checks, and no frozen volatility pipeline had been scored
@@ -45,7 +45,7 @@ runnable models under the same checks, on their own data where it is still
 available, and release the checks themselves, company-level diagnostics for any
 prediction file and probes and content swaps for any model one can run.
 (3)~\textbf{Results} for modern open-weight text and audio models against a
-matched price-only model, with a margin fixed in advance, and for the frozen
+price-only reference, with a margin fixed in advance, and for the frozen
 pipeline on 475 calls after every model's training cutoff
-(\S\ref{sec:results}). Stages, checks and tests were recorded in a dated decision
-log before the results existed.
+(\S\ref{sec:results}). Stages, checks and tests were fixed in advance in the
+repository's decision log, whose entries carry git timestamps.

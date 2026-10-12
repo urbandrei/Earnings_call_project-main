@@ -49,12 +49,12 @@ Model & $\tau$=3 & $\tau$=7 & $\tau$=15 & $\tau$=30 \\
 \end{tabular}
 \caption{\textbf{The ladder on FinCall-Surprise.} \Rtwo{} vs.\ persistence on
 $\Delta v$ (test). Persistence is 0 by construction. The second block keeps test
-companies out of training and the split in date order. One pre-registered
+companies out of training and the split in date order. One
 canonical model per stage (the Stage-3 ridge uses WavLM and eGeMAPS). Each
 content cell is tested against the
 past-volatility ridge S0$'$ on the same calls. A dagger marks a 95\% interval of
 the relative MSE reduction, resampled by company, that lies below the
-pre-registered 2\% margin, an asterisk one that lies above it, and an unmarked
+2\% margin fixed in advance, an asterisk one that lies above it, and an unmarked
 cell is inconclusive (Appendix Table~\ref{tab:increment}). The full grid, MAEC,
 level-$v$, MSE and the MLP heads are in Appendix~\ref{app:complete}.}
 \label{tab:grid}
@@ -219,7 +219,7 @@ Target, split & Model & $\tau$=3 & $\tau$=7 & $\tau$=15 & $\tau$=30 \\
 @BODY@
 \bottomrule
 \end{tabular}
-\caption{\textbf{Increment over the matched price-only model.} Relative reduction of
+\caption{\textbf{Increment over the price-only reference.} Relative reduction of
 test MSE on $\Delta v$ (\%) against the past-volatility ridge on the same calls,
 with a 95\% percentile bootstrap interval that resamples companies (1000 draws).
 Positive values favor the content model. The 2\% margin and the reading rule were
@@ -370,7 +370,8 @@ Model & cutoff & $\tau$=3 & $\tau$=7 & $\tau$=15 & $\tau$=30 \\
 \caption{\textbf{Frozen-pipeline post-cutoff evaluation.}
 Heads fit once on FinCall's training split and scored unchanged before the cutoff
 (the 2021 FinCall test year) and after it (475 Earnings25 calls, late 2025), on the
-level target, \Rtwo{} vs.\ persistence. The ordering survives the cutoff.
+level target, \Rtwo{} vs.\ persistence. HAR-RV stays above every content model at
+every horizon on both sides of the cutoff.
 Bootstrap confidence intervals and the $\Delta v$ rows are in the released CSV.}
 \label{tab:lookahead}
 \end{table}

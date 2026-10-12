@@ -23,6 +23,10 @@ code-availability audit. The complete generated grids (every corpus, target, met
 are in the separate supplement. Every
 number traces to a released result CSV with a run record, and the curated tables
 copy cells from those CSVs (\texttt{REPRODUCE.md} lists the command behind each).
+Asterisks in Tables~\ref{tab:baselines}, \ref{tab:text} and~\ref{tab:audio} mark
+Diebold--Mariano significance, against persistence in the first and against the
+Stage-1 GBDT in the other two. In Tables~\ref{tab:grid} and~\ref{tab:increment}
+they mark the margin test.
 
 
 
@@ -36,16 +40,17 @@ Stage-0/1, Stage-2 and Stage-3 model sets on the $\Delta v$ target, including th
 past-volatility-only and MLP heads omitted from Table~\ref{tab:grid}.
 
 Figure~\ref{fig:ladder} plots the canonical model of each stage from
-Table~\ref{tab:grid} against the train-mean constant.
+Table~\ref{tab:grid} against the train-mean constant and the past-volatility
+ridge S0$'$.
 
 \begin{figure*}[h]
 \centering
 \includegraphics[width=\textwidth]{figures/fig_ladder.pdf}
 \caption{\textbf{The ladder.} \Rtwo{} vs.\ persistence on $\Delta v$ (FinCall
-test) for the canonical model of each stage. The shaded band is the train-mean
-constant. Content stages clear HAR-RV only at $\tau{=}30$, where HAR-RV itself
-falls below persistence on both splits, and none clears the past-volatility
-ridge there. Data from Table~\ref{tab:grid}.}
+test) for the canonical model of each stage, with the past-volatility ridge
+S0$'$ as a dotted line. The shaded band is the train-mean constant. Content
+stages clear HAR-RV only at $\tau{=}30$, where HAR-RV itself falls below
+persistence on both splits, and none clears S0$'$ there. Data from Table~\ref{tab:grid}.}
 \label{fig:ladder}
 \end{figure*}
 
@@ -53,14 +58,14 @@ ridge there. Data from Table~\ref{tab:grid}.}
 \input{tables/text}
 \input{tables/audio}
 
-\subsection{Increment over the matched price-only model}
-Table~\ref{tab:increment} gives the pre-registered paired comparison behind the
+\subsection{Increment over the price-only reference}
+Table~\ref{tab:increment} gives the paired comparison, fixed in advance, behind the
 markers of Table~\ref{tab:grid}, on all three splits and under both the measured
 target and the forward-looking one. The forward-looking target removes most of
 the positive drift of $\Delta v$ (its mean at $\tau{=}3$ falls from 0.51 to 0.12).
-Its only improvements over the matched model are the stack at $\tau{=}30$ on the
-\tickerdisjoint{} split, which is not in date order, and none of the content
-models improves on it on the date-ordered company-disjoint split.
+Its only improvement over the reference is the stack at $\tau{=}30$ on the
+\tickerdisjoint{} split, which is not in date order. No content model improves
+on the date-ordered company-disjoint split.
 \input{tables/increment}
 
 \subsection{The released splits and the toolkit}
@@ -69,6 +74,17 @@ range of every split. Table~\ref{tab:toolkit} states what each check in the
 toolkit needs and what it can show.
 \input{tables/splits}
 \input{tables/toolkit}
+
+\subsection{Implementation details}
+The identity probe is a multinomial logistic regression ($C{=}1$, standardized
+inputs) fit on a random 70/30 split (seed 0) of the calls whose company has at
+least two calls. The swaps permute the test calls' text or audio features among
+the test calls, within each company for the same-company swap and across all
+test calls for the random swap, over five seeds. The encoders are BAAI/bge-m3,
+ProsusAI/finbert, microsoft/wavlm-large and iic/emotion2vec\_plus\_large as
+published on their hubs at extraction time. The released feature archives carry
+content hashes, and the post-cutoff test scores exactly the features and heads
+those archives contain, so it does not depend on re-downloading a checkpoint.
 
 \subsection{Horizon definition}
 Table~\ref{tab:convention} compares the trading-day and calendar-day definitions of

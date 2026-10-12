@@ -19,8 +19,11 @@ ours, MAEC \tickerdisjoint    & 2688 & \textbf{0.0\%} & n/a & n/a \\
 \end{tabular}
 \caption{\textbf{Audit of the shared test files} (regenerated
 by \texttt{ecvol audit substrate} from checksummed copies of the VolTAGE and KeFVP
-files, which are identical). Overlap is the share of test calls whose company is in
-training, and embargo is the gap train$\to$val / val$\to$test. Every time-ordered
+files, whose test files are byte-identical). Overlap is the share of test calls
+whose company is in training, and embargo is the gap train$\to$val /
+val$\to$test. Label defects: EC's single-day volatility series holds 137 exact
+zeros, and the MAEC files interleave binary 0/1 columns among the volatility
+labels. Every time-ordered
 split allows overlap, ours included, but no paper in this line reports the disjoint
 case.}
 \label{tab:substrate}

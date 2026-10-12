@@ -1,22 +1,22 @@
 \section{Discussion}
 \label{sec:discussion}
 
-Across every model we trained, the same picture holds. The classical forecasts
-are hard to beat, and scoring against persistence exposes a regime failure at
-the 30-day horizon that raw MSE would have hidden. Text features do not improve
+Across every model we trained, the same picture holds. Text features do not improve
 on past volatility alone, and the swap checks say why. A probe reads the ticker
 out of the call embedding nine times in ten, and where a company recurs in
 training, handing the model a different call by that company moves its score by
 less than 0.03. Audio identifies the company without improving the forecast, and
-the one stacking gain over the matched model appears only on a split that is not
-in date order. The shared test files could not have shown any of this, because
+the one stacking gain over the price-only reference appears only on a split that
+is not in date order. The shared test files could not have shown any of this, because
 they carry no company identity for the audio corpus, no company-disjoint split
-and no measured day~0. Five published models give the same answer under the
-checks. Two recent positive results \citep{soundofrisk2025,cao2024ecc} could not
-be checked, since their code is not released, though the audit command covers
-the company-level part from a prediction file. Transcripts and audio may well
+and no measured day~0. The controlled reruns show large company
+sensitivity for HTML, the Sawhney ensemble and the SCSS text model, no
+consistent change for the price-dominated models, and an inconclusive port for
+DialogueGAT. Two recent positive results \citep{soundofrisk2025,cao2024ecc}
+release no code and could not be checked. Transcripts and audio may well
 carry information about a company's risk. The test files in use cannot separate that
-information from knowing which company is speaking. Once they can, none of the
-content models evaluated here improves on a matched past-volatility model by the
-margin we fixed in advance, and the isolated gains that remain need targeted
+information from knowing which company is speaking. Once they can, under the
+temporal and date-ordered company-disjoint protocols none of the content models
+evaluated here improves on its past-volatility reference by the 2\% margin
+fixed in advance, and the isolated gains that remain need targeted
 validation. That is the bar the next model has to clear.

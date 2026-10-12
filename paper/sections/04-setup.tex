@@ -9,8 +9,7 @@ $\lambda{=}0.94$ \citep{riskmetrics1996}, HAR-RV \citep{corsi2009har}
 and GARCH(1,1) \citep{bollerslev1986}. \textbf{Stage~1} is a LightGBM model
 \citep{lightgbm2017} on past-volatility features, transcript length,
 number of Q\&A turns and a \textbf{company fixed effect}, a price-and-metadata
-baseline with ticker features. The company-only model of the identity checks is
-separate. \textbf{Stage~2} uses the transcript through BGE-M3 \citep{bge2024}
+baseline with ticker features. \textbf{Stage~2} uses the transcript through BGE-M3 \citep{bge2024}
 embeddings pooled per section (1024-d), FinBERT \citep{finbert}
 sentiment aggregates and surface statistics. \textbf{Stage~3} uses the audio,
 resampled to 16\,kHz mono. Its features are eGeMAPSv02 functionals
@@ -34,7 +33,9 @@ previous stage. The confirmatory comparisons (each stage against Stage~1 on $\De
 published split against the controlled split for each reproduced model) are
 Holm-corrected \citep{holm1979}. The central question is whether call content improves on the same
 model without it, so each content model is also compared, on the same calls,
-with the past-volatility ridge it extends. We report the relative MSE reduction
+with the past-volatility ridge. For Stages~2 and~3 that ridge is the same model
+without content. For the Stage-4 stack it is a common price-only reference, not
+an exact ablation. We report the relative MSE reduction
 with a 95\% bootstrap interval that resamples companies and read it against a 2\%
 margin fixed before the comparison was run. An interval above the margin is an
 improvement, one below it shows no meaningful benefit, and anything else is
@@ -45,9 +46,10 @@ inconclusive. All other analyses are exploratory.
 We use four. A \emph{company-only} model predicts each company's training mean
 and shows how far identity alone gets. Two \emph{swaps} replace each test call's
 transcript or audio, either with another call by the same company or with a
-random call from the corpus. If the same-company swap leaves a model's score
-unchanged, the model was reading identity, and if the random swap also leaves it
-unchanged, the model was reading nothing. A linear \emph{probe} tries to recover
+random call from the corpus. If the same-company swap barely moves a model's
+score, the model may be reading what is stable about the company rather than
+the call. If the random swap barely moves it either, the swapped modality
+contributes little that this test can detect. A linear \emph{probe} tries to recover
 the ticker from the frozen call embedding. Finally, every table shows
 company-disjoint results next to temporal ones. The command \texttt{ecvol audit
 predictions} runs the prediction-side versions of the company-only and swap
@@ -56,9 +58,7 @@ prediction), and reports split integrity, seen versus unseen companies, the
 between-company share of prediction variance and company-clustered
 significance. That is a descriptive diagnostic (Appendix Table~\ref{tab:toolkit}). A permutation of existing predictions moves
 the price inputs along with the content, so it is not a substitute for the
-input-level swaps, which need the model itself. The price-only ridge of
-Table~\ref{tab:grid} scores the same under a real transcript and under either
-swap, as it must.
+input-level swaps, which need the model itself.
 
 \paragraph{Reproductions and post-cutoff tests.}
 Of seventeen papers in this line, one releases code that runs as released

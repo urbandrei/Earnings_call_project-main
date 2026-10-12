@@ -1,4 +1,4 @@
-% Hand-curated from data/splits/{fincall,maec}_{temporal,ticker_disjoint,combined}.csv joined to calls.parquet, calls with a valid tau=30 target. Numbers change only through the repository.
+% Hand-curated from data/splits/{fincall,maec}_{temporal,ticker_disjoint,combined}.csv (every call in the split). Date ranges exclude the nine mis-dated FinCall training calls. Numbers change only through the repository.
 \begin{table*}[t]
 \centering
 \scriptsize
@@ -7,21 +7,25 @@
 \toprule
 Corpus & Split & Train & Val & Test & Test companies & Shared train/test & Train dates & Test dates \\
 \midrule
-FinCall & temporal & 1489 & 228 & 483 & 315 & 287 & 2017-11 to 2021-01 & 2021-07 to 2021-12 \\
-FinCall & \tickerdisjoint & 1706 & 243 & 484 & 78 & 0 & 2017-11 to 2021-12 & 2019-01 to 2021-12 \\
-FinCall & date-ordered disjoint & 1042 & 22 & 97 & 64 & 0 & 2017-11 to 2021-01 & 2021-07 to 2021-12 \\
-MAEC & temporal & 1660 & 69 & 529 & 358 & 275 & 2015-02 to 2016-11 & 2017-05 to 2018-06 \\
-MAEC & \tickerdisjoint & 1882 & 270 & 529 & 197 & 0 & 2015-02 to 2018-06 & 2015-02 to 2018-05 \\
-MAEC & date-ordered disjoint & 1158 & 5 & 104 & 71 & 0 & 2015-02 to 2016-11 & 2017-05 to 2018-05 \\
+FinCall & temporal & 1489 & 228 & 483 & 315 & 287 & 2019-01 to 2021-01 & 2021-07 to 2021-12 \\
+FinCall & \tickerdisjoint & 1706 & 243 & 484 & 78 & 0 & 2019-01 to 2021-12 & 2019-01 to 2021-12 \\
+FinCall & date-ordered disjoint & 1042 & 22 & 97 & 64 & 0 & 2019-01 to 2021-01 & 2021-07 to 2021-12 \\
+MAEC & temporal & 1666 & 69 & 529 & 358 & 275 & 2015-02 to 2016-11 & 2017-05 to 2018-06 \\
+MAEC & \tickerdisjoint & 1884 & 271 & 533 & 198 & 0 & 2015-02 to 2018-06 & 2015-02 to 2018-05 \\
+MAEC & date-ordered disjoint & 1159 & 5 & 104 & 71 & 0 & 2015-02 to 2016-11 & 2017-05 to 2018-05 \\
 \bottomrule
 \end{tabular}
-\caption{\textbf{The released splits.} Calls with a valid 30-session target per
-segment, distinct test companies, companies shared between training and test,
-and the date ranges of the training and test segments. The temporal splits drop
-the calls in a 30-session gap before validation and before test, so every
-training label has matured before the test origin. In the company-disjoint splits
-validation and test companies are also disjoint from each other and from
-training. The date-ordered company-disjoint split keeps the temporal boundaries
-and removes every test company from training, which leaves few calls.}
+\caption{\textbf{The released splits.} Calls per segment, distinct test
+companies, companies shared between training and test, and the date ranges of
+the training and test segments (a few MAEC calls lack a 30-session target and
+drop from the $\tau{=}30$ cells). The temporal splits drop the calls in a
+30-session gap before validation and before test, so every training label has
+matured before the test origin. In the company-disjoint splits validation and
+test companies are also disjoint from each other and from training. The
+date-ordered company-disjoint split keeps the temporal boundaries and removes
+every test company from training, which leaves few calls, including only 22
+FinCall and 5 MAEC validation calls. Nine FinCall training calls carry a
+pre-2019 date that their transcripts contradict and are excluded from the date
+ranges.}
 \label{tab:splits}
 \end{table*}

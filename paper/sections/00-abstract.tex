@@ -1,20 +1,16 @@
-For about a decade, researchers have predicted how much a company's stock will
-move after its quarterly earnings call from what executives say and how they
-sound, and many report beating classical forecasts built from past price swings.
-Several studies reuse EC/MAEC label and split files redistributed by earlier work. We audit those files and find that they cannot support
-the claim. They leave no gap between the training and test periods although targets extend up to 30 days ahead, most of their test calls come from companies
-the model also saw in training, and they place day zero on the day of the call
-although most companies release their numbers before the market opens. We release
-an evaluation protocol and an audit toolkit that make these assumptions explicit
-and testable. The protocol recovers company names and dates for a public audio
-corpus that ships without them, times each release from SEC filings, provides
-targets under both horizon definitions in use and a forward-looking variant, and
-splits that keep training and test apart in time and in company. The toolkit
-reports company-level diagnostics on any file of predictions. Under this protocol,
-the open text and audio models we evaluate do not improve on a matched model that
-uses past volatility alone by a margin fixed in advance, and their embeddings
-mostly identify which company is speaking. Five published models rerun under the
-same checks show a similar pattern, and a frozen pipeline scored on calls after
-every model's training cutoff keeps the same ordering. Isolated gains remain, and
-the released protocol, baselines and audit command make them the starting point
-for the next study.
+Since 2019, researchers have predicted post-earnings-call stock volatility from
+what executives say and how they sound, and many report beating forecasts from
+past price swings. We audit the EC/MAEC label and split files that several
+studies reuse from earlier work. They leave no gap between training and test
+although targets run 30 days ahead, 44--80\% of test calls come from companies
+seen in training, and day zero sits on the call date although most companies
+report before the open. We release an evaluation protocol and audit toolkit that
+make these assumptions testable. The protocol recovers company names and dates
+for an audio corpus that ships without them, takes release times from SEC
+filings, provides targets under both horizon definitions and a forward-looking
+variant, and splits that separate training and test in time and in company. The
+toolkit reports company-level diagnostics on any prediction file. Under it, the
+open text and audio models we evaluate show no consistent improvement over past
+volatility alone by a margin fixed in advance, and their embeddings mostly
+identify the company. Five published models rerun under the same checks agree,
+and HAR-RV stays ahead of every content model after the training cutoff.
