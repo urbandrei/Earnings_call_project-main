@@ -1,0 +1,73 @@
+Commit history of DECISIONS.md, exported with `git log --date=iso-strict --format="%h  %ad  %s" -- DECISIONS.md` on 2026-10-13.
+Author and committer names are omitted for review. Each line: abbreviated commit, author date, commit subject.
+
+bbcd85b  2026-10-12T18:53:27-04:00  Docs: round-4 decision, journal and handoff entries
+a3702a5  2026-10-11T22:15:07-04:00  Decisions, journal, handoff: advisor review round 3 (Overleaf merge, corrections, Monday list)
+dbb37b7  2026-10-11T16:42:44-04:00  Decisions: advisor review round 2; combined split in main tables; forward-looking target variant and increment analysis pre-registered
+be9cf29  2026-10-09T18:08:13-04:00  Paper: reframed as evaluation protocol + audit toolkit; standalone Related Work; tracker residue out (advisor review, Tier A)
+f39d0f1  2026-10-09T17:23:11-04:00  Paper: official ACL template (acl.sty [review]); main text fits the 8-page ARR limit
+69aa7dc  2026-10-09T15:32:08-04:00  Paper: reframed as an analysis with new controls plus a Recommendations and Outlook section (advisor request); neutral wording for the reproduction findings, names kept; conclusion unchanged
+1045b32  2026-10-09T15:02:45-04:00  Paper: 14% exact-reproduction figure re-attributed to Belz et al. (EACL 2021); Tatarinov et al. kept for the financial-NLP causes; DESIGN [R18]/[R33] erratum (DECISIONS 2026-10-09 night)
+540c08e  2026-10-09T14:36:15-04:00  Paper: concision pass (semicolons removed, filler cut); appendix tables fixed (no overflow); generated grids split into paper/supplement.pdf
+c902bf2  2026-10-09T13:53:57-04:00  Docs: DECISIONS 2026-10-09 (5-page condensation, review findings, train-mean regeneration), JOURNAL entry, HANDOFF user decisions, TASKS T8.2 note
+c8a0628  2026-10-07T12:41:52-04:00  Stage 0: train-mean intercept baseline (Table 1, grid + per-year, Table 7) and dm_p_vs_train_mean in Tables 2-4; DECISIONS 2026-10-07
+00c251c  2026-10-06T16:29:22-04:00  Substrate audit: shipped MAEC labels compared with the call-date variant (like for like); Table 5R labels regenerated
+e14ce8f  2026-10-06T15:53:35-04:00  Paper: Oct 2026 novelty scan + venue memo; cite MM-FinEval and Fast Numbers Slow Language (hand-verified); SCSS/FinCall venue metadata; intro 'only raw audio' claim withdrawn
+4bf4f66  2026-10-06T15:10:40-04:00  Re-baseline (T9.2 option B): measured day-0 anchors become the primary targets
+aae892c  2026-09-23T14:25:26-04:00  audit predictions: docs page with contract + worked example (SCSS TMLP predictions, manifested demo under data/audits/demo), REPRODUCE section, paper §5 sentence, tracker, DECISIONS 2026-09-23; REPRODUCE KeFVP row corrected
+097d55a  2026-09-21T00:22:00-04:00  K2 code: ecvol reproduce kefvp --dataset ec --ec-regenerated (raw BERT-large via the authors' generator; released EC embeddings unavailable upstream); DECISIONS 2026-09-21
+ad414e6  2026-09-16T14:53:10-04:00  T6R.4: embargo re-carves a chronological validation set (chrono_val) for DialogueGAT/KeFVP; KeFVP repeats patch hook; DECISIONS
+cccd01e  2026-09-16T14:48:21-04:00  DECISIONS: T6R.4 DialogueGAT controls inside its per-year protocol
+3c222de  2026-09-16T14:40:39-04:00  T6R.4 opened: controls sprint scope (user) + split-only protocol (DECISIONS 2026-09-16)
+42fb142  2026-09-09T02:28:54-04:00  DECISIONS: T6R.3 in-sprint design calls; REPRODUCE: 6R-F commands and data sources
+4d9a598  2026-09-09T01:10:34-04:00  DECISIONS: T6R.3 faithful-reproduction sprint policy (user 2026-09-09); pin the six lineage clones
+18c52b2  2026-09-02T16:50:06-04:00  DECISIONS/JOURNAL/TASKS/HANDOFF/REPRODUCE: clean-clone gate, anchor variant, release archives, paper fixes
+51a38e5  2026-09-02T13:35:18-04:00  T6R.2 CLOSED: SCSS entry + code-availability table in the paper; KeFVP/DialogueGAT/Sawhney reason-coded (DECISIONS 2026-09-03 closing); PDF 25 pp
+4a7d1c8  2026-09-02T02:48:44-04:00  T6R.2: HTML head (BGE-M3 chunk sequences) + `ecvol reproduce html` driver
+c7593cf  2026-09-02T01:13:35-04:00  T9.2: EDGAR-anchored call timing with provenance tiers; measured-target variant + sensitivity
+efc9f9e  2026-09-02T00:49:20-04:00  T7.1 DONE: Earnings25 ingested (476 admitted, 99.79% price join); decisions recorded
+ab5f9dd  2026-09-02T00:04:42-04:00  T9.1: calendar-day horizon convention beside the trading-day targets
+3e3d074  2026-08-26T15:05:46-04:00  DECISIONS + DESIGN §8/§12: T9.3 provenance attaches per command; CI asserts manifest integrity
+38879c1  2026-08-26T14:46:14-04:00  DECISIONS 2026-08-26 + DESIGN amendments under the 08-23 redirection
+4a3affd  2026-08-26T14:44:16-04:00  Redirection 2026-08-23: benchmark/ACL reframe; Phase 6 dropped, TX4 deferred, Phases 6R + 9 added
+cccfdbd  2026-08-13T07:43:41-04:00  TX4: green-light the ecvol-live 50-call capture pilot
+0530795  2026-08-09T01:44:42-04:00  T6.2: kappa gate FAILED on Qwen2.5-7B (Q4_K_M and Q8_0) — corpus not started
+20cd650  2026-08-09T00:49:38-04:00  DECISIONS: T6.2 runs locally via llamacpp; Q4_K_M is the run's canonical quant
+c948d46  2026-07-19T22:58:15-04:00  Fold novelty-scan results into DESIGN, TASKS, and the paper
+fc9875d  2026-07-19T22:28:26-04:00  Reference audit: verify all 40 citations exist; fix 5 metadata errata
+59347b5  2026-07-04T18:00:24-04:00  T6.2: reroute corpus compute OSC -> Colab Pro+
+d0b2cf5  2026-06-29T16:40:08-04:00  T6.2 OSC handoff: resolve >32k context policy via YaRN-extend
+564c9ba  2026-06-29T15:33:15-04:00  T6.1 v2 schema sign-off + rater-1 κ-audit ingest
+49d8619  2026-06-24T05:56:57-04:00  T6.2 probe result + governance: local OOM → corpus routes to OSC
+5014209  2026-06-24T04:07:05-04:00  T6.2 cloud: OSC Apptainer+Slurm package + accelerate dep + spend decision
+82d3646  2026-06-24T02:50:55-04:00  T6.1 scaffolding: LLM feature schema v1 + rubric + reading/labeling tooling
+14f4016  2026-06-24T02:23:44-04:00  T5.2 DONE: Result Table 4 (consolidated main grid) -> Phase 5 complete
+27c643d  2026-06-24T02:06:52-04:00  T5.1 DONE: Stage-4 fusion heads (gated + late-fusion stacking)
+86b561f  2026-06-24T01:41:58-04:00  T4.4 DONE: Stage-3 audio -> Result Table 3 + controls + gender (Phase 4 complete)
+dcfbfbf  2026-06-24T01:37:44-04:00  Add paper/ manuscript scaffold (T8.2 started early, framing-neutral)
+24bac4d  2026-06-23T01:21:37-04:00  T4.3 (WIP): WavLM-Large per-call audio embeddings + ETA gate
+3ac2dd9  2026-06-19T14:28:11-04:00  T4.2 DONE: eGeMAPS functionals per call (openSMILE, CPU, resumable)
+bf86bad  2026-06-19T08:55:46-04:00  T4.1 DONE: audio QC + 16 kHz mono FLAC store (FinCall-only)
+12290e8  2026-06-19T05:17:59-04:00  T3.4 done + section-4 framing gate: provisional Path B (Phase 3 complete)
+d4c4106  2026-06-19T05:06:45-04:00  T3.4: identity-control suite (ticker-only, transcript shuffle, probe)
+88a5d2b  2026-06-19T04:45:46-04:00  T3.3 DONE: Stage-2 content heads -> Result Table 2
+3d7eaad  2026-06-19T01:43:11-04:00  T3.2: frozen text feature stack (BGE-M3 + FinBERT + surface) + benchmark
+8b6ba2b  2026-06-19T00:19:24-04:00  T3.1: enrich section audit (cohort sampling + context columns)
+88439e8  2026-06-19T00:02:33-04:00  T3.1: transcript sectioning + speaker-turn chunking (`ecvol featurize sections`)
+8baac64  2026-06-18T23:44:53-04:00  Add near-autonomous task loop (LOOP.md + guardrail hooks)
+0ec4116  2026-06-18T22:58:47-04:00  T2.3 DONE: reporting — ecvol report → Markdown + LaTeX (completes Phase 2)
+503aa9c  2026-06-18T22:44:03-04:00  T2.2 DONE: Stage-0/1 baselines → Result Table 1 (DESIGN §6 Stages 0-1)
+9383872  2026-06-18T21:54:31-04:00  T2.1 DONE: metrics & significance module (DESIGN §7.1-7.2)
+6ee8240  2026-06-18T21:29:36-04:00  T1.6 DONE: leakage-proof split builder (completes Phase 1)
+5a0a5e8  2026-06-18T20:56:06-04:00  T1.5 DONE: MAEC ingestion onto common schema (price-join 75.4%, documented)
+839e750  2026-06-18T17:57:26-04:00  T1.4 DONE: FinCall ingestion onto common schema (join 99.31%)
+aee4ec6  2026-06-17T19:39:33-04:00  T1.3 DONE: commit target artifacts + docs (join rate 97.12%)
+3707cf1  2026-06-17T15:55:22-04:00  T1.2: scope Tiingo fallback to the FinCall universe (free-tier budget + no silent drops)
+f072d03  2026-06-16T21:04:15-04:00  T1.2: align Tiingo cross-check gate with DESIGN §5.2 + persist artifacts
+f527177  2026-06-15T10:22:06-04:00  Docs: log Stooq->yfinance source change + universe; T1.2 status/journal
+1223c85  2026-06-15T09:24:47-04:00  undermind/prior work ingest
+7dbf2ea  2026-06-12T06:11:38-04:00  Log T1.4 scope expansion + reorder ahead of T1.2; close T1.1 in journal
+99a626b  2026-06-12T06:03:49-04:00  Explore FinCall identity reconstruction: feasible, dates 100%, names need alias matching
+6c2d4de  2026-06-12T04:41:06-04:00  Log T1.1 storage + MAEC-MFCC-gap decisions; mark T1.1 in progress
+c1d4f22  2026-06-12T02:57:59-04:00  Record T0.1 progress: tracker, decision log, journal
+031386f  2026-06-12T02:53:21-04:00  Initial commit: project governance documents

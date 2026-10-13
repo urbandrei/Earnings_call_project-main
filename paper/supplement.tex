@@ -85,6 +85,28 @@ FinCall-Surprise only (MAEC ships no raw audio).
 \input{../data/results/result_table_3}
 \clearpage
 
+\section*{Text content swaps on the ticker-disjoint split}
+Companion to the content-swap block of the identity-checks table in the main
+paper: the text ridge on FinCall-Surprise, ticker-disjoint split, test calls
+($n{=}484$), $R^2_{\mathrm{OOS}}$ vs.\ persistence on $\Delta v$. Each test call
+receives its own transcript (real), the transcript of another call by the same
+company (same-company swap) or a random other call's transcript (random swap).
+Source: \texttt{result\_controls.csv}, conditions \texttt{real},
+\texttt{within\_shuffle} and \texttt{global\_shuffle}.
+
+\begin{center}
+\begin{tabular}{lrrrr}
+\toprule
+Text ridge, ticker-disjoint & $\tau$=3 & $\tau$=7 & $\tau$=15 & $\tau$=30 \\
+\midrule
+real transcript & 0.195 & 0.217 & 0.195 & 0.169 \\
+same-company swap & 0.176 & 0.175 & 0.076 & $-$0.322 \\
+random swap & 0.161 & 0.128 & 0.016 & $-$0.410 \\
+\bottomrule
+\end{tabular}
+\end{center}
+\clearpage
+
 \section*{Result Table 4 --- Consolidated grid}
 One pre-registered canonical model per stage. $*$ marks Holm-corrected
 significance against Stage~1 within the \dv{} confirmatory family (two-sided, read

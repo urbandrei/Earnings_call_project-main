@@ -17,15 +17,16 @@ What that leaves open is whether any published model keeps its score once the
 company is taken away, and the files the field scores on cannot answer it. Several studies evaluated on EC and MAEC use redistributed label and split files. We audited them (\S\ref{sec:substrate}). They leave no gap between
 training and test dates even though each target runs up to 30 days past its call.
 Between 44\% and 80\% of test calls come from companies that are also in
-training, and no paper
+training (Figure~\ref{fig:problems}b), and no paper
 reports what happens when they are not. They define horizons in calendar days,
 which later papers describe as trading days. They put day~0 on the date of the
-call, although most companies publish before the open, a defect noted by
+call, although most companies publish before the open
+(Figure~\ref{fig:problems}a), a defect noted by
 \citet{scss2024} which no shared label set corrects. FinCall-Surprise
 \citep{fincall2025}, which ships raw audio, has no ticker, date or speaker
 fields, so the identity checks cannot be run on it at all. No published model had
 been rerun under such checks, and no frozen volatility pipeline had been scored
-on calls after its training cutoff (Figure~\ref{fig:problems}). This paper makes the diagnosis measurable on the
+on calls after its training cutoff. This paper makes the diagnosis measurable on the
 files in use and releases the tools for it.\footnote{Anonymized repository (decision
 log, harness, checksums, ledger): \url{https://anonymous.4open.science/r/ecvol-bench-E717}}
 
@@ -48,4 +49,5 @@ prediction file and probes and content swaps for any model one can run.
 price-only reference, with a margin fixed in advance, and for the frozen
 pipeline on 475 calls after every model's training cutoff
 (\S\ref{sec:results}). Stages, checks and tests were fixed in advance in the
-repository's decision log, whose entries carry git timestamps.
+repository's decision log, whose entries carry git timestamps (history
+exported in the repository).

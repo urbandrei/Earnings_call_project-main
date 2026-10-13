@@ -1,16 +1,16 @@
 Since 2019, researchers have predicted post-earnings-call stock volatility from
-what executives say and how they sound, and many report beating forecasts from
-past price swings. We audit the EC/MAEC label and split files that several
-studies reuse from earlier work. They leave no gap between training and test
-although targets run 30 days ahead, 44--80\% of test calls come from companies
-seen in training, and day zero sits on the call date although most companies
-report before the open. We release an evaluation protocol and audit toolkit that
-make these assumptions testable. The protocol recovers company names and dates
-for an audio corpus that ships without them, takes release times from SEC
-filings, provides targets under both horizon definitions and a forward-looking
-variant, and splits that separate training and test in time and in company. The
-toolkit reports company-level diagnostics on any prediction file. Under it, the
-open text and audio models we evaluate show no consistent improvement over past
-volatility alone by a margin fixed in advance, and their embeddings mostly
-identify the company. Five published models rerun under the same checks agree,
-and HAR-RV stays ahead of every content model after the training cutoff.
+what executives say and how they sound, often reporting gains over
+past-volatility forecasts. We audit the EC/MAEC label and split files reused
+across studies. They leave no gap between training and test although targets run
+30 days ahead, 44--80\% of test calls come from companies seen in training, and
+day zero sits on the call date although most companies report before the open.
+We release a protocol and audit toolkit that make these assumptions testable.
+The protocol recovers company names and dates for an audio corpus that ships
+without them, takes release times from SEC filings, and provides targets under
+both horizon definitions and splits disjoint in time and in company. The toolkit runs company-level diagnostics on any prediction file.
+Under this protocol, open text and audio models show no consistent
+improvement over past volatility by a margin fixed in advance, and
+their embeddings mostly identify the company. Five published models rerun under
+the same checks show the same pattern. Holding companies out raises the text
+models' error by 12--82\% but not the price-only models', and HAR-RV stays
+ahead of every content model after the cutoff.

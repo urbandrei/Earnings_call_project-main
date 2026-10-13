@@ -18,7 +18,8 @@ regime effect and note it. GARCH(1,1) beats HAR-RV at every temporal horizon,
 and HAR-RV beats it on the \tickerdisjoint{} split (Appendix
 Table~\ref{tab:baselines}). The reference for every content claim below
 is the past-volatility ridge S0$'$, which sees the same price inputs as each
-content model and nothing else.
+content model and nothing else. GARCH is not that reference, since it is a
+different estimator on different inputs.
 
 \paragraph{Text models mostly read the company (Table~\ref{tab:controls}, Figure~\ref{fig:swaps}).}
 Adding text features to the past-volatility ridge makes it \emph{worse} in all
@@ -28,8 +29,8 @@ frozen call embedding 89.5\% of the time on FinCall and 53.9\% on MAEC. On the
 temporal split, where test companies also appear in training, giving each test
 call the transcript of \emph{another call by the same company} changes the score
 by less than 0.03, while a random transcript hurts. On the \tickerdisjoint{}
-split the same-company swap does hurt at $\tau\ge15$, a sign of some
-call-specific sensitivity, but that split is not in date order. On the
+split the same-company swap does hurt at $\tau\ge15$ (supplement), a sign of
+some call-specific sensitivity, but that split is not in date order. On the
 date-ordered company-disjoint split the real transcript scores below both swaps,
 and the random swap lands near the constant (0.17 against 0.15 at $\tau{=}3$),
 so real text from an unseen company moves predictions the wrong way. On MAEC the same-company swap
