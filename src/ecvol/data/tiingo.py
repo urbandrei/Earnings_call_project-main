@@ -31,7 +31,7 @@ TIINGO_PRICES_URL = "https://api.tiingo.com/tiingo/daily/{ticker}/prices"
 def load_api_key(root: Path | None = None) -> str | None:
     """Tiingo key from `TIINGO_API_KEY` env var, falling back to `<root>/.env`.
 
-    `root` defaults to the project root (`.`), where CLAUDE.md keeps secrets.
+    `root` defaults to the project root (`.`), where `.env` keeps the key.
     """
     key = os.environ.get("TIINGO_API_KEY")
     if key:

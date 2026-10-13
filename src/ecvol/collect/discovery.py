@@ -31,7 +31,7 @@ NASDAQ_LICENSE = "nasdaq.com public calendar (facts; not redistributed)"
 # Wikipedia wants a descriptive UA; api.nasdaq.com hangs (no response) unless the
 # request carries full browser-like headers — verified 2026-08-13.
 HEADERS = {
-    "User-Agent": "Mozilla/5.0 ecvol research project (andrei.roman.personal@gmail.com)",
+    "User-Agent": "Mozilla/5.0 ecvol research project (contact-withheld-for-review@example.org)",
     "Accept": "application/json, text/html, */*",
 }
 NASDAQ_HEADERS = {

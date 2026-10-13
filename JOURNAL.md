@@ -25,7 +25,7 @@ Keep entries factual and compact. Decisions that change the design belong in [DE
 - **Next:** docs restructure, then T0.1 scaffolding.
 
 ### 2026-06-12 — Docs restructure
-- **Done:** Renamed `Earnings_call_project-main/` → `legacy/` (read-only; deleted its stale CLAUDE.md); moved DESIGN.md to project root and removed `new/`; extracted the full task breakdown into TASKS.md (living tracker, 30 tasks T0.1–T8.3); wrote OLDWORK.md (legacy summary, marked outdated); wrote root CLAUDE.md (working principles, automation/testing discipline, exploration policy); moved the decision log out of DESIGN.md into DECISIONS.md; created this journal. Git deliberately not initialized yet — first subtask of T0.1.
+- **Done:** Renamed `<old-folder>/` → `legacy/` (read-only; deleted its stale CLAUDE.md); moved DESIGN.md to project root and removed `new/`; extracted the full task breakdown into TASKS.md (living tracker, 30 tasks T0.1–T8.3); wrote OLDWORK.md (legacy summary, marked outdated); wrote root CLAUDE.md (working principles, automation/testing discipline, exploration policy); moved the decision log out of DESIGN.md into DECISIONS.md; created this journal. Git deliberately not initialized yet — first subtask of T0.1.
 - **Found:** Karpathy reference check: he never published a CLAUDE.md template; the viral file is Forrest Chang's distillation of Karpathy's Jan-2026 post on four agent failure modes (silent assumptions, code hypertrophy, collateral changes, no verifiable success criteria) — CLAUDE.md's principles built on those primary sources.
 - **Next:** T0.1 — `git init`, .gitignore, initial commit, package skeleton, CI.
 
@@ -36,7 +36,7 @@ Keep entries factual and compact. Decisions that change the design belong in [DE
 - **Next:** User: create the GitHub repo and push (needs `gh auth login` or manual repo creation) to verify Actions green — the one open T0.1 acceptance item. Then T0.2 config system.
 
 ### 2026-06-12 — T0.1 closed
-- **Done:** User created the GitHub repo (`urbandrei/Earnings_call_project-main`, private) and pushed; CI run on `main` green on first try (user-verified in the Actions tab — repo is private, so no API access from the agent without `gh`). T0.1 acceptance fully met → `[x]`.
+- **Done:** User created the GitHub repo (`<handle>/<repo>`, private) and pushed; CI run on `main` green on first try (user-verified in the Actions tab — repo is private, so no API access from the agent without `gh`). T0.1 acceptance fully met → `[x]`.
 - **Found:** Verifying Actions on a private repo from this machine needs an authenticated `gh`; worth installing (`winget install GitHub.cli` + `gh auth login`) before CI-dependent phases.
 - **Next:** T0.2 config system (pydantic schemas, example YAML, config-hash function).
 

@@ -14,7 +14,7 @@ why it is needed. Every number traces to a manifested result CSV (`ecvol runs ve
 - **Format:** official ACL style (`acl.sty`, `acl_natbib.bst`, fetched 2026-10-09 from
   github.com/acl-org/acl-style-files), `\usepackage[review]{acl}` for the anonymous,
   line-numbered ARR submission; switch to `preprint` or `final` in `main.tex` as needed.
-  Target venue: ACL via ARR (`venue_memo_2026-10.md`). In this template the main text
+  Target venue: ACL via ARR. In this template the main text
   ends on page 8 (the ARR long-paper limit); Limitations, Ethical Considerations,
   references and the appendix are not counted.
 - **Main-text structure:** Introduction (with contributions and a compact related-work
@@ -35,15 +35,6 @@ why it is needed. Every number traces to a manifested result CSV (`ecvol runs ve
   ACL reviewers are not required to read appendices, supplementary material is a separate
   upload, and the two-column grids overlapped each other. Nothing was dropped: the
   supplement is committed, built by the same script, and can be handed over on request.
-
-## Overleaf
-
-`bash paper/make_overleaf.sh` stages a self-contained copy (main.tex, refs.bib, sections,
-tables, figures, OVERLEAF.md, supplement.pdf), test-compiles it with pdflatex + bibtex
-away from the repository, and writes `paper/dist/ecvol-paper-overleaf-<sha>.zip`
-(gitignored). Upload it as a new Overleaf project; `OVERLEAF.md` inside explains what is
-hand-written and what is generated, and how to bring edits back. First upload:
-2026-10-09, project "ecvol-paper-overleaf-82d1500".
 
 ## Build
 

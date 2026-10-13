@@ -41,7 +41,7 @@ import requests
 from ecvol.collect.discovery import _cik_by_ticker
 
 SEC_SUBMISSIONS = "https://data.sec.gov/submissions/"
-SEC_HEADERS = {"User-Agent": "ecvol-research/0.1 (andrei.roman.personal@gmail.com)"}
+SEC_HEADERS = {"User-Agent": "ecvol-research/0.1 (contact-withheld-for-review@example.org)"}
 CACHE_REL = "raw/ref/edgar_submissions"
 DEC_REL = "raw/ref/scss/DEC.csv"
 ET = ZoneInfo("America/New_York")

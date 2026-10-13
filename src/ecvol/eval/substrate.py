@@ -4,7 +4,7 @@ Every number here regenerates from the mirrored lineage files under
 `raw/ref/lineage/` (KeFVP, VolTAGE, HTML repos, pinned to commit SHAs in
 `raw/ref/lineage/lineage_manifest.json`) and from our own committed splits and
 targets. No model is reproduced. Findings first established 2026-08-23
-(`docs/advisor_redirection_2026-08.md` §5); this module formalises them so each
+(DECISIONS.md, 2026-08-23); this module formalises them so each
 claim carries the file and the row/cell counts it was computed from.
 
 Benchmarks: **EC** (Qin & Yang 2019; VolTAGE's `semi-supervised-gcn/gcn/data/

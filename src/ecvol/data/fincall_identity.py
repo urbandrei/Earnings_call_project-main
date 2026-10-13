@@ -29,7 +29,7 @@ from ecvol.data.fetch import _download
 SEC_TICKERS_URL = "https://www.sec.gov/files/company_tickers.json"
 SEC_LICENSE = "Public domain (US government work)"
 # SEC requires a descriptive User-Agent with contact info on programmatic requests.
-SEC_HEADERS = {"User-Agent": "ecvol research project (andrei.roman.personal@gmail.com)"}
+SEC_HEADERS = {"User-Agent": "ecvol research project (contact-withheld-for-review@example.org)"}
 
 MONTHS = "January|February|March|April|May|June|July|August|September|October|November|December"
 MONTH_NUM = {m: i + 1 for i, m in enumerate(MONTHS.split("|"))}

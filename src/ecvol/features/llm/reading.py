@@ -2,7 +2,7 @@
 
 Produces the materials a human needs to (a) read N calls to validate/refine the feature
 schema (T6.1) and (b) fill the rubric labels that the κ-audit scores model output against
-(T6.2). The agent builds the tooling; the *numbers* (labels, agreement) are the human's.
+(T6.2). The *numbers* (labels, agreement) come from the human rater, never from this code.
 
 **Leakage guard (mirrors TASKS.md TX1):** the sample is drawn from the **train split only**,
 asserted at build time — no val/test/embargo call may inform the schema or taxonomy.

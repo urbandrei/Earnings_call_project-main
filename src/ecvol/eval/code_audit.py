@@ -27,7 +27,7 @@ from pathlib import Path
 
 import pandas as pd
 
-HEADERS = {"User-Agent": "ecvol-research/0.1 (andrei.roman.personal@gmail.com)"}
+HEADERS = {"User-Agent": "ecvol-research/0.1 (contact-withheld-for-review@example.org)"}
 
 
 @dataclass(frozen=True)

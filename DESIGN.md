@@ -55,7 +55,7 @@ A clean negative or mixed answer to RQ1/RQ4 is a publishable result (see §4); t
 
 ## 2. Lessons from the legacy project
 
-The legacy project (read-only in `legacy/`; fully described in [OLDWORK.md](OLDWORK.md)) reproduced HTML and KeFVP on the EarningsCall and MAEC datasets and reported coming within +0.73% mean MSE of KeFVP — a single-seed result this rework neither defends nor chases. We inherit its concepts — the multimodal premise, the 3/7/15/30-day log-RV target family, the embedding-ladder methodology, and its data-validation instincts (now acceptance gates) — and reject its practices:
+The legacy project (a 2024 course project, not included in this snapshot) reproduced HTML and KeFVP on the EarningsCall and MAEC datasets and reported coming within +0.73% mean MSE of KeFVP — a single-seed result this rework neither defends nor chases. We inherit its concepts — the multimodal premise, the 3/7/15/30-day log-RV target family, the embedding-ladder methodology, and its data-validation instincts (now acceptance gates) — and reject its practices:
 
 ### Rejected (with reasons)
 
@@ -293,10 +293,8 @@ modality {text, audio, both} × past-vol covariates {in, out} × split {temporal
 
 ```
 .                            # project root
-  CLAUDE.md                  # agent guide & working principles
   DESIGN.md                  # this document — source of truth
   TASKS.md                   # living task tracker (operational copy of §9)
-  OLDWORK.md                 # legacy-project reference (outdated, read-only)
   legacy/                    # abandoned 2024 project: notebooks, Paper.pdf, papers/ (read-only)
   pyproject.toml             # uv-managed; lockfile committed
   configs/                   # one YAML per experiment; pydantic-validated
@@ -457,7 +455,7 @@ What ships with the paper (tracked against [R18]'s failure causes):
 - [R32] Shi et al., "Enhancing Volatility Forecasting in Financial Markets: A General Numeral Attachment Dataset for Understanding Earnings Calls" (GNAVol), IJCNLP-AACL 2023. https://aclanthology.org/2023.ijcnlp-short.5/
 - *Deferred:* DeFVP (ICME 2024, differentiable sentence-selection for volatility) — surfaced by the review but no canonical URL verified as of 2026-06-14; add when confirmed.
 
-### Papers — identity & lookahead frontier (surfaced by the 2026-07-19 novelty scan; evidence in paper/novelty_scan_2026-07.md, added via DECISIONS.md)
+### Papers — identity & lookahead frontier (surfaced by the 2026-07-19 novelty scan, added via DECISIONS.md)
 
 - [R33] Lopez-Lira, Tang & Zhu, "The Memorization Problem: Can We Trust LLMs' Economic Forecasts?," 2025. https://arxiv.org/abs/2504.14765 — *GPT-4o deanonymizes entity-neutered earnings-call transcripts (100% firm acc. on Apple); identity leaks even under masking — corroborates §3.1, bridges to §3.2*
 - [R34] Benhenda, "Look-Ahead-Bench: a Standardized Benchmark of Look-ahead Bias in Point-in-Time LLMs for Finance," 2026. https://arxiv.org/abs/2601.13770 — *finds significant lookahead bias in Llama-3.1-8B/70B (a family in our T6.2 panel); caveat: single-author, vendor-affiliated (Pitinf results vendor-reported)*

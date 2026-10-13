@@ -26,7 +26,7 @@
   - [x] Typer CLI stub (`prices|targets|splits|featurize|train|evaluate|report`)
   - [x] pre-commit (ruff format + lint)
   - [x] CI workflow (GitHub Actions)
-- **Notes:** done 2026-06-12. All checks green locally (ruff, pytest, pre-commit) and fresh-clone install from lockfile tested per README.md; legacy-binaries gitignore choice logged in DECISIONS.md. Repo: github.com/urbandrei/Earnings_call_project-main (private); CI green on first push (user-verified). Journal: 2026-06-12 T0.1 entries.
+- **Notes:** done 2026-06-12. All checks green locally (ruff, pytest, pre-commit) and fresh-clone install from lockfile tested per README.md; legacy-binaries gitignore choice logged in DECISIONS.md. Repo: github.com/<handle>/<repo> (private); CI green on first push (user-verified). Journal: 2026-06-12 T0.1 entries.
 
 ### T0.2 Config system — `[x]`
 - **Goal:** every experiment definable as a validated YAML.

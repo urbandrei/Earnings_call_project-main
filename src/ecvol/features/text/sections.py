@@ -18,7 +18,7 @@ stay unavailable (best-effort, secondary dataset; user decision 2026-06-18).
 Output per dataset: ``data/{dataset}/chunks.parquet`` (gitignored deterministic payload, one
 row per chunk) + a committed manifest, plus committed coverage reports under ``data/coverage/``:
 a ``{dataset}_sections.csv`` summary and a seeded ``{dataset}_section_audit.csv`` for the
-human precision check (the >90% acceptance gate is human-verified — see HANDOFF.md).
+human precision check (the >90% acceptance gate is human-verified).
 """
 
 from __future__ import annotations
@@ -343,7 +343,7 @@ def build_sections(
 
         write_metric_csv(summary_rows, cov / f"{dataset}_sections.csv")
 
-        # Seeded human-precision audit sample (the >90% gate; verified by hand — HANDOFF.md).
+        # Seeded human-precision audit sample (the >90% gate; verified by hand).
         # Sample from the modeling cohort only (calls with >=1 ok target), so non-earnings
         # residue doesn't dilute the precision number; fall back to all when no targets exist.
         cohort = _cohort_ids(root / dataset / "targets.parquet")

@@ -70,7 +70,7 @@ MIN_TRANSCRIPT_CHARS = 50
 WIKI_TITLE = "List of S&P 500 companies"
 WIKI_API = "https://en.wikipedia.org/w/api.php"
 WIKI_INDEX = "https://en.wikipedia.org/w/index.php"
-WIKI_HEADERS = {"User-Agent": "ecvol-research/0.1 (andrei.roman.personal@gmail.com)"}
+WIKI_HEADERS = {"User-Agent": "ecvol-research/0.1 (contact-withheld-for-review@example.org)"}
 WIKI_LICENSE = "Wikipedia — CC-BY-SA-4.0 (cached page revision)"
 
 CALLS_LICENSE = "Derived artifact — normalized from Earnings25 (CC-BY-4.0)"

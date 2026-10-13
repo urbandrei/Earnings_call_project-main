@@ -1,7 +1,7 @@
 """T3.1 transcript normalization: section detection, speaker-turn chunking, determinism.
 
 Acceptance test (TASKS T3.1 / DESIGN §6) is section-detection precision >90% on a 30-call
-hand-checked sample — that human check runs on the committed `*_section_audit.csv` (HANDOFF.md).
+hand-checked sample — that human check runs on the committed `*_section_audit.csv`.
 These tests lock the detection heuristic and the chunking invariants that feed it.
 """
 

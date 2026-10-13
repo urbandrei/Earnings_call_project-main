@@ -1,7 +1,7 @@
 """T6.1 LLM feature schema, prompt drafts, and reading-pack tooling.
 
 The acceptance gate for T6.1/T6.2 is human (two-pass schema agreement, then κ>0.6 on a
-50-call audit — HANDOFF.md). These tests lock the engineering scaffolding that gate runs on:
+50-call audit). These tests lock the engineering scaffolding that gate runs on:
 the schema bounds, the per-section field applicability, prompt versioning, and — critically —
 the train-only leakage guard on the reading-pack sampler.
 """
