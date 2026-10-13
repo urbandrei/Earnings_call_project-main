@@ -31,13 +31,16 @@ We report MSE on log realized volatility and, as the headline metric, \Rtwo{} re
 $1-\sum(y-\hat y)^2/\sum(y-\hat y_{\mathrm{persist}})^2$. Because $\Delta v$ has a positive mean on the measured anchor, persistence (which predicts $\Delta v{=}0$) is a weak reference there, so every $\Delta v$ claim is also compared with the constant model. Diebold--Mariano tests \citep{dm1995} with the small-sample correction of \citet{hln1997} compare per-call squared errors against persistence and against the
 previous stage. The confirmatory comparisons (each stage against Stage~1 on $\Delta v$ across horizons, Stage~4 against the best single modality, and the
 published split against the controlled split for each reproduced model) are
-Holm-corrected \citep{holm1979}. The central question is whether call content improves on the same
+Holm-corrected \citep{holm1979}. The per-head asterisks in Tables~\ref{tab:text}
+and~\ref{tab:audio} are uncorrected. The central question is whether call content improves on the same
 model without it, so each content model is also compared, on the same calls,
 with the past-volatility ridge. For Stages~2 and~3 that ridge is the same model
 without content. For the Stage-4 stack it is a common price-only reference, not
 an exact ablation. We report the relative MSE reduction
 with a 95\% bootstrap interval that resamples companies and read it against a 2\%
-margin fixed before the comparison was run. An interval above the margin is an
+margin fixed before the comparison was run, a practical threshold below most
+gaps between the classical baselines (Appendix Table~\ref{tab:baselines}). An
+interval above the margin is an
 improvement, one below it shows no meaningful benefit, and anything else is
 inconclusive. All other analyses are exploratory.
 
